@@ -1,0 +1,9 @@
+@import url("https://rsms.me/inter/inter-ui.css");
+
+html,
+body {
+  overflow: hidden;
+  margin: 0;
+  padding: 0;
+  border-spacing: 0;
+}
