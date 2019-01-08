@@ -4837,6 +4837,16 @@ get-caller-file@^1.0.1:
   version "1.0.3"
   resolved "https://registry.yarnpkg.com/get-caller-file/-/get-caller-file-1.0.3.tgz#f978fa4c90d1dfe7ff2d6beda2a515e713bdcf4a"
 
+get-image-data@^3.0.1:
+  version "3.0.1"
+  resolved "https://registry.yarnpkg.com/get-image-data/-/get-image-data-3.0.1.tgz#b5e6942c90c31fbb8b93b22c0642fbed231b7cf2"
+  dependencies:
+    get-image "~2.0.0"
+
+get-image@~2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/get-image/-/get-image-2.0.0.tgz#d1aa51dad903977cd39b325d62d995b4cdb365b0"
+
 get-own-enumerable-property-symbols@^3.0.0:
   version "3.0.0"
   resolved "https://registry.yarnpkg.com/get-own-enumerable-property-symbols/-/get-own-enumerable-property-symbols-3.0.0.tgz#b877b49a5c16aefac3655f2ed2ea5b684df8d203"
