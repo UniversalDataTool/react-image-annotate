@@ -1,15 +1,16 @@
 // @flow
-
 import React, { useRef, useState, useLayoutEffect } from "react"
 import exampleImage from "./seves_desk.story.jpg"
+import { Matrix } from "transformation-matrix-js"
 
 export default () => {
   const canvasEl = useRef(null)
   const image = useRef(null)
   const [imageLoaded, changeImageLoaded] = useState(false)
-  const [shiftKeyIsDown, changeShiftKeyIsDown] = useState(false)
+  const [mouseDown, changeMouseDown] = useState(false)
   const mousePosition = useRef({ x: 0, y: 0 })
-  const [[tx, ty, sx, sy], changeTransform] = useState([0, 0, 1, 1])
+  const prevMousePosition = useRef({ x: 0, y: 0 })
+  const [mat, changeMat] = useState(Matrix.from(1, 0, 0, 1, 0, 0))
 
   useLayoutEffect(() => {
     if (image.current === null) {
@@ -25,8 +26,12 @@ export default () => {
     canvas.height = clientHeight
     const context = canvas.getContext("2d")
     context.save()
-    context.translate(tx, ty)
-    context.scale(sx, sy)
+    context.transform(
+      ...mat
+        .clone()
+        .inverse()
+        .toArray()
+    )
 
     const fitScale = Math.max(
       image.current.naturalWidth / (clientWidth * 0.85),
@@ -45,49 +50,47 @@ export default () => {
       iw,
       ih
     )
+    // context.fillStyle = "#000"
+    // context.fillRect(200, 200, 50, 50)
+
     context.restore()
-
-    const onKeyDown = e => e.key === "Shift" && changeShiftKeyIsDown(true)
-    const onKeyUp = e => e.key === "Shift" && changeShiftKeyIsDown(false)
-    window.addEventListener("keydown", onKeyDown)
-    window.addEventListener("keyup", onKeyUp)
-
-    return () => {
-      window.removeEventListener("keydown", onKeyDown)
-      window.removeEventListener("keyup", onKeyUp)
-    }
   })
 
   return (
     <canvas
+      onMouseDown={e => changeMouseDown(true)}
+      onMouseUp={e => changeMouseDown(false)}
       onMouseMove={e => {
         const { left, top } = e.target.getBoundingClientRect()
+        prevMousePosition.current.x = mousePosition.current.x
+        prevMousePosition.current.y = mousePosition.current.y
         mousePosition.current.x = e.clientX - left
         mousePosition.current.y = e.clientY - top
-
-        const [umx, umy] = [
-          (mousePosition.current.x - tx) / sx,
-          (mousePosition.current.y - ty) / sy
-        ]
-
-        if (shiftKeyIsDown) {
-          changeTransform([umx - umx * sx, umy - umy * sy, sx, sy])
+        if (mouseDown) {
+          changeMat(
+            mat
+              .clone()
+              .translate(
+                prevMousePosition.current.x - mousePosition.current.x,
+                prevMousePosition.current.y - mousePosition.current.y
+              )
+          )
         }
       }}
       onWheel={e => {
-        const direction = e.deltaY > 0 ? -1 : e.deltaY < 0 ? 1 : 0
+        const direction = e.deltaY > 0 ? 1 : e.deltaY < 0 ? -1 : 0
 
-        const [umx, umy] = [
-          (mousePosition.current.x - tx) / sx,
-          (mousePosition.current.y - ty) / sy
-        ]
+        const [mx, my] = [mousePosition.current.x, mousePosition.current.y]
 
-        const [nsx, nsy] = [
-          Math.max(1, Math.min(10, sx * (1 + direction * 0.3))),
-          Math.max(1, Math.min(10, sy * (1 + direction * 0.3)))
-        ]
+        const newMat = mat
+          .clone()
+          .translate(mx, my)
+          .scaleU(1 + 0.2 * direction)
+        if (newMat.a > 2) newMat.scaleU(2 / newMat.a)
+        if (newMat.a < 0.1) newMat.scaleU(0.1 / newMat.a)
+        newMat.translate(-mx, -my)
 
-        changeTransform([umx - umx * nsx, umy - umy * nsy, nsx, nsy])
+        changeMat(newMat)
 
         e.preventDefault()
       }}
