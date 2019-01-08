@@ -14,6 +14,7 @@ import HotkeysIcon from "@material-ui/icons/Keyboard"
 import IconTools from "../IconTools"
 import { grey } from "@material-ui/core/colors"
 import Sidebar from "../Sidebar"
+import ImageCanvas from "../ImageCanvas"
 
 const useStyles = makeStyles({
   container: {
@@ -90,7 +91,8 @@ export default () => {
           <IconTools />
         </div>
         <div className={classes.imageCanvasContainer}>
-          <div className={classes.noImageSelected}>No Image Selected</div>
+          {/* <div className={classes.noImageSelected}>No Image Selected</div> */}
+          <ImageCanvas />
         </div>
         <div className={classes.sidebarContainer}>
           <Sidebar />
