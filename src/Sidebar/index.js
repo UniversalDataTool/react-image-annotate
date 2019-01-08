@@ -4,9 +4,8 @@ import React from "react"
 import { makeStyles } from "@material-ui/styles"
 import TaskDescription from "../TaskDescriptionSidebarBox"
 import ImageSelector from "../ImageSelectorSidebarBox"
-// import RegionSelector from "../RegionSelector"
-// import History from "../History"
-import SidebarBoxContainer from "../SidebarBoxContainer"
+import RegionSelector from "../RegionSelectorSidebarBox"
+import History from "../HistorySidebarBox"
 
 const useStyles = makeStyles({})
 
@@ -15,7 +14,16 @@ export default () => {
 
   return (
     <div>
-      <TaskDescription />
+      <TaskDescription
+        description={`
+
+# Box Cars
+
+Box cars **label humans too**. Thanks.
+
+
+        `.trim()}
+      />
       <ImageSelector
         images={[
           {
@@ -68,6 +76,8 @@ export default () => {
           }
         ]}
       />
+      <RegionSelector />
+      <History />
     </div>
   )
 }

@@ -21,11 +21,13 @@ const useStyles = makeStyles({
     flexGrow: 1,
     flexDirection: "column",
     minHeight: "98vh",
+    maxHeight: "100vh",
     overflow: "hidden"
   },
   header: {
     display: "flex",
     flexDirection: "row",
+    flexShrink: 0,
     zIndex: 10,
     boxShadow: "0px 3px 8px rgba(0,0,0,.1)"
   },
