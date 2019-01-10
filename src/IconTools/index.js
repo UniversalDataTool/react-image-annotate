@@ -14,7 +14,7 @@ import {
   faHandPaper,
   faSearch
 } from "@fortawesome/free-solid-svg-icons"
-import SmallToolButton from "../SmallToolButton"
+import SmallToolButton, { SelectedTool } from "../SmallToolButton"
 import { makeStyles } from "@material-ui/styles"
 import { grey } from "@material-ui/core/colors"
 
@@ -34,46 +34,50 @@ export default () => {
   const classes = useStyles()
   return (
     <div className={classes.iconTools}>
-      <SmallToolButton
-        name="Select Region"
-        icon={<FontAwesomeIcon size="xs" fixedWidth icon={faMousePointer} />}
-      />
-      <SmallToolButton
-        name="Drag Image"
-        icon={<FontAwesomeIcon size="xs" fixedWidth icon={faHandPaper} />}
-      />
-      <SmallToolButton
-        name="Zoom"
-        icon={<FontAwesomeIcon size="xs" fixedWidth icon={faSearch} />}
-      />
-      <SmallToolButton
-        name="Move Region"
-        icon={<FontAwesomeIcon size="xs" fixedWidth icon={faArrowsAlt} />}
-      />
-      <SmallToolButton
-        name="Resize Region"
-        icon={<FontAwesomeIcon size="xs" fixedWidth icon={faExpandArrowsAlt} />}
-      />
-      <SmallToolButton
-        name="Change Tag(s)"
-        icon={<FontAwesomeIcon size="xs" fixedWidth icon={faTag} />}
-      />
-      <SmallToolButton
-        name="Add Point"
-        icon={<FontAwesomeIcon size="xs" fixedWidth icon={faCrosshairs} />}
-      />
-      <SmallToolButton
-        name="Add Bounding Box"
-        icon={<FontAwesomeIcon size="xs" fixedWidth icon={faVectorSquare} />}
-      />
-      <SmallToolButton
-        name="Add Polygon"
-        icon={<FontAwesomeIcon size="xs" fixedWidth icon={faDrawPolygon} />}
-      />
-      <SmallToolButton
-        name="Add Pixel Region"
-        icon={<FontAwesomeIcon size="xs" fixedWidth icon={faPaintBrush} />}
-      />
+      <SelectedTool.Provider value="Select Region">
+        <SmallToolButton
+          name="Select Region"
+          icon={<FontAwesomeIcon size="xs" fixedWidth icon={faMousePointer} />}
+        />
+        <SmallToolButton
+          name="Drag Image"
+          icon={<FontAwesomeIcon size="xs" fixedWidth icon={faHandPaper} />}
+        />
+        <SmallToolButton
+          name="Zoom"
+          icon={<FontAwesomeIcon size="xs" fixedWidth icon={faSearch} />}
+        />
+        <SmallToolButton
+          name="Move Region"
+          icon={<FontAwesomeIcon size="xs" fixedWidth icon={faArrowsAlt} />}
+        />
+        <SmallToolButton
+          name="Resize Region"
+          icon={
+            <FontAwesomeIcon size="xs" fixedWidth icon={faExpandArrowsAlt} />
+          }
+        />
+        <SmallToolButton
+          name="Change Tag(s)"
+          icon={<FontAwesomeIcon size="xs" fixedWidth icon={faTag} />}
+        />
+        <SmallToolButton
+          name="Add Point"
+          icon={<FontAwesomeIcon size="xs" fixedWidth icon={faCrosshairs} />}
+        />
+        <SmallToolButton
+          name="Add Bounding Box"
+          icon={<FontAwesomeIcon size="xs" fixedWidth icon={faVectorSquare} />}
+        />
+        <SmallToolButton
+          name="Add Polygon"
+          icon={<FontAwesomeIcon size="xs" fixedWidth icon={faDrawPolygon} />}
+        />
+        <SmallToolButton
+          name="Add Pixel Region"
+          icon={<FontAwesomeIcon size="xs" fixedWidth icon={faPaintBrush} />}
+        />
+      </SelectedTool.Provider>
     </div>
   )
 }
