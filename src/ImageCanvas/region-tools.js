@@ -3,6 +3,7 @@
 export type BaseRegion = {|
   cls: string,
   color: string,
+  editingLabels?: boolean,
   highlighted?: boolean,
   name?: string,
   tags?: Array<string>

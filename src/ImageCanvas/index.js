@@ -1,5 +1,5 @@
 // @flow
-import React, { useRef, useState, useLayoutEffect } from "react"
+import React, { Fragment, useRef, useState, useLayoutEffect } from "react"
 import exampleImage from "./seves_desk.story.jpg"
 import { Matrix } from "transformation-matrix-js"
 import exampleMask from "./mouse_mask.story.png"
@@ -8,63 +8,22 @@ import type { Region } from "./region-tools.js"
 import { getEnclosingBox } from "./region-tools.js"
 import { makeStyles } from "@material-ui/styles"
 import Paper from "@material-ui/core/Paper"
-import { grey } from "@material-ui/core/colors"
+import styles from "./styles"
+import classnames from "classnames"
 
-const useStyles = makeStyles({
-  "@keyframes borderDance": {
-    from: { strokeDashoffset: 0 },
-    to: { strokeDashoffset: 100 }
-  },
-  highlightBox: {
-    "& path": {
-      vectorEffect: "non-scaling-stroke",
-      strokeWidth: 2,
-      stroke: "#FFF",
-      fill: "none",
-      strokeDasharray: 5,
-      animationName: "$borderDance",
-      animationDuration: "4s",
-      animationTimingFunction: "linear",
-      animationIterationCount: "infinite",
-      animationPlayState: "running"
-    }
-  },
-  canvas: { width: "100%", height: "100%" },
-  regionInfo: {
-    position: "absolute",
-    fontSize: 12,
-    pointerEvents: "none",
-    fontWeight: 600,
-    color: grey[900],
-    padding: 8,
-    "& .name": {
-      display: "flex",
-      flexDirection: "row",
-      alignItems: "center",
-      "& .circle": {
-        marginRight: 4,
-        boxShadow: "0px 0px 2px rgba(0,0,0,0.4)",
-        width: 10,
-        height: 10,
-        borderRadius: 5
-      }
-    },
-    "& .tags": {
-      "& .tag": {
-        color: grey[700],
-        display: "inline-block",
-        margin: 1,
-        fontSize: 10,
-        textDecoration: "underline"
-      }
-    }
-  }
-})
+const useStyles = makeStyles(styles)
+
+const boxCursorMap = [
+  ["nw-resize", "n-resize", "ne-resize"],
+  ["w-resize", "grab", "e-resize"],
+  ["sw-resize", "s-resize", "se-resize"]
+]
 
 const test = [
   {
     type: "point",
     name: "Paper",
+    highlighted: true,
     x: 0.8,
     y: 0.5,
     cls: "Something",
@@ -82,6 +41,7 @@ const test = [
   {
     type: "box",
     name: "Business Card",
+    highlighted: true,
     x: 0.315,
     y: 0.63,
     w: 0.067,
@@ -93,6 +53,7 @@ const test = [
     type: "polygon",
     name: "Laptop",
     tags: ["Electronic Device"],
+    editingLabels: true,
     highlighted: true,
     points: [
       [0.4019, 0.5065],
@@ -167,11 +128,12 @@ export default ({
   const projectRegionBox = r => {
     const { iw, ih } = layoutParams.current
     const bbox = getEnclosingBox(r)
+    const margin = r.type === "point" ? 15 : 2
     const cbox = {
-      x: bbox.x * iw - 15,
-      y: bbox.y * ih - 15,
-      w: bbox.w * iw + 30,
-      h: bbox.h * ih + 30
+      x: bbox.x * iw - margin,
+      y: bbox.y * ih - margin,
+      w: bbox.w * iw + margin * 2,
+      h: bbox.h * ih + margin * 2
     }
     const pbox = {
       ...mat
@@ -342,148 +304,237 @@ export default ({
     context.restore()
   })
 
+  const mouseEvents = {
+    onMouseMove: e => {
+      const { left, top } = canvasEl.current.getBoundingClientRect()
+      prevMousePosition.current.x = mousePosition.current.x
+      prevMousePosition.current.y = mousePosition.current.y
+      mousePosition.current.x = e.clientX - left
+      mousePosition.current.y = e.clientY - top
+
+      onMouseMove(
+        mat.applyToPoint(mousePosition.current.x, mousePosition.current.y)
+      )
+
+      if (dragging) {
+        mat.translate(
+          prevMousePosition.current.x - mousePosition.current.x,
+          prevMousePosition.current.y - mousePosition.current.y
+        )
+
+        changeMat(mat)
+      }
+      e.preventDefault()
+    },
+    onMouseDown: (e, specialEvent = {}) => {
+      e.preventDefault()
+      if (e.button === 1 || (e.button === 0 && dragWithPrimary))
+        return changeDragging(true)
+      if (e.button === 0) {
+        if (specialEvent.type === "resize-box") {
+          // onResizeBox()
+        }
+        if (specialEvent.type === "move-region") {
+          // onResizeBox()
+        }
+        onMouseDown(
+          mat
+            .clone()
+            .inverse()
+            .applyToPoint(mousePosition.current.x, mousePosition.current.y)
+        )
+      }
+    },
+    onMouseUp: e => {
+      e.preventDefault()
+      if (e.button === 1 || (e.button === 0 && dragWithPrimary))
+        return changeDragging(false)
+      if (e.button === 0)
+        onMouseUp(
+          mat
+            .clone()
+            .inverse()
+            .applyToPoint(mousePosition.current.x, mousePosition.current.y)
+        )
+    },
+    onWheel: e => {
+      const direction = e.deltaY > 0 ? 1 : e.deltaY < 0 ? -1 : 0
+
+      const [mx, my] = [mousePosition.current.x, mousePosition.current.y]
+
+      // NOTE: We're mutating mat here
+      mat.translate(mx, my).scaleU(1 + 0.2 * direction)
+      if (mat.a > 2) mat.scaleU(2 / mat.a)
+      if (mat.a < 0.1) mat.scaleU(0.1 / mat.a)
+      mat.translate(-mx, -my)
+
+      changeMat(mat)
+
+      e.preventDefault()
+    }
+  }
+
   return (
     <div
       style={{
         width: "100%",
         height: "100%",
         position: "relative",
-        overflow: "hidden"
+        overflow: "hidden",
+        cursor: dragging ? "all-scroll" : undefined
       }}
     >
-      {regions
-        .filter(r => r.highlighted)
-        .map((r, i) => {
-          const pbox = projectRegionBox(r)
-          return (
+      {regions.map((r, i) => {
+        const pbox = projectRegionBox(r)
+        const { iw, ih } = layoutParams.current
+        return (
+          <Fragment>
             <svg
               key={i}
-              className={classes.highlightBox}
+              className={classnames(classes.highlightBox, {
+                highlighted: r.highlighted
+              })}
+              {...mouseEvents}
               style={{
-                pointerEvents: "none",
+                ...(r.highlighted
+                  ? {
+                      pointerEvents: r.type !== "point" ? "none" : undefined,
+                      cursor: "grab"
+                    }
+                  : {
+                      cursor: "pointer"
+                    }),
                 position: "absolute",
-                left: pbox.x,
-                top: pbox.y,
-                width: pbox.w,
-                height: pbox.h
+                left: pbox.x - 5,
+                top: pbox.y - 5,
+                width: pbox.w + 10,
+                height: pbox.h + 10
               }}
             >
               <path
-                d={`M5,5 L${pbox.w - 5},5 L${pbox.w - 5},${pbox.h -
-                  5} L5,${pbox.h - 5} Z`}
+                d={`M5,5 L${pbox.w + 5},5 L${pbox.w + 5},${pbox.h +
+                  5} L5,${pbox.h + 5} Z`}
               />
             </svg>
-          )
-        })}
+            {r.type === "box" &&
+              r.highlighted &&
+              mat.a < 1.2 &&
+              [
+                [0, 0],
+                [0.5, 0],
+                [1, 0],
+                [1, 0.5],
+                [1, 1],
+                [0.5, 1],
+                [0, 1],
+                [0, 0.5],
+                [0.5, 0.5]
+              ].map(([px, py], i) => (
+                <div
+                  key={i}
+                  className={classes.transformGrabber}
+                  {...mouseEvents}
+                  style={{
+                    left: pbox.x - 4 - 2 + pbox.w * px,
+                    top: pbox.y - 4 - 2 + pbox.h * py,
+                    cursor: boxCursorMap[py * 2][px * 2],
+                    borderRadius: px === 0.5 && py === 0.5 ? 4 : undefined
+                  }}
+                />
+              ))}
+            {r.type === "polygon" &&
+              r.highlighted &&
+              r.points.map(([px, py], i) => {
+                const proj = mat
+                  .clone()
+                  .inverse()
+                  .applyToPoint(px * iw, py * ih)
+                return (
+                  <div
+                    key={i}
+                    {...mouseEvents}
+                    className={classes.transformGrabber}
+                    style={{
+                      cursor: "move",
+                      left: proj.x - 4,
+                      top: proj.y - 4
+                    }}
+                  />
+                )
+              })}
+            {r.type === "polygon" &&
+              r.highlighted &&
+              !r.incomplete &&
+              r.points.length > 1 &&
+              r.points
+                .map((p1, i) => [p1, r.points[(i + 1) % r.points.length]])
+                .map(([p1, p2]) => [(p1[0] + p2[0]) / 2, (p1[1] + p2[1]) / 2])
+                .map((pa, i) => {
+                  const proj = mat
+                    .clone()
+                    .inverse()
+                    .applyToPoint(pa[0] * iw, pa[1] * ih)
+                  return (
+                    <div
+                      key={i}
+                      {...mouseEvents}
+                      className={classes.transformGrabber}
+                      style={{
+                        cursor: "copy",
+                        left: proj.x - 4,
+                        top: proj.y - 4,
+                        border: "2px dotted #fff",
+                        opacity: 0.5
+                      }}
+                    />
+                  )
+                })}
+          </Fragment>
+        )
+      })}
       {regions
         .filter(r => r.name || r.tags)
         .map(region => {
           const pbox = projectRegionBox(region)
           const { iw, ih } = layoutParams.current
+          let margin = 24
+          if (region.highlighted && region.type === "box") margin += 10
           return (
             <Paper
-              className={classes.regionInfo}
+              {...mouseEvents}
+              className={classnames(classes.regionInfo, {
+                highlighted: region.highlighted
+              })}
               style={{
                 left: pbox.x,
-                bottom: ih - pbox.y + 18,
-                opacity: region.highlighted ? 1 : 0.8
+                bottom: ih - pbox.y + margin
               }}
             >
-              {region.name && (
-                <div className="name">
-                  <div
-                    className="circle"
-                    style={{ backgroundColor: region.color }}
-                  />
-                  {region.name}
-                </div>
-              )}
-              {region.tags && (
-                <div className="tags">
-                  {region.tags.map(t => (
-                    <div key={t} className="tag">
-                      {t}
-                    </div>
-                  ))}
-                </div>
-              )}
+              <div>
+                {region.name && (
+                  <div className="name">
+                    <div
+                      className="circle"
+                      style={{ backgroundColor: region.color }}
+                    />
+                    {region.name}
+                  </div>
+                )}
+                {region.tags && (
+                  <div className="tags">
+                    {region.tags.map(t => (
+                      <div key={t} className="tag">
+                        {t}
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
             </Paper>
           )
         })}
-      <canvas
-        onMouseDown={e => {
-          if (e.button === 1 || (e.button === 0 && dragWithPrimary))
-            return changeDragging(true)
-          if (e.button === 0)
-            onMouseDown(
-              mat
-                .clone()
-                .inverse()
-                .applyToPoint(mousePosition.current.x, mousePosition.current.y)
-            )
-        }}
-        onMouseUp={e => {
-          if (e.button === 1 || (e.button === 0 && dragWithPrimary))
-            return changeDragging(false)
-          if (e.button === 0)
-            onMouseUp(
-              mat
-                .clone()
-                .inverse()
-                .applyToPoint(mousePosition.current.x, mousePosition.current.y)
-            )
-        }}
-        onMouseMove={e => {
-          const { left, top } = e.target.getBoundingClientRect()
-          prevMousePosition.current.x = mousePosition.current.x
-          prevMousePosition.current.y = mousePosition.current.y
-          mousePosition.current.x = e.clientX - left
-          mousePosition.current.y = e.clientY - top
-
-          onMouseMove(
-            mat.applyToPoint(mousePosition.current.x, mousePosition.current.y)
-          )
-
-          if (dragging) {
-            mat.translate(
-              prevMousePosition.current.x - mousePosition.current.x,
-              prevMousePosition.current.y - mousePosition.current.y
-            )
-
-            changeMat(mat)
-          }
-        }}
-        onWheel={e => {
-          const direction = e.deltaY > 0 ? 1 : e.deltaY < 0 ? -1 : 0
-
-          const [mx, my] = [mousePosition.current.x, mousePosition.current.y]
-
-          // NOTE: We're mutating mat here
-          mat.translate(mx, my).scaleU(1 + 0.2 * direction)
-          if (mat.a > 2) mat.scaleU(2 / mat.a)
-          if (mat.a < 0.1) mat.scaleU(0.1 / mat.a)
-          mat.translate(-mx, -my)
-
-          changeMat(mat)
-
-          e.preventDefault()
-        }}
-        className={classes.canvas}
-        ref={canvasEl}
-      />
-      <div
-        style={{
-          position: "absolute",
-          bottom: 0,
-          right: 0,
-          backgroundColor: "rgba(0,0,0,0.4)",
-          color: "#fff",
-          opacity: 0.5,
-          fontWeight: "bolder",
-          fontSize: 14,
-          padding: 4
-        }}
-      >
+      <canvas {...mouseEvents} className={classes.canvas} ref={canvasEl} />
+      <div className={classes.zoomIndicator}>
         {((1 / mat.a) * 100).toFixed(0)}%
       </div>
     </div>
