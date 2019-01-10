@@ -4,19 +4,87 @@ import exampleImage from "./seves_desk.story.jpg"
 import { Matrix } from "transformation-matrix-js"
 import exampleMask from "./mouse_mask.story.png"
 import getImageData from "get-image-data"
+import type { Region } from "./region-tools.js"
+import { getEnclosingBox } from "./region-tools.js"
+import { makeStyles } from "@material-ui/styles"
+import Paper from "@material-ui/core/Paper"
+import { grey } from "@material-ui/core/colors"
+
+const useStyles = makeStyles({
+  "@keyframes borderDance": {
+    from: { strokeDashoffset: 0 },
+    to: { strokeDashoffset: 100 }
+  },
+  highlightBox: {
+    "& path": {
+      vectorEffect: "non-scaling-stroke",
+      strokeWidth: 2,
+      stroke: "#FFF",
+      fill: "none",
+      strokeDasharray: 5,
+      animationName: "$borderDance",
+      animationDuration: "4s",
+      animationTimingFunction: "linear",
+      animationIterationCount: "infinite",
+      animationPlayState: "running"
+    }
+  },
+  canvas: { width: "100%", height: "100%" },
+  regionInfo: {
+    position: "absolute",
+    fontSize: 12,
+    pointerEvents: "none",
+    fontWeight: 600,
+    color: grey[900],
+    padding: 8,
+    "& .name": {
+      display: "flex",
+      flexDirection: "row",
+      alignItems: "center",
+      "& .circle": {
+        marginRight: 4,
+        boxShadow: "0px 0px 2px rgba(0,0,0,0.4)",
+        width: 10,
+        height: 10,
+        borderRadius: 5
+      }
+    },
+    "& .tags": {
+      "& .tag": {
+        color: grey[700],
+        display: "inline-block",
+        margin: 1,
+        fontSize: 10,
+        textDecoration: "underline"
+      }
+    }
+  }
+})
 
 const test = [
   {
     type: "point",
+    name: "Paper",
     x: 0.8,
     y: 0.5,
     cls: "Something",
     color: "#f00",
     highlighted: true
   },
-  { type: "point", x: 0.1, y: 0.15, cls: "Something", color: "#0F0" },
+  {
+    type: "point",
+    name: "Dude's Head",
+    tags: ["human", "head", "male"],
+    x: 0.1,
+    y: 0.15,
+    cls: "Something",
+    color: "#0F0",
+    highlighted: true
+  },
   {
     type: "box",
+    name: "Business Card",
+    highlighted: true,
     x: 0.315,
     y: 0.63,
     w: 0.067,
@@ -26,6 +94,9 @@ const test = [
   },
   {
     type: "polygon",
+    name: "Laptop",
+    tags: ["Electronic Device"],
+    highlighted: true,
     points: [
       [0.4019, 0.5065],
       [0.407, 0.5895],
@@ -51,6 +122,7 @@ const test = [
   },
   {
     type: "pixel",
+    highlighted: true,
     sx: 0.7433,
     sy: 0.5847,
     w: 0.83 - 0.7433,
@@ -61,12 +133,28 @@ const test = [
   }
 ]
 
-export default ({ regions = test }) => {
+type Props = {
+  regions?: Array<Region>,
+  onMouseMove?: ({ x: number, y: number }) => null,
+  onMouseDown?: ({ x: number, y: number }) => null,
+  onMouseUp?: ({ x: number, y: number }) => null,
+  dragWithPrimary?: boolean
+}
+
+export default ({
+  regions = test,
+  onMouseMove = p => null,
+  onMouseDown = p => null,
+  onMouseUp = p => null,
+  dragWithPrimary = false
+}: Props) => {
+  const classes = useStyles()
+
   const canvasEl = useRef(null)
   const image = useRef(null)
   const layoutParams = useRef({})
   const [imageLoaded, changeImageLoaded] = useState(false)
-  const [mouseDown, changeMouseDown] = useState(false)
+  const [dragging, changeDragging] = useState(false)
   const [maskImagesLoaded, changeMaskImagesLoaded] = useState(0)
   const mousePosition = useRef({ x: 0, y: 0 })
   const prevMousePosition = useRef({ x: 0, y: 0 })
@@ -77,6 +165,26 @@ export default ({ regions = test }) => {
     mousePosition.current.x,
     mousePosition.current.y
   )
+
+  const projectRegionBox = r => {
+    const { iw, ih } = layoutParams.current
+    const bbox = getEnclosingBox(r)
+    const cbox = {
+      x: bbox.x * iw - 15,
+      y: bbox.y * ih - 15,
+      w: bbox.w * iw + 30,
+      h: bbox.h * ih + 30
+    }
+    const pbox = {
+      ...mat
+        .clone()
+        .inverse()
+        .applyToPoint(cbox.x, cbox.y),
+      w: cbox.w / mat.a,
+      h: cbox.h / mat.d
+    }
+    return pbox
+  }
 
   useLayoutEffect(() => {
     if (image.current === null) {
@@ -119,19 +227,20 @@ export default ({ regions = test }) => {
 
     context.drawImage(image.current, 0, 0, iw, ih)
 
+    context.save()
+    context.globalAlpha = mat.a * 0.5 + 0.5
+    context.lineWidth = mat.a * 1 + 1
+    if (context.globalAlpha > 0.6) {
+      context.shadowColor = "black"
+      context.shadowBlur = 4
+    }
     for (const region of regions) {
       switch (region.type) {
         case "point": {
           context.save()
-          context.shadowColor = "black"
-          context.shadowBlur = 4
+
           context.beginPath()
-          context.arc(region.x * iw, region.y * ih, 5, 0, 2 * Math.PI)
           context.strokeStyle = region.color
-          context.lineWidth = 2
-          context.stroke()
-          context.globalAlpha = 1
-          context.lineWidth = 2
           context.moveTo(region.x * iw - 10, region.y * ih)
           context.lineTo(region.x * iw - 2, region.y * ih)
           context.moveTo(region.x * iw + 10, region.y * ih)
@@ -140,6 +249,8 @@ export default ({ regions = test }) => {
           context.lineTo(region.x * iw, region.y * ih - 2)
           context.moveTo(region.x * iw, region.y * ih + 10)
           context.lineTo(region.x * iw, region.y * ih + 2)
+          context.moveTo(region.x * iw + 5, region.y * ih)
+          context.arc(region.x * iw, region.y * ih, 5, 0, 2 * Math.PI)
           context.stroke()
           context.restore()
           break
@@ -229,33 +340,118 @@ export default ({ regions = test }) => {
         }
       }
     }
-
-    // context.fillStyle = "#000"
-    // context.fillRect(200, 200, 50, 50)
-
+    context.restore()
     context.restore()
   })
 
   return (
-    <div style={{ width: "100%", height: "100%", position: "relative" }}>
+    <div
+      style={{
+        width: "100%",
+        height: "100%",
+        position: "relative",
+        overflow: "hidden"
+      }}
+    >
+      {regions
+        .filter(r => r.highlighted)
+        .map((r, i) => {
+          const pbox = projectRegionBox(r)
+          return (
+            <svg
+              key={i}
+              className={classes.highlightBox}
+              style={{
+                pointerEvents: "none",
+                position: "absolute",
+                left: pbox.x,
+                top: pbox.y,
+                width: pbox.w,
+                height: pbox.h
+              }}
+            >
+              <path
+                d={`M5,5 L${pbox.w - 5},5 L${pbox.w - 5},${pbox.h -
+                  5} L5,${pbox.h - 5} Z`}
+              />
+            </svg>
+          )
+        })}
+      {regions
+        .filter(r => r.name || r.tags)
+        .map(region => {
+          const pbox = projectRegionBox(region)
+          const { iw, ih } = layoutParams.current
+          return (
+            <Paper
+              className={classes.regionInfo}
+              style={{
+                left: pbox.x,
+                bottom: ih - pbox.y + 18
+              }}
+            >
+              {region.name && (
+                <div className="name">
+                  <div
+                    className="circle"
+                    style={{ backgroundColor: region.color }}
+                  />
+                  {region.name}
+                </div>
+              )}
+              {region.tags && (
+                <div className="tags">
+                  {region.tags.map(t => (
+                    <div key={t} className="tag">
+                      {t}
+                    </div>
+                  ))}
+                </div>
+              )}
+            </Paper>
+          )
+        })}
       <canvas
-        onMouseDown={e => changeMouseDown(true)}
-        onMouseUp={e => changeMouseDown(false)}
+        onMouseDown={e => {
+          if (e.button === 1 || (e.button === 0 && dragWithPrimary))
+            return changeDragging(true)
+          if (e.button === 0)
+            onMouseDown(
+              mat
+                .clone()
+                .inverse()
+                .applyToPoint(mousePosition.current.x, mousePosition.current.y)
+            )
+        }}
+        onMouseUp={e => {
+          if (e.button === 1 || (e.button === 0 && dragWithPrimary))
+            return changeDragging(false)
+          if (e.button === 0)
+            onMouseUp(
+              mat
+                .clone()
+                .inverse()
+                .applyToPoint(mousePosition.current.x, mousePosition.current.y)
+            )
+        }}
         onMouseMove={e => {
           const { left, top } = e.target.getBoundingClientRect()
           prevMousePosition.current.x = mousePosition.current.x
           prevMousePosition.current.y = mousePosition.current.y
           mousePosition.current.x = e.clientX - left
           mousePosition.current.y = e.clientY - top
-          if (mouseDown) {
-            changeMat(
-              mat
-                .clone()
-                .translate(
-                  prevMousePosition.current.x - mousePosition.current.x,
-                  prevMousePosition.current.y - mousePosition.current.y
-                )
+
+          onMouseMove(
+            mat.applyToPoint(mousePosition.current.x, mousePosition.current.y)
+          )
+
+          if (dragging) {
+            mat.translate(
+              prevMousePosition.current.x - mousePosition.current.x,
+              prevMousePosition.current.y - mousePosition.current.y
             )
+
+            changeMat(mat)
           }
         }}
         onWheel={e => {
@@ -263,33 +459,33 @@ export default ({ regions = test }) => {
 
           const [mx, my] = [mousePosition.current.x, mousePosition.current.y]
 
-          const newMat = mat
-            .clone()
-            .translate(mx, my)
-            .scaleU(1 + 0.2 * direction)
-          if (newMat.a > 2) newMat.scaleU(2 / newMat.a)
-          if (newMat.a < 0.1) newMat.scaleU(0.1 / newMat.a)
-          newMat.translate(-mx, -my)
+          // NOTE: We're mutating mat here
+          mat.translate(mx, my).scaleU(1 + 0.2 * direction)
+          if (mat.a > 2) mat.scaleU(2 / mat.a)
+          if (mat.a < 0.1) mat.scaleU(0.1 / mat.a)
+          mat.translate(-mx, -my)
 
-          changeMat(newMat)
+          changeMat(mat)
 
           e.preventDefault()
         }}
-        style={{ width: "100%", height: "100%" }}
+        className={classes.canvas}
         ref={canvasEl}
       />
       <div
         style={{
           position: "absolute",
           bottom: 0,
-          left: 0,
+          right: 0,
           backgroundColor: "rgba(0,0,0,0.4)",
           color: "#fff",
-          fontSize: 8
+          opacity: 0.5,
+          fontWeight: "bolder",
+          fontSize: 14,
+          padding: 4
         }}
       >
-        [{((innerMousePos.x / layoutParams.current.iw) * 100).toFixed(2)}%,{" "}
-        {((innerMousePos.y / layoutParams.current.ih) * 100).toFixed(2)}%]
+        {((1 / mat.a) * 100).toFixed(0)}%
       </div>
     </div>
   )
