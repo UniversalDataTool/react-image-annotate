@@ -1,28 +1,25 @@
 // @flow
 
-export type BaseRegion = {|
-  cls: string,
+export type BaseRegion = {
+  id: string | number,
+  cls?: string,
   color: string,
   editingLabels?: boolean,
   highlighted?: boolean,
-  name?: string,
+  id?: string,
   tags?: Array<string>
+}
+
+export type Point = {|
+  ...$Exact<BaseRegion>,
+  type: "point",
+  x: number,
+  y: number
 |}
 
-export type Region =
+export type PixelRegion =
   | {|
-      ...BaseRegion,
-      type: "point",
-      x: number,
-      y: number
-    |}
-  | {|
-      ...BaseRegion,
-      type: "pixel",
-      points: Array<[number, number]>
-    |}
-  | {|
-      ...BaseRegion,
+      ...$Exact<BaseRegion>,
       type: "pixel",
       sx: number,
       sy: number,
@@ -31,19 +28,26 @@ export type Region =
       src: string
     |}
   | {|
-      ...BaseRegion,
-      type: "box",
-      x: number,
-      y: number,
-      w: number,
-      h: number
-    |}
-  | {|
-      ...BaseRegion,
-      type: "polygon",
-      incomplete?: boolean,
+      ...$Exact<BaseRegion>,
+      type: "pixel",
       points: Array<[number, number]>
     |}
+export type Box = {|
+  ...$Exact<BaseRegion>,
+  type: "box",
+  x: number,
+  y: number,
+  w: number,
+  h: number
+|}
+export type Polygon = {|
+  ...$Exact<BaseRegion>,
+  type: "polygon",
+  incomplete?: boolean,
+  points: Array<[number, number]>
+|}
+
+export type Region = Point | PixelRegion | Box | Polygon
 
 export const getEnclosingBox = (region: Region) => {
   switch (region.type) {

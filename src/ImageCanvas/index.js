@@ -1,15 +1,19 @@
 // @flow
 import React, { Fragment, useRef, useState, useLayoutEffect } from "react"
-import exampleImage from "./seves_desk.story.jpg"
 import { Matrix } from "transformation-matrix-js"
-import exampleMask from "./mouse_mask.story.png"
 import getImageData from "get-image-data"
-import type { Region } from "./region-tools.js"
+import type {
+  Region,
+  PixelRegion,
+  PointRegion,
+  Polygon,
+  Box
+} from "./region-tools.js"
 import { getEnclosingBox } from "./region-tools.js"
 import { makeStyles } from "@material-ui/styles"
-import Paper from "@material-ui/core/Paper"
 import styles from "./styles"
 import classnames from "classnames"
+import RegionLabel from "../RegionLabel"
 
 const useStyles = makeStyles(styles)
 
@@ -19,93 +23,44 @@ const boxCursorMap = [
   ["sw-resize", "s-resize", "se-resize"]
 ]
 
-const test = [
-  {
-    type: "point",
-    name: "Paper",
-    highlighted: true,
-    x: 0.8,
-    y: 0.5,
-    cls: "Something",
-    color: "#f00"
-  },
-  {
-    type: "point",
-    name: "Dude's Head",
-    tags: ["human", "head", "male"],
-    x: 0.1,
-    y: 0.15,
-    cls: "Something",
-    color: "#0F0"
-  },
-  {
-    type: "box",
-    name: "Business Card",
-    highlighted: true,
-    x: 0.315,
-    y: 0.63,
-    w: 0.067,
-    h: 0.045,
-    cls: "Something",
-    color: "#ff0"
-  },
-  {
-    type: "polygon",
-    name: "Laptop",
-    tags: ["Electronic Device"],
-    editingLabels: true,
-    highlighted: true,
-    points: [
-      [0.4019, 0.5065],
-      [0.407, 0.5895],
-      [0.4157, 0.6801],
-      [0.6579, 0.656],
-      [0.6115, 0.5674],
-      [0.5792, 0.4895]
-    ],
-    cls: "Something",
-    color: "#f0f"
-  },
-  {
-    type: "polygon",
-    incomplete: true,
-    points: [
-      [0.1201, 0.5987],
-      [0.0674, 0.7063],
-      [0.0726, 0.7477],
-      [0.2132, 0.7311]
-    ],
-    cls: "Something",
-    color: "#00f"
-  },
-  {
-    type: "pixel",
-    name: "Mouse",
-    tags: ["Electronic Device"],
-    sx: 0.7433,
-    sy: 0.5847,
-    w: 0.83 - 0.7433,
-    h: 0.67 - 0.5847,
-    src: exampleMask,
-    cls: "Something",
-    color: "#00f"
-  }
-]
-
 type Props = {
-  regions?: Array<Region>,
-  onMouseMove?: ({ x: number, y: number }) => null,
-  onMouseDown?: ({ x: number, y: number }) => null,
-  onMouseUp?: ({ x: number, y: number }) => null,
-  dragWithPrimary?: boolean
+  regions: Array<Region>,
+  imageSrc: string,
+  onMouseMove?: ({ x: number, y: number }) => any,
+  onMouseDown?: ({ x: number, y: number }) => any,
+  onMouseUp?: ({ x: number, y: number }) => any,
+  dragWithPrimary?: boolean,
+
+  onChangeRegion: Region => any,
+  onBeginRegionEdit: Region => any,
+  onCloseRegionEdit: Region => any,
+  onDeleteRegion: Region => any,
+  onBeginBoxTransform: (Box, [number, number]) => any,
+  onBeginMovePolygonPoint: (Polygon, index: number) => any,
+  onAddPolygonPoint: (Polygon, point: [number, number]) => any,
+  onClosePolygon: Polygon => any,
+  onSelectRegion: Region => any,
+  onBeginMovePoint: PointRegion => any
 }
 
 export default ({
-  regions = test,
+  regions,
+  imageSrc,
   onMouseMove = p => null,
   onMouseDown = p => null,
   onMouseUp = p => null,
-  dragWithPrimary = false
+  dragWithPrimary = false,
+
+  onChangeRegion,
+  onBeginRegionEdit,
+  onCloseRegionEdit,
+  onBeginBoxTransform,
+  onBeginMovePolygonPoint,
+  onAddPolygonPoint,
+  onClosePolygon,
+  onSelectRegion,
+  onBeginMovePoint,
+  onDeleteRegion
 }: Props) => {
   const classes = useStyles()
 
@@ -152,7 +107,7 @@ export default ({
       image.current.onload = () => {
         changeImageLoaded(true)
       }
-      image.current.src = exampleImage
+      image.current.src = imageSrc
     }
     const canvas = canvasEl.current
     const { clientWidth, clientHeight } = canvas
@@ -395,6 +350,10 @@ export default ({
                 highlighted: r.highlighted
               })}
               {...mouseEvents}
+              onMouseDown={e => {
+                if (e.button === 0) return onSelectRegion(r)
+                mouseEvents.onMouseDown(e)
+              }}
               style={{
                 ...(r.highlighted
                   ? {
@@ -434,6 +393,11 @@ export default ({
                   key={i}
                   className={classes.transformGrabber}
                   {...mouseEvents}
+                  onMouseDown={e => {
+                    if (e.button === 0)
+                      return onBeginBoxTransform(r, [px * 2 - 1, py * 2 - 1])
+                    mouseEvents.onMouseDown(e)
+                  }}
                   style={{
                     left: pbox.x - 4 - 2 + pbox.w * px,
                     top: pbox.y - 4 - 2 + pbox.h * py,
@@ -453,6 +417,10 @@ export default ({
                   <div
                     key={i}
                     {...mouseEvents}
+                    onMouseDown={e => {
+                      if (e.button === 0) return onBeginMovePolygonPoint(r, i)
+                      mouseEvents.onMouseDown(e)
+                    }}
                     className={classes.transformGrabber}
                     style={{
                       cursor: "move",
@@ -478,6 +446,10 @@ export default ({
                     <div
                       key={i}
                       {...mouseEvents}
+                      onMouseDown={e => {
+                        if (e.button === 0) return onAddPolygonPoint(r, pa)
+                        mouseEvents.onMouseDown(e)
+                      }}
                       className={classes.transformGrabber}
                       style={{
                         cursor: "copy",
@@ -493,44 +465,30 @@ export default ({
         )
       })}
       {regions
-        .filter(r => r.name || r.tags)
+        .filter(r => r.cls || r.tags)
         .map(region => {
           const pbox = projectRegionBox(region)
           const { iw, ih } = layoutParams.current
           let margin = 24
           if (region.highlighted && region.type === "box") margin += 10
           return (
-            <Paper
-              {...mouseEvents}
-              className={classnames(classes.regionInfo, {
-                highlighted: region.highlighted
-              })}
+            <div
               style={{
+                position: "absolute",
                 left: pbox.x,
                 bottom: ih - pbox.y + margin
               }}
+              {...(!region.editingLabels ? mouseEvents : {})}
             >
-              <div>
-                {region.name && (
-                  <div className="name">
-                    <div
-                      className="circle"
-                      style={{ backgroundColor: region.color }}
-                    />
-                    {region.name}
-                  </div>
-                )}
-                {region.tags && (
-                  <div className="tags">
-                    {region.tags.map(t => (
-                      <div key={t} className="tag">
-                        {t}
-                      </div>
-                    ))}
-                  </div>
-                )}
-              </div>
-            </Paper>
+              <RegionLabel
+                onOpen={onBeginRegionEdit}
+                onChange={onChangeRegion}
+                onClose={onCloseRegionEdit}
+                onDelete={onDeleteRegion}
+                editing={region.editingLabels}
+                region={region}
+              />
+            </div>
           )
         })}
       <canvas {...mouseEvents} className={classes.canvas} ref={canvasEl} />
