@@ -68,8 +68,7 @@ const test = [
     x: 0.8,
     y: 0.5,
     cls: "Something",
-    color: "#f00",
-    highlighted: true
+    color: "#f00"
   },
   {
     type: "point",
@@ -78,13 +77,11 @@ const test = [
     x: 0.1,
     y: 0.15,
     cls: "Something",
-    color: "#0F0",
-    highlighted: true
+    color: "#0F0"
   },
   {
     type: "box",
     name: "Business Card",
-    highlighted: true,
     x: 0.315,
     y: 0.63,
     w: 0.067,
@@ -122,7 +119,8 @@ const test = [
   },
   {
     type: "pixel",
-    highlighted: true,
+    name: "Mouse",
+    tags: ["Electronic Device"],
     sx: 0.7433,
     sy: 0.5847,
     w: 0.83 - 0.7433,
@@ -322,9 +320,9 @@ export default ({
               for (let i = 0; i < imgData.data.length; i += 4) {
                 const [r, g, b, a] = imgData.data.slice(i, i + 4)
                 const black = r < 10 && g < 10 && b < 10
-                imgData.data[i] = black ? 255 : 0
+                imgData.data[i] = 0
                 imgData.data[i + 1] = 0
-                imgData.data[i + 2] = 0
+                imgData.data[i + 2] = black ? 255 : 0
                 imgData.data[i + 3] = black ? 255 : 0
               }
               ctx.clearRect(0, 0, img.naturalWidth, img.naturalHeight)
@@ -387,7 +385,8 @@ export default ({
               className={classes.regionInfo}
               style={{
                 left: pbox.x,
-                bottom: ih - pbox.y + 18
+                bottom: ih - pbox.y + 18,
+                opacity: region.highlighted ? 1 : 0.8
               }}
             >
               {region.name && (

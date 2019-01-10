@@ -10,7 +10,9 @@ import {
   faPaintBrush,
   faCrosshairs,
   faDrawPolygon,
-  faVectorSquare
+  faVectorSquare,
+  faHandPaper,
+  faSearch
 } from "@fortawesome/free-solid-svg-icons"
 import SmallToolButton from "../SmallToolButton"
 import { makeStyles } from "@material-ui/styles"
@@ -35,6 +37,14 @@ export default () => {
       <SmallToolButton
         name="Select Region"
         icon={<FontAwesomeIcon size="xs" fixedWidth icon={faMousePointer} />}
+      />
+      <SmallToolButton
+        name="Drag Image"
+        icon={<FontAwesomeIcon size="xs" fixedWidth icon={faHandPaper} />}
+      />
+      <SmallToolButton
+        name="Zoom"
+        icon={<FontAwesomeIcon size="xs" fixedWidth icon={faSearch} />}
       />
       <SmallToolButton
         name="Move Region"
