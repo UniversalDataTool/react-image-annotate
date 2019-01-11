@@ -19,7 +19,7 @@ export default ({ images }) => {
   return (
     <SidebarBoxContainer
       title="Images"
-      subTitle="(23/30)"
+      subTitle={`(${images.length})`}
       icon={<CollectionsIcon style={{ color: grey[700] }} />}
     >
       <div>
@@ -27,7 +27,10 @@ export default ({ images }) => {
           {images.map((img, i) => (
             <ListItem button dense key={i}>
               <img className={classes.img} src={img.src} />
-              <ListItemText primary={img.name} secondary="0 Labels" />
+              <ListItemText
+                primary={img.name}
+                secondary={`${(img.regions || []).length} Labels`}
+              />
             </ListItem>
           ))}
         </List>

@@ -3,17 +3,10 @@
 import React from "react"
 import Grid from "@material-ui/core/Grid"
 import { makeStyles } from "@material-ui/styles"
-import HeaderButton from "../HeaderButton"
-import BackIcon from "@material-ui/icons/KeyboardArrowLeft"
-import NextIcon from "@material-ui/icons/KeyboardArrowRight"
-import SettingsIcon from "@material-ui/icons/Settings"
-import HelpIcon from "@material-ui/icons/Help"
-import FullscreenIcon from "@material-ui/icons/Fullscreen"
-import ExitIcon from "@material-ui/icons/ExitToApp"
-import HotkeysIcon from "@material-ui/icons/Keyboard"
-import IconTools from "../IconTools"
 import Sidebar from "../Sidebar"
 import ImageCanvas from "../ImageCanvas"
+import Header from "../Header"
+import IconTools from "../IconTools"
 import styles from "./styles"
 import type { MainLayoutState, Action } from "./types"
 
@@ -37,23 +30,15 @@ export default ({ state, dispatch }: Props) => {
         )
       : dispatch({ type, ...args[0] })
 
-  const regions =
-    (state.images.find(img => img.src === state.selectedImage) || {}).regions ||
-    []
+  const currentImage = state.images.find(img => img.src === state.selectedImage)
 
   return (
     <div className={classes.container}>
-      <div className={classes.header}>
-        <div className={classes.fileInfo}>Seve's Desk</div>
-        <div className={classes.headerActions}>
-          <HeaderButton name="Prev" Icon={BackIcon} />
-          <HeaderButton name="Next" Icon={NextIcon} />
-          <HeaderButton name="Settings" Icon={SettingsIcon} />
-          <HeaderButton name="Help" Icon={HelpIcon} />
-          <HeaderButton name="Fullscreen" Icon={FullscreenIcon} />
-          <HeaderButton name="Hotkeys" Icon={HotkeysIcon} />
-          <HeaderButton name="Exit" Icon={ExitIcon} />
-        </div>
+      <div className={classes.headerContainer}>
+        <Header
+          onHeaderButtonClick={action("HEADER_BUTTON_CLICKED", "buttonName")}
+          title={currentImage ? currentImage.name : "No Image Selected"}
+        />
       </div>
       <div className={classes.workspace}>
         <div className={classes.iconToolsContainer}>
@@ -69,7 +54,7 @@ export default ({ state, dispatch }: Props) => {
             <div className={classes.noImageSelected}>No Image Selected</div>
           ) : (
             <ImageCanvas
-              regions={regions}
+              regions={currentImage ? currentImage.regions || [] : []}
               imageSrc={state.selectedImage}
               dragWithPrimary={state.selectedTool === "pan"}
               zoomWithPrimary={state.selectedTool === "zoom"}
@@ -93,7 +78,8 @@ export default ({ state, dispatch }: Props) => {
               onAddPolygonPoint={action(
                 "ADD_POLYGON_POINT",
                 "polygon",
-                "point"
+                "point",
+                "pointIndex"
               )}
               onClosePolygon={action("CLOSE_POLYGON", "polygon")}
               onSelectRegion={action("SELECT_REGION", "region")}
@@ -105,8 +91,10 @@ export default ({ state, dispatch }: Props) => {
           <Sidebar
             taskDescription={state.taskDescription}
             images={state.images}
-            regions={regions}
+            regions={currentImage ? currentImage.regions || [] : []}
+            history={state.history}
             onSelectRegion={action("SELECT_REGION", "region")}
+            onDeleteRegion={action("DELETE_REGION", "region")}
             onSelectImage={action("SELECT_IMAGE", "image")}
             onChangeRegion={action("CHANGE_REGION", "region")}
             onRestoreHistory={action("RESTORE_HISTORY")}

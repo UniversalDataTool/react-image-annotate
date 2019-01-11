@@ -17,6 +17,7 @@ export const testRegions = [
     highlighted: true,
     x: 0.8,
     y: 0.5,
+    visible: true,
     color: "#f00"
   },
   {
@@ -26,6 +27,7 @@ export const testRegions = [
     tags: ["human", "head", "male"],
     x: 0.1,
     y: 0.15,
+    visible: true,
     color: "#0F0"
   },
   {
@@ -37,6 +39,7 @@ export const testRegions = [
     y: 0.63,
     w: 0.067,
     h: 0.045,
+    visible: true,
     color: "#ff0"
   },
   {
@@ -54,6 +57,7 @@ export const testRegions = [
       [0.6115, 0.5674],
       [0.5792, 0.4895]
     ],
+    visible: true,
     color: "#f0f"
   },
   {
@@ -66,6 +70,7 @@ export const testRegions = [
       [0.0726, 0.7477],
       [0.2132, 0.7311]
     ],
+    visible: true,
     color: "#00f"
   },
   {
@@ -78,6 +83,7 @@ export const testRegions = [
     w: 0.83 - 0.7433,
     h: 0.67 - 0.5847,
     src: exampleMask,
+    visible: true,
     color: "#00f"
   }
 ]

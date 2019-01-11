@@ -3,64 +3,19 @@
 import React, { Fragment, useState } from "react"
 import SidebarBoxContainer from "../SidebarBoxContainer"
 import { makeStyles } from "@material-ui/styles"
+import { grey } from "@material-ui/core/colors"
 import RegionIcon from "@material-ui/icons/PictureInPicture"
-import { grey, blue, orange, purple } from "@material-ui/core/colors"
 import Grid from "@material-ui/core/Grid"
 import ReorderIcon from "@material-ui/icons/SwapVert"
 import PieChartIcon from "@material-ui/icons/PieChart"
 import TrashIcon from "@material-ui/icons/Delete"
 import LockIcon from "@material-ui/icons/Lock"
+import UnlockIcon from "@material-ui/icons/LockOpen"
 import VisibleIcon from "@material-ui/icons/Visibility"
 import VisibleOffIcon from "@material-ui/icons/VisibilityOff"
+import styles from "./styles"
 
-const useStyles = makeStyles({
-  container: {
-    fontSize: 11,
-    fontWeight: "bold",
-    color: grey[700],
-    "& .icon": {
-      marginTop: 4,
-      width: 16,
-      height: 16
-    },
-    "& .icon2": {
-      opacity: 0.5,
-      width: 16,
-      height: 16,
-      transition: "200ms opacity",
-      "&:hover": {
-        cursor: "pointer",
-        opacity: 1
-      }
-    }
-  },
-  row: {
-    padding: 4,
-    "&.header:hover": {
-      backgroundColor: "#fff"
-    },
-    "&:hover": {
-      backgroundColor: blue[50],
-      color: grey[800]
-    }
-  },
-  chip: {
-    display: "flex",
-    flexDirection: "row",
-    padding: 2,
-    borderRadius: 2,
-    paddingLeft: 4,
-    paddingRight: 4,
-    alignItems: "center",
-    "& .color": {
-      borderRadius: 5,
-      width: 10,
-      height: 10,
-      marginRight: 4
-    },
-    "& .text": {}
-  }
-})
+const useStyles = makeStyles(styles)
 
 const Chip = ({ color, text }) => {
   const classes = useStyles()
@@ -80,12 +35,14 @@ const Row = ({
   tags,
   trash,
   lock,
-  visible
+  visible,
+  onClick
 }) => {
   const classes = useStyles()
   const [mouseOver, changeMouseOver] = useState(false)
   return (
     <div
+      onClick={onClick}
       onMouseEnter={() => changeMouseOver(true)}
       onMouseLeave={() => changeMouseOver(false)}
       className={`${classes.row} ${header ? "header" : ""}`}
@@ -114,7 +71,7 @@ const Row = ({
   )
 }
 
-export default () => {
+export default ({ regions, onDeleteRegion, onChangeRegion }) => {
   const classes = useStyles()
   return (
     <SidebarBoxContainer
@@ -140,30 +97,47 @@ export default () => {
             marginBottom: 2
           }}
         />
-        <Row
-          order={"#1"}
-          classification={<Chip text="Car" color={orange[800]} />}
-          area="11%"
-          trash={<TrashIcon className="icon2" />}
-          lock={<LockIcon className="icon2" />}
-          visible={<VisibleIcon className="icon2" />}
-        />
-        <Row
-          order={"#2"}
-          classification={<Chip text="Truck" color={purple[800]} />}
-          area="30%"
-          trash={<TrashIcon className="icon2" />}
-          lock={<LockIcon className="icon2" />}
-          visible={<VisibleIcon className="icon2" />}
-        />
-        <Row
-          order={"#3"}
-          classification="Bicyclist"
-          area="4%"
-          trash={<TrashIcon className="icon2" />}
-          lock={<LockIcon className="icon2" />}
-          visible={<VisibleIcon className="icon2" />}
-        />
+        {regions.map((r, i) => (
+          <Row
+            header={false}
+            onClick={() => onChangeRegion({ ...r, highlighted: true })}
+            key={r.id}
+            order={`#${i + 1}`}
+            classification={
+              <Chip text={r.cls || ""} color={r.color || "#ddd"} />
+            }
+            area=""
+            trash={
+              <TrashIcon onClick={() => onDeleteRegion(r)} className="icon2" />
+            }
+            lock={
+              r.locked ? (
+                <LockIcon
+                  onClick={() => onChangeRegion({ ...r, locked: false })}
+                  className="icon2"
+                />
+              ) : (
+                <UnlockIcon
+                  onClick={() => onChangeRegion({ ...r, locked: true })}
+                  className="icon2"
+                />
+              )
+            }
+            visible={
+              r.visible ? (
+                <VisibleIcon
+                  onClick={() => onChangeRegion({ ...r, visible: false })}
+                  className="icon2"
+                />
+              ) : (
+                <VisibleOffIcon
+                  onClick={() => onChangeRegion({ ...r, visible: true })}
+                  className="icon2"
+                />
+              )
+            }
+          />
+        ))}
       </div>
     </SidebarBoxContainer>
   )

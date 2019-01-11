@@ -20,6 +20,7 @@ type Props = {
   taskDescription: string,
   images: Array<Image>,
   regions: Array<Region>,
+  history: Array<{ state: Object, name: string, time: Date }>,
   onSelectRegion: Region => any,
   onSelectImage: Image => any,
   onChangeRegion: Region => any,
@@ -30,6 +31,7 @@ export default ({
   taskDescription,
   images,
   regions,
+  history,
   onSelectRegion,
   onSelectImage,
   onChangeRegion,
@@ -41,8 +43,12 @@ export default ({
     <div>
       <TaskDescription description={taskDescription} />
       <ImageSelector images={images} />
-      <RegionSelector />
-      <History />
+      <RegionSelector
+        regions={regions}
+        onSelectRegion={onSelectRegion}
+        onChangeRegion={onChangeRegion}
+      />
+      <History history={history} onRestoreHistory={onRestoreHistory} />
     </div>
   )
 }

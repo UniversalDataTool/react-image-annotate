@@ -37,7 +37,7 @@ type Props = {
   onDeleteRegion: Region => any,
   onBeginBoxTransform: (Box, [number, number]) => any,
   onBeginMovePolygonPoint: (Polygon, index: number) => any,
-  onAddPolygonPoint: (Polygon, point: [number, number]) => any,
+  onAddPolygonPoint: (Polygon, point: [number, number], index: number) => any,
   onClosePolygon: Polygon => any,
   onSelectRegion: Region => any,
   onBeginMovePoint: Point => any
@@ -447,7 +447,8 @@ export default ({
                       key={i}
                       {...mouseEvents}
                       onMouseDown={e => {
-                        if (e.button === 0) return onAddPolygonPoint(r, pa)
+                        if (e.button === 0)
+                          return onAddPolygonPoint(r, pa, i + 1)
                         mouseEvents.onMouseDown(e)
                       }}
                       className={classes.transformGrabber}
@@ -479,6 +480,11 @@ export default ({
                 bottom: ih - pbox.y + margin
               }}
               {...(!region.editingLabels ? mouseEvents : {})}
+              onMouseEnter={e => {
+                mouseEvents.onMouseUp(e)
+                e.button = 1
+                mouseEvents.onMouseUp(e)
+              }}
             >
               <RegionLabel
                 onOpen={onBeginRegionEdit}
