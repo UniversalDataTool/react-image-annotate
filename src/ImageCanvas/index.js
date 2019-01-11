@@ -5,7 +5,7 @@ import getImageData from "get-image-data"
 import type {
   Region,
   PixelRegion,
-  PointRegion,
+  Point,
   Polygon,
   Box
 } from "./region-tools.js"
@@ -40,7 +40,7 @@ type Props = {
   onAddPolygonPoint: (Polygon, point: [number, number]) => any,
   onClosePolygon: Polygon => any,
   onSelectRegion: Region => any,
-  onBeginMovePoint: PointRegion => any
+  onBeginMovePoint: Point => any
 }
 
 export default ({

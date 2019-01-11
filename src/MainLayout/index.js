@@ -12,65 +12,34 @@ import FullscreenIcon from "@material-ui/icons/Fullscreen"
 import ExitIcon from "@material-ui/icons/ExitToApp"
 import HotkeysIcon from "@material-ui/icons/Keyboard"
 import IconTools from "../IconTools"
-import { grey } from "@material-ui/core/colors"
 import Sidebar from "../Sidebar"
 import ImageCanvas from "../ImageCanvas"
+import styles from "./styles"
+import type { MainLayoutState, Action } from "./types"
 
-const useStyles = makeStyles({
-  container: {
-    display: "flex",
-    flexGrow: 1,
-    flexDirection: "column",
-    minHeight: "98vh",
-    maxHeight: "100vh",
-    overflow: "hidden"
-  },
-  header: {
-    display: "flex",
-    flexDirection: "row",
-    flexShrink: 0,
-    zIndex: 10,
-    boxShadow: "0px 3px 8px rgba(0,0,0,.1)"
-  },
-  fileInfo: {
-    flexGrow: 1,
-    alignItems: "center",
-    display: "flex",
-    fontWeight: "bold",
-    color: grey[800],
-    fontSize: 24,
-    paddingLeft: 16
-  },
-  workspace: {
-    backgroundColor: grey[200],
-    flexGrow: 1,
-    display: "flex",
-    flexDirection: "row"
-  },
-  iconToolsContainer: { display: "flex" },
-  imageCanvasContainer: {
-    display: "flex",
-    flexGrow: 1,
-    alignItems: "center",
-    justifyContent: "center"
-  },
-  noImageSelected: {
-    fontWeight: "bold",
-    fontSize: 32,
-    color: grey[500]
-  },
-  sidebarContainer: {
-    width: 300,
-    overflowY: "auto",
-    backgroundColor: grey[100],
-    borderLeft: `1px solid ${grey[300]}`,
-    zIndex: 9,
-    boxShadow: "0px 0px 5px rgba(0,0,0,0.1)"
-  }
-})
+const useStyles = makeStyles(styles)
 
-export default () => {
+type Props = {
+  state: MainLayoutState,
+  dispatch: Action => null
+}
+
+export default ({ state, dispatch }: Props) => {
   const classes = useStyles()
+
+  const action = (type: string, ...params: Array<string>) => (...args: any) =>
+    params
+      ? dispatch(
+          ({
+            type,
+            ...params.reduce((acc, p, i) => ((acc[p] = args[i]), acc), {})
+          }: any)
+        )
+      : dispatch({ type, ...args[0] })
+
+  const regions =
+    (state.images.find(img => img.src === state.selectedImage) || {}).regions ||
+    []
 
   return (
     <div className={classes.container}>
@@ -88,14 +57,60 @@ export default () => {
       </div>
       <div className={classes.workspace}>
         <div className={classes.iconToolsContainer}>
-          <IconTools />
+          <IconTools
+            enabledTools={state.enabledTools}
+            showTags={state.showTags}
+            selectedTool={state.selectedTool}
+            onClickTool={action("SELECT_TOOL", "selectedTool")}
+          />
         </div>
         <div className={classes.imageCanvasContainer}>
-          {/* <div className={classes.noImageSelected}>No Image Selected</div> */}
-          <ImageCanvas />
+          {!state.selectedImage ? (
+            <div className={classes.noImageSelected}>No Image Selected</div>
+          ) : (
+            <ImageCanvas
+              regions={regions}
+              imageSrc={state.selectedImage}
+              dragWithPrimary={state.selectedTool === "pan"}
+              zoomWithPrimary={state.selectedTool === "zoom"}
+              onMouseMove={action("MOUSE_MOVE")}
+              onMouseDown={action("MOUSE_DOWN")}
+              onMouseUp={action("MOUSE_UP")}
+              onChangeRegion={action("CHANGE_REGION", "region")}
+              onBeginRegionEdit={action("OPEN_REGION_EDITOR", "region")}
+              onCloseRegionEdit={action("CLOSE_REGION_EDITOR", "region")}
+              onDeleteRegion={action("DELETE_REGION", "region")}
+              onBeginBoxTransform={action(
+                "BEGIN_BOX_TRANSFORM",
+                "box",
+                "directions"
+              )}
+              onBeginMovePolygonPoint={action(
+                "BEGIN_MOVE_POLYGON_POINT",
+                "polygon",
+                "pointIndex"
+              )}
+              onAddPolygonPoint={action(
+                "ADD_POLYGON_POINT",
+                "polygon",
+                "point"
+              )}
+              onClosePolygon={action("CLOSE_POLYGON", "polygon")}
+              onSelectRegion={action("SELECT_REGION", "region")}
+              onBeginMovePoint={action("BEGIN_MOVE_POINT", "point")}
+            />
+          )}
         </div>
         <div className={classes.sidebarContainer}>
-          <Sidebar />
+          <Sidebar
+            taskDescription={state.taskDescription}
+            images={state.images}
+            regions={regions}
+            onSelectRegion={action("SELECT_REGION", "region")}
+            onSelectImage={action("SELECT_IMAGE", "image")}
+            onChangeRegion={action("CHANGE_REGION", "region")}
+            onRestoreHistory={action("RESTORE_HISTORY")}
+          />
         </div>
       </div>
     </div>

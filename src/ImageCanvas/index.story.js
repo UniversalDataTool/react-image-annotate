@@ -9,7 +9,7 @@ import ImageCanvas from "./"
 import exampleMask from "./mouse_mask.story.png"
 import exampleImage from "./seves_desk.story.jpg"
 
-const testRegions = [
+export const testRegions = [
   {
     type: "point",
     id: "point1",

@@ -7,13 +7,27 @@ import { blue } from "@material-ui/core/colors"
 
 export const SelectedTool = createContext()
 
-export default ({ name, icon }: { name: string, icon: any }) => {
-  const selected = useContext(SelectedTool) === name
+export default ({
+  id,
+  name,
+  icon,
+  selected,
+  togglable
+}: {
+  id: string,
+  name: string,
+  icon: any,
+  selected?: boolean,
+  togglable?: boolean
+}) => {
+  const { selectedTool, onClickTool } = useContext(SelectedTool)
+  selected = selected || selectedTool === id
   return (
     <Tooltip placement="right" title={name}>
       <IconButton
-        disabled={selected}
+        disabled={!togglable ? selected : undefined}
         aria-label={name}
+        onClick={() => onClickTool(id)}
         size="small"
         style={{
           width: 50,

@@ -30,24 +30,33 @@ const useStyles = makeStyles({
   }
 })
 
-export default () => {
+type Props = {
+  showTags?: boolean,
+  selectedTool: string,
+  onClickTool: string => any
+}
+
+export default ({ showTags, selectedTool, onClickTool }: Props) => {
   const classes = useStyles()
   return (
     <div className={classes.iconTools}>
-      <SelectedTool.Provider value="Select Region">
+      <SelectedTool.Provider value={{ selectedTool, onClickTool }}>
         <SmallToolButton
+          id="select"
           name="Select Region"
           icon={<FontAwesomeIcon size="xs" fixedWidth icon={faMousePointer} />}
         />
         <SmallToolButton
-          name="Drag Image"
+          id="pan"
+          name="Drag/Pan"
           icon={<FontAwesomeIcon size="xs" fixedWidth icon={faHandPaper} />}
         />
         <SmallToolButton
-          name="Zoom"
+          id="zoom"
+          name="Zoom In/Out"
           icon={<FontAwesomeIcon size="xs" fixedWidth icon={faSearch} />}
         />
-        <SmallToolButton
+        {/* <SmallToolButton
           name="Move Region"
           icon={<FontAwesomeIcon size="xs" fixedWidth icon={faArrowsAlt} />}
         />
@@ -56,24 +65,31 @@ export default () => {
           icon={
             <FontAwesomeIcon size="xs" fixedWidth icon={faExpandArrowsAlt} />
           }
-        />
+        /> */}
         <SmallToolButton
-          name="Change Tag(s)"
+          togglable
+          id="show-tags"
+          selected={showTags}
+          name="Show Tags"
           icon={<FontAwesomeIcon size="xs" fixedWidth icon={faTag} />}
         />
         <SmallToolButton
+          id="create-point"
           name="Add Point"
           icon={<FontAwesomeIcon size="xs" fixedWidth icon={faCrosshairs} />}
         />
         <SmallToolButton
+          id="create-box"
           name="Add Bounding Box"
           icon={<FontAwesomeIcon size="xs" fixedWidth icon={faVectorSquare} />}
         />
         <SmallToolButton
+          id="create-polygon"
           name="Add Polygon"
           icon={<FontAwesomeIcon size="xs" fixedWidth icon={faDrawPolygon} />}
         />
         <SmallToolButton
+          id="create-pixel"
           name="Add Pixel Region"
           icon={<FontAwesomeIcon size="xs" fixedWidth icon={faPaintBrush} />}
         />
