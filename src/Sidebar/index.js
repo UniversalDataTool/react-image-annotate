@@ -6,6 +6,7 @@ import TaskDescription from "../TaskDescriptionSidebarBox"
 import ImageSelector from "../ImageSelectorSidebarBox"
 import RegionSelector from "../RegionSelectorSidebarBox"
 import History from "../HistorySidebarBox"
+import DebugBox from "../DebugSidebarBox"
 import type { Region } from "../ImageCanvas/region-tools.js"
 
 const useStyles = makeStyles({})
@@ -17,6 +18,7 @@ type Image = {
   regions?: Array<Region>
 }
 type Props = {
+  debug: any,
   taskDescription: string,
   images: Array<Image>,
   regions: Array<Region>,
@@ -28,6 +30,7 @@ type Props = {
 }
 
 export default ({
+  debug,
   taskDescription,
   images,
   regions,
@@ -41,8 +44,9 @@ export default ({
 
   return (
     <div>
+      {debug && <DebugBox state={debug} lastAction={debug.lastAction} />}
       <TaskDescription description={taskDescription} />
-      <ImageSelector images={images} />
+      <ImageSelector onSelect={onSelectImage} images={images} />
       <RegionSelector
         regions={regions}
         onSelectRegion={onSelectRegion}

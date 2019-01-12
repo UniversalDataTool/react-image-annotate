@@ -14,6 +14,7 @@ import UnlockIcon from "@material-ui/icons/LockOpen"
 import VisibleIcon from "@material-ui/icons/Visibility"
 import VisibleOffIcon from "@material-ui/icons/VisibilityOff"
 import styles from "./styles"
+import classnames from "classnames"
 
 const useStyles = makeStyles(styles)
 
@@ -29,6 +30,7 @@ const Chip = ({ color, text }) => {
 
 const Row = ({
   header,
+  highlighted,
   order,
   classification,
   area,
@@ -45,7 +47,7 @@ const Row = ({
       onClick={onClick}
       onMouseEnter={() => changeMouseOver(true)}
       onMouseLeave={() => changeMouseOver(false)}
-      className={`${classes.row} ${header ? "header" : ""}`}
+      className={classnames(classes.row, { header, highlighted })}
     >
       <Grid container alignItems="center">
         <Grid item xs={2}>
@@ -83,6 +85,7 @@ export default ({ regions, onDeleteRegion, onChangeRegion }) => {
       <div className={classes.container}>
         <Row
           header
+          highlighted={false}
           order={<ReorderIcon className="icon" />}
           classification={<div style={{ paddingLeft: 10 }}>Class</div>}
           area={<PieChartIcon className="icon" />}
@@ -100,6 +103,7 @@ export default ({ regions, onDeleteRegion, onChangeRegion }) => {
         {regions.map((r, i) => (
           <Row
             header={false}
+            highlighted={r.highlighted}
             onClick={() => onChangeRegion({ ...r, highlighted: true })}
             key={r.id}
             order={`#${i + 1}`}

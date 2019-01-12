@@ -63,7 +63,7 @@ export const testRegions = [
   {
     type: "polygon",
     id: "polygon2",
-    incomplete: true,
+    open: true,
     points: [
       [0.1201, 0.5987],
       [0.0674, 0.7063],
@@ -111,6 +111,21 @@ const events = {
   onDeleteRegion: action("onDeleteRegion")
 }
 
-storiesOf("ImageCanvas", module).add("Basic", () => (
-  <ImageCanvas regions={testRegions} imageSrc={exampleImage} {...events} />
-))
+storiesOf("ImageCanvas", module)
+  .add("Basic", () => (
+    <ImageCanvas
+      regions={testRegions}
+      imageSrc={exampleImage}
+      showTags
+      {...events}
+    />
+  ))
+  .add("Zoom Tool Selected", () => (
+    <ImageCanvas
+      showTags
+      regions={testRegions}
+      imageSrc={exampleImage}
+      zoomWithPrimary
+      {...events}
+    />
+  ))

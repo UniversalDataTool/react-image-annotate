@@ -6,8 +6,8 @@ export type BaseRegion = {
   color: string,
   editingLabels?: boolean,
   highlighted?: boolean,
-  id?: string,
-  tags?: Array<string>
+  tags?: Array<string>,
+  id: string
 }
 
 export type Point = {|
@@ -43,7 +43,7 @@ export type Box = {|
 export type Polygon = {|
   ...$Exact<BaseRegion>,
   type: "polygon",
-  incomplete?: boolean,
+  open?: boolean,
   points: Array<[number, number]>
 |}
 
@@ -91,4 +91,16 @@ export const getEnclosingBox = (region: Region) => {
     }
   }
   throw new Error("unknown region")
+}
+
+export const moveRegion = (region: Region, x: number, y: number) => {
+  switch (region.type) {
+    case "point": {
+      return { ...region, x, y }
+    }
+    case "box": {
+      return { ...region, x: x - region.w / 2, y: y - region.h / 2 }
+    }
+  }
+  return region
 }

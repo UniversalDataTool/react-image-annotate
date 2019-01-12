@@ -27,6 +27,9 @@ export default {
     "&.header:hover": {
       backgroundColor: "#fff"
     },
+    "&.highlighted": {
+      backgroundColor: blue[100]
+    },
     "&:hover": {
       backgroundColor: blue[50],
       color: grey[800]

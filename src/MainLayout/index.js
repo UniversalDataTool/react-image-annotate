@@ -21,7 +21,7 @@ export default ({ state, dispatch }: Props) => {
   const classes = useStyles()
 
   const action = (type: string, ...params: Array<string>) => (...args: any) =>
-    params
+    params.length > 0
       ? dispatch(
           ({
             type,
@@ -54,8 +54,11 @@ export default ({ state, dispatch }: Props) => {
             <div className={classes.noImageSelected}>No Image Selected</div>
           ) : (
             <ImageCanvas
+              key={state.selectedImage}
+              showTags={state.showTags}
               regions={currentImage ? currentImage.regions || [] : []}
               imageSrc={state.selectedImage}
+              createWithPrimary={state.selectedTool.includes("create")}
               dragWithPrimary={state.selectedTool === "pan"}
               zoomWithPrimary={state.selectedTool === "zoom"}
               onMouseMove={action("MOUSE_MOVE")}
@@ -81,7 +84,6 @@ export default ({ state, dispatch }: Props) => {
                 "point",
                 "pointIndex"
               )}
-              onClosePolygon={action("CLOSE_POLYGON", "polygon")}
               onSelectRegion={action("SELECT_REGION", "region")}
               onBeginMovePoint={action("BEGIN_MOVE_POINT", "point")}
             />
@@ -89,6 +91,7 @@ export default ({ state, dispatch }: Props) => {
         </div>
         <div className={classes.sidebarContainer}>
           <Sidebar
+            debug={state}
             taskDescription={state.taskDescription}
             images={state.images}
             regions={currentImage ? currentImage.regions || [] : []}

@@ -30,6 +30,9 @@ type Props = {
   onMouseDown?: ({ x: number, y: number }) => any,
   onMouseUp?: ({ x: number, y: number }) => any,
   dragWithPrimary?: boolean,
+  zoomWithPrimary?: boolean,
+  createWithPrimary?: boolean,
+  showTags?: boolean,
 
   onChangeRegion: Region => any,
   onBeginRegionEdit: Region => any,
@@ -38,18 +41,22 @@ type Props = {
   onBeginBoxTransform: (Box, [number, number]) => any,
   onBeginMovePolygonPoint: (Polygon, index: number) => any,
   onAddPolygonPoint: (Polygon, point: [number, number], index: number) => any,
-  onClosePolygon: Polygon => any,
   onSelectRegion: Region => any,
   onBeginMovePoint: Point => any
 }
 
+const getDefaultMat = () => Matrix.from(1, 0, 0, 1, -10, -10)
+
 export default ({
   regions,
   imageSrc,
+  showTags,
   onMouseMove = p => null,
   onMouseDown = p => null,
   onMouseUp = p => null,
   dragWithPrimary = false,
+  zoomWithPrimary = false,
+  createWithPrimary = false,
 
   onChangeRegion,
   onBeginRegionEdit,
@@ -57,7 +64,6 @@ export default ({
   onBeginBoxTransform,
   onBeginMovePolygonPoint,
   onAddPolygonPoint,
-  onClosePolygon,
   onSelectRegion,
   onBeginMovePoint,
   onDeleteRegion
@@ -70,9 +76,11 @@ export default ({
   const [imageLoaded, changeImageLoaded] = useState(false)
   const [dragging, changeDragging] = useState(false)
   const [maskImagesLoaded, changeMaskImagesLoaded] = useState(0)
+  const [zoomStart, changeZoomStart] = useState(null)
+  const [zoomEnd, changeZoomEnd] = useState(null)
   const mousePosition = useRef({ x: 0, y: 0 })
   const prevMousePosition = useRef({ x: 0, y: 0 })
-  const [mat, changeMat] = useState(Matrix.from(1, 0, 0, 1, -10, -10))
+  const [mat, changeMat] = useState(getDefaultMat())
   const maskImages = useRef({})
 
   const innerMousePos = mat.applyToPoint(
@@ -200,7 +208,7 @@ export default ({
           for (const point of region.points) {
             context.lineTo(point[0] * iw, point[1] * ih)
           }
-          if (!region.incomplete) context.closePath()
+          if (!region.open) context.closePath()
           context.stroke()
           context.restore()
           break
@@ -259,6 +267,20 @@ export default ({
     context.restore()
   })
 
+  const zoomIn = (direction, point) => {
+    const [mx, my] = [point.x, point.y]
+    let scale =
+      typeof direction === "object" ? direction.to / mat.a : 1 + 0.2 * direction
+
+    // NOTE: We're mutating mat here
+    mat.translate(mx, my).scaleU(scale)
+    if (mat.a > 2) mat.scaleU(2 / mat.a)
+    if (mat.a < 0.1) mat.scaleU(0.1 / mat.a)
+    mat.translate(-mx, -my)
+
+    changeMat(mat)
+  }
+
   const mouseEvents = {
     onMouseMove: e => {
       const { left, top } = canvasEl.current.getBoundingClientRect()
@@ -267,9 +289,17 @@ export default ({
       mousePosition.current.x = e.clientX - left
       mousePosition.current.y = e.clientY - top
 
-      onMouseMove(
-        mat.applyToPoint(mousePosition.current.x, mousePosition.current.y)
+      const projMouse = mat.applyToPoint(
+        mousePosition.current.x,
+        mousePosition.current.y
       )
+
+      if (zoomWithPrimary && zoomStart) {
+        changeZoomEnd(projMouse)
+      }
+
+      const { iw, ih } = layoutParams.current
+      onMouseMove({ x: projMouse.x / iw, y: projMouse.y / ih })
 
       if (dragging) {
         mat.translate(
@@ -283,8 +313,18 @@ export default ({
     },
     onMouseDown: (e, specialEvent = {}) => {
       e.preventDefault()
+
       if (e.button === 1 || (e.button === 0 && dragWithPrimary))
         return changeDragging(true)
+      const projMouse = mat.applyToPoint(
+        mousePosition.current.x,
+        mousePosition.current.y
+      )
+      if (zoomWithPrimary && e.button === 0) {
+        changeZoomStart(projMouse)
+        changeZoomEnd(projMouse)
+        return
+      }
       if (e.button === 0) {
         if (specialEvent.type === "resize-box") {
           // onResizeBox()
@@ -292,40 +332,89 @@ export default ({
         if (specialEvent.type === "move-region") {
           // onResizeBox()
         }
-        onMouseDown(
-          mat
-            .clone()
-            .inverse()
-            .applyToPoint(mousePosition.current.x, mousePosition.current.y)
-        )
+        const { iw, ih } = layoutParams.current
+        onMouseDown({ x: projMouse.x / iw, y: projMouse.y / ih })
       }
     },
     onMouseUp: e => {
       e.preventDefault()
+      const projMouse = mat.applyToPoint(
+        mousePosition.current.x,
+        mousePosition.current.y
+      )
+      if (zoomStart) {
+        const zoomEnd = projMouse
+        if (
+          Math.abs(zoomStart.x - zoomEnd.x) < 10 &&
+          Math.abs(zoomStart.y - zoomEnd.y) < 10
+        ) {
+          if (mat.a < 1) {
+            zoomIn({ to: 1 }, mousePosition.current)
+          } else {
+            zoomIn({ to: 0.25 }, mousePosition.current)
+          }
+        } else {
+          const { iw, ih } = layoutParams.current
+
+          if (zoomStart.x > zoomEnd.x) {
+            ;[zoomStart.x, zoomEnd.x] = [zoomEnd.x, zoomStart.x]
+          }
+          if (zoomStart.y > zoomEnd.y) {
+            ;[zoomStart.y, zoomEnd.y] = [zoomEnd.y, zoomStart.y]
+          }
+
+          // The region defined by zoomStart and zoomEnd should be the new transform
+          let scale = Math.min(
+            (zoomEnd.x - zoomStart.x) / iw,
+            (zoomEnd.y - zoomStart.y) / ih
+          )
+          if (scale < 0.1) scale = 0.1
+          if (scale > 10) scale = 10
+
+          const newMat = getDefaultMat()
+            .translate(zoomStart.x, zoomStart.y)
+            .scaleU(scale)
+
+          changeMat(newMat)
+        }
+
+        changeZoomStart(null)
+        changeZoomEnd(null)
+      }
       if (e.button === 1 || (e.button === 0 && dragWithPrimary))
         return changeDragging(false)
-      if (e.button === 0)
-        onMouseUp(
-          mat
-            .clone()
-            .inverse()
-            .applyToPoint(mousePosition.current.x, mousePosition.current.y)
-        )
+      if (e.button === 0) {
+        const { iw, ih } = layoutParams.current
+        onMouseUp({ x: projMouse.x / iw, y: projMouse.y / ih })
+      }
     },
     onWheel: e => {
       const direction = e.deltaY > 0 ? 1 : e.deltaY < 0 ? -1 : 0
-
-      const [mx, my] = [mousePosition.current.x, mousePosition.current.y]
-
-      // NOTE: We're mutating mat here
-      mat.translate(mx, my).scaleU(1 + 0.2 * direction)
-      if (mat.a > 2) mat.scaleU(2 / mat.a)
-      if (mat.a < 0.1) mat.scaleU(0.1 / mat.a)
-      mat.translate(-mx, -my)
-
-      changeMat(mat)
-
+      zoomIn(direction, mousePosition.current)
       e.preventDefault()
+    }
+  }
+
+  const { iw, ih } = layoutParams.current
+
+  let zoomBox = !zoomStart
+    ? null
+    : {
+        ...mat
+          .clone()
+          .inverse()
+          .applyToPoint(zoomStart.x, zoomStart.y),
+        w: (zoomEnd.x - zoomStart.x) / mat.a,
+        h: (zoomEnd.y - zoomStart.y) / mat.d
+      }
+  if (zoomBox) {
+    if (zoomBox.w < 0) {
+      zoomBox.x += zoomBox.w
+      zoomBox.w *= -1
+    }
+    if (zoomBox.h < 0) {
+      zoomBox.y += zoomBox.h
+      zoomBox.h *= -1
     }
   }
 
@@ -336,7 +425,13 @@ export default ({
         height: "100%",
         position: "relative",
         overflow: "hidden",
-        cursor: dragging ? "all-scroll" : undefined
+        cursor: createWithPrimary
+          ? "crosshair"
+          : zoomWithPrimary
+          ? "zoom-in"
+          : dragging
+          ? "all-scroll"
+          : undefined
       }}
     >
       {regions.map((r, i) => {
@@ -350,10 +445,14 @@ export default ({
                 highlighted: r.highlighted
               })}
               {...mouseEvents}
-              onMouseDown={e => {
-                if (e.button === 0) return onSelectRegion(r)
-                mouseEvents.onMouseDown(e)
-              }}
+              {...(!zoomWithPrimary && !dragWithPrimary
+                ? {
+                    onMouseDown: e => {
+                      if (e.button === 0) return onSelectRegion(r)
+                      mouseEvents.onMouseDown(e)
+                    }
+                  }
+                : {})}
               style={{
                 ...(r.highlighted
                   ? {
@@ -361,7 +460,7 @@ export default ({
                       cursor: "grab"
                     }
                   : {
-                      cursor: "pointer"
+                      cursor: !zoomWithPrimary ? "pointer" : undefined
                     }),
                 position: "absolute",
                 left: pbox.x - 5,
@@ -432,7 +531,7 @@ export default ({
               })}
             {r.type === "polygon" &&
               r.highlighted &&
-              !r.incomplete &&
+              !r.open &&
               r.points.length > 1 &&
               r.points
                 .map((p1, i) => [p1, r.points[(i + 1) % r.points.length]])
@@ -465,38 +564,54 @@ export default ({
           </Fragment>
         )
       })}
-      {regions
-        .filter(r => r.cls || r.tags)
-        .map(region => {
-          const pbox = projectRegionBox(region)
-          const { iw, ih } = layoutParams.current
-          let margin = 24
-          if (region.highlighted && region.type === "box") margin += 10
-          return (
-            <div
-              style={{
-                position: "absolute",
-                left: pbox.x,
-                bottom: ih - pbox.y + margin
-              }}
-              {...(!region.editingLabels ? mouseEvents : {})}
-              onMouseEnter={e => {
-                mouseEvents.onMouseUp(e)
-                e.button = 1
-                mouseEvents.onMouseUp(e)
-              }}
-            >
-              <RegionLabel
-                onOpen={onBeginRegionEdit}
-                onChange={onChangeRegion}
-                onClose={onCloseRegionEdit}
-                onDelete={onDeleteRegion}
-                editing={region.editingLabels}
-                region={region}
-              />
-            </div>
-          )
-        })}
+      {showTags &&
+        regions
+          .filter(r => r.cls || r.tags)
+          .map(region => {
+            const pbox = projectRegionBox(region)
+            const { iw, ih } = layoutParams.current
+            let margin = 24
+            if (region.highlighted && region.type === "box") margin += 10
+            return (
+              <div
+                style={{
+                  position: "absolute",
+                  left: pbox.x,
+                  bottom: ih - pbox.y + margin
+                }}
+                {...(!region.editingLabels ? mouseEvents : {})}
+                onMouseEnter={e => {
+                  if (region.editingLabels) {
+                    mouseEvents.onMouseUp(e)
+                    e.button = 1
+                    mouseEvents.onMouseUp(e)
+                  }
+                }}
+              >
+                <RegionLabel
+                  onOpen={onBeginRegionEdit}
+                  onChange={onChangeRegion}
+                  onClose={onCloseRegionEdit}
+                  onDelete={onDeleteRegion}
+                  editing={region.editingLabels}
+                  region={region}
+                />
+              </div>
+            )
+          })}
+      {zoomWithPrimary && zoomBox !== null && (
+        <div
+          style={{
+            position: "absolute",
+            border: "1px solid #fff",
+            pointerEvents: "none",
+            left: zoomBox.x,
+            top: zoomBox.y,
+            width: zoomBox.w,
+            height: zoomBox.h
+          }}
+        />
+      )}
       <canvas {...mouseEvents} className={classes.canvas} ref={canvasEl} />
       <div className={classes.zoomIndicator}>
         {((1 / mat.a) * 100).toFixed(0)}%

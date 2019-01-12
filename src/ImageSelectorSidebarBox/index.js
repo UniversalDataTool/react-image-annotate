@@ -14,7 +14,7 @@ const useStyles = makeStyles({
   img: { width: 40, height: 40, borderRadius: 8 }
 })
 
-export default ({ images }) => {
+export default ({ images, onSelect }) => {
   const classes = useStyles()
   return (
     <SidebarBoxContainer
@@ -25,7 +25,7 @@ export default ({ images }) => {
       <div>
         <List>
           {images.map((img, i) => (
-            <ListItem button dense key={i}>
+            <ListItem button onClick={() => onSelect(img)} dense key={i}>
               <img className={classes.img} src={img.src} />
               <ListItemText
                 primary={img.name}
