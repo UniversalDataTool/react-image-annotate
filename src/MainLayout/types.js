@@ -25,6 +25,7 @@ export type Image = {
 
 export type Mode =
   | null
+  | {| mode: "DRAW_POLYGON", regionId: string |}
   | {| mode: "MOVE_POLYGON_POINT", regionId: string, pointIndex: number |}
   | {|
       mode: "RESIZE_BOX",
@@ -72,3 +73,4 @@ export type Action =
   | {| type: "DELETE_REGION", region: Region |}
   | {| type: "HEADER_BUTTON_CLICKED", buttonName: string |}
   | {| type: "SELECT_TOOL", selectedTool: string |}
+  | {| type: "CANCEL" |}

@@ -453,7 +453,7 @@ export default ({
                   highlighted: r.highlighted
                 })}
                 {...mouseEvents}
-                {...(!zoomWithPrimary && !dragWithPrimary
+                {...(!zoomWithPrimary && !dragWithPrimary && !createWithPrimary
                   ? {
                       onMouseDown: e => {
                         if (!r.locked && r.type === "point" && r.highlighted) {
@@ -471,7 +471,11 @@ export default ({
                         cursor: "grab"
                       }
                     : {
-                        cursor: !(zoomWithPrimary || dragWithPrimary)
+                        cursor: !(
+                          zoomWithPrimary ||
+                          dragWithPrimary ||
+                          createWithPrimary
+                        )
                           ? "pointer"
                           : undefined
                       }),
@@ -532,12 +536,21 @@ export default ({
                       key={i}
                       {...mouseEvents}
                       onMouseDown={e => {
-                        if (e.button === 0) return onBeginMovePolygonPoint(r, i)
+                        if (e.button === 0 && (!r.open || i === 0))
+                          return onBeginMovePolygonPoint(r, i)
                         mouseEvents.onMouseDown(e)
                       }}
                       className={classes.transformGrabber}
                       style={{
-                        cursor: "move",
+                        cursor: !r.open
+                          ? "move"
+                          : i === 0
+                          ? "pointer"
+                          : undefined,
+                        pointerEvents:
+                          r.open && i === r.points.length - 1
+                            ? "none"
+                            : undefined,
                         left: proj.x - 4,
                         top: proj.y - 4
                       }}

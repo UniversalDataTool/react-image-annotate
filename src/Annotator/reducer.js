@@ -25,6 +25,34 @@ export default (state: MainLayoutState, action: Action) => {
     ).findIndex(r => r.id === regionId)
     return regionIndex === -1 ? null : regionIndex
   }
+  const getRegion = regionId => {
+    const regionIndex = getRegionIndex(regionId)
+    if (regionIndex === null) return [null, null]
+    const region = state.images[currentImageIndex].regions[regionIndex]
+    return [region, regionIndex]
+  }
+  const modifyRegion = (regionId, obj) => {
+    const [region, regionIndex] = getRegion(regionId)
+    if (!region) return state
+    if (obj !== null) {
+      return setIn(
+        state,
+        ["images", currentImageIndex, "regions", regionIndex],
+        {
+          ...state.images[currentImageIndex].regions[regionIndex],
+          ...obj
+        }
+      )
+    } else {
+      // delete region
+      const regions = state.images[currentImageIndex].regions
+      return setIn(
+        state,
+        ["images", currentImageIndex, "regions"],
+        (regions || []).filter(r => r.id !== region.id)
+      )
+    }
+  }
 
   const setNewImage = (newImage: string) => {
     return setIn(state, ["selectedImage"], newImage)
@@ -86,6 +114,20 @@ export default (state: MainLayoutState, action: Action) => {
     }
     case "BEGIN_MOVE_POLYGON_POINT": {
       const { polygon, pointIndex } = action
+      if (
+        state.mode &&
+        state.mode.mode === "DRAW_POLYGON" &&
+        pointIndex === 0
+      ) {
+        return setIn(
+          modifyRegion(polygon, {
+            points: polygon.points.slice(0, -1),
+            open: false
+          }),
+          ["mode"],
+          null
+        )
+      }
       return setIn(state, ["mode"], {
         mode: "MOVE_POLYGON_POINT",
         regionId: polygon.id,
@@ -112,7 +154,7 @@ export default (state: MainLayoutState, action: Action) => {
         case "MOVE_POLYGON_POINT": {
           const { pointIndex, regionId } = state.mode
           const regionIndex = getRegionIndex(regionId)
-          if (regionIndex === 0) return state
+          if (regionIndex === null) return state
           return setIn(
             state,
             [
@@ -171,6 +213,23 @@ export default (state: MainLayoutState, action: Action) => {
             { ...box, x: dx, w: dw, y: dy, h: dh }
           )
         }
+        case "DRAW_POLYGON": {
+          const { regionId } = state.mode
+          const [region, regionIndex] = getRegion(regionId)
+          if (!region) return setIn(state, ["mode"], null)
+          return setIn(
+            state,
+            [
+              "images",
+              currentImageIndex,
+              "regions",
+              regionIndex,
+              "points",
+              (region: any).points.length - 1
+            ],
+            [x, y]
+          )
+        }
       }
       return state
     }
@@ -215,8 +274,34 @@ export default (state: MainLayoutState, action: Action) => {
             break
           }
           case "create-polygon": {
-            // newRegion = {}
+            if (state.mode && state.mode.mode === "DRAW_POLYGON") break
+            newRegion = {
+              type: "polygon",
+              points: [[x, y], [x, y]],
+              open: true,
+              highlighted: true,
+              color: "#00f",
+              id: getRandomId()
+            }
+            state = setIn(state, ["mode"], {
+              mode: "DRAW_POLYGON",
+              regionId: newRegion.id
+            })
             break
+          }
+        }
+      }
+
+      if (state.mode) {
+        switch (state.mode.mode) {
+          case "DRAW_POLYGON": {
+            const [polygon, regionIndex] = getRegion(state.mode.regionId)
+            if (!polygon) break
+            state = setIn(
+              state,
+              ["images", currentImageIndex, "regions", regionIndex],
+              { ...polygon, points: polygon.points.concat([[x, y]]) }
+            )
           }
         }
       }
@@ -224,8 +309,7 @@ export default (state: MainLayoutState, action: Action) => {
       const regions = [...(state.images[currentImageIndex].regions || [])]
         .map(r => ({
           ...r,
-          editingLabels: false,
-          highlighted: false
+          editingLabels: false
         }))
         .concat(newRegion ? [newRegion] : [])
 
@@ -327,10 +411,48 @@ export default (state: MainLayoutState, action: Action) => {
       // return setIn(state, [""]
     }
     case "SELECT_TOOL": {
+      state = setIn(state, ["mode"], null)
       if (action.selectedTool === "show-tags") {
         return setIn(state, ["showTags"], !state.showTags)
       }
       return setIn(state, ["selectedTool"], action.selectedTool)
+    }
+    case "CANCEL": {
+      const { mode } = state
+      if (mode) {
+        switch (mode.mode) {
+          case "DRAW_POLYGON": {
+            const { regionId } = mode
+            return modifyRegion(regionId, null)
+          }
+          case "MOVE_POLYGON_POINT":
+          case "RESIZE_BOX":
+          case "MOVE_REGION": {
+            return setIn(state, ["mode"], null)
+          }
+        }
+      }
+      // Close any open boxes
+      const regions: any = state.images[currentImageIndex].regions
+      if (regions.some(r => r.editingLabels)) {
+        return setIn(
+          state,
+          ["images", currentImageIndex, "regions"],
+          regions.map(r => ({
+            ...r,
+            editingLabels: false
+          }))
+        )
+      } else {
+        return setIn(
+          state,
+          ["images", currentImageIndex, "regions"],
+          regions.map(r => ({
+            ...r,
+            highlighted: false
+          }))
+        )
+      }
     }
   }
   return state

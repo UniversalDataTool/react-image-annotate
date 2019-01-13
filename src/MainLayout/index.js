@@ -9,6 +9,7 @@ import Header from "../Header"
 import IconTools from "../IconTools"
 import styles from "./styles"
 import type { MainLayoutState, Action } from "./types"
+import useKey from "use-key-hook"
 
 const useStyles = makeStyles(styles)
 
@@ -31,6 +32,10 @@ export default ({ state, dispatch }: Props) => {
       : dispatch({ type, ...args[0] })
 
   const currentImage = state.images.find(img => img.src === state.selectedImage)
+
+  useKey(() => dispatch({ type: "CANCEL" }), {
+    detectKeys: [27]
+  })
 
   return (
     <div className={classes.container}>
