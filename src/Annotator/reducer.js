@@ -20,12 +20,17 @@ export default (state: MainLayoutState, action: Action) => {
     ).findIndex(r => r.id === regionId)
     return regionIndex === -1 ? null : regionIndex
   }
+
+  const setNewImage = (newImage: string) => {
+    return setIn(state, ["selectedImage"], newImage)
+  }
+
   switch (action.type) {
     case "@@INIT": {
       return state
     }
     case "SELECT_IMAGE": {
-      return setIn(state, ["selectedImage"], action.image.src)
+      return setNewImage(action.image.src)
     }
     case "CHANGE_REGION": {
       const regionIndex = getRegionIndex(action.region)
@@ -46,10 +51,12 @@ export default (state: MainLayoutState, action: Action) => {
       const { region } = action
       const regionIndex = getRegionIndex(action.region)
       if (regionIndex === null) return state
-      const regions = [...state.images[currentImageIndex].regions].map(r => ({
-        ...r,
-        highlighted: r.id === region.id
-      }))
+      const regions = [...(state.images[currentImageIndex].regions || [])].map(
+        r => ({
+          ...r,
+          highlighted: r.id === region.id
+        })
+      )
       return setIn(state, ["images", currentImageIndex, "regions"], regions)
     }
     case "BEGIN_MOVE_POINT": {
@@ -146,7 +153,7 @@ export default (state: MainLayoutState, action: Action) => {
               : Math.max(0, ow + (x - ox - ow))
           const dy = yFree === 0 ? oy : yFree === -1 ? Math.min(oy + oh, y) : oy
           const dh =
-            xFree === 0
+            yFree === 0
               ? oh
               : yFree === -1
               ? oh + (oy - dy)
@@ -191,14 +198,18 @@ export default (state: MainLayoutState, action: Action) => {
       const { region } = action
       const regionIndex = getRegionIndex(action.region)
       if (regionIndex === null) return state
-      return setIn(
-        state,
-        ["images", currentImageIndex, "regions", regionIndex],
+      const newRegions = setIn(
+        state.images[currentImageIndex].regions.map(r => ({
+          ...r,
+          editingLabels: false
+        })),
+        [regionIndex],
         {
           ...(state.images[currentImageIndex].regions || [])[regionIndex],
-          editing: true
+          editingLabels: true
         }
       )
+      return setIn(state, ["images", currentImageIndex, "regions"], newRegions)
     }
     case "CLOSE_REGION_EDITOR": {
       const { region } = action
@@ -225,11 +236,41 @@ export default (state: MainLayoutState, action: Action) => {
       )
     }
     case "HEADER_BUTTON_CLICKED": {
-      const { buttonName } = action
+      const buttonName = action.buttonName.toLowerCase()
+      switch (buttonName) {
+        case "prev": {
+          if (currentImageIndex === null) return state
+          if (currentImageIndex === 0) return state
+          return setNewImage(state.images[currentImageIndex - 1].src)
+        }
+        case "next": {
+          if (currentImageIndex === null) return state
+          if (currentImageIndex === state.images.length - 1) return state
+          return setNewImage(state.images[currentImageIndex + 1].src)
+        }
+        case "settings": {
+          return state
+        }
+        case "help": {
+          return state
+        }
+        case "fullscreen": {
+          return state
+        }
+        case "hotkeys": {
+          return state
+        }
+        case "exit": {
+          return state
+        }
+      }
       return state
       // return setIn(state, [""]
     }
     case "SELECT_TOOL": {
+      if (action.selectedTool === "show-tags") {
+        return setIn(state, ["showTags"], !state.showTags)
+      }
       return setIn(state, ["selectedTool"], action.selectedTool)
     }
   }

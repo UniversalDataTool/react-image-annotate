@@ -20,8 +20,8 @@ export default ({
   selectedImage = images.length > 0 ? images[0].src : undefined,
   showTags = true,
   enabledTools = ["select", "create-point", "create-box", "create-polygon"],
-  tagList,
-  clsList,
+  tagList = [],
+  clsList = [],
   taskDescription
 }: Props) => {
   const [state, dispatch] = useReducer(reducer, {

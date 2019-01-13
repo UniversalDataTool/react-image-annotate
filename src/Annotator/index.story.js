@@ -3,7 +3,7 @@
 import React from "react"
 
 import { storiesOf } from "@storybook/react"
-import { action } from "@storybook/addon-actions"
+import { action as actionAddon } from "@storybook/addon-actions"
 import exampleImage from "../ImageCanvas/seves_desk.story.jpg"
 
 import Annotator from "./"
@@ -12,6 +12,12 @@ import { testRegions } from "../ImageCanvas/index.story"
 
 storiesOf("Annotator", module).add("Basic", () => (
   <Annotator
+    middlewares={[
+      store => next => action => {
+        actionAddon(action.type)(action)
+        return next(action)
+      }
+    ]}
     images={[
       {
         src: exampleImage,

@@ -41,6 +41,6 @@ storiesOf("MainLayout", module).add("Basic", () => (
       enabledTools: [],
       history: []
     }}
-    dispatch={action("dispatch")}
+    dispatch={a => action(a.type)(a)}
   />
 ))

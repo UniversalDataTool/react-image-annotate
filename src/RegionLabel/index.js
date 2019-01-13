@@ -33,8 +33,6 @@ export default ({
   editing,
   allowedClasses = ["Laptop", "Mouse", "Compuda"],
   allowedTags = ["Dog", "Cat", "Woof", "Electronic Device"],
-  cls = "Laptop",
-  tags = ["Cat", "Dog"],
   onDelete,
   onChange,
   onClose,
@@ -107,7 +105,9 @@ export default ({
                   cls: o.value
                 })
               }
-              value={cls ? { label: cls, value: cls } : null}
+              value={
+                region.cls ? { label: region.cls, value: region.cls } : null
+              }
               options={allowedClasses.map(c => ({ value: c, label: c }))}
             />
           </div>
@@ -121,7 +121,7 @@ export default ({
                   })
                 }
                 placeholder="Tags"
-                value={tags.map(c => ({ label: c, value: c }))}
+                value={(region.tags || []).map(c => ({ label: c, value: c }))}
                 isMulti
                 options={allowedTags.map(c => ({ value: c, label: c }))}
               />

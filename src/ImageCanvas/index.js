@@ -448,6 +448,9 @@ export default ({
               {...(!zoomWithPrimary && !dragWithPrimary
                 ? {
                     onMouseDown: e => {
+                      if (r.type === "point" && r.highlighted) {
+                        return onBeginMovePoint(r)
+                      }
                       if (e.button === 0) return onSelectRegion(r)
                       mouseEvents.onMouseDown(e)
                     }
@@ -577,7 +580,8 @@ export default ({
                 style={{
                   position: "absolute",
                   left: pbox.x,
-                  bottom: ih - pbox.y + margin
+                  bottom: ih - pbox.y + margin,
+                  zIndex: 10 + (region.editingLabels ? 5 : 0)
                 }}
                 {...(!region.editingLabels ? mouseEvents : {})}
                 onMouseEnter={e => {
