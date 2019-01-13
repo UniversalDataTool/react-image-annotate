@@ -38,6 +38,7 @@ export default ({
   onSelectRegion,
   onSelectImage,
   onChangeRegion,
+  onDeleteRegion,
   onRestoreHistory
 }: Props) => {
   const classes = useStyles()
@@ -51,6 +52,7 @@ export default ({
         regions={regions}
         onSelectRegion={onSelectRegion}
         onChangeRegion={onChangeRegion}
+        onDeleteRegion={onDeleteRegion}
       />
       <History history={history} onRestoreHistory={onRestoreHistory} />
     </div>

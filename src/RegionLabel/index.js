@@ -42,12 +42,13 @@ export default ({
 
   return (
     <Paper
+      onClick={() => (!editing ? onOpen(region) : null)}
       className={classnames(classes.regionInfo, {
         highlighted: region.highlighted
       })}
     >
       {!editing ? (
-        <div onClick={() => onOpen(region)}>
+        <div>
           {region.cls && (
             <div className="name">
               <div

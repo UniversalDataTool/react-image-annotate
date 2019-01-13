@@ -3,6 +3,8 @@
 export type BaseRegion = {
   id: string | number,
   cls?: string,
+  locked?: boolean,
+  visible?: boolean,
   color: string,
   editingLabels?: boolean,
   highlighted?: boolean,

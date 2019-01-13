@@ -88,11 +88,11 @@ export default ({ showTags, selectedTool, onClickTool }: Props) => {
           name="Add Polygon"
           icon={<FontAwesomeIcon size="xs" fixedWidth icon={faDrawPolygon} />}
         />
-        <SmallToolButton
+        {/* <SmallToolButton
           id="create-pixel"
           name="Add Pixel Region"
           icon={<FontAwesomeIcon size="xs" fixedWidth icon={faPaintBrush} />}
-        />
+        /> */}
       </SelectedTool.Provider>
     </div>
   )

@@ -33,6 +33,8 @@ type Props = {
   zoomWithPrimary?: boolean,
   createWithPrimary?: boolean,
   showTags?: boolean,
+  allowedClasses?: Array<string>,
+  allowedTags?: Array<string>,
 
   onChangeRegion: Region => any,
   onBeginRegionEdit: Region => any,
@@ -57,6 +59,8 @@ export default ({
   dragWithPrimary = false,
   zoomWithPrimary = false,
   createWithPrimary = false,
+  allowedClasses,
+  allowedTags,
 
   onChangeRegion,
   onBeginRegionEdit,
@@ -157,7 +161,9 @@ export default ({
       context.shadowColor = "black"
       context.shadowBlur = 4
     }
-    for (const region of regions) {
+    for (const region of regions.filter(
+      r => r.visible || r.visible === undefined
+    )) {
       switch (region.type) {
         case "point": {
           context.save()
@@ -434,142 +440,149 @@ export default ({
           : undefined
       }}
     >
-      {regions.map((r, i) => {
-        const pbox = projectRegionBox(r)
-        const { iw, ih } = layoutParams.current
-        return (
-          <Fragment>
-            <svg
-              key={i}
-              className={classnames(classes.highlightBox, {
-                highlighted: r.highlighted
-              })}
-              {...mouseEvents}
-              {...(!zoomWithPrimary && !dragWithPrimary
-                ? {
-                    onMouseDown: e => {
-                      if (r.type === "point" && r.highlighted) {
-                        return onBeginMovePoint(r)
-                      }
-                      if (e.button === 0) return onSelectRegion(r)
-                      mouseEvents.onMouseDown(e)
-                    }
-                  }
-                : {})}
-              style={{
-                ...(r.highlighted
+      {regions
+        .filter(r => r.visible || r.visible === undefined)
+        .map((r, i) => {
+          const pbox = projectRegionBox(r)
+          const { iw, ih } = layoutParams.current
+          return (
+            <Fragment>
+              <svg
+                key={r.id}
+                className={classnames(classes.highlightBox, {
+                  highlighted: r.highlighted
+                })}
+                {...mouseEvents}
+                {...(!zoomWithPrimary && !dragWithPrimary
                   ? {
-                      pointerEvents: r.type !== "point" ? "none" : undefined,
-                      cursor: "grab"
+                      onMouseDown: e => {
+                        if (!r.locked && r.type === "point" && r.highlighted) {
+                          return onBeginMovePoint(r)
+                        }
+                        if (e.button === 0) return onSelectRegion(r)
+                        mouseEvents.onMouseDown(e)
+                      }
                     }
-                  : {
-                      cursor: !zoomWithPrimary ? "pointer" : undefined
-                    }),
-                position: "absolute",
-                left: pbox.x - 5,
-                top: pbox.y - 5,
-                width: pbox.w + 10,
-                height: pbox.h + 10
-              }}
-            >
-              <path
-                d={`M5,5 L${pbox.w + 5},5 L${pbox.w + 5},${pbox.h +
-                  5} L5,${pbox.h + 5} Z`}
-              />
-            </svg>
-            {r.type === "box" &&
-              r.highlighted &&
-              mat.a < 1.2 &&
-              [
-                [0, 0],
-                [0.5, 0],
-                [1, 0],
-                [1, 0.5],
-                [1, 1],
-                [0.5, 1],
-                [0, 1],
-                [0, 0.5],
-                [0.5, 0.5]
-              ].map(([px, py], i) => (
-                <div
-                  key={i}
-                  className={classes.transformGrabber}
-                  {...mouseEvents}
-                  onMouseDown={e => {
-                    if (e.button === 0)
-                      return onBeginBoxTransform(r, [px * 2 - 1, py * 2 - 1])
-                    mouseEvents.onMouseDown(e)
-                  }}
-                  style={{
-                    left: pbox.x - 4 - 2 + pbox.w * px,
-                    top: pbox.y - 4 - 2 + pbox.h * py,
-                    cursor: boxCursorMap[py * 2][px * 2],
-                    borderRadius: px === 0.5 && py === 0.5 ? 4 : undefined
-                  }}
+                  : {})}
+                style={{
+                  ...(r.highlighted
+                    ? {
+                        pointerEvents: r.type !== "point" ? "none" : undefined,
+                        cursor: "grab"
+                      }
+                    : {
+                        cursor: !(zoomWithPrimary || dragWithPrimary)
+                          ? "pointer"
+                          : undefined
+                      }),
+                  position: "absolute",
+                  left: pbox.x - 5,
+                  top: pbox.y - 5,
+                  width: pbox.w + 10,
+                  height: pbox.h + 10
+                }}
+              >
+                <path
+                  d={`M5,5 L${pbox.w + 5},5 L${pbox.w + 5},${pbox.h +
+                    5} L5,${pbox.h + 5} Z`}
                 />
-              ))}
-            {r.type === "polygon" &&
-              r.highlighted &&
-              r.points.map(([px, py], i) => {
-                const proj = mat
-                  .clone()
-                  .inverse()
-                  .applyToPoint(px * iw, py * ih)
-                return (
+              </svg>
+              {r.type === "box" &&
+                !r.locked &&
+                r.highlighted &&
+                mat.a < 1.2 &&
+                [
+                  [0, 0],
+                  [0.5, 0],
+                  [1, 0],
+                  [1, 0.5],
+                  [1, 1],
+                  [0.5, 1],
+                  [0, 1],
+                  [0, 0.5],
+                  [0.5, 0.5]
+                ].map(([px, py], i) => (
                   <div
                     key={i}
+                    className={classes.transformGrabber}
                     {...mouseEvents}
                     onMouseDown={e => {
-                      if (e.button === 0) return onBeginMovePolygonPoint(r, i)
+                      if (e.button === 0)
+                        return onBeginBoxTransform(r, [px * 2 - 1, py * 2 - 1])
                       mouseEvents.onMouseDown(e)
                     }}
-                    className={classes.transformGrabber}
                     style={{
-                      cursor: "move",
-                      left: proj.x - 4,
-                      top: proj.y - 4
+                      left: pbox.x - 4 - 2 + pbox.w * px,
+                      top: pbox.y - 4 - 2 + pbox.h * py,
+                      cursor: boxCursorMap[py * 2][px * 2],
+                      borderRadius: px === 0.5 && py === 0.5 ? 4 : undefined
                     }}
                   />
-                )
-              })}
-            {r.type === "polygon" &&
-              r.highlighted &&
-              !r.open &&
-              r.points.length > 1 &&
-              r.points
-                .map((p1, i) => [p1, r.points[(i + 1) % r.points.length]])
-                .map(([p1, p2]) => [(p1[0] + p2[0]) / 2, (p1[1] + p2[1]) / 2])
-                .map((pa, i) => {
+                ))}
+              {r.type === "polygon" &&
+                !r.locked &&
+                r.highlighted &&
+                r.points.map(([px, py], i) => {
                   const proj = mat
                     .clone()
                     .inverse()
-                    .applyToPoint(pa[0] * iw, pa[1] * ih)
+                    .applyToPoint(px * iw, py * ih)
                   return (
                     <div
                       key={i}
                       {...mouseEvents}
                       onMouseDown={e => {
-                        if (e.button === 0)
-                          return onAddPolygonPoint(r, pa, i + 1)
+                        if (e.button === 0) return onBeginMovePolygonPoint(r, i)
                         mouseEvents.onMouseDown(e)
                       }}
                       className={classes.transformGrabber}
                       style={{
-                        cursor: "copy",
+                        cursor: "move",
                         left: proj.x - 4,
-                        top: proj.y - 4,
-                        border: "2px dotted #fff",
-                        opacity: 0.5
+                        top: proj.y - 4
                       }}
                     />
                   )
                 })}
-          </Fragment>
-        )
-      })}
+              {r.type === "polygon" &&
+                r.highlighted &&
+                !r.locked &&
+                !r.open &&
+                r.points.length > 1 &&
+                r.points
+                  .map((p1, i) => [p1, r.points[(i + 1) % r.points.length]])
+                  .map(([p1, p2]) => [(p1[0] + p2[0]) / 2, (p1[1] + p2[1]) / 2])
+                  .map((pa, i) => {
+                    const proj = mat
+                      .clone()
+                      .inverse()
+                      .applyToPoint(pa[0] * iw, pa[1] * ih)
+                    return (
+                      <div
+                        key={i}
+                        {...mouseEvents}
+                        onMouseDown={e => {
+                          if (e.button === 0)
+                            return onAddPolygonPoint(r, pa, i + 1)
+                          mouseEvents.onMouseDown(e)
+                        }}
+                        className={classes.transformGrabber}
+                        style={{
+                          cursor: "copy",
+                          left: proj.x - 4,
+                          top: proj.y - 4,
+                          border: "2px dotted #fff",
+                          opacity: 0.5
+                        }}
+                      />
+                    )
+                  })}
+            </Fragment>
+          )
+        })}
       {showTags &&
         regions
-          .filter(r => r.cls || r.tags)
+          .filter(r => r.visible || r.visible === undefined)
           .map(region => {
             const pbox = projectRegionBox(region)
             const { iw, ih } = layoutParams.current
@@ -583,7 +596,9 @@ export default ({
                   bottom: ih - pbox.y + margin,
                   zIndex: 10 + (region.editingLabels ? 5 : 0)
                 }}
-                {...(!region.editingLabels ? mouseEvents : {})}
+                {...(!region.editingLabels && !createWithPrimary
+                  ? mouseEvents
+                  : {})}
                 onMouseEnter={e => {
                   if (region.editingLabels) {
                     mouseEvents.onMouseUp(e)
@@ -593,6 +608,8 @@ export default ({
                 }}
               >
                 <RegionLabel
+                  allowedClasses={allowedClasses}
+                  allowedTags={allowedTags}
                   onOpen={onBeginRegionEdit}
                   onChange={onChangeRegion}
                   onClose={onCloseRegionEdit}

@@ -4,6 +4,11 @@ import type { MainLayoutState, Action } from "../MainLayout/types"
 import { moveRegion } from "../ImageCanvas/region-tools.js"
 import { setIn } from "seamless-immutable"
 
+const getRandomId = () =>
+  Math.random()
+    .toString()
+    .split(".")[1]
+
 export default (state: MainLayoutState, action: Action) => {
   if (!action.type.includes("MOUSE")) {
     state = setIn(state, ["lastAction"], action)
@@ -54,7 +59,8 @@ export default (state: MainLayoutState, action: Action) => {
       const regions = [...(state.images[currentImageIndex].regions || [])].map(
         r => ({
           ...r,
-          highlighted: r.id === region.id
+          highlighted: r.id === region.id,
+          editingLabels: r.id === region.id
         })
       )
       return setIn(state, ["images", currentImageIndex, "regions"], regions)
@@ -170,7 +176,60 @@ export default (state: MainLayoutState, action: Action) => {
     }
     case "MOUSE_DOWN": {
       const { x, y } = action
-      return state
+
+      let newRegion
+      if (currentImageIndex !== null) {
+        const region = state.images[currentImageIndex].regions
+
+        switch (state.selectedTool) {
+          case "create-point": {
+            newRegion = {
+              type: "point",
+              x,
+              y,
+              highlighted: true,
+              editingLabels: true,
+              color: "#00f",
+              id: getRandomId()
+            }
+            break
+          }
+          case "create-box": {
+            newRegion = {
+              type: "box",
+              x: x,
+              y: x,
+              w: 0.01,
+              h: 0.01,
+              highlighted: true,
+              editingLabels: true,
+              color: "#00f",
+              id: getRandomId()
+            }
+            state = setIn(state, ["mode"], {
+              mode: "RESIZE_BOX",
+              regionId: newRegion.id,
+              freedom: [1, 1],
+              original: { x, y, w: newRegion.w, h: newRegion.h }
+            })
+            break
+          }
+          case "create-polygon": {
+            // newRegion = {}
+            break
+          }
+        }
+      }
+
+      const regions = [...(state.images[currentImageIndex].regions || [])]
+        .map(r => ({
+          ...r,
+          editingLabels: false,
+          highlighted: false
+        }))
+        .concat(newRegion ? [newRegion] : [])
+
+      return setIn(state, ["images", currentImageIndex, "regions"], regions)
     }
     case "MOUSE_UP": {
       const { x, y } = action
@@ -220,7 +279,7 @@ export default (state: MainLayoutState, action: Action) => {
         ["images", currentImageIndex, "regions", regionIndex],
         {
           ...(state.images[currentImageIndex].regions || [])[regionIndex],
-          editing: false
+          editingLabels: false
         }
       )
     }

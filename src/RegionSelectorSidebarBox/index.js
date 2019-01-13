@@ -73,7 +73,12 @@ const Row = ({
   )
 }
 
-export default ({ regions, onDeleteRegion, onChangeRegion }) => {
+export default ({
+  regions,
+  onDeleteRegion,
+  onChangeRegion,
+  onSelectRegion
+}) => {
   const classes = useStyles()
   return (
     <SidebarBoxContainer
@@ -104,7 +109,7 @@ export default ({ regions, onDeleteRegion, onChangeRegion }) => {
           <Row
             header={false}
             highlighted={r.highlighted}
-            onClick={() => onChangeRegion({ ...r, highlighted: true })}
+            onClick={() => onSelectRegion(r)}
             key={r.id}
             order={`#${i + 1}`}
             classification={
