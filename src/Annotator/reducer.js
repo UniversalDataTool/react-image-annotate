@@ -2,12 +2,20 @@
 
 import type { MainLayoutState, Action } from "../MainLayout/types"
 import { moveRegion } from "../ImageCanvas/region-tools.js"
-import { setIn } from "seamless-immutable"
+import { setIn, updateIn } from "seamless-immutable"
+import moment from "moment"
+import isEqual from "lodash/isEqual"
 
 const getRandomId = () =>
   Math.random()
     .toString()
     .split(".")[1]
+
+const typesToSaveWithHistory = {
+  BEGIN_BOX_TRANSFORM: "Transform/Move Box",
+  BEGIN_MOVE_POINT: "Move Point",
+  DELETE_REGION: "Delete Region"
+}
 
 export default (state: MainLayoutState, action: Action) => {
   if (!action.type.includes("MOUSE")) {
@@ -65,6 +73,24 @@ export default (state: MainLayoutState, action: Action) => {
     )
   }
 
+  const saveToHistory = (state: MainLayoutState, name: string) =>
+    updateIn(state, ["history"], h =>
+      [
+        {
+          time: moment().toDate(),
+          state,
+          name
+        }
+      ].concat((h || []).slice(0, 9))
+    )
+
+  if (Object.keys(typesToSaveWithHistory).includes(action.type)) {
+    state = saveToHistory(
+      state,
+      typesToSaveWithHistory[action.type] || action.type
+    )
+  }
+
   const closeEditors = (state: MainLayoutState) => {
     if (currentImageIndex === null) return state
     return setIn(
@@ -91,6 +117,13 @@ export default (state: MainLayoutState, action: Action) => {
     case "CHANGE_REGION": {
       const regionIndex = getRegionIndex(action.region)
       if (regionIndex === null) return state
+      const oldRegion = state.images[currentImageIndex].regions[regionIndex]
+      if (oldRegion.cls !== action.region.cls) {
+        state = saveToHistory(state, "Change Region Classification")
+      }
+      if (!isEqual(oldRegion.tags, action.region.tags)) {
+        state = saveToHistory(state, "Change Region Tags")
+      }
       return setIn(
         state,
         ["images", currentImageIndex, "regions", regionIndex],
@@ -99,7 +132,7 @@ export default (state: MainLayoutState, action: Action) => {
     }
     case "RESTORE_HISTORY": {
       if (state.history.length > 0) {
-        return state.history[state.history.length - 1]
+        return state.history[0].state
       }
       return state
     }
@@ -153,6 +186,8 @@ export default (state: MainLayoutState, action: Action) => {
           ["mode"],
           null
         )
+      } else {
+        state = saveToHistory(state, "Move Polygon Point")
       }
       return setIn(state, ["mode"], {
         mode: "MOVE_POLYGON_POINT",
@@ -268,6 +303,7 @@ export default (state: MainLayoutState, action: Action) => {
 
         switch (state.selectedTool) {
           case "create-point": {
+            state = saveToHistory(state, "Create Point")
             newRegion = {
               type: "point",
               x,
@@ -280,6 +316,7 @@ export default (state: MainLayoutState, action: Action) => {
             break
           }
           case "create-box": {
+            state = saveToHistory(state, "Create Box")
             newRegion = {
               type: "box",
               x: x,
@@ -303,6 +340,7 @@ export default (state: MainLayoutState, action: Action) => {
           }
           case "create-polygon": {
             if (state.mode && state.mode.mode === "DRAW_POLYGON") break
+            state = saveToHistory(state, "Create Polygon")
             newRegion = {
               type: "polygon",
               points: [[x, y], [x, y]],

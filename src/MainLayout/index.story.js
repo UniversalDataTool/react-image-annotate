@@ -7,6 +7,7 @@ import { action } from "@storybook/addon-actions"
 import { testRegions } from "../ImageCanvas/index.story"
 
 import exampleImage from "../ImageCanvas/seves_desk.story.jpg"
+import moment from "moment"
 
 import MainLayout from "./"
 
@@ -41,7 +42,7 @@ storiesOf("MainLayout", module)
         clsList: [],
         tagList: [],
         enabledTools: [],
-        history: []
+        history: [{ name: "Reset Stuff", state: null, time: moment() }]
       }}
       dispatch={a => action(a.type)(a)}
     />

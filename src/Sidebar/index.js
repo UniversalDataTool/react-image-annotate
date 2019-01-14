@@ -54,7 +54,7 @@ export default ({
         onChangeRegion={onChangeRegion}
         onDeleteRegion={onDeleteRegion}
       />
-      <History history={history} onRestoreHistory={onRestoreHistory} />
+      <History history={history} onRestoreHistory={() => onRestoreHistory()} />
     </div>
   )
 }

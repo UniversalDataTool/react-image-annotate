@@ -24,7 +24,8 @@ const useStyles = makeStyles({
 })
 
 export default ({
-  history
+  history,
+  onRestoreHistory
 }: {
   history: Array<{ name: string, time: Date }>
 }) => {
@@ -47,7 +48,7 @@ export default ({
               secondary={moment(time).format("LT")}
             />
             {i === 0 && (
-              <ListItemSecondaryAction>
+              <ListItemSecondaryAction onClick={onRestoreHistory}>
                 <IconButton>
                   <UndoIcon />
                 </IconButton>
