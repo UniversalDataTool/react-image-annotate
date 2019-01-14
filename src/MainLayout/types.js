@@ -29,6 +29,7 @@ export type Mode =
   | {| mode: "MOVE_POLYGON_POINT", regionId: string, pointIndex: number |}
   | {|
       mode: "RESIZE_BOX",
+      editLabelEditorAfter?: boolean,
       regionId: string,
       freedom: [number, number],
       original: { x: number, y: number, w: number, h: number }

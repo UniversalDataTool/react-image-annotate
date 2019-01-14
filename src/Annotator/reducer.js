@@ -53,6 +53,29 @@ export default (state: MainLayoutState, action: Action) => {
       )
     }
   }
+  const unselectRegions = (state: MainLayoutState) => {
+    if (currentImageIndex === null) return state
+    return setIn(
+      state,
+      ["images", currentImageIndex, "regions"],
+      (state.images[currentImageIndex].regions || []).map(r => ({
+        ...r,
+        highlighted: false
+      }))
+    )
+  }
+
+  const closeEditors = (state: MainLayoutState) => {
+    if (currentImageIndex === null) return state
+    return setIn(
+      state,
+      ["images", currentImageIndex, "regions"],
+      (state.images[currentImageIndex].regions || []).map(r => ({
+        ...r,
+        editingLabels: false
+      }))
+    )
+  }
 
   const setNewImage = (newImage: string) => {
     return setIn(state, ["selectedImage"], newImage)
@@ -94,6 +117,7 @@ export default (state: MainLayoutState, action: Action) => {
       return setIn(state, ["images", currentImageIndex, "regions"], regions)
     }
     case "BEGIN_MOVE_POINT": {
+      state = closeEditors(state)
       return setIn(state, ["mode"], {
         mode: "MOVE_REGION",
         regionId: action.point.id
@@ -101,6 +125,7 @@ export default (state: MainLayoutState, action: Action) => {
     }
     case "BEGIN_BOX_TRANSFORM": {
       const { box, directions } = action
+      state = closeEditors(state)
       if (directions[0] === 0 && directions[1] === 0) {
         return setIn(state, ["mode"], { mode: "MOVE_REGION", regionId: box.id })
       } else {
@@ -114,6 +139,7 @@ export default (state: MainLayoutState, action: Action) => {
     }
     case "BEGIN_MOVE_POLYGON_POINT": {
       const { polygon, pointIndex } = action
+      state = closeEditors(state)
       if (
         state.mode &&
         state.mode.mode === "DRAW_POLYGON" &&
@@ -261,12 +287,14 @@ export default (state: MainLayoutState, action: Action) => {
               w: 0.01,
               h: 0.01,
               highlighted: true,
-              editingLabels: true,
+              editingLabels: false,
               color: "#00f",
               id: getRandomId()
             }
+            state = unselectRegions(state)
             state = setIn(state, ["mode"], {
               mode: "RESIZE_BOX",
+              editLabelEditorAfter: true,
               regionId: newRegion.id,
               freedom: [1, 1],
               original: { x, y, w: newRegion.w, h: newRegion.h }
@@ -290,6 +318,10 @@ export default (state: MainLayoutState, action: Action) => {
             break
           }
         }
+      }
+
+      if (newRegion) {
+        state = unselectRegions(state)
       }
 
       if (state.mode) {
@@ -319,8 +351,15 @@ export default (state: MainLayoutState, action: Action) => {
       const { x, y } = action
       if (!state.mode) return state
       switch (state.mode.mode) {
+        case "RESIZE_BOX": {
+          if (state.mode.editLabelEditorAfter) {
+            return {
+              ...modifyRegion(state.mode.regionId, { editingLabels: true }),
+              mode: null
+            }
+          }
+        }
         case "MOVE_REGION":
-        case "RESIZE_BOX":
         case "MOVE_POLYGON_POINT": {
           return { ...state, mode: null }
         }
@@ -344,11 +383,13 @@ export default (state: MainLayoutState, action: Action) => {
       const newRegions = setIn(
         state.images[currentImageIndex].regions.map(r => ({
           ...r,
+          highlighted: false,
           editingLabels: false
         })),
         [regionIndex],
         {
           ...(state.images[currentImageIndex].regions || [])[regionIndex],
+          highlighted: true,
           editingLabels: true
         }
       )

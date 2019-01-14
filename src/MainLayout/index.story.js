@@ -81,3 +81,52 @@ storiesOf("MainLayout", module)
       dispatch={a => action(a.type)(a)}
     />
   ))
+  .add("Region Overlap Clicking", () => (
+    <MainLayout
+      state={{
+        showTags: false,
+        selectedImage: exampleImage,
+        selectedTool: "create-box",
+        taskDescription: "",
+        showTags: true,
+        mode: {
+          mode: "DRAW_POLYGON",
+          regionId: "p1"
+        },
+        images: [
+          {
+            src: exampleImage,
+            name: "Seve's Desk",
+            regions: [
+              {
+                type: "box",
+                cls: "Pants",
+                x: 0.25,
+                y: 0.25,
+                w: 0.5,
+                h: 0.5,
+                color: "#00f",
+                id: "p1"
+              },
+              {
+                type: "box",
+                cls: "Shirt",
+                x: 0.8,
+                y: 0.25,
+                w: 0.1,
+                h: 0.1,
+                highlighted: true,
+                color: "#00f",
+                id: "p1"
+              }
+            ]
+          }
+        ],
+        clsList: [],
+        tagList: [],
+        enabledTools: [],
+        history: []
+      }}
+      dispatch={a => !a.type.includes("MOUSE_MOVE") && action(a.type)(a)}
+    />
+  ))

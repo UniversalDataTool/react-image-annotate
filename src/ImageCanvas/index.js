@@ -14,6 +14,8 @@ import { makeStyles } from "@material-ui/styles"
 import styles from "./styles"
 import classnames from "classnames"
 import RegionLabel from "../RegionLabel"
+import LockIcon from "@material-ui/icons/Lock"
+import Paper from "@material-ui/core/Paper"
 
 const useStyles = makeStyles(styles)
 
@@ -189,7 +191,6 @@ export default ({
 
           context.shadowColor = "black"
           context.shadowBlur = 4
-          context.lineWidth = 2
           context.strokeStyle = region.color
           context.strokeRect(
             region.x * iw,
@@ -206,7 +207,6 @@ export default ({
 
           context.shadowColor = "black"
           context.shadowBlur = 4
-          context.lineWidth = 2
           context.strokeStyle = region.color
 
           context.beginPath()
@@ -434,7 +434,9 @@ export default ({
         cursor: createWithPrimary
           ? "crosshair"
           : zoomWithPrimary
-          ? "zoom-in"
+          ? mat.a < 1
+            ? "zoom-out"
+            : "zoom-in"
           : dragging
           ? "all-scroll"
           : undefined
@@ -442,6 +444,7 @@ export default ({
     >
       {regions
         .filter(r => r.visible || r.visible === undefined)
+        .filter(r => !r.locked)
         .map((r, i) => {
           const pbox = projectRegionBox(r)
           const { iw, ih } = layoutParams.current
@@ -453,13 +456,19 @@ export default ({
                   highlighted: r.highlighted
                 })}
                 {...mouseEvents}
-                {...(!zoomWithPrimary && !dragWithPrimary && !createWithPrimary
+                {...(!zoomWithPrimary && !dragWithPrimary
                   ? {
                       onMouseDown: e => {
-                        if (!r.locked && r.type === "point" && r.highlighted) {
+                        if (
+                          !r.locked &&
+                          r.type === "point" &&
+                          r.highlighted &&
+                          e.button === 0
+                        ) {
                           return onBeginMovePoint(r)
                         }
-                        if (e.button === 0) return onSelectRegion(r)
+                        if (e.button === 0 && !createWithPrimary)
+                          return onSelectRegion(r)
                         mouseEvents.onMouseDown(e)
                       }
                     }
@@ -477,7 +486,13 @@ export default ({
                           createWithPrimary
                         )
                           ? "pointer"
-                          : undefined
+                          : undefined,
+                        pointerEvents:
+                          zoomWithPrimary ||
+                          dragWithPrimary ||
+                          (createWithPrimary && !r.highlighted)
+                            ? "none"
+                            : undefined
                       }),
                   position: "absolute",
                   left: pbox.x - 5,
@@ -601,17 +616,41 @@ export default ({
             const { iw, ih } = layoutParams.current
             let margin = 24
             if (region.highlighted && region.type === "box") margin += 10
+            const labelBoxHeight =
+              region.editingLabels && !region.locked ? 170 : 40
+            const coords =
+              pbox.y > labelBoxHeight
+                ? { left: pbox.x, bottom: ih - pbox.y + margin }
+                : { left: pbox.x, top: pbox.y + pbox.h + margin / 2 }
+            if (region.locked) {
+              return (
+                <Paper
+                  style={{
+                    position: "absolute",
+                    ...coords,
+                    zIndex: 10,
+                    backgroundColor: "#fff",
+                    borderRadius: 4,
+                    padding: 2,
+                    paddingBottom: 0,
+                    opacity: 0.5,
+                    pointerEvents: "none"
+                  }}
+                >
+                  <LockIcon style={{ width: 16, height: 16, color: "#333" }} />
+                </Paper>
+              )
+            }
             return (
               <div
                 style={{
                   position: "absolute",
-                  left: pbox.x,
-                  bottom: ih - pbox.y + margin,
+                  ...coords,
                   zIndex: 10 + (region.editingLabels ? 5 : 0)
                 }}
-                {...(!region.editingLabels && !createWithPrimary
-                  ? mouseEvents
-                  : {})}
+                {...(!region.editingLabels ? mouseEvents : {})}
+                onMouseDown={e => e.preventDefault()}
+                onMouseUp={e => e.preventDefault()}
                 onMouseEnter={e => {
                   if (region.editingLabels) {
                     mouseEvents.onMouseUp(e)
