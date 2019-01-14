@@ -13,6 +13,7 @@ import { testRegions } from "../ImageCanvas/index.story"
 storiesOf("Annotator", module)
   .add("Basic", () => (
     <Annotator
+      onExit={actionAddon("onExit")}
       middlewares={[
         store => next => action => {
           actionAddon(action.type)(action)
@@ -43,6 +44,7 @@ storiesOf("Annotator", module)
   .add("Shrunk Annotator (Test Fullscreen)", () => (
     <div style={{ padding: 100 }}>
       <Annotator
+        onExit={actionAddon("onExit")}
         middlewares={[
           store => next => action => {
             actionAddon(action.type)(action)

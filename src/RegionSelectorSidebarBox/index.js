@@ -133,7 +133,7 @@ export default ({
               )
             }
             visible={
-              r.visible ? (
+              r.visible || r.visible === undefined ? (
                 <VisibleIcon
                   onClick={() => onChangeRegion({ ...r, visible: false })}
                   className="icon2"

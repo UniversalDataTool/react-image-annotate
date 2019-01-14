@@ -2,7 +2,13 @@
 
 import React, { useReducer } from "react"
 import MainLayout from "../MainLayout"
-import type { ToolEnum, Image, Mode } from "../MainLayout/types"
+import type {
+  ToolEnum,
+  Image,
+  Mode,
+  MainLayoutState,
+  Action
+} from "../MainLayout/types"
 import reducer from "./reducer"
 
 type Props = {
@@ -12,7 +18,8 @@ type Props = {
   enabledTools?: Array<string>,
   showTags?: boolean,
   selectedImage?: string,
-  images: Array<Image>
+  images: Array<Image>,
+  onExit: MainLayoutState => any
 }
 
 export default ({
@@ -22,9 +29,10 @@ export default ({
   enabledTools = ["select", "create-point", "create-box", "create-polygon"],
   tagList = [],
   clsList = [],
-  taskDescription
+  taskDescription,
+  onExit
 }: Props) => {
-  const [state, dispatch] = useReducer(reducer, {
+  const [state, dispatchToReducer] = useReducer(reducer, {
     showTags,
     selectedImage,
     selectedTool: "select",
@@ -36,5 +44,17 @@ export default ({
     enabledTools,
     history: []
   })
+
+  const dispatch = (action: Action) => {
+    if (
+      action.type === "HEADER_BUTTON_CLICKED" &&
+      action.buttonName === "Exit"
+    ) {
+      onExit(state)
+    } else {
+      dispatchToReducer(action)
+    }
+  }
+
   return <MainLayout debug state={state} dispatch={dispatch} />
 }

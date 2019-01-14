@@ -16,7 +16,7 @@ const useStyles = makeStyles(styles)
 
 type Props = {
   state: MainLayoutState,
-  dispatch: Action => null
+  dispatch: Action => any
 }
 
 export default ({ state, dispatch }: Props) => {
