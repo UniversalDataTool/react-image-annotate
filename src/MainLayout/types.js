@@ -37,6 +37,7 @@ export type Mode =
   | {| mode: "MOVE_REGION" |}
 
 export type MainLayoutState = {|
+  fullScreen?: boolean,
   showTags: boolean,
   selectedImage?: string,
   selectedTool: ToolEnum,

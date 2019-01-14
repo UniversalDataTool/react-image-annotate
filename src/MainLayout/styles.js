@@ -7,7 +7,14 @@ export default {
     flexDirection: "column",
     minHeight: "98vh",
     maxHeight: "100vh",
-    overflow: "hidden"
+    overflow: "hidden",
+    "&.fullscreen": {
+      position: "absolute",
+      left: 0,
+      right: 0,
+      top: 0,
+      bottom: 0
+    }
   },
   workspace: {
     backgroundColor: grey[200],

@@ -1,6 +1,6 @@
 // @flow
 
-import React from "react"
+import React, { useState } from "react"
 import Grid from "@material-ui/core/Grid"
 import { makeStyles } from "@material-ui/styles"
 import Sidebar from "../Sidebar"
@@ -10,6 +10,7 @@ import IconTools from "../IconTools"
 import styles from "./styles"
 import type { MainLayoutState, Action } from "./types"
 import useKey from "use-key-hook"
+import classnames from "classnames"
 
 const useStyles = makeStyles(styles)
 
@@ -38,7 +39,12 @@ export default ({ state, dispatch }: Props) => {
   })
 
   return (
-    <div className={classes.container}>
+    <div
+      className={classnames(
+        classes.container,
+        state.fullScreen && "fullscreen"
+      )}
+    >
       <div className={classes.headerContainer}>
         <Header
           onHeaderButtonClick={action("HEADER_BUTTON_CLICKED", "buttonName")}
@@ -96,7 +102,7 @@ export default ({ state, dispatch }: Props) => {
         </div>
         <div className={classes.sidebarContainer}>
           <Sidebar
-            debug={state}
+            debug={window.localStorage.$ANNOTATE_DEBUG_MODE && state}
             taskDescription={state.taskDescription}
             images={state.images}
             regions={currentImage ? currentImage.regions || [] : []}

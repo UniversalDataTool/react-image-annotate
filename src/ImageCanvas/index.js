@@ -433,12 +433,14 @@ export default ({
         overflow: "hidden",
         cursor: createWithPrimary
           ? "crosshair"
+          : dragging
+          ? "grabbing"
+          : dragWithPrimary
+          ? "grab"
           : zoomWithPrimary
           ? mat.a < 1
             ? "zoom-out"
             : "zoom-in"
-          : dragging
-          ? "all-scroll"
           : undefined
       }}
     >
@@ -507,6 +509,8 @@ export default ({
                 />
               </svg>
               {r.type === "box" &&
+                !dragWithPrimary &&
+                !zoomWithPrimary &&
                 !r.locked &&
                 r.highlighted &&
                 mat.a < 1.2 &&
@@ -539,6 +543,8 @@ export default ({
                   />
                 ))}
               {r.type === "polygon" &&
+                !dragWithPrimary &&
+                !zoomWithPrimary &&
                 !r.locked &&
                 r.highlighted &&
                 r.points.map(([px, py], i) => {

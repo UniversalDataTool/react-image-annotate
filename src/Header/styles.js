@@ -3,6 +3,7 @@ import { grey } from "@material-ui/core/colors"
 export default {
   header: {
     display: "flex",
+    position: "relative",
     flexDirection: "row",
     flexShrink: 0,
     zIndex: 10,

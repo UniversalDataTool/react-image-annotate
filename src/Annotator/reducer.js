@@ -477,7 +477,7 @@ export default (state: MainLayoutState, action: Action) => {
           return state
         }
         case "fullscreen": {
-          return state
+          return setIn(state, ["fullScreen"], !state.fullScreen)
         }
         case "hotkeys": {
           return state
