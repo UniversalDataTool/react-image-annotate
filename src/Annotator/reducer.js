@@ -136,6 +136,16 @@ export default (state: MainLayoutState, action: Action) => {
       }
       return state
     }
+    case "CHANGE_IMAGE": {
+      if (currentImageIndex === null) return state
+      const { delta } = action
+      for (const key of Object.keys(delta)) {
+        if (key === "cls") saveToHistory(state, "Change Image Class")
+        if (key === "tags") saveToHistory(state, "Change Image Tags")
+        state = setIn(state, ["images", currentImageIndex, key], delta[key])
+      }
+      return state
+    }
     case "SELECT_REGION": {
       const { region } = action
       const regionIndex = getRegionIndex(action.region)

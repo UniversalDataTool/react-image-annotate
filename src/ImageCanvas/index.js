@@ -35,8 +35,8 @@ type Props = {
   zoomWithPrimary?: boolean,
   createWithPrimary?: boolean,
   showTags?: boolean,
-  allowedClasses?: Array<string>,
-  allowedTags?: Array<string>,
+  regionClsList?: Array<string>,
+  regionTagList?: Array<string>,
 
   onChangeRegion: Region => any,
   onBeginRegionEdit: Region => any,
@@ -61,8 +61,8 @@ export default ({
   dragWithPrimary = false,
   zoomWithPrimary = false,
   createWithPrimary = false,
-  allowedClasses,
-  allowedTags,
+  regionClsList,
+  regionTagList,
 
   onChangeRegion,
   onBeginRegionEdit,
@@ -666,8 +666,8 @@ export default ({
                 }}
               >
                 <RegionLabel
-                  allowedClasses={allowedClasses}
-                  allowedTags={allowedTags}
+                  allowedClasses={regionClsList}
+                  allowedTags={regionTagList}
                   onOpen={onBeginRegionEdit}
                   onChange={onChangeRegion}
                   onClose={onCloseRegionEdit}

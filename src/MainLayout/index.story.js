@@ -19,6 +19,11 @@ storiesOf("MainLayout", module)
         selectedImage: exampleImage,
         selectedTool: "select",
         taskDescription: "## Example Task Description\n\nPlease work hard.",
+        labelImages: true,
+        imageClsList: ["alpha image", "beta image", "charlie image"],
+        imageTagList: ["tag1", "tag2", "tag3"],
+        regionClsList: ["alpha region", "beta region", "charlie region"],
+        regionTagList: ["tag1", "tag2", "tag3"],
         images: [
           {
             src: exampleImage,
@@ -39,8 +44,6 @@ storiesOf("MainLayout", module)
           }
         ],
         mode: null,
-        clsList: [],
-        tagList: [],
         enabledTools: [],
         history: [{ name: "Reset Stuff", state: null, time: moment() }]
       }}
@@ -74,8 +77,6 @@ storiesOf("MainLayout", module)
             ]
           }
         ],
-        clsList: [],
-        tagList: [],
         enabledTools: [],
         history: []
       }}

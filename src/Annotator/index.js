@@ -14,7 +14,10 @@ import reducer from "./reducer"
 type Props = {
   taskDescription: string,
   clsList?: Array<string>,
-  tagList?: Array<string>,
+  regionTagList?: Array<string>,
+  regionClsList?: Array<string>,
+  imageTagList?: Array<string>,
+  imageClsList?: Array<string>,
   enabledTools?: Array<string>,
   showTags?: boolean,
   selectedImage?: string,
@@ -27,8 +30,10 @@ export default ({
   selectedImage = images.length > 0 ? images[0].src : undefined,
   showTags = true,
   enabledTools = ["select", "create-point", "create-box", "create-polygon"],
-  tagList = [],
-  clsList = [],
+  regionTagList = [],
+  regionClsList = [],
+  imageTagList = [],
+  imageClsList = [],
   taskDescription,
   onExit
 }: Props) => {
@@ -39,8 +44,11 @@ export default ({
     mode: null,
     taskDescription,
     images,
-    clsList,
-    tagList,
+    labelImages: imageClsList.length > 0 || imageTagList.length > 0,
+    regionClsList,
+    regionTagList,
+    imageClsList,
+    imageTagList,
     enabledTools,
     history: []
   })

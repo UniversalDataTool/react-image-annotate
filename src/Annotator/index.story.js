@@ -20,6 +20,11 @@ storiesOf("Annotator", module)
           return next(action)
         }
       ]}
+      labelImages
+      regionClsList={["Alpha", "Beta", "Charlie", "Delta"]}
+      regionTagList={["tag1", "tag2", "tag3"]}
+      imageClsList={["Alpha", "Beta", "Charlie", "Delta"]}
+      imageTagList={["tag1", "tag2", "tag3"]}
       images={[
         {
           src: exampleImage,
@@ -45,6 +50,8 @@ storiesOf("Annotator", module)
     <div style={{ padding: 100 }}>
       <Annotator
         onExit={actionAddon("onExit")}
+        regionClsList={["Alpha", "Beta", "Charlie", "Delta"]}
+        regionTagList={["tag1", "tag2", "tag3"]}
         middlewares={[
           store => next => action => {
             actionAddon(action.type)(action)

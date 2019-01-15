@@ -39,14 +39,16 @@ export type Mode =
 export type MainLayoutState = {|
   fullScreen?: boolean,
   showTags: boolean,
-  frameTagging?: boolean,
   selectedImage?: string,
   selectedTool: ToolEnum,
   mode: Mode,
   taskDescription: string,
   images: Array<Image>,
-  clsList: Array<string>,
-  tagList: Array<string>,
+  labelImages?: boolean,
+  regionClsList?: Array<string>,
+  regionTagList?: Array<string>,
+  imageClsList?: Array<string>,
+  imageTagList?: Array<string>,
   enabledTools: Array<string>,
   history: Array<{ time: Date, state: MainLayoutState, name: string }>
 |}

@@ -7,6 +7,7 @@ import ImageSelector from "../ImageSelectorSidebarBox"
 import RegionSelector from "../RegionSelectorSidebarBox"
 import History from "../HistorySidebarBox"
 import DebugBox from "../DebugSidebarBox"
+import TagsSidebarBox from "../TagsSidebarBox"
 import type { Region } from "../ImageCanvas/region-tools.js"
 
 const useStyles = makeStyles({})
@@ -14,18 +15,29 @@ const useStyles = makeStyles({})
 type Image = {
   name: string,
   src: string,
+  cls?: string,
+  tags?: Array<string>,
   thumbnailSrc?: string,
   regions?: Array<Region>
 }
+
 type Props = {
   debug: any,
   taskDescription: string,
   images: Array<Image>,
   regions: Array<Region>,
   history: Array<{ state: Object, name: string, time: Date }>,
+
+  labelImages?: boolean,
+  currentImage?: Image,
+  imageClsList?: Array<string>,
+  imageTagList?: Array<string>,
+
+  onChangeImage: Image => any,
   onSelectRegion: Region => any,
   onSelectImage: Image => any,
   onChangeRegion: Region => any,
+  onDeleteRegion: Region => any,
   onRestoreHistory: () => any
 }
 
@@ -35,6 +47,11 @@ export default ({
   images,
   regions,
   history,
+  labelImages,
+  currentImage,
+  imageClsList,
+  imageTagList,
+  onChangeImage,
   onSelectRegion,
   onSelectImage,
   onChangeRegion,
@@ -47,6 +64,14 @@ export default ({
     <div>
       {debug && <DebugBox state={debug} lastAction={debug.lastAction} />}
       <TaskDescription description={taskDescription} />
+      {labelImages && (
+        <TagsSidebarBox
+          currentImage={currentImage}
+          imageClsList={imageClsList}
+          imageTagList={imageTagList}
+          onChangeImage={onChangeImage}
+        />
+      )}
       <ImageSelector onSelect={onSelectImage} images={images} />
       <RegionSelector
         regions={regions}
