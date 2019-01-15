@@ -32,26 +32,36 @@ const useStyles = makeStyles({
 
 type Props = {
   showTags?: boolean,
+  enabledTools?: Array<string>,
   selectedTool: string,
   onClickTool: string => any
 }
 
-export default ({ showTags, selectedTool, onClickTool }: Props) => {
+export default ({
+  showTags,
+  selectedTool,
+  onClickTool,
+  enabledTools = ["select", "create-point", "create-box", "create-polygon"]
+}: Props) => {
   const classes = useStyles()
   return (
     <div className={classes.iconTools}>
-      <SelectedTool.Provider value={{ selectedTool, onClickTool }}>
+      <SelectedTool.Provider
+        value={{ enabledTools, selectedTool, onClickTool }}
+      >
         <SmallToolButton
           id="select"
           name="Select Region"
           icon={<FontAwesomeIcon size="xs" fixedWidth icon={faMousePointer} />}
         />
         <SmallToolButton
+          alwaysShowing
           id="pan"
           name="Drag/Pan"
           icon={<FontAwesomeIcon size="xs" fixedWidth icon={faHandPaper} />}
         />
         <SmallToolButton
+          alwaysShowing
           id="zoom"
           name="Zoom In/Out"
           icon={<FontAwesomeIcon size="xs" fixedWidth icon={faSearch} />}
@@ -67,6 +77,7 @@ export default ({ showTags, selectedTool, onClickTool }: Props) => {
           }
         /> */}
         <SmallToolButton
+          alwaysShowing
           togglable
           id="show-tags"
           selected={showTags}

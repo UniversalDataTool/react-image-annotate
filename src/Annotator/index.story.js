@@ -86,3 +86,23 @@ storiesOf("Annotator", module)
       ]}
     />
   ))
+  .add("Annotator with no enabled tools", () => (
+    <Annotator
+      onExit={actionAddon("onExit")}
+      enabledTools={[]}
+      showTags={false}
+      middlewares={[
+        store => next => action => {
+          actionAddon(action.type)(action)
+          return next(action)
+        }
+      ]}
+      images={[
+        {
+          src: exampleImage,
+          name: "Seve's Desk",
+          regions: testRegions
+        }
+      ]}
+    />
+  ))

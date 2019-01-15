@@ -12,15 +12,18 @@ export default ({
   name,
   icon,
   selected,
-  togglable
+  togglable,
+  alwaysShowing = false
 }: {
   id: string,
   name: string,
   icon: any,
+  alwaysShowing?: boolean,
   selected?: boolean,
   togglable?: boolean
 }) => {
-  const { selectedTool, onClickTool } = useContext(SelectedTool)
+  const { enabledTools, selectedTool, onClickTool } = useContext(SelectedTool)
+  if (!enabledTools.includes(id) && !alwaysShowing) return null
   selected = selected || selectedTool === id
   return (
     <Tooltip placement="right" title={name}>

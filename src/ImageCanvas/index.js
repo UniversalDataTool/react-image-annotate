@@ -580,6 +580,8 @@ export default ({
                 })}
               {r.type === "polygon" &&
                 r.highlighted &&
+                !dragWithPrimary &&
+                !zoomWithPrimary &&
                 !r.locked &&
                 !r.open &&
                 r.points.length > 1 &&
