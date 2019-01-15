@@ -8,6 +8,15 @@ The best image/video annotation tool ever.
 
 ## Developers
 
+### Development
+
+This project uses [react-storybook](https://storybook.js.org/). To begin developing run the following commands in the cloned repo.
+
+1. `yarn install`
+2. `yarn storybook`
+
+A browser tab will automatically open with the project components.
+
 ### Icons
 
 Consult these icon repositories:
