@@ -68,3 +68,21 @@ storiesOf("Annotator", module)
       />
     </div>
   ))
+  .add("Annotator w/o No Region Labels or Image Labels", () => (
+    <Annotator
+      onExit={actionAddon("onExit")}
+      middlewares={[
+        store => next => action => {
+          actionAddon(action.type)(action)
+          return next(action)
+        }
+      ]}
+      images={[
+        {
+          src: exampleImage,
+          name: "Seve's Desk",
+          regions: testRegions
+        }
+      ]}
+    />
+  ))

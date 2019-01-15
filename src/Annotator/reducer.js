@@ -11,6 +11,17 @@ const getRandomId = () =>
     .toString()
     .split(".")[1]
 
+const getRandomInt = (min, max) => {
+  return Math.floor(Math.random() * (max - min + 1)) + min
+}
+
+const getRandomColor = () => {
+  const h = getRandomInt(0, 360)
+  const s = 100
+  const l = 50
+  return `hsl(${h},${s}%,${l}%)`
+}
+
 const typesToSaveWithHistory = {
   BEGIN_BOX_TRANSFORM: "Transform/Move Box",
   BEGIN_MOVE_POINT: "Move Point",
@@ -320,7 +331,7 @@ export default (state: MainLayoutState, action: Action) => {
               y,
               highlighted: true,
               editingLabels: true,
-              color: "#00f",
+              color: getRandomColor(),
               id: getRandomId()
             }
             break
@@ -335,7 +346,7 @@ export default (state: MainLayoutState, action: Action) => {
               h: 0.01,
               highlighted: true,
               editingLabels: false,
-              color: "#00f",
+              color: getRandomColor(),
               id: getRandomId()
             }
             state = unselectRegions(state)
@@ -356,7 +367,7 @@ export default (state: MainLayoutState, action: Action) => {
               points: [[x, y], [x, y]],
               open: true,
               highlighted: true,
-              color: "#00f",
+              color: getRandomColor(),
               id: getRandomId()
             }
             state = setIn(state, ["mode"], {

@@ -97,21 +97,23 @@ export default ({
               <TrashIcon style={{ marginTop: -8, width: 16, height: 16 }} />
             </IconButton>
           </div>
-          <div style={{ marginTop: 6 }}>
-            <Select
-              placeholder="Classification"
-              onChange={o =>
-                onChange({
-                  ...(region: any),
-                  cls: o.value
-                })
-              }
-              value={
-                region.cls ? { label: region.cls, value: region.cls } : null
-              }
-              options={allowedClasses.map(c => ({ value: c, label: c }))}
-            />
-          </div>
+          {allowedClasses.length > 0 && (
+            <div style={{ marginTop: 6 }}>
+              <Select
+                placeholder="Classification"
+                onChange={o =>
+                  onChange({
+                    ...(region: any),
+                    cls: o.value
+                  })
+                }
+                value={
+                  region.cls ? { label: region.cls, value: region.cls } : null
+                }
+                options={allowedClasses.map(c => ({ value: c, label: c }))}
+              />
+            </div>
+          )}
           {allowedTags.length > 0 && (
             <div style={{ marginTop: 4 }}>
               <Select
