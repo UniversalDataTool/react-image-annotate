@@ -1,7 +1,6 @@
 {
   "name": "traininghub-annotate",
   "version": "0.1.2",
-  "private": true,
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^1.2.12",
     "@fortawesome/free-solid-svg-icons": "^5.6.3",
@@ -22,7 +21,7 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "publish": "npm publish dist",
+    "prepublish": "echo 'You must be in the dist directory to publish' && [ -f ./Annotator/index.js ]",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "storybook": "start-storybook -p 9009 -s public",
