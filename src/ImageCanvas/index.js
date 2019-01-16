@@ -622,13 +622,16 @@ export default ({
           .map(region => {
             const pbox = projectRegionBox(region)
             const { iw, ih } = layoutParams.current
-            let margin = 24
-            if (region.highlighted && region.type === "box") margin += 10
+            let margin = 8
+            if (region.highlighted && region.type === "box") margin += 6
             const labelBoxHeight =
               region.editingLabels && !region.locked ? 170 : 40
             const coords =
               pbox.y > labelBoxHeight
-                ? { left: pbox.x, bottom: ih - pbox.y + margin }
+                ? {
+                    left: pbox.x,
+                    bottom: layoutParams.current.canvasHeight - pbox.y + margin
+                  }
                 : { left: pbox.x, top: pbox.y + pbox.h + margin / 2 }
             if (region.locked) {
               return (
