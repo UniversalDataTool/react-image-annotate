@@ -58,7 +58,7 @@ export default ({
       action.type === "HEADER_BUTTON_CLICKED" &&
       action.buttonName === "Exit"
     ) {
-      onExit(state)
+      onExit({ ...state, history: undefined })
     } else {
       dispatchToReducer(action)
     }
