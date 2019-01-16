@@ -10,6 +10,7 @@ export default {
     overflow: "hidden",
     "&.fullscreen": {
       position: "absolute",
+      zIndex: 99999,
       left: 0,
       right: 0,
       top: 0,
