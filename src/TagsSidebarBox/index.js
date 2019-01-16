@@ -19,8 +19,8 @@ type Props = {
 
 export default ({
   currentImage,
-  imageClsList,
-  imageTagList,
+  imageClsList = [],
+  imageTagList = [],
   onChangeImage
 }: Props) => {
   const { tags = [], cls = null } = currentImage
@@ -31,23 +31,27 @@ export default ({
       noScroll
       icon={<StyleIcon style={{ color: grey[700] }} />}
     >
-      <div style={{ padding: 8 }}>
-        <Select
-          placeholder="Image Classification"
-          onChange={o => onChangeImage({ cls: o.value })}
-          value={cls ? { value: cls, label: cls } : cls}
-          options={imageClsList.map(c => ({ value: c, label: c }))}
-        />
-      </div>
-      <div style={{ padding: 8, paddingTop: 0 }}>
-        <Select
-          isMulti
-          placeholder="Image Tags"
-          onChange={o => onChangeImage({ tags: o.map(a => a.value) })}
-          value={tags.map(r => ({ value: r, label: r }))}
-          options={imageTagList.map(c => ({ value: c, label: c }))}
-        />
-      </div>
+      {imageClsList.length > 0 && (
+        <div style={{ padding: 8 }}>
+          <Select
+            placeholder="Image Classification"
+            onChange={o => onChangeImage({ cls: o.value })}
+            value={cls ? { value: cls, label: cls } : cls}
+            options={imageClsList.map(c => ({ value: c, label: c }))}
+          />
+        </div>
+      )}
+      {imageTagList.length > 0 && (
+        <div style={{ padding: 8, paddingTop: 0 }}>
+          <Select
+            isMulti
+            placeholder="Image Tags"
+            onChange={o => onChangeImage({ tags: o.map(a => a.value) })}
+            value={tags.map(r => ({ value: r, label: r }))}
+            options={imageTagList.map(c => ({ value: c, label: c }))}
+          />
+        </div>
+      )}
     </SidebarBoxContainer>
   )
 }

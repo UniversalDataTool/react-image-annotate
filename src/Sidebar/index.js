@@ -70,6 +70,7 @@ export default ({
           imageClsList={imageClsList}
           imageTagList={imageTagList}
           onChangeImage={onChangeImage}
+          expandedByDefault
         />
       )}
       <ImageSelector onSelect={onSelectImage} images={images} />

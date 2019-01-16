@@ -48,7 +48,8 @@ const useStyles = makeStyles({
     maxHeight: 300,
     overflowY: "auto",
     "&.noScroll": {
-      overflowY: "visible"
+      overflowY: "visible",
+      overflow: "visible"
     }
   }
 })
@@ -62,6 +63,14 @@ export default ({
   expandedByDefault = false
 }) => {
   const classes = useStyles()
+  const content = (
+    <div
+      className={classnames(classes.expandedContent, noScroll && "noScroll")}
+    >
+      {children}
+    </div>
+  )
+
   const [expanded, changeExpanded] = useState(expandedByDefault)
   return (
     <Paper className={classes.container}>
@@ -77,16 +86,13 @@ export default ({
           <ExpandIcon className={classnames("icon", expanded && "expanded")} />
         </IconButton>
       </div>
-      <Collapse in={expanded}>
-        <div
-          className={classnames(
-            classes.expandedContent,
-            noScroll && "noScroll"
-          )}
-        >
-          {children}
-        </div>
-      </Collapse>
+      {noScroll ? (
+        expanded ? (
+          content
+        ) : null
+      ) : (
+        <Collapse in={expanded}>{content}</Collapse>
+      )}
     </Paper>
   )
 }
