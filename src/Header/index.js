@@ -32,7 +32,7 @@ export default ({ onHeaderButtonClick, title }: Props) => {
           {/* <HeaderButton name="Help" Icon={HelpIcon} /> */}
           <HeaderButton name="Fullscreen" Icon={FullscreenIcon} />
           {/* <HeaderButton name="Hotkeys" Icon={HotkeysIcon} /> */}
-          <HeaderButton name="Exit" Icon={ExitIcon} />
+          <HeaderButton name="Done" Icon={ExitIcon} />
         </HeaderButtonContext.Provider>
       </div>
     </div>

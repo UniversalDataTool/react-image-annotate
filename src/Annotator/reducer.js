@@ -503,7 +503,8 @@ export default (state: MainLayoutState, action: Action) => {
         case "hotkeys": {
           return state
         }
-        case "exit": {
+        case "exit":
+        case "done": {
           return state
         }
       }

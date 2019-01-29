@@ -106,3 +106,21 @@ storiesOf("Annotator", module)
       ]}
     />
   ))
+  .add("Bounding Box Annotator with output to console.log", () => (
+    <Annotator
+      onExit={out => {
+        window.lastOutput = out
+        console.log(out)
+      }}
+      enabledTools={["select", "create-box"]}
+      showTags={false}
+      images={[
+        {
+          src:
+            "https://s3.amazonaws.com/jobstorage.workaround.online/Atheer/video-frames/VID_20190111_161054.mp4_frame017.png",
+          name: "Bounding Box Test",
+          regions: []
+        }
+      ]}
+    />
+  ))

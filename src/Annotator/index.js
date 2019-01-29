@@ -56,7 +56,9 @@ export default ({
   const dispatch = (action: Action) => {
     if (
       action.type === "HEADER_BUTTON_CLICKED" &&
-      action.buttonName === "Exit"
+      (action.buttonName === "Exit" ||
+        action.buttonName === "Done" ||
+        action.buttonName === "Complete")
     ) {
       onExit({ ...state, history: undefined })
     } else {
