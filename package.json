@@ -1,5 +1,5 @@
 {
-  "name": "traininghub-annotate",
+  "name": "react-image-annotate",
   "version": "0.1.10",
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^1.2.12",

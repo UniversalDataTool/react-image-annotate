@@ -1,4 +1,4 @@
-# TrainingHub Annotate
+# React Image Annotate
 
 The best image/video annotation tool ever.
 
@@ -7,13 +7,13 @@ The best image/video annotation tool ever.
 ## Usage
 
 ```javascript
-import Annotator from "traininghub-annotate/Annotator"
+import Annotator from "react-image-annotate/Annotator"
 
 const App = () => (
   <Annotator
     selectedImage="https://example.com/image1.png"
     taskDescription="# Draw region around each face\n\nInclude chin and hair."
-    images={[{"src": "https://example.com/image1.png", name: "Image 1"}]}
+    images={[{ src: "https://example.com/image1.png", name: "Image 1" }]}
     regionClsList={["Man Face", "Woman Face"]}
   />
 )
