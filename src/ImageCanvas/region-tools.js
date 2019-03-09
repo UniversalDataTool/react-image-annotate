@@ -8,8 +8,7 @@ export type BaseRegion = {
   color: string,
   editingLabels?: boolean,
   highlighted?: boolean,
-  tags?: Array<string>,
-  id: string
+  tags?: Array<string>
 }
 
 export type Point = {|

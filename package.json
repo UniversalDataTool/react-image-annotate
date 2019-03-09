@@ -47,6 +47,9 @@
     "@storybook/addons": "next",
     "@storybook/react": "next",
     "babel-loader": "^8.0.5",
-    "babel-preset-react-app": "^7.0.0"
+    "babel-preset-react-app": "^7.0.0",
+    "gh-pages": "^2.0.1",
+    "react-json-editor-ajrm": "^2.5.9",
+    "react-syntax-highlighter": "^10.1.3"
   }
 }

@@ -13,7 +13,6 @@ import reducer from "./reducer"
 
 type Props = {
   taskDescription: string,
-  clsList?: Array<string>,
   regionTagList?: Array<string>,
   regionClsList?: Array<string>,
   imageTagList?: Array<string>,
