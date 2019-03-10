@@ -29,7 +29,7 @@ const useStyles = makeStyles({
   }
 })
 
-const examples = {
+export const examples = {
   "Simple Bounding Box": {
     taskDescription:
       "Annotate each image according to this _markdown_ specification.",
@@ -52,9 +52,7 @@ const examples = {
 
 const Editor = ({ onOpenAnnotator, lastOutput }: any) => {
   const c = useStyles()
-  const [selectedExample, changeSelectedExample] = useState(
-    "Simple Bounding Box"
-  )
+  const [selectedExample, changeSelectedExample] = useState("Custom")
   const [outputDialogOpen, changeOutputOpen] = useState(false)
   return (
     <div>
@@ -87,7 +85,9 @@ const Editor = ({ onOpenAnnotator, lastOutput }: any) => {
             variant="outlined"
             onClick={() =>
               onOpenAnnotator(
-                JSON.parse(window.localStorage.getItem("customInput"))
+                selectedExample === "Custom"
+                  ? JSON.parse(window.localStorage.getItem("customInput"))
+                  : examples[selectedExample]
               )
             }
           >
