@@ -28,7 +28,7 @@ export default ({ onHeaderButtonClick, title }: Props) => {
         <HeaderButtonContext.Provider value={{ onHeaderButtonClick }}>
           <HeaderButton name="Prev" Icon={BackIcon} />
           <HeaderButton name="Next" Icon={NextIcon} />
-          {/* <HeaderButton name="Settings" Icon={SettingsIcon} /> */}
+          <HeaderButton name="Settings" Icon={SettingsIcon} />
           {/* <HeaderButton name="Help" Icon={HelpIcon} /> */}
           <HeaderButton name="Fullscreen" Icon={FullscreenIcon} />
           {/* <HeaderButton name="Hotkeys" Icon={HotkeysIcon} /> */}

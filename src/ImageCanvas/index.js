@@ -2,6 +2,7 @@
 import React, { Fragment, useRef, useState, useLayoutEffect } from "react"
 import { Matrix } from "transformation-matrix-js"
 import getImageData from "get-image-data"
+import Crosshairs from "../Crosshairs"
 import type {
   Region,
   PixelRegion,
@@ -35,6 +36,7 @@ type Props = {
   zoomWithPrimary?: boolean,
   createWithPrimary?: boolean,
   showTags?: boolean,
+  showCrosshairs?: boolean,
   regionClsList?: Array<string>,
   regionTagList?: Array<string>,
 
@@ -63,6 +65,7 @@ export default ({
   createWithPrimary = false,
   regionClsList,
   regionTagList,
+  showCrosshairs,
 
   onChangeRegion,
   onBeginRegionEdit,
@@ -444,6 +447,9 @@ export default ({
           : undefined
       }}
     >
+      {showCrosshairs && (
+        <Crosshairs x={mousePosition.current.x} y={mousePosition.current.y} />
+      )}
       {regions
         .filter(r => r.visible || r.visible === undefined)
         .filter(r => !r.locked)

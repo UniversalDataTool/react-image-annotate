@@ -9,6 +9,7 @@
     "@material-ui/icons": "^3.0.1",
     "@material-ui/styles": "^3.0.0-alpha.8",
     "get-image-data": "^3.0.1",
+    "material-survey": "^1.0.25",
     "moment": "^2.23.0",
     "react": "16.7.0-alpha.2",
     "react-dom": "16.7.0-alpha.2",
