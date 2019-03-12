@@ -10,6 +10,7 @@ import Dialog from "@material-ui/core/Dialog"
 import DialogTitle from "@material-ui/core/DialogTitle"
 import DialogContent from "@material-ui/core/DialogContent"
 import DialogActions from "@material-ui/core/DialogActions"
+import MonacoEditor from "react-monaco-editor"
 
 const useStyles = makeStyles({
   editBar: {
@@ -29,6 +30,14 @@ const useStyles = makeStyles({
   }
 })
 
+const loadSavedInput = () => {
+  try {
+    return JSON.parse(window.localStorage.getItem("customInput") || "{}")
+  } catch (e) {
+    return {}
+  }
+}
+
 export const examples = {
   "Simple Bounding Box": {
     taskDescription:
@@ -47,13 +56,16 @@ export const examples = {
       }
     ]
   },
-  Custom: () => JSON.parse(window.localStorage.getItem("customInput") || "{}")
+  Custom: () => loadSavedInput()
 }
 
 const Editor = ({ onOpenAnnotator, lastOutput }: any) => {
   const c = useStyles()
   const [selectedExample, changeSelectedExample] = useState("Custom")
   const [outputDialogOpen, changeOutputOpen] = useState(false)
+  const [currentJSONValue, changeCurrentJSONValue] = useState(
+    JSON.stringify(loadSavedInput(), null, "  ")
+  )
   return (
     <div>
       <div className={c.editBar}>
@@ -68,9 +80,18 @@ const Editor = ({ onOpenAnnotator, lastOutput }: any) => {
                 label: s,
                 value: s
               }))}
-              onChange={selectedOption =>
+              onChange={selectedOption => {
                 changeSelectedExample(selectedOption.value)
-              }
+                changeCurrentJSONValue(
+                  JSON.stringify(
+                    selectedOption.value === "Custom"
+                      ? loadSavedInput()
+                      : examples[selectedOption.value],
+                    null,
+                    "  "
+                  )
+                )
+              }}
             />
           </div>
           <Button
@@ -86,7 +107,7 @@ const Editor = ({ onOpenAnnotator, lastOutput }: any) => {
             onClick={() =>
               onOpenAnnotator(
                 selectedExample === "Custom"
-                  ? JSON.parse(window.localStorage.getItem("customInput"))
+                  ? loadSavedInput()
                   : examples[selectedExample]
               )
             }
@@ -97,19 +118,18 @@ const Editor = ({ onOpenAnnotator, lastOutput }: any) => {
       </div>
       <div className={c.contentArea}>
         <div>
-          <JSONInput
-            onChange={({ jsObject }) => {
-              window.localStorage.setItem(
-                "customInput",
-                JSON.stringify(jsObject)
-              )
-              changeSelectedExample("Custom")
+          <MonacoEditor
+            value={currentJSONValue}
+            language="javascript"
+            onChange={code => {
+              try {
+                window.localStorage.setItem(
+                  "customInput",
+                  JSON.stringify(JSON.parse(code))
+                )
+              } catch (e) {}
+              changeCurrentJSONValue(code)
             }}
-            placeholder={
-              typeof examples[selectedExample] === "function"
-                ? (examples[selectedExample]: any)()
-                : examples[selectedExample]
-            }
             width="100%"
             height="550px"
           />

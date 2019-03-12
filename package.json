@@ -53,6 +53,8 @@
     "babel-preset-react-app": "^7.0.0",
     "gh-pages": "^2.0.1",
     "react-json-editor-ajrm": "^2.5.9",
+    "react-json-view": "^1.19.1",
+    "react-monaco-editor": "^0.25.1",
     "react-syntax-highlighter": "^10.1.3"
   }
 }
