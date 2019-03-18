@@ -330,6 +330,13 @@ export default (state: MainLayoutState, action: Action) => {
       if (currentImageIndex !== null) {
         const region = state.images[currentImageIndex].regions
 
+        if (state.allowedArea) {
+          const aa = state.allowedArea
+          if (x < aa.x || x > aa.x + aa.w || y < aa.y || y > aa.y + aa.h) {
+            return state
+          }
+        }
+
         switch (state.selectedTool) {
           case "create-point": {
             state = saveToHistory(state, "Create Point")

@@ -39,6 +39,7 @@ export type Mode =
 export type MainLayoutState = {|
   fullScreen?: boolean,
   settingsOpen?: boolean,
+  minRegionSize?: number,
   showTags: boolean,
   selectedImage?: string,
   selectedTool: ToolEnum,
@@ -46,6 +47,7 @@ export type MainLayoutState = {|
   taskDescription: string,
   images: Array<Image>,
   labelImages?: boolean,
+  allowedArea?: { x: number, y: number, w: number, h: number },
   regionClsList?: Array<string>,
   regionTagList?: Array<string>,
   imageClsList?: Array<string>,

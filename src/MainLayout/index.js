@@ -81,6 +81,7 @@ export default ({ state, dispatch }: Props) => {
                 {...settings}
                 key={state.selectedImage}
                 showTags={state.showTags}
+                allowedArea={state.allowedArea}
                 regionClsList={state.regionClsList}
                 regionTagList={state.regionTagList}
                 regions={currentImage ? currentImage.regions || [] : []}

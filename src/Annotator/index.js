@@ -13,6 +13,7 @@ import reducer from "./reducer"
 
 type Props = {
   taskDescription: string,
+  allowedArea?: { x: number, y: number, w: number, h: number },
   regionTagList?: Array<string>,
   regionClsList?: Array<string>,
   imageTagList?: Array<string>,
@@ -26,6 +27,7 @@ type Props = {
 
 export default ({
   images,
+  allowedArea,
   selectedImage = images.length > 0 ? images[0].src : undefined,
   showTags = true,
   enabledTools = ["select", "create-point", "create-box", "create-polygon"],
@@ -38,6 +40,7 @@ export default ({
 }: Props) => {
   const [state, dispatchToReducer] = useReducer(reducer, {
     showTags,
+    allowedArea,
     selectedImage,
     selectedTool: "select",
     mode: null,

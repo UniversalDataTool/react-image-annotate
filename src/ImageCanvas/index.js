@@ -17,6 +17,7 @@ import classnames from "classnames"
 import RegionLabel from "../RegionLabel"
 import LockIcon from "@material-ui/icons/Lock"
 import Paper from "@material-ui/core/Paper"
+import excludePatternSrc from "./xpattern.png"
 
 const useStyles = makeStyles(styles)
 
@@ -39,6 +40,7 @@ type Props = {
   showCrosshairs?: boolean,
   regionClsList?: Array<string>,
   regionTagList?: Array<string>,
+  allowedArea?: { x: number, y: number, w: number, h: number },
 
   onChangeRegion: Region => any,
   onBeginRegionEdit: Region => any,
@@ -66,6 +68,7 @@ export default ({
   regionClsList,
   regionTagList,
   showCrosshairs,
+  allowedArea,
 
   onChangeRegion,
   onBeginRegionEdit,
@@ -82,6 +85,7 @@ export default ({
   const canvasEl = useRef(null)
   const image = useRef(null)
   const layoutParams = useRef({})
+  const excludePattern = useRef(null)
   const [imageLoaded, changeImageLoaded] = useState(false)
   const [dragging, changeDragging] = useState(false)
   const [maskImagesLoaded, changeMaskImagesLoaded] = useState(0)
@@ -131,6 +135,19 @@ export default ({
     canvas.width = clientWidth
     canvas.height = clientHeight
     const context = canvas.getContext("2d")
+    if (excludePattern.current === null) {
+      excludePattern.current = {
+        image: new Image(),
+        pattern: null
+      }
+      excludePattern.current.image.onload = () => {
+        excludePattern.current.pattern = context.createPattern(
+          excludePattern.current.image,
+          "repeat"
+        )
+      }
+      excludePattern.current.image.src = excludePatternSrc
+    }
     context.save()
     context.transform(
       ...mat
@@ -158,6 +175,38 @@ export default ({
     }
 
     context.drawImage(image.current, 0, 0, iw, ih)
+
+    if (allowedArea) {
+      // Pattern to indicate the NOT allowed areas
+      const { x, y, w, h } = allowedArea
+      context.save()
+      context.globalAlpha = 0.25
+      const outer = [[0, 0], [iw, 0], [iw, ih], [0, ih]]
+      const inner = [
+        [x * iw, y * ih],
+        [x * iw + w * iw, y * ih],
+        [x * iw + w * iw, y * ih + h * ih],
+        [x * iw, y * ih + h * ih]
+      ]
+      context.moveTo(...outer[0])
+      outer.forEach(p => context.lineTo(...p))
+      context.lineTo(...outer[0])
+      context.closePath()
+
+      inner.reverse()
+      context.moveTo(...inner[0])
+      inner.forEach(p => context.lineTo(...p))
+      context.lineTo(...inner[0])
+
+      context.fillStyle = excludePattern.current.pattern || "#f00"
+      context.fill()
+
+      // context.fillRect(0, 0, iw, y * ih)
+      // context.fillRect(0, y * ih, iw * x, (1 - y) * ih)
+      // context.fillRect(x * iw, y * ih + h * ih, w * iw, (1 - y - h) * ih)
+      // context.fillRect(x * iw + w * iw, y * ih, (1 - x - w) * iw, (1 - y) * ih)
+      context.restore()
+    }
 
     context.save()
     context.globalAlpha = mat.a * 0.5 + 0.5

@@ -135,6 +135,24 @@ storiesOf("Annotator", module)
       ]}
     />
   ))
+  .add("Bounding Box Annotator with allowed area", () => (
+    <Annotator
+      taskDescription={`## Annotate Hands\nDraw a bounding box around each hand.`}
+      enabledTools={["select", "create-box"]}
+      regionClsList={["Hand", "Face"]}
+      regionTagList={["Open Pinch", "Closed Pinch", "In Frame"]}
+      showTags={false}
+      allowedArea={{ x: 0.25, y: 0.25, w: 0.5, h: 0.5 }}
+      images={[
+        {
+          src:
+            "https://s3.amazonaws.com/jobstorage.workaround.online/Atheer/video-frames/VID_20190111_161054.mp4_frame017.png",
+          name: "Bounding Box Test",
+          regions: []
+        }
+      ]}
+    />
+  ))
   .add("Car Annotation", () => (
     <Annotator
       onExit={actionAddon("onExit")}
