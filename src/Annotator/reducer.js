@@ -492,7 +492,7 @@ export default (state: MainLayoutState, action: Action) => {
           return setNewImage(state.images[currentImageIndex + 1].src)
         }
         case "settings": {
-          return state
+          return setIn(state, ["settingsOpen"], !state.settingsOpen)
         }
         case "help": {
           return state

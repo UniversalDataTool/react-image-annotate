@@ -38,6 +38,7 @@ export type Mode =
 
 export type MainLayoutState = {|
   fullScreen?: boolean,
+  settingsOpen?: boolean,
   showTags: boolean,
   selectedImage?: string,
   selectedTool: ToolEnum,

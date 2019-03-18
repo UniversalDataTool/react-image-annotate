@@ -12,6 +12,7 @@ import type { MainLayoutState, Action } from "./types"
 import useKey from "use-key-hook"
 import classnames from "classnames"
 import { useSettings } from "../SettingsProvider"
+import SettingsDialog from "../SettingsDialog"
 import Fullscreen from "react-full-screen"
 
 const useStyles = makeStyles(styles)
@@ -135,6 +136,15 @@ export default ({ state, dispatch }: Props) => {
             />
           </div>
         </div>
+        <SettingsDialog
+          open={state.settingsOpen}
+          onClose={() =>
+            dispatch({
+              type: "HEADER_BUTTON_CLICKED",
+              buttonName: "Settings"
+            })
+          }
+        />
       </div>
     </Fullscreen>
   )

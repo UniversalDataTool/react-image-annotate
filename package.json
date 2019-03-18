@@ -47,6 +47,7 @@
   "devDependencies": {
     "@babel/cli": "^7.2.3",
     "@babel/core": "^7.2.2",
+    "@material-ui/lab": "^3.0.0-alpha.30",
     "@storybook/addon-actions": "^5.0.2",
     "@storybook/addon-links": "^5.0.2",
     "@storybook/addons": "^5.0.2",
