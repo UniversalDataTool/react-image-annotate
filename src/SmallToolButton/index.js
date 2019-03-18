@@ -27,20 +27,22 @@ export default ({
   selected = selected || selectedTool === id
   return (
     <Tooltip placement="right" title={name}>
-      <IconButton
-        disabled={!togglable ? selected : undefined}
-        aria-label={name}
-        onClick={() => onClickTool(id)}
-        size="small"
-        style={{
-          width: 50,
-          height: 50,
-          margin: 1,
-          color: selected ? blue[500] : undefined
-        }}
-      >
-        {icon}
-      </IconButton>
+      <div>
+        <IconButton
+          disabled={!togglable ? selected : undefined}
+          aria-label={name}
+          onClick={() => onClickTool(id)}
+          size="small"
+          style={{
+            width: 50,
+            height: 50,
+            margin: 1,
+            color: selected ? blue[500] : undefined
+          }}
+        >
+          {icon}
+        </IconButton>
+      </div>
     </Tooltip>
   )
 }

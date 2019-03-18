@@ -3,7 +3,6 @@
 import React, { useState } from "react"
 import Button from "@material-ui/core/Button"
 import { makeStyles } from "@material-ui/styles"
-import JSONInput from "react-json-editor-ajrm"
 import Select from "react-select"
 import Code from "react-syntax-highlighter"
 import Dialog from "@material-ui/core/Dialog"
@@ -182,10 +181,15 @@ const Editor = ({ onOpenAnnotator, lastOutput }: any) => {
 }
 `}</Code>
       </div>
-      <Dialog open={outputDialogOpen}>
+      <Dialog fullScreen open={outputDialogOpen}>
         <DialogTitle>React Image Annotate Output</DialogTitle>
-        <DialogContent>
-          <JSONInput placeholder={lastOutput} height="550px" />
+        <DialogContent style={{ minWidth: 400 }}>
+          <MonacoEditor
+            value={JSON.stringify(lastOutput, null, "  ")}
+            language="javascript"
+            width="100%"
+            height="550px"
+          />
         </DialogContent>
         <DialogActions>
           <Button onClick={() => changeOutputOpen(false)}>Close</Button>

@@ -289,6 +289,14 @@ export default (state: MainLayoutState, action: Action) => {
               ? oh + (oy - dy)
               : Math.max(0, oh + (y - oy - oh))
 
+          // determine if we should switch the freedom
+          if (dw <= 0.001) {
+            state = setIn(state, ["mode", "freedom"], [xFree * -1, yFree])
+          }
+          if (dh <= 0.001) {
+            state = setIn(state, ["mode", "freedom"], [xFree, yFree * -1])
+          }
+
           return setIn(
             state,
             ["images", currentImageIndex, "regions", regionIndex],
