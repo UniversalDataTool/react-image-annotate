@@ -287,7 +287,7 @@ export default ({
     if (mat.a < 0.1) mat.scaleU(0.1 / mat.a)
     mat.translate(-mx, -my)
 
-    changeMat(mat)
+    changeMat(mat.clone())
   }
 
   const mouseEvents = {
@@ -316,7 +316,8 @@ export default ({
           prevMousePosition.current.y - mousePosition.current.y
         )
 
-        changeMat(mat)
+        changeMat(mat.clone())
+        // changeForceRenderState(Math.random())
       }
       e.preventDefault()
     },
@@ -384,7 +385,7 @@ export default ({
             .translate(zoomStart.x, zoomStart.y)
             .scaleU(scale)
 
-          changeMat(newMat)
+          changeMat(newMat.clone())
         }
 
         changeZoomStart(null)
@@ -432,6 +433,7 @@ export default ({
       style={{
         width: "100%",
         height: "100%",
+        maxHeight: "calc(100vh - 68px)",
         position: "relative",
         overflow: "hidden",
         cursor: createWithPrimary
@@ -447,9 +449,7 @@ export default ({
           : undefined
       }}
     >
-      {showCrosshairs && (
-        <Crosshairs x={mousePosition.current.x} y={mousePosition.current.y} />
-      )}
+      {showCrosshairs && <Crosshairs mousePosition={mousePosition} />}
       {regions
         .filter(r => r.visible || r.visible === undefined)
         .filter(r => !r.locked)

@@ -42,6 +42,7 @@ export default {
     backgroundColor: grey[100],
     borderLeft: `1px solid ${grey[300]}`,
     zIndex: 9,
+    maxHeight: "calc(100% - 68px)",
     boxShadow: "0px 0px 5px rgba(0,0,0,0.1)"
   }
 }

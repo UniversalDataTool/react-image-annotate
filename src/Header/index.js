@@ -16,10 +16,11 @@ const useStyles = makeStyles(styles)
 
 type Props = {
   onHeaderButtonClick: string => any,
-  title: string
+  title: string,
+  inFullScreen?: boolean
 }
 
-export default ({ onHeaderButtonClick, title }: Props) => {
+export default ({ onHeaderButtonClick, title, inFullScreen }: Props) => {
   const classes = useStyles()
   return (
     <div className={classes.header}>
@@ -30,7 +31,11 @@ export default ({ onHeaderButtonClick, title }: Props) => {
           <HeaderButton name="Next" Icon={NextIcon} />
           <HeaderButton name="Settings" Icon={SettingsIcon} />
           {/* <HeaderButton name="Help" Icon={HelpIcon} /> */}
-          <HeaderButton name="Fullscreen" Icon={FullscreenIcon} />
+          {inFullScreen ? (
+            <HeaderButton name="Window" Icon={FullscreenIcon} />
+          ) : (
+            <HeaderButton name="Fullscreen" Icon={FullscreenIcon} />
+          )}
           {/* <HeaderButton name="Hotkeys" Icon={HotkeysIcon} /> */}
           <HeaderButton name="Done" Icon={ExitIcon} />
         </HeaderButtonContext.Provider>

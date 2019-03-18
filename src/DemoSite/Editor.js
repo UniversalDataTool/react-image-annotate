@@ -39,7 +39,7 @@ const loadSavedInput = () => {
 }
 
 export const examples = {
-  "Simple Bounding Box": {
+  "Simple Bounding Box": () => ({
     taskDescription:
       "Annotate each image according to this _markdown_ specification.",
     // regionTagList: [],
@@ -55,16 +55,20 @@ export const examples = {
         name: "hot-dogs-1"
       }
     ]
-  },
+  }),
   Custom: () => loadSavedInput()
 }
 
 const Editor = ({ onOpenAnnotator, lastOutput }: any) => {
   const c = useStyles()
-  const [selectedExample, changeSelectedExample] = useState("Custom")
+  const [selectedExample, changeSelectedExample] = useState(
+    window.localStorage.getItem("customInput")
+      ? "Custom"
+      : "Simple Bounding Box"
+  )
   const [outputDialogOpen, changeOutputOpen] = useState(false)
   const [currentJSONValue, changeCurrentJSONValue] = useState(
-    JSON.stringify(loadSavedInput(), null, "  ")
+    JSON.stringify(examples[selectedExample](), null, "  ")
   )
   return (
     <div>

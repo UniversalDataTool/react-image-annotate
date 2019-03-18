@@ -498,7 +498,11 @@ export default (state: MainLayoutState, action: Action) => {
           return state
         }
         case "fullscreen": {
-          return setIn(state, ["fullScreen"], !state.fullScreen)
+          return setIn(state, ["fullScreen"], true)
+        }
+        case "exit fullscreen":
+        case "window": {
+          return setIn(state, ["fullScreen"], false)
         }
         case "hotkeys": {
           return state
