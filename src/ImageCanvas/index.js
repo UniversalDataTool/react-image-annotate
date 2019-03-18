@@ -201,10 +201,6 @@ export default ({
       context.fillStyle = excludePattern.current.pattern || "#f00"
       context.fill()
 
-      // context.fillRect(0, 0, iw, y * ih)
-      // context.fillRect(0, y * ih, iw * x, (1 - y) * ih)
-      // context.fillRect(x * iw, y * ih + h * ih, w * iw, (1 - y - h) * ih)
-      // context.fillRect(x * iw + w * iw, y * ih, (1 - x - w) * iw, (1 - y) * ih)
       context.restore()
     }
 
