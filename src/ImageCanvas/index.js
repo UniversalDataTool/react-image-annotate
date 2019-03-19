@@ -17,7 +17,8 @@ import classnames from "classnames"
 import RegionLabel from "../RegionLabel"
 import LockIcon from "@material-ui/icons/Lock"
 import Paper from "@material-ui/core/Paper"
-import excludePatternSrc from "./xpattern.png"
+// import excludePatternSrc from "./xpattern.png"
+import excludePatternSrc from "./xpattern.js"
 
 const useStyles = makeStyles(styles)
 
@@ -484,14 +485,14 @@ export default ({
         cursor: createWithPrimary
           ? "crosshair"
           : dragging
-          ? "grabbing"
-          : dragWithPrimary
-          ? "grab"
-          : zoomWithPrimary
-          ? mat.a < 1
-            ? "zoom-out"
-            : "zoom-in"
-          : undefined
+            ? "grabbing"
+            : dragWithPrimary
+              ? "grab"
+              : zoomWithPrimary
+                ? mat.a < 1
+                  ? "zoom-out"
+                  : "zoom-in"
+                : undefined
       }}
     >
       {showCrosshairs && <Crosshairs mousePosition={mousePosition} />}
@@ -617,8 +618,8 @@ export default ({
                         cursor: !r.open
                           ? "move"
                           : i === 0
-                          ? "pointer"
-                          : undefined,
+                            ? "pointer"
+                            : undefined,
                         pointerEvents:
                           r.open && i === r.points.length - 1
                             ? "none"
@@ -734,19 +735,20 @@ export default ({
               </div>
             )
           })}
-      {zoomWithPrimary && zoomBox !== null && (
-        <div
-          style={{
-            position: "absolute",
-            border: "1px solid #fff",
-            pointerEvents: "none",
-            left: zoomBox.x,
-            top: zoomBox.y,
-            width: zoomBox.w,
-            height: zoomBox.h
-          }}
-        />
-      )}
+      {zoomWithPrimary &&
+        zoomBox !== null && (
+          <div
+            style={{
+              position: "absolute",
+              border: "1px solid #fff",
+              pointerEvents: "none",
+              left: zoomBox.x,
+              top: zoomBox.y,
+              width: zoomBox.w,
+              height: zoomBox.h
+            }}
+          />
+        )}
       <canvas {...mouseEvents} className={classes.canvas} ref={canvasEl} />
       <div className={classes.zoomIndicator}>
         {((1 / mat.a) * 100).toFixed(0)}%
