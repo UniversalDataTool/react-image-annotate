@@ -1,15 +1,15 @@
 {
-  "main.css": "/react-image-annotate/static/css/main.0528626f.chunk.css",
-  "main.js": "/react-image-annotate/static/js/main.2caaeeb1.chunk.js",
-  "main.js.map": "/react-image-annotate/static/js/main.2caaeeb1.chunk.js.map",
-  "static/css/1.46dec78e.chunk.css": "/react-image-annotate/static/css/1.46dec78e.chunk.css",
-  "static/js/1.ce11b80a.chunk.js": "/react-image-annotate/static/js/1.ce11b80a.chunk.js",
-  "static/js/1.ce11b80a.chunk.js.map": "/react-image-annotate/static/js/1.ce11b80a.chunk.js.map",
-  "runtime~main.js": "/react-image-annotate/static/js/runtime~main.300d0071.js",
-  "runtime~main.js.map": "/react-image-annotate/static/js/runtime~main.300d0071.js.map",
-  "static/css/1.46dec78e.chunk.css.map": "/react-image-annotate/static/css/1.46dec78e.chunk.css.map",
-  "static/css/main.0528626f.chunk.css.map": "/react-image-annotate/static/css/main.0528626f.chunk.css.map",
+  "main.css": "/react-image-annotate/static/css/main.2a76f603.chunk.css",
+  "main.js": "/react-image-annotate/static/js/main.a18cb20e.chunk.js",
+  "main.js.map": "/react-image-annotate/static/js/main.a18cb20e.chunk.js.map",
+  "runtime~main.js": "/react-image-annotate/static/js/runtime~main.3f5c9a4f.js",
+  "runtime~main.js.map": "/react-image-annotate/static/js/runtime~main.3f5c9a4f.js.map",
+  "static/css/2.0c5748a5.chunk.css": "/react-image-annotate/static/css/2.0c5748a5.chunk.css",
+  "static/js/2.ed02a7ed.chunk.js": "/react-image-annotate/static/js/2.ed02a7ed.chunk.js",
+  "static/js/2.ed02a7ed.chunk.js.map": "/react-image-annotate/static/js/2.ed02a7ed.chunk.js.map",
   "index.html": "/react-image-annotate/index.html",
-  "precache-manifest.dacd49c77790b5d10b6eb2ebf39e7a62.js": "/react-image-annotate/precache-manifest.dacd49c77790b5d10b6eb2ebf39e7a62.js",
-  "service-worker.js": "/react-image-annotate/service-worker.js"
+  "precache-manifest.8761392ae9bb53ddf5d2db4cb0df99d8.js": "/react-image-annotate/precache-manifest.8761392ae9bb53ddf5d2db4cb0df99d8.js",
+  "service-worker.js": "/react-image-annotate/service-worker.js",
+  "static/css/2.0c5748a5.chunk.css.map": "/react-image-annotate/static/css/2.0c5748a5.chunk.css.map",
+  "static/css/main.2a76f603.chunk.css.map": "/react-image-annotate/static/css/main.2a76f603.chunk.css.map"
 }
