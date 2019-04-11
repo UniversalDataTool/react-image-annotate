@@ -60,6 +60,7 @@ export const examples = {
 
 const Editor = ({ onOpenAnnotator, lastOutput }: any) => {
   const c = useStyles()
+  const [currentError, changeCurrentError] = useState()
   const [selectedExample, changeSelectedExample] = useState(
     window.localStorage.getItem("customInput")
       ? "Custom"
@@ -85,11 +86,12 @@ const Editor = ({ onOpenAnnotator, lastOutput }: any) => {
               }))}
               onChange={selectedOption => {
                 changeSelectedExample(selectedOption.value)
+
                 changeCurrentJSONValue(
                   JSON.stringify(
                     selectedOption.value === "Custom"
                       ? loadSavedInput()
-                      : examples[selectedOption.value],
+                      : examples[selectedOption.value](),
                     null,
                     "  "
                   )
@@ -107,6 +109,7 @@ const Editor = ({ onOpenAnnotator, lastOutput }: any) => {
           <Button
             className="button"
             variant="outlined"
+            disabled={Boolean(currentError)}
             onClick={() =>
               onOpenAnnotator(
                 selectedExample === "Custom"
@@ -119,7 +122,14 @@ const Editor = ({ onOpenAnnotator, lastOutput }: any) => {
           </Button>
         </div>
       </div>
-      <div className={c.contentArea}>
+      <div
+        className={c.contentArea}
+        style={
+          currentError
+            ? { border: "2px solid #f00" }
+            : { border: "2px solid #fff" }
+        }
+      >
         <div>
           <MonacoEditor
             value={currentJSONValue}
@@ -130,7 +140,10 @@ const Editor = ({ onOpenAnnotator, lastOutput }: any) => {
                   "customInput",
                   JSON.stringify(JSON.parse(code))
                 )
-              } catch (e) {}
+                changeCurrentError(null)
+              } catch (e) {
+                changeCurrentError(e.toString())
+              }
               changeCurrentJSONValue(code)
             }}
             width="100%"
