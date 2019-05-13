@@ -125,6 +125,12 @@ export default (state: MainLayoutState, action: Action) => {
     case "SELECT_IMAGE": {
       return setNewImage(action.image.src)
     }
+    case "IMAGE_LOADED": {
+      return setIn(state, ["images", currentImageIndex, "pixelSize"], {
+        w: action.image.width,
+        h: action.image.height
+      })
+    }
     case "CHANGE_REGION": {
       const regionIndex = getRegionIndex(action.region)
       if (regionIndex === null) return state
@@ -279,15 +285,15 @@ export default (state: MainLayoutState, action: Action) => {
             xFree === 0
               ? ow
               : xFree === -1
-              ? ow + (ox - dx)
-              : Math.max(0, ow + (x - ox - ow))
+                ? ow + (ox - dx)
+                : Math.max(0, ow + (x - ox - ow))
           const dy = yFree === 0 ? oy : yFree === -1 ? Math.min(oy + oh, y) : oy
           const dh =
             yFree === 0
               ? oh
               : yFree === -1
-              ? oh + (oy - dy)
-              : Math.max(0, oh + (y - oy - oh))
+                ? oh + (oy - dy)
+                : Math.max(0, oh + (y - oy - oh))
 
           // determine if we should switch the freedom
           if (dw <= 0.001) {

@@ -132,3 +132,105 @@ storiesOf("MainLayout", module)
       dispatch={a => !a.type.includes("MOUSE_MOVE") && action(a.type)(a)}
     />
   ))
+  .add("Point Distances", () => (
+    <MainLayout
+      state={{
+        showTags: false,
+        showPointDistances: true,
+        selectedImage: exampleImage,
+        selectedTool: "create-point",
+        taskDescription: "",
+        showTags: true,
+        mode: null,
+        images: [
+          {
+            src: exampleImage,
+            name: "Point Distance Check",
+            regions: [
+              {
+                type: "point",
+                cls: "P",
+                x: 0.25,
+                y: 0.25,
+                color: "#f00",
+                id: "p1"
+              },
+              {
+                type: "point",
+                cls: "P",
+                x: 0.5,
+                y: 0.25,
+                color: "#0f0",
+                id: "p2"
+              },
+              {
+                type: "point",
+                cls: "P",
+                x: 0.5,
+                y: 0.5,
+                color: "#00f",
+                id: "p3"
+              }
+            ]
+          }
+        ],
+        clsList: [],
+        tagList: [],
+        enabledTools: [],
+        history: []
+      }}
+      dispatch={a => !a.type.includes("MOUSE_MOVE") && action(a.type)(a)}
+    />
+  ))
+  .add("Point distances real units", () => (
+    <MainLayout
+      state={{
+        showTags: false,
+        showPointDistances: true,
+        pointDistancePrecision: 2,
+        selectedImage: exampleImage,
+        selectedTool: "create-point",
+        taskDescription: "",
+        showTags: true,
+        mode: null,
+        images: [
+          {
+            src: exampleImage,
+            name: "Point Distance Check",
+            realSize: { w: 200, h: 1000, unitName: "cm" },
+            regions: [
+              {
+                type: "point",
+                cls: "P",
+                x: 0.25,
+                y: 0.25,
+                color: "#f00",
+                id: "p1"
+              },
+              {
+                type: "point",
+                cls: "P",
+                x: 0.5,
+                y: 0.25,
+                color: "#0f0",
+                id: "p2"
+              },
+              {
+                type: "point",
+                cls: "P",
+                x: 0.5,
+                y: 0.5,
+                color: "#00f",
+                id: "p3"
+              }
+            ]
+          }
+        ],
+        clsList: [],
+        tagList: [],
+        enabledTools: [],
+        history: []
+      }}
+      dispatch={a => !a.type.includes("MOUSE_MOVE") && action(a.type)(a)}
+    />
+  ))

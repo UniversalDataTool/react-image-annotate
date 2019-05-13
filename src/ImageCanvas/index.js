@@ -17,6 +17,7 @@ import classnames from "classnames"
 import RegionLabel from "../RegionLabel"
 import LockIcon from "@material-ui/icons/Lock"
 import Paper from "@material-ui/core/Paper"
+import HighlightBox from "../HighlightBox"
 // import excludePatternSrc from "./xpattern.png"
 import excludePatternSrc from "./xpattern.js"
 
@@ -38,7 +39,10 @@ type Props = {
   zoomWithPrimary?: boolean,
   createWithPrimary?: boolean,
   showTags?: boolean,
+  realSize?: { width: number, height: number, unitName: string },
   showCrosshairs?: boolean,
+  showPointDistances?: boolean,
+  pointDistancePrecision?: number,
   regionClsList?: Array<string>,
   regionTagList?: Array<string>,
   allowedArea?: { x: number, y: number, w: number, h: number },
@@ -51,7 +55,8 @@ type Props = {
   onBeginMovePolygonPoint: (Polygon, index: number) => any,
   onAddPolygonPoint: (Polygon, point: [number, number], index: number) => any,
   onSelectRegion: Region => any,
-  onBeginMovePoint: Point => any
+  onBeginMovePoint: Point => any,
+  onImageLoaded: ({ width: number, height: number }) => any
 }
 
 const getDefaultMat = () => Matrix.from(1, 0, 0, 1, -10, -10)
@@ -59,6 +64,7 @@ const getDefaultMat = () => Matrix.from(1, 0, 0, 1, -10, -10)
 export default ({
   regions,
   imageSrc,
+  realSize,
   showTags,
   onMouseMove = p => null,
   onMouseDown = p => null,
@@ -66,11 +72,14 @@ export default ({
   dragWithPrimary = false,
   zoomWithPrimary = false,
   createWithPrimary = false,
+  pointDistancePrecision = 0,
   regionClsList,
   regionTagList,
   showCrosshairs,
+  showPointDistances,
   allowedArea,
 
+  onImageLoaded,
   onChangeRegion,
   onBeginRegionEdit,
   onCloseRegionEdit,
@@ -128,6 +137,10 @@ export default ({
       image.current = new Image()
       image.current.onload = () => {
         changeImageLoaded(true)
+        onImageLoaded({
+          width: image.current.naturalWidth,
+          height: image.current.naturalHeight
+        })
       }
       image.current.src = imageSrc
     }
@@ -504,62 +517,16 @@ export default ({
           const { iw, ih } = layoutParams.current
           return (
             <Fragment>
-              <svg
-                key={r.id}
-                className={classnames(classes.highlightBox, {
-                  highlighted: r.highlighted
-                })}
-                {...mouseEvents}
-                {...(!zoomWithPrimary && !dragWithPrimary
-                  ? {
-                      onMouseDown: e => {
-                        if (
-                          !r.locked &&
-                          r.type === "point" &&
-                          r.highlighted &&
-                          e.button === 0
-                        ) {
-                          return onBeginMovePoint(r)
-                        }
-                        if (e.button === 0 && !createWithPrimary)
-                          return onSelectRegion(r)
-                        mouseEvents.onMouseDown(e)
-                      }
-                    }
-                  : {})}
-                style={{
-                  ...(r.highlighted
-                    ? {
-                        pointerEvents: r.type !== "point" ? "none" : undefined,
-                        cursor: "grab"
-                      }
-                    : {
-                        cursor: !(
-                          zoomWithPrimary ||
-                          dragWithPrimary ||
-                          createWithPrimary
-                        )
-                          ? "pointer"
-                          : undefined,
-                        pointerEvents:
-                          zoomWithPrimary ||
-                          dragWithPrimary ||
-                          (createWithPrimary && !r.highlighted)
-                            ? "none"
-                            : undefined
-                      }),
-                  position: "absolute",
-                  left: pbox.x - 5,
-                  top: pbox.y - 5,
-                  width: pbox.w + 10,
-                  height: pbox.h + 10
-                }}
-              >
-                <path
-                  d={`M5,5 L${pbox.w + 5},5 L${pbox.w + 5},${pbox.h +
-                    5} L5,${pbox.h + 5} Z`}
-                />
-              </svg>
+              <HighlightBox
+                region={r}
+                mouseEvents={mouseEvents}
+                dragWithPrimary={dragWithPrimary}
+                createWithPrimary={createWithPrimary}
+                zoomWithPrimary={zoomWithPrimary}
+                onBeginMovePoint={onBeginMovePoint}
+                onSelectRegion={onSelectRegion}
+                pbox={pbox}
+              />
               {r.type === "box" &&
                 !dragWithPrimary &&
                 !zoomWithPrimary &&
@@ -749,6 +716,60 @@ export default ({
             }}
           />
         )}
+      {showPointDistances && (
+        <svg
+          className={classes.pointDistanceIndicator}
+          style={{
+            pointerEvents: "none",
+            position: "absolute",
+            left: 0,
+            top: 0,
+            width: "100%",
+            height: "100%"
+          }}
+        >
+          {regions.filter(r1 => r1.type === "point").flatMap((r1, i1) =>
+            regions
+              .filter((r2, i2) => i2 > i1)
+              .filter(r2 => r2.type === "point")
+              .map(r2 => {
+                const pr1 = projectRegionBox(r1)
+                const pr2 = projectRegionBox(r2)
+                const prm = {
+                  x: (pr1.x + pr1.w / 2 + pr2.x + pr2.w / 2) / 2,
+                  y: (pr1.y + pr1.h / 2 + pr2.y + pr2.h / 2) / 2
+                }
+                let displayDistance
+                if (realSize) {
+                  const { w, h, unitName } = realSize
+                  displayDistance =
+                    Math.sqrt(
+                      Math.pow(r1.x * w - r2.x * w, 2) +
+                        Math.pow(r1.y * h - r2.y * h, 2)
+                    ).toFixed(pointDistancePrecision) + unitName
+                } else {
+                  displayDistance =
+                    (
+                      Math.sqrt(
+                        Math.pow(r1.x - r2.x, 2) + Math.pow(r1.y - r2.y, 2)
+                      ) * 100
+                    ).toFixed(pointDistancePrecision) + "%"
+                }
+                return (
+                  <Fragment>
+                    <path
+                      d={`M${pr1.x + pr1.w / 2},${pr1.y + pr1.h / 2} L${pr2.x +
+                        pr2.w / 2},${pr2.y + pr2.h / 2}`}
+                    />
+                    <text x={prm.x} y={prm.y}>
+                      {displayDistance}
+                    </text>
+                  </Fragment>
+                )
+              })
+          )}
+        </svg>
+      )}
       <canvas {...mouseEvents} className={classes.canvas} ref={canvasEl} />
       <div className={classes.zoomIndicator}>
         {((1 / mat.a) * 100).toFixed(0)}%

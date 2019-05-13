@@ -85,10 +85,14 @@ export default ({ state, dispatch }: Props) => {
                 regionClsList={state.regionClsList}
                 regionTagList={state.regionTagList}
                 regions={currentImage ? currentImage.regions || [] : []}
+                realSize={currentImage ? currentImage.realSize : undefined}
                 imageSrc={state.selectedImage}
+                pointDistancePrecision={state.pointDistancePrecision}
                 createWithPrimary={state.selectedTool.includes("create")}
                 dragWithPrimary={state.selectedTool === "pan"}
                 zoomWithPrimary={state.selectedTool === "zoom"}
+                showPointDistances={state.showPointDistances}
+                pointDistancePrecision={state.pointDistancePrecision}
                 onMouseMove={action("MOUSE_MOVE")}
                 onMouseDown={action("MOUSE_DOWN")}
                 onMouseUp={action("MOUSE_UP")}
@@ -114,6 +118,7 @@ export default ({ state, dispatch }: Props) => {
                 )}
                 onSelectRegion={action("SELECT_REGION", "region")}
                 onBeginMovePoint={action("BEGIN_MOVE_POINT", "point")}
+                onImageLoaded={action("IMAGE_LOADED", "image")}
               />
             )}
           </div>

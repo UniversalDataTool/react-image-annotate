@@ -19,9 +19,7 @@ export default ({ open, onClose }) => {
           variant="flat"
           noActions
           defaultAnswers={settings}
-          onQuestionChange={(q, a, answers) => {
-            settings.changeSetting(q, a)
-          }}
+          onQuestionChange={(q, a, answers) => settings.changeSetting(q, a)}
           form={{
             questions: [
               {

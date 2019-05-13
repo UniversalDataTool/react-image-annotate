@@ -1,31 +1,6 @@
 import { grey } from "@material-ui/core/colors"
 
 export default {
-  "@keyframes borderDance": {
-    from: { strokeDashoffset: 0 },
-    to: { strokeDashoffset: 100 }
-  },
-  highlightBox: {
-    transition: "opacity 500ms",
-    "&:not(.highlighted)": {
-      opacity: 0
-    },
-    "&:not(.highlighted):hover": {
-      opacity: 0.6
-    },
-    "& path": {
-      vectorEffect: "non-scaling-stroke",
-      strokeWidth: 2,
-      stroke: "#FFF",
-      fill: "none",
-      strokeDasharray: 5,
-      animationName: "$borderDance",
-      animationDuration: "4s",
-      animationTimingFunction: "linear",
-      animationIterationCount: "infinite",
-      animationPlayState: "running"
-    }
-  },
   canvas: { width: "100%", height: "100%" },
   transformGrabber: {
     width: 8,
@@ -43,5 +18,22 @@ export default {
     fontWeight: "bolder",
     fontSize: 14,
     padding: 4
+  },
+  pointDistanceIndicator: {
+    "& text": {
+      fill: "#fff"
+    },
+    "& path": {
+      vectorEffect: "non-scaling-stroke",
+      strokeWidth: 2,
+      opacity: 0.5,
+      stroke: "#FFF",
+      fill: "none",
+      strokeDasharray: 5,
+      animationDuration: "4s",
+      animationTimingFunction: "linear",
+      animationIterationCount: "infinite",
+      animationPlayState: "running"
+    }
   }
 }

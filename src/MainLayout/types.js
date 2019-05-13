@@ -20,7 +20,9 @@ export type Image = {
   src: string,
   thumbnailSrc?: string,
   name: string,
-  regions?: Array<Region>
+  regions?: Array<Region>,
+  pixelSize?: { w: number, h: number },
+  realSize?: { w: number, h: number, unitName: string }
 }
 
 export type Mode =
@@ -41,6 +43,8 @@ export type MainLayoutState = {|
   settingsOpen?: boolean,
   minRegionSize?: number,
   showTags: boolean,
+  showPointDistances?: boolean,
+  pointDistancePrecision?: number,
   selectedImage?: string,
   selectedTool: ToolEnum,
   mode: Mode,
@@ -59,6 +63,7 @@ export type MainLayoutState = {|
 export type Action =
   | {| type: "@@INIT" |}
   | {| type: "SELECT_IMAGE", image: Image |}
+  | {| type: "IMAGE_LOADED", image: { width: number, height: number } |}
   | {| type: "CHANGE_REGION", region: Region |}
   | {| type: "RESTORE_HISTORY" |}
   | {| type: "CLOSE_POLYGON", polygon: Polygon |}

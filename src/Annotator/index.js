@@ -9,6 +9,7 @@ import type {
   MainLayoutState,
   Action
 } from "../MainLayout/types"
+import SettingsProvider from "../SettingsProvider"
 import reducer from "./reducer"
 
 type Props = {
@@ -22,6 +23,8 @@ type Props = {
   showTags?: boolean,
   selectedImage?: string,
   images: Array<Image>,
+  showPointDistances?: boolean,
+  pointDistancePrecision?: number,
   onExit: MainLayoutState => any
 }
 
@@ -29,6 +32,8 @@ export default ({
   images,
   allowedArea,
   selectedImage = images.length > 0 ? images[0].src : undefined,
+  showPointDistances,
+  pointDistancePrecision,
   showTags = true,
   enabledTools = ["select", "create-point", "create-box", "create-polygon"],
   regionTagList = [],
@@ -42,6 +47,8 @@ export default ({
     showTags,
     allowedArea,
     selectedImage,
+    showPointDistances,
+    pointDistancePrecision,
     selectedTool: "select",
     mode: null,
     taskDescription,
@@ -68,5 +75,9 @@ export default ({
     }
   }
 
-  return <MainLayout debug state={state} dispatch={dispatch} />
+  return (
+    <SettingsProvider>
+      <MainLayout debug state={state} dispatch={dispatch} />
+    </SettingsProvider>
+  )
 }
