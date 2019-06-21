@@ -1,6 +1,6 @@
 # React Image Annotate
 
-The best image/video annotation tool ever.
+The best image/video annotation tool ever. [Check out the demo here](https://workaroundonline.github.io/react-image-annotate/).
 
 ![Screenshot of Annotator](https://user-images.githubusercontent.com/1910070/51199716-83c72080-18c5-11e9-837c-c3a89c8caef4.png)
 
