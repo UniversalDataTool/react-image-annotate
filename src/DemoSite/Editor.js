@@ -55,6 +55,19 @@ export const examples = {
       }
     ]
   }),
+  "Simple Segmentation": () => ({
+    taskDescription:
+      "Annotate each image according to this _markdown_ specification.",
+    regionClsList: ["car", "truck"],
+    enabledTools: ["select", "create-polygon"],
+    images: [
+      {
+        src:
+          "https://images.unsplash.com/photo-1561518776-e76a5e48f731?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=750&q=80",
+        name: "car-image-1"
+      }
+    ]
+  }),
   Custom: () => loadSavedInput()
 }
 
