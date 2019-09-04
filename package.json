@@ -10,8 +10,6 @@
     "get-image-data": "^3.0.1",
     "material-survey": "^1.0.32",
     "moment": "^2.23.0",
-    "react": "^16.8.0",
-    "react-dom": "^16.8.0",
     "react-full-screen": "^0.2.4",
     "react-markdown": "^4.0.6",
     "react-scripts": "^2.1.8",
@@ -19,6 +17,10 @@
     "seamless-immutable": "^7.1.4",
     "transformation-matrix-js": "^2.7.6",
     "use-key-hook": "^1.3.0"
+  },
+  "peerDependencies": {
+    "react": "^16.8.0",
+    "react-dom": "^16.8.0"
   },
   "homepage": "/react-image-annotate",
   "repository": {
