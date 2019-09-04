@@ -31,6 +31,13 @@ const App = () => (
 )
 ```
 
+To get the proper fonts, make sure to import the Inter UI or Roboto font, the
+following line added to a css file should suffice.
+
+```css
+@import url("https://rsms.me/inter/inter.css");
+```
+
 ## Developers
 
 ### Development
