@@ -1,6 +1,6 @@
 {
   "name": "react-image-annotate",
-  "version": "0.1.18",
+  "version": "0.1.17",
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^1.2.12",
     "@fortawesome/free-solid-svg-icons": "^5.6.3",
@@ -10,8 +10,8 @@
     "get-image-data": "^3.0.1",
     "material-survey": "^1.0.32",
     "moment": "^2.23.0",
-    "react": "^16.9.0",
-    "react-dom": "^16.9.0",
+    "react": "^16.8.0",
+    "react-dom": "^16.8.0",
     "react-full-screen": "^0.2.4",
     "react-markdown": "^4.0.6",
     "react-scripts": "^2.1.8",
