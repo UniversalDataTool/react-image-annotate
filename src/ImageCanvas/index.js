@@ -20,7 +20,7 @@ import Paper from "@material-ui/core/Paper"
 import HighlightBox from "../HighlightBox"
 // import excludePatternSrc from "./xpattern.png"
 import excludePatternSrc from "./xpattern.js"
-import RemoveScrollOnChildren from "../RemoveScrollOnChildren"
+import PreventScrollToParents from "../PreventScrollToParents"
 
 const useStyles = makeStyles(styles)
 
@@ -518,121 +518,129 @@ export default ({
           const { iw, ih } = layoutParams.current
           return (
             <Fragment>
-              <HighlightBox
-                region={r}
-                mouseEvents={mouseEvents}
-                dragWithPrimary={dragWithPrimary}
-                createWithPrimary={createWithPrimary}
-                zoomWithPrimary={zoomWithPrimary}
-                onBeginMovePoint={onBeginMovePoint}
-                onSelectRegion={onSelectRegion}
-                pbox={pbox}
-              />
-              {r.type === "box" &&
-                !dragWithPrimary &&
-                !zoomWithPrimary &&
-                !r.locked &&
-                r.highlighted &&
-                mat.a < 1.2 &&
-                [
-                  [0, 0],
-                  [0.5, 0],
-                  [1, 0],
-                  [1, 0.5],
-                  [1, 1],
-                  [0.5, 1],
-                  [0, 1],
-                  [0, 0.5],
-                  [0.5, 0.5]
-                ].map(([px, py], i) => (
-                  <div
-                    key={i}
-                    className={classes.transformGrabber}
-                    {...mouseEvents}
-                    onMouseDown={e => {
-                      if (e.button === 0)
-                        return onBeginBoxTransform(r, [px * 2 - 1, py * 2 - 1])
-                      mouseEvents.onMouseDown(e)
-                    }}
-                    style={{
-                      left: pbox.x - 4 - 2 + pbox.w * px,
-                      top: pbox.y - 4 - 2 + pbox.h * py,
-                      cursor: boxCursorMap[py * 2][px * 2],
-                      borderRadius: px === 0.5 && py === 0.5 ? 4 : undefined
-                    }}
-                  />
-                ))}
-              {r.type === "polygon" &&
-                !dragWithPrimary &&
-                !zoomWithPrimary &&
-                !r.locked &&
-                r.highlighted &&
-                r.points.map(([px, py], i) => {
-                  const proj = mat
-                    .clone()
-                    .inverse()
-                    .applyToPoint(px * iw, py * ih)
-                  return (
+              <PreventScrollToParents>
+                <HighlightBox
+                  region={r}
+                  mouseEvents={mouseEvents}
+                  dragWithPrimary={dragWithPrimary}
+                  createWithPrimary={createWithPrimary}
+                  zoomWithPrimary={zoomWithPrimary}
+                  onBeginMovePoint={onBeginMovePoint}
+                  onSelectRegion={onSelectRegion}
+                  pbox={pbox}
+                />
+                {r.type === "box" &&
+                  !dragWithPrimary &&
+                  !zoomWithPrimary &&
+                  !r.locked &&
+                  r.highlighted &&
+                  mat.a < 1.2 &&
+                  [
+                    [0, 0],
+                    [0.5, 0],
+                    [1, 0],
+                    [1, 0.5],
+                    [1, 1],
+                    [0.5, 1],
+                    [0, 1],
+                    [0, 0.5],
+                    [0.5, 0.5]
+                  ].map(([px, py], i) => (
                     <div
                       key={i}
+                      className={classes.transformGrabber}
                       {...mouseEvents}
                       onMouseDown={e => {
-                        if (e.button === 0 && (!r.open || i === 0))
-                          return onBeginMovePolygonPoint(r, i)
+                        if (e.button === 0)
+                          return onBeginBoxTransform(r, [
+                            px * 2 - 1,
+                            py * 2 - 1
+                          ])
                         mouseEvents.onMouseDown(e)
                       }}
-                      className={classes.transformGrabber}
                       style={{
-                        cursor: !r.open
-                          ? "move"
-                          : i === 0
-                          ? "pointer"
-                          : undefined,
-                        pointerEvents:
-                          r.open && i === r.points.length - 1
-                            ? "none"
-                            : undefined,
-                        left: proj.x - 4,
-                        top: proj.y - 4
+                        left: pbox.x - 4 - 2 + pbox.w * px,
+                        top: pbox.y - 4 - 2 + pbox.h * py,
+                        cursor: boxCursorMap[py * 2][px * 2],
+                        borderRadius: px === 0.5 && py === 0.5 ? 4 : undefined
                       }}
                     />
-                  )
-                })}
-              {r.type === "polygon" &&
-                r.highlighted &&
-                !dragWithPrimary &&
-                !zoomWithPrimary &&
-                !r.locked &&
-                !r.open &&
-                r.points.length > 1 &&
-                r.points
-                  .map((p1, i) => [p1, r.points[(i + 1) % r.points.length]])
-                  .map(([p1, p2]) => [(p1[0] + p2[0]) / 2, (p1[1] + p2[1]) / 2])
-                  .map((pa, i) => {
+                  ))}
+                {r.type === "polygon" &&
+                  !dragWithPrimary &&
+                  !zoomWithPrimary &&
+                  !r.locked &&
+                  r.highlighted &&
+                  r.points.map(([px, py], i) => {
                     const proj = mat
                       .clone()
                       .inverse()
-                      .applyToPoint(pa[0] * iw, pa[1] * ih)
+                      .applyToPoint(px * iw, py * ih)
                     return (
                       <div
                         key={i}
                         {...mouseEvents}
                         onMouseDown={e => {
-                          if (e.button === 0)
-                            return onAddPolygonPoint(r, pa, i + 1)
+                          if (e.button === 0 && (!r.open || i === 0))
+                            return onBeginMovePolygonPoint(r, i)
                           mouseEvents.onMouseDown(e)
                         }}
                         className={classes.transformGrabber}
                         style={{
-                          cursor: "copy",
+                          cursor: !r.open
+                            ? "move"
+                            : i === 0
+                            ? "pointer"
+                            : undefined,
+                          pointerEvents:
+                            r.open && i === r.points.length - 1
+                              ? "none"
+                              : undefined,
                           left: proj.x - 4,
-                          top: proj.y - 4,
-                          border: "2px dotted #fff",
-                          opacity: 0.5
+                          top: proj.y - 4
                         }}
                       />
                     )
                   })}
+                {r.type === "polygon" &&
+                  r.highlighted &&
+                  !dragWithPrimary &&
+                  !zoomWithPrimary &&
+                  !r.locked &&
+                  !r.open &&
+                  r.points.length > 1 &&
+                  r.points
+                    .map((p1, i) => [p1, r.points[(i + 1) % r.points.length]])
+                    .map(([p1, p2]) => [
+                      (p1[0] + p2[0]) / 2,
+                      (p1[1] + p2[1]) / 2
+                    ])
+                    .map((pa, i) => {
+                      const proj = mat
+                        .clone()
+                        .inverse()
+                        .applyToPoint(pa[0] * iw, pa[1] * ih)
+                      return (
+                        <div
+                          key={i}
+                          {...mouseEvents}
+                          onMouseDown={e => {
+                            if (e.button === 0)
+                              return onAddPolygonPoint(r, pa, i + 1)
+                            mouseEvents.onMouseDown(e)
+                          }}
+                          className={classes.transformGrabber}
+                          style={{
+                            cursor: "copy",
+                            left: proj.x - 4,
+                            top: proj.y - 4,
+                            border: "2px dotted #fff",
+                            opacity: 0.5
+                          }}
+                        />
+                      )
+                    })}
+              </PreventScrollToParents>
             </Fragment>
           )
         })}
@@ -773,9 +781,9 @@ export default ({
             )}
         </svg>
       )}
-      <RemoveScrollOnChildren>
+      <PreventScrollToParents>
         <canvas {...mouseEvents} className={classes.canvas} ref={canvasEl} />
-      </RemoveScrollOnChildren>
+      </PreventScrollToParents>
       <div className={classes.zoomIndicator}>
         {((1 / mat.a) * 100).toFixed(0)}%
       </div>
