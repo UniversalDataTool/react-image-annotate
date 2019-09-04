@@ -2,7 +2,7 @@
 
 import React from "react"
 import SidebarBoxContainer from "../SidebarBoxContainer"
-import { makeStyles } from "@material-ui/styles"
+import { makeStyles } from "@material-ui/core/styles"
 import StyleIcon from "@material-ui/icons/Style"
 import { grey } from "@material-ui/core/colors"
 import Select from "react-select"

@@ -2,7 +2,7 @@
 
 import React, { useState } from "react"
 import Button from "@material-ui/core/Button"
-import { makeStyles } from "@material-ui/styles"
+import { makeStyles } from "@material-ui/core/styles"
 import Select from "react-select"
 import Code from "react-syntax-highlighter"
 import Dialog from "@material-ui/core/Dialog"

@@ -11,7 +11,7 @@ import type {
   Box
 } from "./region-tools.js"
 import { getEnclosingBox } from "./region-tools.js"
-import { makeStyles } from "@material-ui/styles"
+import { makeStyles } from "@material-ui/core/styles"
 import styles from "./styles"
 import classnames from "classnames"
 import RegionLabel from "../RegionLabel"

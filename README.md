@@ -6,12 +6,11 @@ The best image/video annotation tool ever. [Check out the demo here](https://wor
 
 ## Features
 
-* Simple input/output format
-* Bounding Box, Point and Polygon Annotation
-* Zooming, Scaling, Panning
-* Multiple Images
-* Cursor Crosshair
-
+- Simple input/output format
+- Bounding Box, Point and Polygon Annotation
+- Zooming, Scaling, Panning
+- Multiple Images
+- Cursor Crosshair
 
 ![Screenshot of Annotator](https://user-images.githubusercontent.com/1910070/51199716-83c72080-18c5-11e9-837c-c3a89c8caef4.png)
 
@@ -20,10 +19,10 @@ The best image/video annotation tool ever. [Check out the demo here](https://wor
 `npm install react-image-annotate`
 
 ```javascript
-import Annotator from "react-image-annotate/Annotator"
+import ReactImageAnnotate from "react-image-annotate"
 
 const App = () => (
-  <Annotator
+  <ReactImageAnnotate
     selectedImage="https://example.com/image1.png"
     taskDescription="# Draw region around each face\n\nInclude chin and hair."
     images={[{ src: "https://example.com/image1.png", name: "Image 1" }]}
