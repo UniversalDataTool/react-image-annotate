@@ -20,7 +20,7 @@ import Paper from "@material-ui/core/Paper"
 import HighlightBox from "../HighlightBox"
 // import excludePatternSrc from "./xpattern.png"
 import excludePatternSrc from "./xpattern.js"
-import { RemoveScroll } from "react-remove-scroll"
+import RemoveScrollOnChildren from "../RemoveScrollOnChildren"
 
 const useStyles = makeStyles(styles)
 
@@ -773,7 +773,9 @@ export default ({
             )}
         </svg>
       )}
-      <canvas {...mouseEvents} className={classes.canvas} ref={canvasEl} />
+      <RemoveScrollOnChildren>
+        <canvas {...mouseEvents} className={classes.canvas} ref={canvasEl} />
+      </RemoveScrollOnChildren>
       <div className={classes.zoomIndicator}>
         {((1 / mat.a) * 100).toFixed(0)}%
       </div>
