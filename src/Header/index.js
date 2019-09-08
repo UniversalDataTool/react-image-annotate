@@ -1,7 +1,7 @@
 // @flow
 
 import React from "react"
-import { makeStyles } from "@material-ui/styles"
+import { makeStyles } from "@material-ui/core/styles"
 import HeaderButton, { HeaderButtonContext } from "../HeaderButton"
 import BackIcon from "@material-ui/icons/KeyboardArrowLeft"
 import NextIcon from "@material-ui/icons/KeyboardArrowRight"

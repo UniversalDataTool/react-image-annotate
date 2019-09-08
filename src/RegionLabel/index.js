@@ -2,7 +2,7 @@
 
 import React, { useState } from "react"
 import Paper from "@material-ui/core/Paper"
-import { makeStyles } from "@material-ui/styles"
+import { makeStyles } from "@material-ui/core/styles"
 import styles from "./styles"
 import classnames from "classnames"
 import type { Region } from "../ImageCanvas/region-tools.js"

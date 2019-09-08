@@ -2,7 +2,7 @@
 
 import React, { useState } from "react"
 import Grid from "@material-ui/core/Grid"
-import { makeStyles } from "@material-ui/styles"
+import { makeStyles } from "@material-ui/core/styles"
 import Sidebar from "../Sidebar"
 import ImageCanvas from "../ImageCanvas"
 import Header from "../Header"

@@ -314,3 +314,25 @@ storiesOf("Annotator", module)
       }}
     />
   ))
+  .add("Annotator blocks scroll from propagating", () => (
+    <div style={{ height: "200vh" }}>
+      <Annotator
+        onExit={actionAddon("onExit")}
+        showTags={false}
+        middlewares={[
+          store => next => action => {
+            actionAddon(action.type)(action)
+            return next(action)
+          }
+        ]}
+        images={[
+          {
+            src: exampleImage,
+            name: "Seve's Desk",
+            regions: testRegions
+          }
+        ]}
+      />
+      <div style={{ color: "red" }}>You shouldn't be able to see this</div>
+    </div>
+  ))

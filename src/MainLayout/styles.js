@@ -5,7 +5,7 @@ export default {
     display: "flex",
     flexGrow: 1,
     flexDirection: "column",
-    minHeight: "98vh",
+    minHeight: "100%",
     maxHeight: "100vh",
     backgroundColor: "#fff",
     overflow: "hidden",

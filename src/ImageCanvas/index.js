@@ -11,7 +11,7 @@ import type {
   Box
 } from "./region-tools.js"
 import { getEnclosingBox } from "./region-tools.js"
-import { makeStyles } from "@material-ui/styles"
+import { makeStyles } from "@material-ui/core/styles"
 import styles from "./styles"
 import classnames from "classnames"
 import RegionLabel from "../RegionLabel"
@@ -20,6 +20,7 @@ import Paper from "@material-ui/core/Paper"
 import HighlightBox from "../HighlightBox"
 // import excludePatternSrc from "./xpattern.png"
 import excludePatternSrc from "./xpattern.js"
+import RemoveScrollOnChildren from "../RemoveScrollOnChildren"
 
 const useStyles = makeStyles(styles)
 
@@ -498,14 +499,14 @@ export default ({
         cursor: createWithPrimary
           ? "crosshair"
           : dragging
-            ? "grabbing"
-            : dragWithPrimary
-              ? "grab"
-              : zoomWithPrimary
-                ? mat.a < 1
-                  ? "zoom-out"
-                  : "zoom-in"
-                : undefined
+          ? "grabbing"
+          : dragWithPrimary
+          ? "grab"
+          : zoomWithPrimary
+          ? mat.a < 1
+            ? "zoom-out"
+            : "zoom-in"
+          : undefined
       }}
     >
       {showCrosshairs && <Crosshairs mousePosition={mousePosition} />}
@@ -585,8 +586,8 @@ export default ({
                         cursor: !r.open
                           ? "move"
                           : i === 0
-                            ? "pointer"
-                            : undefined,
+                          ? "pointer"
+                          : undefined,
                         pointerEvents:
                           r.open && i === r.points.length - 1
                             ? "none"
@@ -702,20 +703,19 @@ export default ({
               </div>
             )
           })}
-      {zoomWithPrimary &&
-        zoomBox !== null && (
-          <div
-            style={{
-              position: "absolute",
-              border: "1px solid #fff",
-              pointerEvents: "none",
-              left: zoomBox.x,
-              top: zoomBox.y,
-              width: zoomBox.w,
-              height: zoomBox.h
-            }}
-          />
-        )}
+      {zoomWithPrimary && zoomBox !== null && (
+        <div
+          style={{
+            position: "absolute",
+            border: "1px solid #fff",
+            pointerEvents: "none",
+            left: zoomBox.x,
+            top: zoomBox.y,
+            width: zoomBox.w,
+            height: zoomBox.h
+          }}
+        />
+      )}
       {showPointDistances && (
         <svg
           className={classes.pointDistanceIndicator}
@@ -728,49 +728,54 @@ export default ({
             height: "100%"
           }}
         >
-          {regions.filter(r1 => r1.type === "point").flatMap((r1, i1) =>
-            regions
-              .filter((r2, i2) => i2 > i1)
-              .filter(r2 => r2.type === "point")
-              .map(r2 => {
-                const pr1 = projectRegionBox(r1)
-                const pr2 = projectRegionBox(r2)
-                const prm = {
-                  x: (pr1.x + pr1.w / 2 + pr2.x + pr2.w / 2) / 2,
-                  y: (pr1.y + pr1.h / 2 + pr2.y + pr2.h / 2) / 2
-                }
-                let displayDistance
-                if (realSize) {
-                  const { w, h, unitName } = realSize
-                  displayDistance =
-                    Math.sqrt(
-                      Math.pow(r1.x * w - r2.x * w, 2) +
-                        Math.pow(r1.y * h - r2.y * h, 2)
-                    ).toFixed(pointDistancePrecision) + unitName
-                } else {
-                  displayDistance =
-                    (
+          {regions
+            .filter(r1 => r1.type === "point")
+            .flatMap((r1, i1) =>
+              regions
+                .filter((r2, i2) => i2 > i1)
+                .filter(r2 => r2.type === "point")
+                .map(r2 => {
+                  const pr1 = projectRegionBox(r1)
+                  const pr2 = projectRegionBox(r2)
+                  const prm = {
+                    x: (pr1.x + pr1.w / 2 + pr2.x + pr2.w / 2) / 2,
+                    y: (pr1.y + pr1.h / 2 + pr2.y + pr2.h / 2) / 2
+                  }
+                  let displayDistance
+                  if (realSize) {
+                    const { w, h, unitName } = realSize
+                    displayDistance =
                       Math.sqrt(
-                        Math.pow(r1.x - r2.x, 2) + Math.pow(r1.y - r2.y, 2)
-                      ) * 100
-                    ).toFixed(pointDistancePrecision) + "%"
-                }
-                return (
-                  <Fragment>
-                    <path
-                      d={`M${pr1.x + pr1.w / 2},${pr1.y + pr1.h / 2} L${pr2.x +
-                        pr2.w / 2},${pr2.y + pr2.h / 2}`}
-                    />
-                    <text x={prm.x} y={prm.y}>
-                      {displayDistance}
-                    </text>
-                  </Fragment>
-                )
-              })
-          )}
+                        Math.pow(r1.x * w - r2.x * w, 2) +
+                          Math.pow(r1.y * h - r2.y * h, 2)
+                      ).toFixed(pointDistancePrecision) + unitName
+                  } else {
+                    displayDistance =
+                      (
+                        Math.sqrt(
+                          Math.pow(r1.x - r2.x, 2) + Math.pow(r1.y - r2.y, 2)
+                        ) * 100
+                      ).toFixed(pointDistancePrecision) + "%"
+                  }
+                  return (
+                    <Fragment>
+                      <path
+                        d={`M${pr1.x + pr1.w / 2},${pr1.y +
+                          pr1.h / 2} L${pr2.x + pr2.w / 2},${pr2.y +
+                          pr2.h / 2}`}
+                      />
+                      <text x={prm.x} y={prm.y}>
+                        {displayDistance}
+                      </text>
+                    </Fragment>
+                  )
+                })
+            )}
         </svg>
       )}
-      <canvas {...mouseEvents} className={classes.canvas} ref={canvasEl} />
+      <RemoveScrollOnChildren>
+        <canvas {...mouseEvents} className={classes.canvas} ref={canvasEl} />
+      </RemoveScrollOnChildren>
       <div className={classes.zoomIndicator}>
         {((1 / mat.a) * 100).toFixed(0)}%
       </div>

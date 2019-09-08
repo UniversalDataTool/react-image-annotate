@@ -15,7 +15,7 @@ import {
   faSearch
 } from "@fortawesome/free-solid-svg-icons"
 import SmallToolButton, { SelectedTool } from "../SmallToolButton"
-import { makeStyles } from "@material-ui/styles"
+import { makeStyles } from "@material-ui/core/styles"
 import { grey } from "@material-ui/core/colors"
 
 const useStyles = makeStyles({

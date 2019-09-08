@@ -1,13 +1,13 @@
 // @flow
 
 import React from "react"
-import ReactDOM from "react-dom"
+import Annotator from "./Annotator"
 import Theme from "./Theme"
-import DemoSite from "./DemoSite"
 
-ReactDOM.render(
-  <Theme>
-    <DemoSite />
-  </Theme>,
-  document.getElementById("root")
-)
+export default (props: any) => {
+  return (
+    <Theme>
+      <Annotator {...props} />
+    </Theme>
+  )
+}

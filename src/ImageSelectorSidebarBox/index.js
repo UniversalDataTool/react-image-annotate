@@ -1,7 +1,7 @@
 // @flow
 
 import React from "react"
-import { makeStyles } from "@material-ui/styles"
+import { makeStyles } from "@material-ui/core/styles"
 import SidebarBoxContainer from "../SidebarBoxContainer"
 import CollectionsIcon from "@material-ui/icons/Collections"
 import { grey } from "@material-ui/core/colors"
