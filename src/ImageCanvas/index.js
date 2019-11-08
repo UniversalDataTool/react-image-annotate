@@ -653,31 +653,47 @@ export default ({
             let margin = 8
             if (region.highlighted && region.type === "box") margin += 6
             const labelBoxHeight =
-              region.editingLabels && !region.locked ? 170 : 40
-            const coords =
-              pbox.y > labelBoxHeight
-                ? {
-                    left: pbox.x,
-                    bottom: layoutParams.current.canvasHeight - pbox.y + margin
-                  }
-                : { left: pbox.x, top: pbox.y + pbox.h + margin / 2 }
+              region.editingLabels && !region.locked
+                ? 170
+                : region.tags
+                ? 60
+                : 50
+            const displayOnTop = pbox.y > labelBoxHeight
+
+            const coords = displayOnTop
+              ? {
+                  left: pbox.x,
+                  top: pbox.y - margin / 2
+                }
+              : { left: pbox.x, top: pbox.y + pbox.h + margin / 2 }
             if (region.locked) {
               return (
-                <Paper
+                <div
                   style={{
                     position: "absolute",
                     ...coords,
-                    zIndex: 10,
-                    backgroundColor: "#fff",
-                    borderRadius: 4,
-                    padding: 2,
-                    paddingBottom: 0,
-                    opacity: 0.5,
-                    pointerEvents: "none"
+                    zIndex: 10 + (region.editingLabels ? 5 : 0)
                   }}
                 >
-                  <LockIcon style={{ width: 16, height: 16, color: "#333" }} />
-                </Paper>
+                  <Paper
+                    style={{
+                      position: "absolute",
+                      left: 0,
+                      ...(displayOnTop ? { bottom: 0 } : { top: 0 }),
+                      zIndex: 10,
+                      backgroundColor: "#fff",
+                      borderRadius: 4,
+                      padding: 2,
+                      paddingBottom: 0,
+                      opacity: 0.5,
+                      pointerEvents: "none"
+                    }}
+                  >
+                    <LockIcon
+                      style={{ width: 16, height: 16, color: "#333" }}
+                    />
+                  </Paper>
+                </div>
               )
             }
             return (
@@ -685,9 +701,9 @@ export default ({
                 style={{
                   position: "absolute",
                   ...coords,
-                  zIndex: 10 + (region.editingLabels ? 5 : 0)
+                  zIndex: 10 + (region.editingLabels ? 5 : 0),
+                  width: 200
                 }}
-                {...(!region.editingLabels ? mouseEvents : {})}
                 onMouseDown={e => e.preventDefault()}
                 onMouseUp={e => e.preventDefault()}
                 onMouseEnter={e => {
@@ -698,16 +714,25 @@ export default ({
                   }
                 }}
               >
-                <RegionLabel
-                  allowedClasses={regionClsList}
-                  allowedTags={regionTagList}
-                  onOpen={onBeginRegionEdit}
-                  onChange={onChangeRegion}
-                  onClose={onCloseRegionEdit}
-                  onDelete={onDeleteRegion}
-                  editing={region.editingLabels}
-                  region={region}
-                />
+                <div
+                  style={{
+                    position: "absolute",
+                    left: 0,
+                    ...(displayOnTop ? { bottom: 0 } : { top: 0 })
+                  }}
+                  {...(!region.editingLabels ? mouseEvents : {})}
+                >
+                  <RegionLabel
+                    allowedClasses={regionClsList}
+                    allowedTags={regionTagList}
+                    onOpen={onBeginRegionEdit}
+                    onChange={onChangeRegion}
+                    onClose={onCloseRegionEdit}
+                    onDelete={onDeleteRegion}
+                    editing={region.editingLabels}
+                    region={region}
+                  />
+                </div>
               </div>
             )
           })}
@@ -781,8 +806,11 @@ export default ({
             )}
         </svg>
       )}
-      <PreventScrollToParents>
-        <canvas {...mouseEvents} className={classes.canvas} ref={canvasEl} />
+      <PreventScrollToParents
+        style={{ width: "100%", height: "100%" }}
+        {...mouseEvents}
+      >
+        <canvas className={classes.canvas} ref={canvasEl} />
       </PreventScrollToParents>
       <div className={classes.zoomIndicator}>
         {((1 / mat.a) * 100).toFixed(0)}%

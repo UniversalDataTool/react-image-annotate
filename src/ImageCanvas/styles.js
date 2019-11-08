@@ -10,7 +10,7 @@ export default {
   },
   zoomIndicator: {
     position: "absolute",
-    bottom: 0,
+    bottom: 16,
     right: 0,
     backgroundColor: "rgba(0,0,0,0.4)",
     color: "#fff",

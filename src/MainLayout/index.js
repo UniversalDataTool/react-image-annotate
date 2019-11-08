@@ -77,49 +77,51 @@ export default ({ state, dispatch }: Props) => {
             {!state.selectedImage ? (
               <div className={classes.noImageSelected}>No Image Selected</div>
             ) : (
-              <ImageCanvas
-                {...settings}
-                key={state.selectedImage}
-                showTags={state.showTags}
-                allowedArea={state.allowedArea}
-                regionClsList={state.regionClsList}
-                regionTagList={state.regionTagList}
-                regions={currentImage ? currentImage.regions || [] : []}
-                realSize={currentImage ? currentImage.realSize : undefined}
-                imageSrc={state.selectedImage}
-                pointDistancePrecision={state.pointDistancePrecision}
-                createWithPrimary={state.selectedTool.includes("create")}
-                dragWithPrimary={state.selectedTool === "pan"}
-                zoomWithPrimary={state.selectedTool === "zoom"}
-                showPointDistances={state.showPointDistances}
-                pointDistancePrecision={state.pointDistancePrecision}
-                onMouseMove={action("MOUSE_MOVE")}
-                onMouseDown={action("MOUSE_DOWN")}
-                onMouseUp={action("MOUSE_UP")}
-                onChangeRegion={action("CHANGE_REGION", "region")}
-                onBeginRegionEdit={action("OPEN_REGION_EDITOR", "region")}
-                onCloseRegionEdit={action("CLOSE_REGION_EDITOR", "region")}
-                onDeleteRegion={action("DELETE_REGION", "region")}
-                onBeginBoxTransform={action(
-                  "BEGIN_BOX_TRANSFORM",
-                  "box",
-                  "directions"
-                )}
-                onBeginMovePolygonPoint={action(
-                  "BEGIN_MOVE_POLYGON_POINT",
-                  "polygon",
-                  "pointIndex"
-                )}
-                onAddPolygonPoint={action(
-                  "ADD_POLYGON_POINT",
-                  "polygon",
-                  "point",
-                  "pointIndex"
-                )}
-                onSelectRegion={action("SELECT_REGION", "region")}
-                onBeginMovePoint={action("BEGIN_MOVE_POINT", "point")}
-                onImageLoaded={action("IMAGE_LOADED", "image")}
-              />
+              <div style={{ height: "100%", width: "100%" }}>
+                <ImageCanvas
+                  {...settings}
+                  key={state.selectedImage}
+                  showTags={state.showTags}
+                  allowedArea={state.allowedArea}
+                  regionClsList={state.regionClsList}
+                  regionTagList={state.regionTagList}
+                  regions={currentImage ? currentImage.regions || [] : []}
+                  realSize={currentImage ? currentImage.realSize : undefined}
+                  imageSrc={state.selectedImage}
+                  pointDistancePrecision={state.pointDistancePrecision}
+                  createWithPrimary={state.selectedTool.includes("create")}
+                  dragWithPrimary={state.selectedTool === "pan"}
+                  zoomWithPrimary={state.selectedTool === "zoom"}
+                  showPointDistances={state.showPointDistances}
+                  pointDistancePrecision={state.pointDistancePrecision}
+                  onMouseMove={action("MOUSE_MOVE")}
+                  onMouseDown={action("MOUSE_DOWN")}
+                  onMouseUp={action("MOUSE_UP")}
+                  onChangeRegion={action("CHANGE_REGION", "region")}
+                  onBeginRegionEdit={action("OPEN_REGION_EDITOR", "region")}
+                  onCloseRegionEdit={action("CLOSE_REGION_EDITOR", "region")}
+                  onDeleteRegion={action("DELETE_REGION", "region")}
+                  onBeginBoxTransform={action(
+                    "BEGIN_BOX_TRANSFORM",
+                    "box",
+                    "directions"
+                  )}
+                  onBeginMovePolygonPoint={action(
+                    "BEGIN_MOVE_POLYGON_POINT",
+                    "polygon",
+                    "pointIndex"
+                  )}
+                  onAddPolygonPoint={action(
+                    "ADD_POLYGON_POINT",
+                    "polygon",
+                    "point",
+                    "pointIndex"
+                  )}
+                  onSelectRegion={action("SELECT_REGION", "region")}
+                  onBeginMovePoint={action("BEGIN_MOVE_POINT", "point")}
+                  onImageLoaded={action("IMAGE_LOADED", "image")}
+                />
+              </div>
             )}
           </div>
           <div className={classes.sidebarContainer}>
