@@ -67,6 +67,7 @@ export default ({
       action.type === "HEADER_BUTTON_CLICKED" &&
       (action.buttonName === "Exit" ||
         action.buttonName === "Done" ||
+        action.buttonName === "Save" ||
         action.buttonName === "Complete")
     ) {
       onExit({ ...state, history: undefined })

@@ -37,7 +37,7 @@ export default ({ onHeaderButtonClick, title, inFullScreen }: Props) => {
             <HeaderButton name="Fullscreen" Icon={FullscreenIcon} />
           )}
           {/* <HeaderButton name="Hotkeys" Icon={HotkeysIcon} /> */}
-          <HeaderButton name="Done" Icon={ExitIcon} />
+          <HeaderButton name="Save" Icon={ExitIcon} />
         </HeaderButtonContext.Provider>
       </div>
     </div>
