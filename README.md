@@ -2,7 +2,7 @@
 
 [![npm version](https://badge.fury.io/js/react-image-annotate.svg)](https://badge.fury.io/js/react-image-annotate)
 
-The best image/video annotation tool ever. [Check out the demo here](https://workaroundonline.github.io/react-image-annotate/).
+The best image/video annotation tool ever. [Check out the demo here](https://waoai.github.io/react-image-annotate/).
 
 ## Features
 
