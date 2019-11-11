@@ -38,6 +38,26 @@ following line added to a css file should suffice.
 @import url("https://rsms.me/inter/inter.css");
 ```
 
+## Props
+
+All of the following properties can be defined on the Annotator...
+
+| Prop                     | Type (\* = required)                             | Description                                                                             | Default       |
+| ------------------------ | ------------------------------------------------ | --------------------------------------------------------------------------------------- | ------------- |
+| `taskDescription`        | \*`string`                                       | Markdown description for what to do in the image.                                       |               |
+| `allowedArea`            | `{ x: number, y: number, w: number, h: number }` | Area that is available for annotation.                                                  | Entire image. |
+| `regionTagList`          | `Array<string>`                                  | Allowed "tags" (mutually inclusive classifications) for regions.                        |               |
+| `regionClsList`          | `Array<string>`                                  | Allowed "classes" (mutually exclusive classifications) for regions.                     |               |
+| `imageTagList`           | `Array<string>`                                  | Allowed tags for entire image.                                                          |               |
+| `imageClsList`           | `Array<string>`                                  | Allowed classes for entire image.                                                       |               |
+| `enabledTools`           | `Array<string>`                                  | Tools allowed to be used. e.g. "select", "create-point", "create-box", "create-polygon" | Everything.   |
+| `showTags`               | `boolean`                                        | Show tags and allow tags on regions.                                                    | `true`        |
+| `selectedImage`          | `string`                                         | URL of initially selected image.                                                        |               |
+| `images`                 | `Array<Image>`                                   | Array of images to load into annotator                                                  |               |
+| `showPointDistances`     | `boolean`                                        | Show distances between points.                                                          | `false`       |
+| `pointDistancePrecision` | `number`                                         | Precision on displayed points (e.g. 3 => 0.123)                                         |               |
+| `onExit`                 | `MainLayoutState => any`                         | Called when "Save" is called.                                                           |               |
+
 ## Developers
 
 ### Development
