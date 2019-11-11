@@ -17,18 +17,28 @@ const useStyles = makeStyles(styles)
 type Props = {
   onHeaderButtonClick: string => any,
   title: string,
-  inFullScreen?: boolean
+  inFullScreen?: boolean,
+  multipleImages?: boolean
 }
 
-export default ({ onHeaderButtonClick, title, inFullScreen }: Props) => {
+export default ({
+  onHeaderButtonClick,
+  title,
+  inFullScreen,
+  multipleImages
+}: Props) => {
   const classes = useStyles()
   return (
     <div className={classes.header}>
       <div className={classes.fileInfo}>{title}</div>
       <div className={classes.headerActions}>
         <HeaderButtonContext.Provider value={{ onHeaderButtonClick }}>
-          <HeaderButton name="Prev" Icon={BackIcon} />
-          <HeaderButton name="Next" Icon={NextIcon} />
+          {multipleImages && (
+            <>
+              <HeaderButton name="Prev" Icon={BackIcon} />
+              <HeaderButton name="Next" Icon={NextIcon} />
+            </>
+          )}
           <HeaderButton name="Settings" Icon={SettingsIcon} />
           {/* <HeaderButton name="Help" Icon={HelpIcon} /> */}
           {inFullScreen ? (

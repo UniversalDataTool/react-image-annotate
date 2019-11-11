@@ -61,6 +61,7 @@ export default ({ state, dispatch }: Props) => {
           <Header
             onHeaderButtonClick={action("HEADER_BUTTON_CLICKED", "buttonName")}
             inFullScreen={state.fullScreen}
+            multipleImages={Boolean(state.images.length > 1)}
             title={currentImage ? currentImage.name : "No Image Selected"}
           />
         </div>
