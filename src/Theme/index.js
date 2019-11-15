@@ -1,9 +1,11 @@
 // @flow
 
 import React from "react"
-import { makeStyles } from "@material-ui/core/styles"
-import createMuiTheme from "@material-ui/core/styles/createMuiTheme"
-import { ThemeProvider } from "@material-ui/core/styles"
+import {
+  ThemeProvider,
+  createMuiTheme,
+  makeStyles
+} from "@material-ui/core/styles"
 
 const useStyles = makeStyles({
   container: {
