@@ -75,7 +75,7 @@ export type Action =
   | {| type: "CLOSE_POLYGON", polygon: Polygon |}
   | {| type: "SELECT_REGION", region: Region |}
   | {| type: "BEGIN_MOVE_POINT", point: Point |}
-  | {| type: "BEGIN_CIRCLE_TRANSFORM", region: Circle, directions: [number, number] |}
+  | {| type: "BEGIN_CIRCLE_TRANSFORM", region: Circle, directions: string |}
   | {| type: "BEGIN_BOX_TRANSFORM", box: Box, directions: [number, number] |}
   | {| type: "BEGIN_MOVE_POLYGON_POINT", polygon: Polygon, pointIndex: number |}
   | {|

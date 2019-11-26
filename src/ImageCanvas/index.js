@@ -54,7 +54,7 @@ type Props = {
   onCloseRegionEdit: Region => any,
   onDeleteRegion: Region => any,
   onBeginBoxTransform: (Box, [number, number]) => any,
-  onBeginCircleTransform: (Circle) => any,
+  onBeginCircleTransform: (Circle, directions: string) => any,
   onBeginMovePolygonPoint: (Polygon, index: number) => any,
   onAddPolygonPoint: (Polygon, point: [number, number], index: number) => any,
   onSelectRegion: Region => any,
@@ -588,15 +588,40 @@ export default ({
                   !zoomWithPrimary &&
                   !r.locked &&
                   r.highlighted &&
-                  <div
-                    key={1}
-                    {...mouseEvents}
-                    onMouseDown={e => {
-                      if (e.button === 0)
-                        return onBeginCircleTransform(r)
-                      mouseEvents.onMouseDown(e)
-                    }}
-                  />
+                  [
+                    [r.x, r.y],
+                    [r.x + r.rx, r.y],
+                    [r.x, r.y + r.ry],
+                    [r.x - r.rx, r.y],
+                    [r.x, r.y - r.ry]
+                  ].map(([px, py], i) => {
+                    const proj = mat
+                      .clone()
+                      .inverse()
+                      .applyToPoint(px * iw, py * ih)
+                    return(
+                      <div
+                        key={i}
+                        className={classes.transformGrabber}
+                        {...mouseEvents}
+                        onMouseDown={e => {
+                          if (e.button === 0 && i==0){
+                            return onBeginCircleTransform(r, "MOVE_REGION")
+                          }else if(e.button === 0 && i==0){
+                            return onBeginCircleTransform(r, "RESIZE_CIRCLE")
+                          }
+                          mouseEvents.onMouseDown(e)
+                        }}
+                        style={{
+                          left: proj.x - 4,
+                          top: proj.y - 4,
+                          // top: pbox.y - 4 - 2 + pbox.h * py,
+                          // cursor: boxCursorMap[py * 2][px * 2],
+                          borderRadius: px === r.x && py === r.y ? 4 : undefined
+                        }}
+                      />
+                    )
+                  })
                 }
                 {r.type === "polygon" &&
                   !dragWithPrimary &&
