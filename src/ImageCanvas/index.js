@@ -292,7 +292,8 @@ export default ({
           context.shadowBlur = 4
           context.strokeStyle = region.color
           context.beginPath();
-          context.arc(region.x * iw, region.y * ih, region.radius * Math.sqrt(Math.pow(iw,2) + Math.pow(ih,2)) , 0, 2 * Math.PI);
+          context.arc(region.x * iw, region.y * ih,
+             Math.sqrt(Math.pow((region.xr-region.x)*iw,2) + Math.pow((region.yr-region.y)*ih,2)), 0, 2 * Math.PI);
           context.stroke()
           context.restore()
           break

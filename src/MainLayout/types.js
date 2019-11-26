@@ -40,7 +40,7 @@ export type Mode =
       mode: "RESIZE_CIRCLE",
       editLabelEditorAfter?: boolean,
       regionId: string,
-      original: {x: number, y: number, radius: number}
+      original: {x: number, y: number, xr: number, yr: number}
     |}
   | {| mode: "MOVE_REGION" |}
 

@@ -50,10 +50,14 @@ export type Polygon = {|
 export type Circle = {|
   ...$Exact<BaseRegion>,
   type: "circle",
-  radius: number,
+  // radius: number,
   // x and y indicate the coordinates of the centre of the circle
   x: number,
-  y: number
+  y: number,
+  // xr and yr indicate the x radius and y radius. Note that the coordinates are
+  // transformed. Hence, I'm keeping them both.
+  xr: number,
+  yr: number
 |}
 
 export type Region = Point | PixelRegion | Box | Polygon
@@ -100,10 +104,10 @@ export const getEnclosingBox = (region: Region) => {
     }
     case "circle": {
       return {
-        x: region.x-region.radius,
-        y: region.y-region.radius,
-        w: region.x+region.radius,
-        h: region.y+region.radius
+        x: region.x-region.xr,
+        y: region.y-region.yr,
+        w: region.x+region.xr,
+        h: region.y+region.yr
       }
     }
   }

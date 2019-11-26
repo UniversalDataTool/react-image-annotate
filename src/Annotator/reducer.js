@@ -194,7 +194,7 @@ export default (state: MainLayoutState, action: Action) => {
         return setIn(state, ["mode"], {
           mode: "RESIZE_CIRCLE",
           regionId: region.id,
-          original: {x: x, y: y, radius: region.radius}
+          original: {x: x, y: y, xr: region.xr, yr: region.yr}
         })
       }
     }
@@ -331,7 +331,7 @@ export default (state: MainLayoutState, action: Action) => {
           return setIn(
             state,
             ["images", currentImageIndex, "regions", regionIndex],
-            { ...region, radius: Math.sqrt(Math.pow(region.x - action.x,2) + Math.pow(region.y - action.y,2)) }
+            { ...region, xr: action.x, yr: action.y }
             // region.radius+1
             // Math.sqrt(Math.pow(region.x - x,2) + Math.pow(region.y - y,2))
           )
@@ -429,8 +429,9 @@ export default (state: MainLayoutState, action: Action) => {
             newRegion = {
               type: "circle",
               x: x,
-              y: x,
-              radius: 0.01,
+              y: y,
+              xr: 0.00000000001,
+              yr: 0.00000000001,
               highlighted: true,
               editingLabels: false,
               color: getRandomColor(),
@@ -441,7 +442,7 @@ export default (state: MainLayoutState, action: Action) => {
               mode: "RESIZE_CIRCLE",
               editLabelEditorAfter: true,
               regionId: newRegion.id,
-              original: {x: x, y: y, radius: newRegion.radius}
+              original: {x: x, y: y, xr: newRegion.xr, yr: newRegion.yr}
             })
             break
           }
