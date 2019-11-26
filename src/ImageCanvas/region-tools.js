@@ -47,6 +47,14 @@ export type Polygon = {|
   open?: boolean,
   points: Array<[number, number]>
 |}
+export type Circle = {|
+  ...$Exact<BaseRegion>,
+  type: "circle",
+  radius: number,
+  // x and y indicate the coordinates of the centre of the circle
+  x: number,
+  y: number
+|}
 
 export type Region = Point | PixelRegion | Box | Polygon
 
@@ -88,6 +96,14 @@ export const getEnclosingBox = (region: Region) => {
         box.w = Math.max(...region.points.map(([x, y]) => x)) - box.x
         box.h = Math.max(...region.points.map(([x, y]) => y)) - box.y
         return box
+      }
+    }
+    case "circle": {
+      return {
+        x: region.x-region.radius,
+        y: region.y-region.radius,
+        w: region.x+region.radius,
+        h: region.y+region.radius
       }
     }
   }

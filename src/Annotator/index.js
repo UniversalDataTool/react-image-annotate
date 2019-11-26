@@ -35,7 +35,7 @@ export default ({
   showPointDistances,
   pointDistancePrecision,
   showTags = true,
-  enabledTools = ["select", "create-point", "create-box", "create-polygon"],
+  enabledTools = ["select", "create-point", "create-box", "create-polygon", "create-circle"],
   regionTagList = [],
   regionClsList = [],
   imageTagList = [],

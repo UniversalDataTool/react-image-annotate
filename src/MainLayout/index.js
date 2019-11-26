@@ -102,6 +102,11 @@ export default ({ state, dispatch }: Props) => {
                   onBeginRegionEdit={action("OPEN_REGION_EDITOR", "region")}
                   onCloseRegionEdit={action("CLOSE_REGION_EDITOR", "region")}
                   onDeleteRegion={action("DELETE_REGION", "region")}
+                  onBeginCircleTransform={action(
+                    "BEGIN_CIRCLE_TRANSFORM",
+                    "circle",
+                    "directions"
+                  )}
                   onBeginBoxTransform={action(
                     "BEGIN_BOX_TRANSFORM",
                     "box",

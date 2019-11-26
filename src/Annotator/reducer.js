@@ -24,6 +24,7 @@ const getRandomColor = () => {
 
 const typesToSaveWithHistory = {
   BEGIN_BOX_TRANSFORM: "Transform/Move Box",
+  BEGIN_CIRCLE_TRANSFORM: "Transform/Move Circle",
   BEGIN_MOVE_POINT: "Move Point",
   DELETE_REGION: "Delete Region"
 }
@@ -183,6 +184,20 @@ export default (state: MainLayoutState, action: Action) => {
         regionId: action.point.id
       })
     }
+    case "BEGIN_CIRCLE_TRANSFORM": {
+      debugger;
+      const { region, directions } = action
+      state = closeEditors(state)
+      if (directions[0] === 0 && directions[1] === 0) {
+        return setIn(state, ["mode"], { mode: "MOVE_REGION", regionId: region.id })
+      } else {
+        return setIn(state, ["mode"], {
+          mode: "RESIZE_CIRCLE",
+          regionId: region.id,
+          original: {x: x, y: y, radius: region.radius}
+        })
+      }
+    }
     case "BEGIN_BOX_TRANSFORM": {
       const { box, directions } = action
       state = closeEditors(state)
@@ -309,6 +324,18 @@ export default (state: MainLayoutState, action: Action) => {
             { ...box, x: dx, w: dw, y: dy, h: dh }
           )
         }
+        case "RESIZE_CIRCLE": {
+          const { regionId } = state.mode
+          const [region, regionIndex] = getRegion(regionId)
+          if (!region) return setIn(state, ["mode"], null)
+          return setIn(
+            state,
+            ["images", currentImageIndex, "regions", regionIndex],
+            { ...region, radius: Math.sqrt(Math.pow(region.x - action.x,2) + Math.pow(region.y - action.y,2)) }
+            // region.radius+1
+            // Math.sqrt(Math.pow(region.x - x,2) + Math.pow(region.y - y,2))
+          )
+        }
         case "DRAW_POLYGON": {
           const { regionId } = state.mode
           const [region, regionIndex] = getRegion(regionId)
@@ -397,6 +424,27 @@ export default (state: MainLayoutState, action: Action) => {
             })
             break
           }
+          case "create-circle": {
+            state = saveToHistory(state, "Create Circle")
+            newRegion = {
+              type: "circle",
+              x: x,
+              y: x,
+              radius: 0.01,
+              highlighted: true,
+              editingLabels: false,
+              color: getRandomColor(),
+              id: getRandomId()
+            }
+            state = unselectRegions(state)
+            state = setIn(state, ["mode"], {
+              mode: "RESIZE_CIRCLE",
+              editLabelEditorAfter: true,
+              regionId: newRegion.id,
+              original: {x: x, y: y, radius: newRegion.radius}
+            })
+            break
+          }
         }
       }
 
@@ -432,6 +480,14 @@ export default (state: MainLayoutState, action: Action) => {
       if (!state.mode) return state
       switch (state.mode.mode) {
         case "RESIZE_BOX": {
+          if (state.mode.editLabelEditorAfter) {
+            return {
+              ...modifyRegion(state.mode.regionId, { editingLabels: true }),
+              mode: null
+            }
+          }
+        }
+        case "RESIZE_CIRCLE": {
           if (state.mode.editLabelEditorAfter) {
             return {
               ...modifyRegion(state.mode.regionId, { editingLabels: true }),
@@ -553,6 +609,7 @@ export default (state: MainLayoutState, action: Action) => {
           }
           case "MOVE_POLYGON_POINT":
           case "RESIZE_BOX":
+          case "RESIZE_CIRCLE":
           case "MOVE_REGION": {
             return setIn(state, ["mode"], null)
           }

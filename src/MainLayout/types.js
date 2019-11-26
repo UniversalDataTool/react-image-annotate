@@ -36,6 +36,12 @@ export type Mode =
       freedom: [number, number],
       original: { x: number, y: number, w: number, h: number }
     |}
+  | {|
+      mode: "RESIZE_CIRCLE",
+      editLabelEditorAfter?: boolean,
+      regionId: string,
+      original: {x: number, y: number, radius: number}
+    |}
   | {| mode: "MOVE_REGION" |}
 
 export type MainLayoutState = {|
@@ -69,6 +75,7 @@ export type Action =
   | {| type: "CLOSE_POLYGON", polygon: Polygon |}
   | {| type: "SELECT_REGION", region: Region |}
   | {| type: "BEGIN_MOVE_POINT", point: Point |}
+  | {| type: "BEGIN_CIRCLE_TRANSFORM", region: Circle, directions: [number, number] |}
   | {| type: "BEGIN_BOX_TRANSFORM", box: Box, directions: [number, number] |}
   | {| type: "BEGIN_MOVE_POLYGON_POINT", polygon: Polygon, pointIndex: number |}
   | {|

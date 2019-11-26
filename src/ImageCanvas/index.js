@@ -8,7 +8,8 @@ import type {
   PixelRegion,
   Point,
   Polygon,
-  Box
+  Box,
+  Circle
 } from "./region-tools.js"
 import { getEnclosingBox } from "./region-tools.js"
 import { makeStyles } from "@material-ui/core/styles"
@@ -53,6 +54,7 @@ type Props = {
   onCloseRegionEdit: Region => any,
   onDeleteRegion: Region => any,
   onBeginBoxTransform: (Box, [number, number]) => any,
+  onBeginCircleTransform: (Circle) => any,
   onBeginMovePolygonPoint: (Polygon, index: number) => any,
   onAddPolygonPoint: (Polygon, point: [number, number], index: number) => any,
   onSelectRegion: Region => any,
@@ -84,6 +86,7 @@ export default ({
   onChangeRegion,
   onBeginRegionEdit,
   onCloseRegionEdit,
+  onBeginCircleTransform,
   onBeginBoxTransform,
   onBeginMovePolygonPoint,
   onAddPolygonPoint,
@@ -232,6 +235,7 @@ export default ({
       switch (region.type) {
         case "point": {
           context.save()
+          // debugger;
 
           context.beginPath()
           context.strokeStyle = region.color
@@ -278,6 +282,17 @@ export default ({
             context.lineTo(point[0] * iw, point[1] * ih)
           }
           if (!region.open) context.closePath()
+          context.stroke()
+          context.restore()
+          break
+        }
+        case "circle": {
+          context.save()
+          context.shadowColor = "black"
+          context.shadowBlur = 4
+          context.strokeStyle = region.color
+          context.beginPath();
+          context.arc(region.x * iw, region.y * ih, region.radius * Math.sqrt(Math.pow(iw,2) + Math.pow(ih,2)) , 0, 2 * Math.PI);
           context.stroke()
           context.restore()
           break
@@ -566,6 +581,22 @@ export default ({
                       }}
                     />
                   ))}
+                {
+                  r.type === "circle" &&
+                  !dragWithPrimary &&
+                  !zoomWithPrimary &&
+                  !r.locked &&
+                  r.highlighted &&
+                  <div
+                    key={1}
+                    {...mouseEvents}
+                    onMouseDown={e => {
+                      if (e.button === 0)
+                        return onBeginCircleTransform(r)
+                      mouseEvents.onMouseDown(e)
+                    }}
+                  />
+                }
                 {r.type === "polygon" &&
                   !dragWithPrimary &&
                   !zoomWithPrimary &&

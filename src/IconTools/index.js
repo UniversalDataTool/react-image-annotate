@@ -12,7 +12,8 @@ import {
   faDrawPolygon,
   faVectorSquare,
   faHandPaper,
-  faSearch
+  faSearch,
+  faCircle
 } from "@fortawesome/free-solid-svg-icons"
 import SmallToolButton, { SelectedTool } from "../SmallToolButton"
 import { makeStyles } from "@material-ui/core/styles"
@@ -41,7 +42,7 @@ export default ({
   showTags,
   selectedTool,
   onClickTool,
-  enabledTools = ["select", "create-point", "create-box", "create-polygon"]
+  enabledTools = ["select", "create-point", "create-box", "create-polygon", "create-circle"]
 }: Props) => {
   const classes = useStyles()
   return (
@@ -98,6 +99,11 @@ export default ({
           id="create-polygon"
           name="Add Polygon"
           icon={<FontAwesomeIcon size="xs" fixedWidth icon={faDrawPolygon} />}
+        />
+        <SmallToolButton
+          id="create-circle"
+          name="Add Circle"
+          icon={<FontAwesomeIcon size="xs" fixedWidth icon={faCircle} />}
         />
         {/* <SmallToolButton
           id="create-pixel"
