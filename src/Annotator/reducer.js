@@ -185,7 +185,6 @@ export default (state: MainLayoutState, action: Action) => {
       })
     }
     case "BEGIN_CIRCLE_TRANSFORM": {
-      // debugger;
       const { circle, directions } = action
       state = closeEditors(state)
       if (directions === "MOVE_REGION") {
@@ -194,7 +193,7 @@ export default (state: MainLayoutState, action: Action) => {
         return setIn(state, ["mode"], {
           mode: "RESIZE_CIRCLE",
           regionId: circle.id,
-          original: {x: x, y: y, xr: circle.xr, yr: circle.yr}
+          original: {x: circle.x, y: circle.y, xr: circle.xr, yr: circle.yr}
         })
       }
     }

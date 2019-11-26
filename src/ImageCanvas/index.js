@@ -590,10 +590,10 @@ export default ({
                   r.highlighted &&
                   [
                     [r.x, r.y],
-                    [r.x + r.rx, r.y],
-                    [r.x, r.y + r.ry],
-                    [r.x - r.rx, r.y],
-                    [r.x, r.y - r.ry]
+                    [r.x + r.xr, r.y],
+                    [r.x, r.y + r.yr],
+                    [r.x - r.xr, r.y],
+                    [r.x, r.y - r.yr]
                   ].map(([px, py], i) => {
                     const proj = mat
                       .clone()
@@ -607,7 +607,7 @@ export default ({
                         onMouseDown={e => {
                           if (e.button === 0 && i==0){
                             return onBeginCircleTransform(r, "MOVE_REGION")
-                          }else if(e.button === 0 && i==0){
+                          }else if(e.button === 0 && i!=0){
                             return onBeginCircleTransform(r, "RESIZE_CIRCLE")
                           }
                           mouseEvents.onMouseDown(e)
