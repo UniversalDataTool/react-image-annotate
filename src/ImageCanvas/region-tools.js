@@ -54,15 +54,14 @@ export type Circle = {|
   // x and y indicate the coordinates of the centre of the circle
   x: number,
   y: number,
-  // xr and yr indicate the x radius and y radius. Note that the coordinates are
-  // transformed. Hence, I'm keeping them both.
+  // xr and yr indicate the x and y coordinates of the current mouse pointer while dragging.
   xr: number,
   yr: number
 |}
 
 export type Region = Point | PixelRegion | Box | Polygon
 
-export const getEnclosingBox = (region: Region) => {
+export const getEnclosingBox = (region: Region, iw: number, ih: number) => {
   switch (region.type) {
     case "polygon": {
       const box = {
@@ -103,12 +102,16 @@ export const getEnclosingBox = (region: Region) => {
       }
     }
     case "circle": {
-      return {
-        x: region.x-region.xr,
-        y: region.y-region.yr,
-        w: region.x+region.xr,
-        h: region.y+region.yr
+      const radius = Math.sqrt(Math.pow((region.xr-region.x)*iw,2) + Math.pow((region.yr-region.y)*ih,2))
+      const box = {
+        x: (region.x*iw - radius)/iw,
+        y: (region.y*ih - radius)/ih,
+        w: 0,
+        h: 0
       }
+      box.w = (region.x*iw + radius)/iw - box.x
+      box.h = (region.y*ih + radius)/ih - box.y
+      return box
     }
   }
   throw new Error("unknown region")

@@ -117,7 +117,7 @@ export default ({
 
   const projectRegionBox = r => {
     const { iw, ih } = layoutParams.current
-    const bbox = getEnclosingBox(r)
+    const bbox = getEnclosingBox(r, iw, ih)
     const margin = r.type === "point" ? 15 : 2
     const cbox = {
       x: bbox.x * iw - margin,
@@ -590,10 +590,10 @@ export default ({
                   r.highlighted &&
                   [
                     [r.x, r.y],
-                    [r.x + r.xr, r.y],
-                    [r.x, r.y + r.yr],
-                    [r.x - r.xr, r.y],
-                    [r.x, r.y - r.yr]
+                    [(r.x*iw + Math.sqrt(Math.pow((r.xr-r.x)*iw,2) + Math.pow((r.yr-r.y)*ih,2)))/iw, r.y],
+                    [r.x, (r.y*ih + Math.sqrt(Math.pow((r.xr-r.x)*iw,2) + Math.pow((r.yr-r.y)*ih,2)))/ih],
+                    [(r.x*iw - Math.sqrt(Math.pow((r.xr-r.x)*iw,2) + Math.pow((r.yr-r.y)*ih,2)))/iw, r.y],
+                    [r.x, (r.y*ih - Math.sqrt(Math.pow((r.xr-r.x)*iw,2) + Math.pow((r.yr-r.y)*ih,2)))/ih]
                   ].map(([px, py], i) => {
                     const proj = mat
                       .clone()
