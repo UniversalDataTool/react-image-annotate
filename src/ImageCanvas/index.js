@@ -116,8 +116,7 @@ export default ({
   )
 
   const projectRegionBox = r => {
-    const { iw, ih } = layoutParams.current
-    const bbox = getEnclosingBox(r, iw, ih)
+    const bbox = getEnclosingBox(r)
     const margin = r.type === "point" ? 15 : 2
     const cbox = {
       x: bbox.x * iw - margin,
@@ -290,9 +289,16 @@ export default ({
           context.shadowColor = "black"
           context.shadowBlur = 4
           context.strokeStyle = region.color
-          context.beginPath();
-          context.arc(region.x * iw, region.y * ih,
-             Math.sqrt(Math.pow((region.xr-region.x)*iw,2) + Math.pow((region.yr-region.y)*ih,2)), 0, 2 * Math.PI);
+          context.beginPath()
+          context.ellipse(
+            region.x * iw,
+            region.y * ih,
+            region.xr * iw,
+            region.yr * ih,
+            0,
+            0,
+            2 * Math.PI
+          )
           context.stroke()
           context.restore()
           break
@@ -514,14 +520,14 @@ export default ({
         cursor: createWithPrimary
           ? "crosshair"
           : dragging
-          ? "grabbing"
-          : dragWithPrimary
-          ? "grab"
-          : zoomWithPrimary
-          ? mat.a < 1
-            ? "zoom-out"
-            : "zoom-in"
-          : undefined
+            ? "grabbing"
+            : dragWithPrimary
+              ? "grab"
+              : zoomWithPrimary
+                ? mat.a < 1
+                  ? "zoom-out"
+                  : "zoom-in"
+                : undefined
       }}
     >
       {showCrosshairs && <Crosshairs mousePosition={mousePosition} />}
@@ -581,45 +587,44 @@ export default ({
                       }}
                     />
                   ))}
-                {
-                  r.type === "circle" &&
+                {r.type === "circle" &&
                   !dragWithPrimary &&
                   !zoomWithPrimary &&
                   !r.locked &&
                   r.highlighted &&
                   [
-                    [r.x, r.y],
-                    [(r.x*iw + Math.sqrt(Math.pow((r.xr-r.x)*iw,2) + Math.pow((r.yr-r.y)*ih,2)))/iw, r.y],
-                    [r.x, (r.y*ih + Math.sqrt(Math.pow((r.xr-r.x)*iw,2) + Math.pow((r.yr-r.y)*ih,2)))/ih],
-                    [(r.x*iw - Math.sqrt(Math.pow((r.xr-r.x)*iw,2) + Math.pow((r.yr-r.y)*ih,2)))/iw, r.y],
-                    [r.x, (r.y*ih - Math.sqrt(Math.pow((r.xr-r.x)*iw,2) + Math.pow((r.yr-r.y)*ih,2)))/ih]
+                    [0.5, 0.5],
+                    [0, 0],
+                    [0.5, 0],
+                    [1, 0],
+                    [1, 0.5],
+                    [1, 1],
+                    [0.5, 1],
+                    [0, 1],
+                    [0, 0.5]
                   ].map(([px, py], i) => {
-                    const proj = mat
-                      .clone()
-                      .inverse()
-                      .applyToPoint(px * iw, py * ih)
-                    return(
+                    return (
                       <div
                         key={i}
                         className={classes.transformGrabber}
                         {...mouseEvents}
                         onMouseDown={e => {
-                          if (e.button === 0 && i==0){
+                          if (e.button === 0 && i === 0) {
                             return onBeginCircleTransform(r, "MOVE_REGION")
-                          }else if(e.button === 0 && i!=0){
+                          } else if (e.button === 0 && i !== 0) {
                             return onBeginCircleTransform(r, "RESIZE_CIRCLE")
                           }
                           mouseEvents.onMouseDown(e)
                         }}
                         style={{
-                          left: proj.x - 4,
-                          top: proj.y - 4,
-                          borderRadius: px === r.x && py === r.y ? 4 : undefined
+                          left: pbox.x - 4 - 2 + pbox.w * px,
+                          top: pbox.y - 4 - 2 + pbox.h * py,
+                          cursor: boxCursorMap[py * 2][px * 2],
+                          borderRadius: px === 0.5 && py === 0.5 ? 4 : undefined
                         }}
                       />
                     )
-                  })
-                }
+                  })}
                 {r.type === "polygon" &&
                   !dragWithPrimary &&
                   !zoomWithPrimary &&
@@ -644,8 +649,8 @@ export default ({
                           cursor: !r.open
                             ? "move"
                             : i === 0
-                            ? "pointer"
-                            : undefined,
+                              ? "pointer"
+                              : undefined,
                           pointerEvents:
                             r.open && i === r.points.length - 1
                               ? "none"
@@ -710,8 +715,8 @@ export default ({
               region.editingLabels && !region.locked
                 ? 170
                 : region.tags
-                ? 60
-                : 50
+                  ? 60
+                  : 50
             const displayOnTop = pbox.y > labelBoxHeight
 
             const coords = displayOnTop
@@ -790,19 +795,20 @@ export default ({
               </div>
             )
           })}
-      {zoomWithPrimary && zoomBox !== null && (
-        <div
-          style={{
-            position: "absolute",
-            border: "1px solid #fff",
-            pointerEvents: "none",
-            left: zoomBox.x,
-            top: zoomBox.y,
-            width: zoomBox.w,
-            height: zoomBox.h
-          }}
-        />
-      )}
+      {zoomWithPrimary &&
+        zoomBox !== null && (
+          <div
+            style={{
+              position: "absolute",
+              border: "1px solid #fff",
+              pointerEvents: "none",
+              left: zoomBox.x,
+              top: zoomBox.y,
+              width: zoomBox.w,
+              height: zoomBox.h
+            }}
+          />
+        )}
       {showPointDistances && (
         <svg
           className={classes.pointDistanceIndicator}
@@ -815,49 +821,46 @@ export default ({
             height: "100%"
           }}
         >
-          {regions
-            .filter(r1 => r1.type === "point")
-            .flatMap((r1, i1) =>
-              regions
-                .filter((r2, i2) => i2 > i1)
-                .filter(r2 => r2.type === "point")
-                .map(r2 => {
-                  const pr1 = projectRegionBox(r1)
-                  const pr2 = projectRegionBox(r2)
-                  const prm = {
-                    x: (pr1.x + pr1.w / 2 + pr2.x + pr2.w / 2) / 2,
-                    y: (pr1.y + pr1.h / 2 + pr2.y + pr2.h / 2) / 2
-                  }
-                  let displayDistance
-                  if (realSize) {
-                    const { w, h, unitName } = realSize
-                    displayDistance =
+          {regions.filter(r1 => r1.type === "point").flatMap((r1, i1) =>
+            regions
+              .filter((r2, i2) => i2 > i1)
+              .filter(r2 => r2.type === "point")
+              .map(r2 => {
+                const pr1 = projectRegionBox(r1)
+                const pr2 = projectRegionBox(r2)
+                const prm = {
+                  x: (pr1.x + pr1.w / 2 + pr2.x + pr2.w / 2) / 2,
+                  y: (pr1.y + pr1.h / 2 + pr2.y + pr2.h / 2) / 2
+                }
+                let displayDistance
+                if (realSize) {
+                  const { w, h, unitName } = realSize
+                  displayDistance =
+                    Math.sqrt(
+                      Math.pow(r1.x * w - r2.x * w, 2) +
+                        Math.pow(r1.y * h - r2.y * h, 2)
+                    ).toFixed(pointDistancePrecision) + unitName
+                } else {
+                  displayDistance =
+                    (
                       Math.sqrt(
-                        Math.pow(r1.x * w - r2.x * w, 2) +
-                          Math.pow(r1.y * h - r2.y * h, 2)
-                      ).toFixed(pointDistancePrecision) + unitName
-                  } else {
-                    displayDistance =
-                      (
-                        Math.sqrt(
-                          Math.pow(r1.x - r2.x, 2) + Math.pow(r1.y - r2.y, 2)
-                        ) * 100
-                      ).toFixed(pointDistancePrecision) + "%"
-                  }
-                  return (
-                    <Fragment>
-                      <path
-                        d={`M${pr1.x + pr1.w / 2},${pr1.y +
-                          pr1.h / 2} L${pr2.x + pr2.w / 2},${pr2.y +
-                          pr2.h / 2}`}
-                      />
-                      <text x={prm.x} y={prm.y}>
-                        {displayDistance}
-                      </text>
-                    </Fragment>
-                  )
-                })
-            )}
+                        Math.pow(r1.x - r2.x, 2) + Math.pow(r1.y - r2.y, 2)
+                      ) * 100
+                    ).toFixed(pointDistancePrecision) + "%"
+                }
+                return (
+                  <Fragment>
+                    <path
+                      d={`M${pr1.x + pr1.w / 2},${pr1.y + pr1.h / 2} L${pr2.x +
+                        pr2.w / 2},${pr2.y + pr2.h / 2}`}
+                    />
+                    <text x={prm.x} y={prm.y}>
+                      {displayDistance}
+                    </text>
+                  </Fragment>
+                )
+              })
+          )}
         </svg>
       )}
       <PreventScrollToParents

@@ -188,12 +188,15 @@ export default (state: MainLayoutState, action: Action) => {
       const { circle, directions } = action
       state = closeEditors(state)
       if (directions === "MOVE_REGION") {
-        return setIn(state, ["mode"], { mode: "MOVE_REGION", regionId: circle.id })
+        return setIn(state, ["mode"], {
+          mode: "MOVE_REGION",
+          regionId: circle.id
+        })
       } else {
         return setIn(state, ["mode"], {
           mode: "RESIZE_CIRCLE",
           regionId: circle.id,
-          original: {x: circle.x, y: circle.y, xr: circle.xr, yr: circle.yr}
+          original: { x: circle.x, y: circle.y, rx: circle.rx, ry: circle.ry }
         })
       }
     }
@@ -330,7 +333,11 @@ export default (state: MainLayoutState, action: Action) => {
           return setIn(
             state,
             ["images", currentImageIndex, "regions", regionIndex],
-            { ...region, xr: action.x, yr: action.y }
+            {
+              ...region,
+              xr: Math.abs(region.x - x),
+              yr: Math.abs(region.y - y)
+            }
           )
         }
         case "DRAW_POLYGON": {
@@ -427,8 +434,8 @@ export default (state: MainLayoutState, action: Action) => {
               type: "circle",
               x: x,
               y: y,
-              xr: 0.00000000001,
-              yr: 0.00000000001,
+              xr: 0.1,
+              yr: 0.1,
               highlighted: true,
               editingLabels: false,
               color: getRandomColor(),
@@ -439,7 +446,7 @@ export default (state: MainLayoutState, action: Action) => {
               mode: "RESIZE_CIRCLE",
               editLabelEditorAfter: true,
               regionId: newRegion.id,
-              original: {x: x, y: y, xr: newRegion.xr, yr: newRegion.yr}
+              original: { x: x, y: y, xr: newRegion.xr, yr: newRegion.yr }
             })
             break
           }

@@ -50,18 +50,17 @@ export type Polygon = {|
 export type Circle = {|
   ...$Exact<BaseRegion>,
   type: "circle",
-  // radius: number,
   // x and y indicate the coordinates of the centre of the circle
   x: number,
   y: number,
-  // xr and yr indicate the x and y coordinates of the current mouse pointer while dragging.
+  // x and y radius (technically, Circles are capable of representing Ovals)
   xr: number,
-  yr: number
+  xr: number
 |}
 
 export type Region = Point | PixelRegion | Box | Polygon
 
-export const getEnclosingBox = (region: Region, iw: number, ih: number) => {
+export const getEnclosingBox = (region: Region) => {
   switch (region.type) {
     case "polygon": {
       const box = {
@@ -102,16 +101,12 @@ export const getEnclosingBox = (region: Region, iw: number, ih: number) => {
       }
     }
     case "circle": {
-      const radius = Math.sqrt(Math.pow((region.xr-region.x)*iw,2) + Math.pow((region.yr-region.y)*ih,2))
-      const box = {
-        x: (region.x*iw - radius)/iw,
-        y: (region.y*ih - radius)/ih,
-        w: 0,
-        h: 0
+      return {
+        x: region.x - region.xr,
+        y: region.y - region.yr,
+        w: region.xr * 2,
+        h: region.yr * 2
       }
-      box.w = (region.x*iw + radius)/iw - box.x
-      box.h = (region.y*ih + radius)/ih - box.y
-      return box
     }
   }
   throw new Error("unknown region")
@@ -126,7 +121,11 @@ export const moveRegion = (region: Region, x: number, y: number) => {
       return { ...region, x: x - region.w / 2, y: y - region.h / 2 }
     }
     case "circle": {
-      return { ...region, x, y, xr: region.xr + x - region.x, yr: region.yr + y - region.y }
+      return {
+        ...region,
+        x,
+        y
+      }
     }
   }
   return region
