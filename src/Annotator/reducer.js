@@ -331,8 +331,6 @@ export default (state: MainLayoutState, action: Action) => {
             state,
             ["images", currentImageIndex, "regions", regionIndex],
             { ...region, xr: action.x, yr: action.y }
-            // region.radius+1
-            // Math.sqrt(Math.pow(region.x - x,2) + Math.pow(region.y - y,2))
           )
         }
         case "DRAW_POLYGON": {
