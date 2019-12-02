@@ -235,7 +235,6 @@ export default ({
       switch (region.type) {
         case "point": {
           context.save()
-          // debugger;
 
           context.beginPath()
           context.strokeStyle = region.color
@@ -615,8 +614,6 @@ export default ({
                         style={{
                           left: proj.x - 4,
                           top: proj.y - 4,
-                          // top: pbox.y - 4 - 2 + pbox.h * py,
-                          // cursor: boxCursorMap[py * 2][px * 2],
                           borderRadius: px === r.x && py === r.y ? 4 : undefined
                         }}
                       />
