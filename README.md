@@ -4,6 +4,10 @@
 
 The best image/video annotation tool ever. [Check out the demo here](https://waoai.github.io/react-image-annotate/).
 
+## Sponsors
+
+[![wao.ai sponsorship image](https://s3.amazonaws.com/asset.workaround.online/sponsorship-banner-1.png)](https://wao.ai)
+
 ## Features
 
 - Simple input/output format
