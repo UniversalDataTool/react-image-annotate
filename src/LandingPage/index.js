@@ -7,6 +7,12 @@ import * as colors from "@material-ui/core/colors"
 import Grid from "@material-ui/core/Grid"
 import Markdown from "react-markdown"
 import GitHubButton from "react-github-btn"
+import "./github-markdown.css"
+import raw from "raw.macro"
+import { Prism as SyntaxHighlighter } from "react-syntax-highlighter"
+import { docco } from "react-syntax-highlighter/dist/cjs/languages/hljs/javascript"
+
+const contentMd = raw("./content.md")
 
 const RootContainer = styled("div")({
   display: "flex",
@@ -62,13 +68,31 @@ const HeroButtons = styled("div")({
 })
 const Section = styled("div")({
   display: "flex",
-  padding: 16
+  padding: 16,
+  paddingTop: 32,
+  flexDirection: "column"
 })
-const SectionHeader = styled("div")({
-  display: "flex",
-  fontSize: 32,
-  color: colors.grey[800]
-})
+
+const CodeBlock = ({ language, value }) => {
+  return (
+    <SyntaxHighlighter language={language} style={docco}>
+      {value}
+    </SyntaxHighlighter>
+  )
+}
+
+function flatten(text, child) {
+  return typeof child === "string"
+    ? text + child
+    : React.Children.toArray(child.props.children).reduce(flatten, text)
+}
+
+function HeadingRenderer(props) {
+  var children = React.Children.toArray(props.children)
+  var text = children.reduce(flatten, "")
+  var slug = text.toLowerCase().replace(/\W/g, "-")
+  return React.createElement("h" + props.level, { id: slug }, props.children)
+}
 
 const LandingPage = () => {
   return (
@@ -76,8 +100,9 @@ const LandingPage = () => {
       <Header id="about">
         <ContentContainer style={{ flexDirection: "row", flexGrow: 1 }}>
           <HeaderButton href="#">About</HeaderButton>
-          <HeaderButton href="basic-usage">Basic Usage</HeaderButton>
-          <HeaderButton href="props">Props</HeaderButton>
+          <HeaderButton href="#features">Features</HeaderButton>
+          <HeaderButton href="#usage">Usage</HeaderButton>
+          <HeaderButton href="#props">Props</HeaderButton>
           <HeaderButton href="./demo">Demo Playground</HeaderButton>
         </ContentContainer>
       </Header>
@@ -100,12 +125,16 @@ const LandingPage = () => {
           </HeroButtons>
         </ContentContainer>
       </Hero>
-      <ContentContainer>
-        <Section id="basic-usage">
-          <SectionHeader>Basic Usage</SectionHeader>
-        </Section>
-        <Section id="props">
-          <SectionHeader>Props</SectionHeader>
+      <ContentContainer className="markdown-body">
+        <Section className="markdown-body">
+          <Markdown
+            escapeHtml={false}
+            source={contentMd}
+            renderers={{
+              code: CodeBlock,
+              heading: HeadingRenderer
+            }}
+          />
         </Section>
       </ContentContainer>
     </RootContainer>
