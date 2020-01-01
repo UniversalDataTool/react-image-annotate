@@ -1,13 +1,15 @@
 // @flow
 
 import React from "react"
-import Annotator from "./Annotator"
+import ReactDOM from "react-dom"
 import Theme from "./Theme"
+import DemoSite from "./DemoSite"
+import LandingPage from "./LandingPage"
+import "./site.css"
 
-export default (props: any) => {
-  return (
-    <Theme>
-      <Annotator {...props} />
-    </Theme>
-  )
+const Site = () => {
+  const path = window.location.pathname.split("/").slice(-1)[0]
+  return <Theme>{path === "demo" ? <DemoSite /> : <LandingPage />}</Theme>
 }
+
+ReactDOM.render(<Site />, document.getElementById("root"))
