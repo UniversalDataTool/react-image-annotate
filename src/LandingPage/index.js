@@ -99,7 +99,6 @@ const LandingPage = () => {
     <RootContainer>
       <Header id="about">
         <ContentContainer style={{ flexDirection: "row", flexGrow: 1 }}>
-          <HeaderButton href="#">About</HeaderButton>
           <HeaderButton href="#features">Features</HeaderButton>
           <HeaderButton href="#usage">Usage</HeaderButton>
           <HeaderButton href="#props">Props</HeaderButton>

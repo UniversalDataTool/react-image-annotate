@@ -51,3 +51,7 @@ All of the following properties can be defined on the `ReactImageAnnotate` compo
 | `showPointDistances`     | `boolean`                                        | Show distances between points.                                                          | `false`       |
 | `pointDistancePrecision` | `number`                                         | Precision on displayed points (e.g. 3 => 0.123)                                         |               |
 | `onExit`                 | `MainLayoutState => any`                         | Called when "Save" is called.                                                           |               |
+
+# Sponsors
+
+[![wao.ai sponsorship image](https://s3.amazonaws.com/asset.workaround.online/sponsorship-banner-1.png)](https://wao.ai)
