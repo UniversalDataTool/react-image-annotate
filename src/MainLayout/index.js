@@ -136,6 +136,9 @@ export default ({ state, dispatch }: Props) => {
               labelImages={state.labelImages}
               imageClsList={state.imageClsList}
               imageTagList={state.imageTagList}
+
+              onClassAdd={action("ADD_CLASS", "newClass")}
+
               onChangeImage={action("CHANGE_IMAGE", "delta")}
               onSelectRegion={action("SELECT_REGION", "region")}
               onDeleteRegion={action("DELETE_REGION", "region")}

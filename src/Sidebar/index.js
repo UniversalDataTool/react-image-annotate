@@ -9,6 +9,7 @@ import History from "../HistorySidebarBox"
 import DebugBox from "../DebugSidebarBox"
 import TagsSidebarBox from "../TagsSidebarBox"
 import type { Region } from "../ImageCanvas/region-tools.js"
+import ClassAdder from './ClassAdder'
 
 const useStyles = makeStyles({})
 
@@ -33,6 +34,8 @@ type Props = {
   imageClsList?: Array<string>,
   imageTagList?: Array<string>,
 
+  addNewClass: any,
+
   onChangeImage: Image => any,
   onSelectRegion: Region => any,
   onSelectImage: Image => any,
@@ -51,6 +54,7 @@ export default ({
   currentImage,
   imageClsList,
   imageTagList,
+  onClassAdd,
   onChangeImage,
   onSelectRegion,
   onSelectImage,
@@ -64,6 +68,7 @@ export default ({
     <div>
       {debug && <DebugBox state={debug} lastAction={debug.lastAction} />}
       <TaskDescription description={taskDescription} />
+      <ClassAdder onClassAdd={onClassAdd}/>
       {labelImages && (
         <TagsSidebarBox
           currentImage={currentImage}

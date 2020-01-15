@@ -475,6 +475,12 @@ export default (state: MainLayoutState, action: Action) => {
       )
       return setIn(state, ["images", currentImageIndex, "regions"], newRegions)
     }
+    case "ADD_CLASS": {
+      const { newClass } = action
+      console.log('adding class')
+      console.log(newClass)
+      return {...state, regionClsList: [...state.regionClsList, newClass]}
+    }
     case "CLOSE_REGION_EDITOR": {
       const { region } = action
       const regionIndex = getRegionIndex(action.region)

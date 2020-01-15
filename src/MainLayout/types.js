@@ -83,6 +83,7 @@ export type Action =
   | {| type: "CHANGE_REGION", region: Region |}
   | {| type: "OPEN_REGION_EDITOR", region: Region |}
   | {| type: "CLOSE_REGION_EDITOR", region: Region |}
+  | {| type: "ADD_CLASS", newClass: string|}
   | {| type: "DELETE_REGION", region: Region |}
   | {| type: "HEADER_BUTTON_CLICKED", buttonName: string |}
   | {| type: "SELECT_TOOL", selectedTool: string |}
