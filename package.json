@@ -40,7 +40,7 @@
     "dist": "npm run build && cd dist && npm publish",
     "build:babel": "NODE_ENV=production babel ./src --out-dir=./dist",
     "build-storybook": "build-storybook",
-    "build:gh-pages": "react-scripts build && rm build/index.js && mv build/demosite.js build/index.js",
+    "build:gh-pages": "react-scripts build && mkdir build/demo && cp build/index.html build/demo/index.html",
     "deploy:gh-pages": "gh-pages -d build",
     "gh-pages": "npm run build:gh-pages && npm run deploy:gh-pages"
   },

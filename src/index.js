@@ -8,7 +8,10 @@ import LandingPage from "./LandingPage"
 import "./site.css"
 
 const Site = () => {
-  const path = window.location.pathname.split("/").slice(-1)[0]
+  const path = window.location.pathname
+    .replace(/\/$/, "")
+    .split("/")
+    .slice(-1)[0]
   return <Theme>{path === "demo" ? <DemoSite /> : <LandingPage />}</Theme>
 }
 
