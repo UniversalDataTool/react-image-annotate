@@ -336,3 +336,25 @@ storiesOf("Annotator", module)
       <div style={{ color: "red" }}>You shouldn't be able to see this</div>
     </div>
   ))
+  .add("Annotator should not expand beyond parent", () => (
+    <div style={{ width: "100vw", height: "100vh", padding: 100 }}>
+      <Annotator
+        onExit={actionAddon("onExit")}
+        showTags={false}
+        middlewares={[
+          store => next => action => {
+            actionAddon(action.type)(action)
+            return next(action)
+          }
+        ]}
+        images={[
+          {
+            src: exampleImage,
+            name: "Seve's Desk",
+            regions: testRegions
+          }
+        ]}
+      />
+      <div style={{ color: "red" }}>You shouldn't be able to see this</div>
+    </div>
+  ))
