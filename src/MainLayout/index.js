@@ -13,7 +13,7 @@ import useKey from "use-key-hook"
 import classnames from "classnames"
 import { useSettings } from "../SettingsProvider"
 import SettingsDialog from "../SettingsDialog"
-import Fullscreen from "react-full-screen"
+import Fullscreen from "../Fullscreen"
 
 const useStyles = makeStyles(styles)
 

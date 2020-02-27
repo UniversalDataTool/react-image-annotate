@@ -17,6 +17,7 @@
     "react-remove-scroll": "^2.0.4",
     "react-select": "^2.2.0",
     "react-syntax-highlighter": "^12.2.1",
+    "react-use": "^13.26.3",
     "seamless-immutable": "^7.1.4",
     "transformation-matrix-js": "^2.7.6",
     "use-key-hook": "^1.3.0"
