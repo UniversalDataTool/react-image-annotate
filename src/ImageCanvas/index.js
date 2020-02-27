@@ -37,6 +37,14 @@ const boxCursorMap = [
   ["sw-resize", "s-resize", "se-resize"]
 ]
 
+const copyWithout = (obj, ...args) => {
+  const newObj = { ...obj }
+  for (const arg of args) {
+    delete newObj[arg]
+  }
+  return newObj
+}
+
 type Props = {
   regions: Array<Region>,
   imageSrc: string,
@@ -732,7 +740,9 @@ export default ({
                     left: 0,
                     ...(displayOnTop ? { bottom: 0 } : { top: 0 })
                   }}
-                  {...(!region.editingLabels ? mouseEvents : {})}
+                  {...(!region.editingLabels
+                    ? copyWithout(mouseEvents, "onMouseDown", "onMouseUp")
+                    : {})}
                 >
                   <RegionLabel
                     allowedClasses={regionClsList}
