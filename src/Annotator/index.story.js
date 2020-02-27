@@ -337,7 +337,14 @@ storiesOf("Annotator", module)
     </div>
   ))
   .add("Annotator should not expand beyond parent", () => (
-    <div style={{ width: "100vw", height: "100vh", padding: 100 }}>
+    <div
+      style={{
+        width: "100vw",
+        height: "100vh",
+        padding: 100,
+        boxSizing: "border-box"
+      }}
+    >
       <Annotator
         onExit={actionAddon("onExit")}
         showTags={false}
@@ -355,6 +362,5 @@ storiesOf("Annotator", module)
           }
         ]}
       />
-      <div style={{ color: "red" }}>You shouldn't be able to see this</div>
     </div>
   ))

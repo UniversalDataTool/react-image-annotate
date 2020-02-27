@@ -5,7 +5,7 @@ export default {
     display: "flex",
     flexGrow: 1,
     flexDirection: "column",
-    minHeight: "100%",
+    height: "100%",
     maxHeight: "100vh",
     backgroundColor: "#fff",
     overflow: "hidden",
@@ -22,7 +22,9 @@ export default {
     backgroundColor: grey[200],
     flexGrow: 1,
     display: "flex",
-    flexDirection: "row"
+    flexDirection: "row",
+    height: "100%",
+    overflow: "hidden"
   },
   iconToolsContainer: { display: "flex" },
   imageCanvasContainer: {
@@ -38,11 +40,12 @@ export default {
   },
   sidebarContainer: {
     width: 300,
+    flexShrink: 0,
     overflowY: "auto",
     backgroundColor: grey[100],
     borderLeft: `1px solid ${grey[300]}`,
     zIndex: 9,
-    maxHeight: "calc(100% - 68px)",
+    height: "100%",
     boxShadow: "0px 0px 5px rgba(0,0,0,0.1)"
   }
 }

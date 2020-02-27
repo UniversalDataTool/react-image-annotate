@@ -1,5 +1,11 @@
 // @flow
-import React, { Fragment, useRef, useState, useLayoutEffect } from "react"
+import React, {
+  Fragment,
+  useRef,
+  useState,
+  useLayoutEffect,
+  useEffect
+} from "react"
 import { Matrix } from "transformation-matrix-js"
 import getImageData from "get-image-data"
 import Crosshairs from "../Crosshairs"
@@ -21,6 +27,7 @@ import HighlightBox from "../HighlightBox"
 // import excludePatternSrc from "./xpattern.png"
 import excludePatternSrc from "./xpattern.js"
 import PreventScrollToParents from "../PreventScrollToParents"
+import useWindowSize from "../hooks/use-window-size.js"
 
 const useStyles = makeStyles(styles)
 
@@ -29,6 +36,14 @@ const boxCursorMap = [
   ["w-resize", "grab", "e-resize"],
   ["sw-resize", "s-resize", "se-resize"]
 ]
+
+const copyWithout = (obj, ...args) => {
+  const newObj = { ...obj }
+  for (const arg of args) {
+    delete newObj[arg]
+  }
+  return newObj
+}
 
 type Props = {
   regions: Array<Region>,
@@ -106,6 +121,11 @@ export default ({
   const prevMousePosition = useRef({ x: 0, y: 0 })
   const [mat, changeMat] = useState(getDefaultMat())
   const maskImages = useRef({})
+  const windowSize = useWindowSize()
+
+  useLayoutEffect(() => {
+    changeMat(mat.clone())
+  }, [windowSize])
 
   const innerMousePos = mat.applyToPoint(
     mousePosition.current.x,
@@ -720,7 +740,9 @@ export default ({
                     left: 0,
                     ...(displayOnTop ? { bottom: 0 } : { top: 0 })
                   }}
-                  {...(!region.editingLabels ? mouseEvents : {})}
+                  {...(!region.editingLabels
+                    ? copyWithout(mouseEvents, "onMouseDown", "onMouseUp")
+                    : {})}
                 >
                   <RegionLabel
                     allowedClasses={regionClsList}
