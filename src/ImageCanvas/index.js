@@ -1,5 +1,11 @@
 // @flow
-import React, { Fragment, useRef, useState, useLayoutEffect } from "react"
+import React, {
+  Fragment,
+  useRef,
+  useState,
+  useLayoutEffect,
+  useEffect
+} from "react"
 import { Matrix } from "transformation-matrix-js"
 import getImageData from "get-image-data"
 import Crosshairs from "../Crosshairs"
@@ -21,6 +27,7 @@ import HighlightBox from "../HighlightBox"
 // import excludePatternSrc from "./xpattern.png"
 import excludePatternSrc from "./xpattern.js"
 import PreventScrollToParents from "../PreventScrollToParents"
+import useWindowSize from "../hooks/use-window-size.js"
 
 const useStyles = makeStyles(styles)
 
@@ -106,6 +113,11 @@ export default ({
   const prevMousePosition = useRef({ x: 0, y: 0 })
   const [mat, changeMat] = useState(getDefaultMat())
   const maskImages = useRef({})
+  const windowSize = useWindowSize()
+
+  useLayoutEffect(() => {
+    changeMat(mat.clone())
+  }, [windowSize])
 
   const innerMousePos = mat.applyToPoint(
     mousePosition.current.x,
