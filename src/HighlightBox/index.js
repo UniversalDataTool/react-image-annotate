@@ -10,6 +10,7 @@ const useStyles = makeStyles({
     to: { strokeDashoffset: 100 }
   },
   highlightBox: {
+    zIndex: 2,
     transition: "opacity 500ms",
     "&:not(.highlighted)": {
       opacity: 0

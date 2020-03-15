@@ -1,13 +1,8 @@
 import { grey } from "@material-ui/core/colors"
 
 export default {
-  canvas: { width: "100%", height: "100%" },
-  transformGrabber: {
-    width: 8,
-    height: 8,
-    border: "2px solid #FFF",
-    position: "absolute"
-  },
+  image: { zIndex: 0, position: "absolute" },
+  canvas: { width: "100%", height: "100%", position: "relative", zIndex: 1 },
   zoomIndicator: {
     position: "absolute",
     bottom: 16,
@@ -18,22 +13,5 @@ export default {
     fontWeight: "bolder",
     fontSize: 14,
     padding: 4
-  },
-  pointDistanceIndicator: {
-    "& text": {
-      fill: "#fff"
-    },
-    "& path": {
-      vectorEffect: "non-scaling-stroke",
-      strokeWidth: 2,
-      opacity: 0.5,
-      stroke: "#FFF",
-      fill: "none",
-      strokeDasharray: 5,
-      animationDuration: "4s",
-      animationTimingFunction: "linear",
-      animationIterationCount: "infinite",
-      animationPlayState: "running"
-    }
   }
 }
