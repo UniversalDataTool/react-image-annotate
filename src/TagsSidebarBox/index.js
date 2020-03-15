@@ -17,10 +17,12 @@ type Props = {
   onChangeImage: (Array<string>) => any
 }
 
-export default ({
+const emptyArr = []
+
+export const TagsSidebarBox = ({
   currentImage,
-  imageClsList = [],
-  imageTagList = [],
+  imageClsList = emptyArr,
+  imageTagList = emptyArr,
   onChangeImage
 }: Props) => {
   const { tags = [], cls = null } = currentImage
@@ -55,3 +57,5 @@ export default ({
     </SidebarBoxContainer>
   )
 }
+
+export default TagsSidebarBox

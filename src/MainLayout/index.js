@@ -22,7 +22,7 @@ type Props = {
   dispatch: Action => any
 }
 
-export default ({ state, dispatch }: Props) => {
+export const MainLayout = ({ state, dispatch }: Props) => {
   const classes = useStyles()
   const settings = useSettings()
 
@@ -158,3 +158,5 @@ export default ({ state, dispatch }: Props) => {
     </Fullscreen>
   )
 }
+
+export default MainLayout

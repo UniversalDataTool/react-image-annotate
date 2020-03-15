@@ -7,7 +7,7 @@ import { blue } from "@material-ui/core/colors"
 
 export const SelectedTool = createContext()
 
-export default ({
+export const SmallToolButton = ({
   id,
   name,
   icon,
@@ -46,3 +46,5 @@ export default ({
     </Tooltip>
   )
 }
+
+export default SmallToolButton

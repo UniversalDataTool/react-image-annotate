@@ -14,7 +14,7 @@ const useStyles = makeStyles({
   img: { width: 40, height: 40, borderRadius: 8 }
 })
 
-export default ({ images, onSelect }) => {
+export const ImageSelectorSidebarBox = ({ images, onSelect }) => {
   const classes = useStyles()
   return (
     <SidebarBoxContainer
@@ -38,3 +38,5 @@ export default ({ images, onSelect }) => {
     </SidebarBoxContainer>
   )
 }
+
+export default ImageSelectorSidebarBox

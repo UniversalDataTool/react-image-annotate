@@ -3,7 +3,7 @@
 import React from "react"
 import SidebarBoxContainer from "../SidebarBoxContainer"
 
-export default ({ state, lastAction }: any) => {
+export const DebugSidebarBox = ({ state, lastAction }: any) => {
   const image = (state.images || []).find(
     img => img.src === state.selectedImage
   )
@@ -28,3 +28,5 @@ export default ({ state, lastAction }: any) => {
     </SidebarBoxContainer>
   )
 }
+
+export default DebugSidebarBox

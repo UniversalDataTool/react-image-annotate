@@ -28,7 +28,7 @@ const Svg = styled("svg")({
   }
 })
 
-export default ({
+export const PointDistances = ({
   projectRegionBox,
   regions,
   pointDistancePrecision,
@@ -81,3 +81,5 @@ export default ({
     </Svg>
   )
 }
+
+export default PointDistances

@@ -24,7 +24,7 @@ const useStyles = makeStyles({
   }
 })
 
-export default ({ description }) => {
+export const TaskDescriptionSidebarBox = ({ description }) => {
   const classes = useStyles()
 
   return (
@@ -39,3 +39,5 @@ export default ({ description }) => {
     </SidebarBoxContainer>
   )
 }
+
+export default TaskDescriptionSidebarBox

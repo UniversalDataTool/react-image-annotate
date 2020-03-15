@@ -26,7 +26,7 @@ const pullSettingsFromLocalStorage = () => {
 
 export const useSettings = () => useContext(SettingsContext)
 
-export default ({ children }) => {
+export const SettingsProvider = ({ children }) => {
   const [state, changeState] = useState(() => pullSettingsFromLocalStorage())
   const changeSetting = (setting: string, value: any) => {
     changeState({ ...state, [setting]: value })
@@ -38,3 +38,5 @@ export default ({ children }) => {
     </SettingsContext.Provider>
   )
 }
+
+export default SettingsProvider

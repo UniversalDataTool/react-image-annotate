@@ -54,7 +54,7 @@ const useStyles = makeStyles({
   }
 })
 
-export default ({
+export const SidebarBoxContainer = ({
   icon,
   title,
   subTitle,
@@ -96,3 +96,5 @@ export default ({
     </Paper>
   )
 }
+
+export default SidebarBoxContainer

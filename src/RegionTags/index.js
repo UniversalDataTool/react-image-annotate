@@ -12,7 +12,7 @@ const copyWithout = (obj, ...args) => {
   return newObj
 }
 
-export default ({
+export const RegionTags = ({
   regions,
   projectRegionBox,
   mouseEvents,
@@ -112,3 +112,5 @@ export default ({
       )
     })
 }
+
+export default RegionTags

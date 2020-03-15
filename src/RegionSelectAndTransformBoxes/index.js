@@ -19,7 +19,7 @@ const boxCursorMap = [
   ["sw-resize", "s-resize", "se-resize"]
 ]
 
-export default ({
+export const RegionSelectAndTransformBoxes = ({
   regions,
   mouseEvents,
   projectRegionBox,
@@ -160,3 +160,5 @@ export default ({
       )
     })
 }
+
+export default RegionSelectAndTransformBoxes

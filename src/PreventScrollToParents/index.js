@@ -11,7 +11,7 @@ const Container = styled("div")({
   }
 })
 
-export default ({ children, ...otherProps }) => {
+export const PreventScrollToParents = ({ children, ...otherProps }) => {
   const [mouseOver, changeMouseOver] = useState(false)
   return (
     <Container
@@ -25,3 +25,5 @@ export default ({ children, ...otherProps }) => {
     </Container>
   )
 }
+
+export default PreventScrollToParents

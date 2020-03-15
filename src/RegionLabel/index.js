@@ -28,7 +28,7 @@ type Props = {
   onOpen: Region => null
 }
 
-export default ({
+export const RegionLabel = ({
   region,
   editing,
   allowedClasses = ["Laptop", "Mouse", "Compuda"],
@@ -146,3 +146,5 @@ export default ({
     </Paper>
   )
 }
+
+export default RegionLabel

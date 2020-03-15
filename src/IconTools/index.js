@@ -37,7 +37,7 @@ type Props = {
   onClickTool: string => any
 }
 
-export default ({
+export const IconTools = ({
   showTags,
   selectedTool,
   onClickTool,
@@ -108,3 +108,5 @@ export default ({
     </div>
   )
 }
+
+export default IconTools

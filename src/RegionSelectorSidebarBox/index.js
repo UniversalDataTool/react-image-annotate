@@ -73,7 +73,7 @@ const Row = ({
   )
 }
 
-export default ({
+export const RegionSelectorSidebarBox = ({
   regions,
   onDeleteRegion,
   onChangeRegion,
@@ -151,3 +151,5 @@ export default ({
     </SidebarBoxContainer>
   )
 }
+
+export default RegionSelectorSidebarBox

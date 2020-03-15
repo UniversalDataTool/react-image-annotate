@@ -41,7 +41,7 @@ type Props = {
   onRestoreHistory: () => any
 }
 
-export default ({
+export const Sidebar = ({
   debug,
   taskDescription,
   images,
@@ -84,3 +84,5 @@ export default ({
     </div>
   )
 }
+
+export default Sidebar

@@ -5,7 +5,7 @@ import Button from "@material-ui/core/Button"
 
 export const HeaderButtonContext = createContext()
 
-export default ({ name, Icon }: { name: string, Icon: any }) => {
+export const HeaderButton = ({ name, Icon }: { name: string, Icon: any }) => {
   return (
     <HeaderButtonContext.Consumer>
       {({ onHeaderButtonClick }: any) => (
@@ -22,3 +22,5 @@ export default ({ name, Icon }: { name: string, Icon: any }) => {
     </HeaderButtonContext.Consumer>
   )
 }
+
+export default HeaderButton

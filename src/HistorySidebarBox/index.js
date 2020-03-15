@@ -23,7 +23,7 @@ const useStyles = makeStyles({
   }
 })
 
-export default ({
+export const HistorySidebarBox = ({
   history,
   onRestoreHistory
 }: {
@@ -60,3 +60,5 @@ export default ({
     </SidebarBoxContainer>
   )
 }
+
+export default HistorySidebarBox

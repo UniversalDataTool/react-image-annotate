@@ -33,7 +33,7 @@ const useStyles = makeStyles({
   }
 })
 
-export default ({
+export const HighlightBox = ({
   mouseEvents,
   dragWithPrimary,
   zoomWithPrimary,
@@ -107,3 +107,5 @@ export default ({
     </svg>
   )
 }
+
+export default HighlightBox

@@ -28,7 +28,7 @@ type Props = {
   onExit: MainLayoutState => any
 }
 
-export default ({
+export const Annotator = ({
   images,
   allowedArea,
   selectedImage = images.length > 0 ? images[0].src : undefined,
@@ -82,3 +82,5 @@ export default ({
     </SettingsProvider>
   )
 }
+
+export default Annotator
