@@ -34,7 +34,8 @@ export type Mode =
       editLabelEditorAfter?: boolean,
       regionId: string,
       freedom: [number, number],
-      original: { x: number, y: number, w: number, h: number }
+      original: { x: number, y: number, w: number, h: number },
+      isNew?: boolean
     |}
   | {| mode: "MOVE_REGION" |}
 

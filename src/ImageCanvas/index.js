@@ -145,31 +145,23 @@ export default ({
   const projectRegionBox = useProjectRegionBox({ layoutParams, mat })
 
   const [imageDimensions, changeImageDimensions] = useState()
-  const imageLoaded = Boolean(imageDimensions)
+  const imageLoaded = Boolean(imageDimensions && imageDimensions.naturalWidth)
   const onVideoOrImageLoaded = useEventCallback(
     ({ naturalWidth, naturalHeight }) => {
       changeImageDimensions({ naturalWidth, naturalHeight })
+      // Redundant update to fix rerendering issues
+      setTimeout(
+        () => changeImageDimensions({ naturalWidth, naturalHeight }),
+        10
+      )
     }
   )
 
-  // const [image, imageLoaded] = useLoadImage(imageSrc, onImageLoaded)
   const excludePattern = useExcludePattern()
 
-  useLayoutEffect(() => {
-    if (!imageDimensions) return
-    const canvas = canvasEl.current
+  const canvas = canvasEl.current
+  if (canvas && imageLoaded) {
     const { clientWidth, clientHeight } = canvas
-    canvas.width = clientWidth
-    canvas.height = clientHeight
-    const context = canvas.getContext("2d")
-
-    context.save()
-    context.transform(
-      ...mat
-        .clone()
-        .inverse()
-        .toArray()
-    )
 
     const fitScale = Math.max(
       imageDimensions.naturalWidth / (clientWidth - 20),
@@ -188,8 +180,24 @@ export default ({
       canvasWidth: clientWidth,
       canvasHeight: clientHeight
     }
+  }
 
-    // context.drawImage(image, 0, 0, iw, ih)
+  useLayoutEffect(() => {
+    if (!imageDimensions) return
+    const { clientWidth, clientHeight } = canvas
+    canvas.width = clientWidth
+    canvas.height = clientHeight
+    const context = canvas.getContext("2d")
+
+    context.save()
+    context.transform(
+      ...mat
+        .clone()
+        .inverse()
+        .toArray()
+    )
+
+    const { iw, ih } = layoutParams.current
 
     if (allowedArea) {
       // Pattern to indicate the NOT allowed areas
@@ -392,9 +400,12 @@ export default ({
           : undefined
       }}
     >
-      {showCrosshairs && <Crosshairs mousePosition={mousePosition} />}
+      {showCrosshairs && (
+        <Crosshairs key="crossHairs" mousePosition={mousePosition} />
+      )}
       {imageLoaded && (
         <RegionSelectAndTransformBoxes
+          key="regionSelectAndTransformBoxes"
           regions={regions}
           mouseEvents={mouseEvents}
           projectRegionBox={projectRegionBox}
@@ -411,7 +422,7 @@ export default ({
         />
       )}
       {imageLoaded && showTags && (
-        <PreventScrollToParents>
+        <PreventScrollToParents key="regionTags">
           <RegionTags
             regions={regions}
             projectRegionBox={projectRegionBox}
@@ -428,6 +439,7 @@ export default ({
       )}
       {zoomWithPrimary && zoomBox !== null && (
         <div
+          key="zoomBox"
           style={{
             position: "absolute",
             zIndex: 1,
@@ -442,6 +454,7 @@ export default ({
       )}
       {showPointDistances && (
         <PointDistances
+          key="pointDistances"
           regions={regions}
           realSize={realSize}
           projectRegionBox={projectRegionBox}

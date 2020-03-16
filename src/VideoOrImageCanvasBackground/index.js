@@ -51,20 +51,21 @@ export default ({
       })
   })
 
-  const stylePosition = useMemo(
-    () => ({
+  const stylePosition = useMemo(() => {
+    let width = imagePosition.bottomRight.x - imagePosition.topLeft.x
+    let height = imagePosition.bottomRight.y - imagePosition.topLeft.y
+    return {
       left: imagePosition.topLeft.x,
       top: imagePosition.topLeft.y,
-      width: imagePosition.bottomRight.x - imagePosition.topLeft.x,
-      height: imagePosition.bottomRight.y - imagePosition.topLeft.y
-    }),
-    [
-      imagePosition.topLeft.x,
-      imagePosition.topLeft.y,
-      imagePosition.bottomRight.x,
-      imagePosition.bottomRight.y
-    ]
-  )
+      width: isNaN(width) ? 0 : width,
+      height: isNaN(height) ? 0 : height
+    }
+  }, [
+    imagePosition.topLeft.x,
+    imagePosition.topLeft.y,
+    imagePosition.bottomRight.x,
+    imagePosition.bottomRight.y
+  ])
 
   if (!videoSrc && !imageSrc) return "No imageSrc or videoSrc provided"
 

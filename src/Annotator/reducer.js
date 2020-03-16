@@ -28,7 +28,14 @@ const typesToSaveWithHistory = {
   DELETE_REGION: "Delete Region"
 }
 
+let lastMouseMoveCall = Date.now()
+
 export default (state: MainLayoutState, action: Action) => {
+  // Throttle certain actions
+  if (action.type === "MOUSE_MOVE") {
+    if (Date.now() - lastMouseMoveCall < 16) return state
+    lastMouseMoveCall = Date.now()
+  }
   if (!action.type.includes("MOUSE")) {
     state = setIn(state, ["lastAction"], action)
   }
@@ -362,7 +369,7 @@ export default (state: MainLayoutState, action: Action) => {
             newRegion = {
               type: "box",
               x: x,
-              y: x,
+              y: y,
               w: 0.01,
               h: 0.01,
               highlighted: true,
@@ -376,7 +383,8 @@ export default (state: MainLayoutState, action: Action) => {
               editLabelEditorAfter: true,
               regionId: newRegion.id,
               freedom: [1, 1],
-              original: { x, y, w: newRegion.w, h: newRegion.h }
+              original: { x, y, w: newRegion.w, h: newRegion.h },
+              isNew: true
             })
             break
           }
@@ -432,6 +440,18 @@ export default (state: MainLayoutState, action: Action) => {
       if (!state.mode) return state
       switch (state.mode.mode) {
         case "RESIZE_BOX": {
+          if (state.mode.isNew) {
+            if (
+              Math.abs(state.mode.original.x - x) < 0.01 &&
+              Math.abs(state.mode.original.y - y) < 0.01
+            ) {
+              return setIn(
+                modifyRegion(state.mode.regionId, null),
+                ["mode"],
+                null
+              )
+            }
+          }
           if (state.mode.editLabelEditorAfter) {
             return {
               ...modifyRegion(state.mode.regionId, { editingLabels: true }),
