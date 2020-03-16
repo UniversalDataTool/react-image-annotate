@@ -394,18 +394,20 @@ export default ({
         onAddPolygonPoint={onAddPolygonPoint}
       />
       {showTags && (
-        <RegionTags
-          regions={regions}
-          projectRegionBox={projectRegionBox}
-          mouseEvents={mouseEvents}
-          regionClsList={regionClsList}
-          regionTagList={regionTagList}
-          onBeginRegionEdit={onBeginRegionEdit}
-          onChangeRegion={onChangeRegion}
-          onCloseRegionEdit={onCloseRegionEdit}
-          onDeleteRegion={onDeleteRegion}
-          layoutParams={layoutParams}
-        />
+        <PreventScrollToParents>
+          <RegionTags
+            regions={regions}
+            projectRegionBox={projectRegionBox}
+            mouseEvents={mouseEvents}
+            regionClsList={regionClsList}
+            regionTagList={regionTagList}
+            onBeginRegionEdit={onBeginRegionEdit}
+            onChangeRegion={onChangeRegion}
+            onCloseRegionEdit={onCloseRegionEdit}
+            onDeleteRegion={onDeleteRegion}
+            layoutParams={layoutParams}
+          />
+        </PreventScrollToParents>
       )}
       {zoomWithPrimary && zoomBox !== null && (
         <div

@@ -1,6 +1,6 @@
 // @flow
 
-import React, { createContext, useContext } from "react"
+import React, { createContext, useContext, memo } from "react"
 import IconButton from "@material-ui/core/IconButton"
 import Tooltip from "@material-ui/core/Tooltip"
 import { blue } from "@material-ui/core/colors"
@@ -47,4 +47,11 @@ export const SmallToolButton = ({
   )
 }
 
-export default SmallToolButton
+export default memo(
+  SmallToolButton,
+  (prevProps, nextProps) =>
+    prevProps.togglable === nextProps.togglable &&
+    prevProps.selected === nextProps.selected &&
+    prevProps.name === nextProps.name &&
+    prevProps.id === nextProps.id
+)

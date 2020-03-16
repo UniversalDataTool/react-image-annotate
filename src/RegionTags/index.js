@@ -3,6 +3,7 @@
 import React from "react"
 import Paper from "@material-ui/core/Paper"
 import RegionLabel from "../RegionLabel"
+import LockIcon from "@material-ui/icons/Lock"
 
 const copyWithout = (obj, ...args) => {
   const newObj = { ...obj }

@@ -1,6 +1,6 @@
 // @flow
 
-import React, { setState } from "react"
+import React, { setState, memo } from "react"
 import { makeStyles } from "@material-ui/core/styles"
 import SidebarBoxContainer from "../SidebarBoxContainer"
 import HistoryIcon from "@material-ui/icons/History"
@@ -12,6 +12,7 @@ import ListItemSecondaryAction from "@material-ui/core/ListItemSecondaryAction"
 import UndoIcon from "@material-ui/icons/Undo"
 import moment from "moment"
 import { grey } from "@material-ui/core/colors"
+import isEqual from "lodash/isEqual"
 
 const useStyles = makeStyles({
   emptyText: {
@@ -61,4 +62,9 @@ export const HistorySidebarBox = ({
   )
 }
 
-export default HistorySidebarBox
+export default memo(HistorySidebarBox, (prevProps, nextProps) =>
+  isEqual(
+    prevProps.history.map(a => [a.name, a.time]),
+    nextProps.history.map(a => [a.name, a.time])
+  )
+)

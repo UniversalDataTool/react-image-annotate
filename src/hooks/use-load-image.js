@@ -9,10 +9,11 @@ export default (imageSrc, onImageLoaded) => {
     image.current = new Image()
     image.current.onload = () => {
       changeImageLoaded(true)
-      onImageLoaded({
-        width: image.current.naturalWidth,
-        height: image.current.naturalHeight
-      })
+      if (onImageLoaded)
+        onImageLoaded({
+          width: image.current.naturalWidth,
+          height: image.current.naturalHeight
+        })
     }
     image.current.src = imageSrc
   }

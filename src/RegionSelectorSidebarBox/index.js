@@ -1,8 +1,8 @@
 // @flow
 
-import React, { Fragment, useState } from "react"
+import React, { Fragment, useState, memo } from "react"
 import SidebarBoxContainer from "../SidebarBoxContainer"
-import { makeStyles } from "@material-ui/core/styles"
+import { makeStyles, styled } from "@material-ui/core/styles"
 import { grey } from "@material-ui/core/colors"
 import RegionIcon from "@material-ui/icons/PictureInPicture"
 import Grid from "@material-ui/core/Grid"
@@ -15,8 +15,15 @@ import VisibleIcon from "@material-ui/icons/Visibility"
 import VisibleOffIcon from "@material-ui/icons/VisibilityOff"
 import styles from "./styles"
 import classnames from "classnames"
+import isEqual from "lodash/isEqual"
 
 const useStyles = makeStyles(styles)
+
+const HeaderSep = styled("div")({
+  borderTop: `1px solid ${grey[200]}`,
+  marginTop: 2,
+  marginBottom: 2
+})
 
 const Chip = ({ color, text }) => {
   const classes = useStyles()
@@ -28,7 +35,7 @@ const Chip = ({ color, text }) => {
   )
 }
 
-const Row = ({
+const RowLayout = ({
   header,
   highlighted,
   order,
@@ -73,6 +80,86 @@ const Row = ({
   )
 }
 
+const RowHeader = () => {
+  return (
+    <RowLayout
+      header
+      highlighted={false}
+      order={<ReorderIcon className="icon" />}
+      classification={<div style={{ paddingLeft: 10 }}>Class</div>}
+      area={<PieChartIcon className="icon" />}
+      trash={<TrashIcon className="icon" />}
+      lock={<LockIcon className="icon" />}
+      visible={<VisibleIcon className="icon" />}
+    />
+  )
+}
+
+const MemoRowHeader = memo(RowHeader)
+
+const Row = ({
+  region: r,
+  highlighted,
+  onSelectRegion,
+  onDeleteRegion,
+  onChangeRegion,
+  visible,
+  locked,
+  color,
+  cls,
+  index
+}) => {
+  return (
+    <RowLayout
+      header={false}
+      highlighted={highlighted}
+      onClick={() => onSelectRegion(r)}
+      order={`#${index + 1}`}
+      classification={<Chip text={cls || ""} color={color || "#ddd"} />}
+      area=""
+      trash={<TrashIcon onClick={() => onDeleteRegion(r)} className="icon2" />}
+      lock={
+        r.locked ? (
+          <LockIcon
+            onClick={() => onChangeRegion({ ...r, locked: false })}
+            className="icon2"
+          />
+        ) : (
+          <UnlockIcon
+            onClick={() => onChangeRegion({ ...r, locked: true })}
+            className="icon2"
+          />
+        )
+      }
+      visible={
+        r.visible || r.visible === undefined ? (
+          <VisibleIcon
+            onClick={() => onChangeRegion({ ...r, visible: false })}
+            className="icon2"
+          />
+        ) : (
+          <VisibleOffIcon
+            onClick={() => onChangeRegion({ ...r, visible: true })}
+            className="icon2"
+          />
+        )
+      }
+    />
+  )
+}
+
+const MemoRow = memo(
+  Row,
+  (prevProps, nextProps) =>
+    prevProps.highlighted === nextProps.highlighted &&
+    prevProps.visible === nextProps.visible &&
+    prevProps.locked === nextProps.locked &&
+    prevProps.id === nextProps.id &&
+    prevProps.index === nextProps.index &&
+    prevProps.cls === nextProps.cls &&
+    prevProps.color === nextProps.color
+)
+
 export const RegionSelectorSidebarBox = ({
   regions,
   onDeleteRegion,
@@ -88,63 +175,17 @@ export const RegionSelectorSidebarBox = ({
       expandedByDefault
     >
       <div className={classes.container}>
-        <Row
-          header
-          highlighted={false}
-          order={<ReorderIcon className="icon" />}
-          classification={<div style={{ paddingLeft: 10 }}>Class</div>}
-          area={<PieChartIcon className="icon" />}
-          trash={<TrashIcon className="icon" />}
-          lock={<LockIcon className="icon" />}
-          visible={<VisibleIcon className="icon" />}
-        />
-        <div
-          style={{
-            borderTop: `1px solid ${grey[200]}`,
-            marginTop: 2,
-            marginBottom: 2
-          }}
-        />
+        <MemoRowHeader />
+        <HeaderSep />
         {regions.map((r, i) => (
-          <Row
-            header={false}
-            highlighted={r.highlighted}
-            onClick={() => onSelectRegion(r)}
+          <MemoRow
             key={r.id}
-            order={`#${i + 1}`}
-            classification={
-              <Chip text={r.cls || ""} color={r.color || "#ddd"} />
-            }
-            area=""
-            trash={
-              <TrashIcon onClick={() => onDeleteRegion(r)} className="icon2" />
-            }
-            lock={
-              r.locked ? (
-                <LockIcon
-                  onClick={() => onChangeRegion({ ...r, locked: false })}
-                  className="icon2"
-                />
-              ) : (
-                <UnlockIcon
-                  onClick={() => onChangeRegion({ ...r, locked: true })}
-                  className="icon2"
-                />
-              )
-            }
-            visible={
-              r.visible || r.visible === undefined ? (
-                <VisibleIcon
-                  onClick={() => onChangeRegion({ ...r, visible: false })}
-                  className="icon2"
-                />
-              ) : (
-                <VisibleOffIcon
-                  onClick={() => onChangeRegion({ ...r, visible: true })}
-                  className="icon2"
-                />
-              )
-            }
+            {...r}
+            region={r}
+            index={i}
+            onSelectRegion={onSelectRegion}
+            onDeleteRegion={onDeleteRegion}
+            onChangeRegion={onChangeRegion}
           />
         ))}
       </div>
@@ -152,4 +193,17 @@ export const RegionSelectorSidebarBox = ({
   )
 }
 
-export default RegionSelectorSidebarBox
+const mapUsedRegionProperties = r => [
+  r.id,
+  r.color,
+  r.locked,
+  r.visible,
+  r.highlighted
+]
+
+export default memo(RegionSelectorSidebarBox, (prevProps, nextProps) =>
+  isEqual(
+    prevProps.regions.map(mapUsedRegionProperties),
+    nextProps.regions.map(mapUsedRegionProperties)
+  )
+)
