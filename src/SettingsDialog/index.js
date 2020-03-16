@@ -12,7 +12,7 @@ import { useSettings } from "../SettingsProvider"
 export const SettingsDialog = ({ open, onClose }) => {
   const settings = useSettings()
   return (
-    <Dialog open={open} onClose={onClose}>
+    <Dialog open={open || false} onClose={onClose}>
       <DialogTitle>Settings</DialogTitle>
       <DialogContent style={{ minWidth: 400 }}>
         <Survey

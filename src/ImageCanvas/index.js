@@ -35,12 +35,16 @@ import { useRafState } from "react-use"
 import PointDistances from "../PointDistances"
 import RegionTags from "../RegionTags"
 import RegionSelectAndTransformBoxes from "../RegionSelectAndTransformBoxes"
+import VideoOrImageCanvasBackground from "../VideoOrImageCanvasBackground"
+import useEventCallback from "use-event-callback"
 
 const useStyles = makeStyles(styles)
 
 type Props = {
   regions: Array<Region>,
-  imageSrc: string,
+  imageSrc?: string,
+  videoSrc?: string,
+  videoTime?: number,
   onMouseMove?: ({ x: number, y: number }) => any,
   onMouseDown?: ({ x: number, y: number }) => any,
   onMouseUp?: ({ x: number, y: number }) => any,
@@ -73,6 +77,8 @@ const getDefaultMat = () => Matrix.from(1, 0, 0, 1, -10, -10)
 export default ({
   regions,
   imageSrc,
+  videoSrc,
+  videoTime,
   realSize,
   showTags,
   onMouseMove = p => null,
@@ -138,10 +144,19 @@ export default ({
 
   const projectRegionBox = useProjectRegionBox({ layoutParams, mat })
 
-  const [image, imageLoaded] = useLoadImage(imageSrc, onImageLoaded)
+  const [imageDimensions, changeImageDimensions] = useState()
+  const imageLoaded = Boolean(imageDimensions)
+  const onVideoOrImageLoaded = useEventCallback(
+    ({ naturalWidth, naturalHeight }) => {
+      changeImageDimensions({ naturalWidth, naturalHeight })
+    }
+  )
+
+  // const [image, imageLoaded] = useLoadImage(imageSrc, onImageLoaded)
   const excludePattern = useExcludePattern()
 
   useLayoutEffect(() => {
+    if (!imageDimensions) return
     const canvas = canvasEl.current
     const { clientWidth, clientHeight } = canvas
     canvas.width = clientWidth
@@ -157,13 +172,13 @@ export default ({
     )
 
     const fitScale = Math.max(
-      image.naturalWidth / (clientWidth - 20),
-      image.naturalHeight / (clientHeight - 20)
+      imageDimensions.naturalWidth / (clientWidth - 20),
+      imageDimensions.naturalHeight / (clientHeight - 20)
     )
 
     const [iw, ih] = [
-      image.naturalWidth / fitScale,
-      image.naturalHeight / fitScale
+      imageDimensions.naturalWidth / fitScale,
+      imageDimensions.naturalHeight / fitScale
     ]
 
     layoutParams.current = {
@@ -378,22 +393,24 @@ export default ({
       }}
     >
       {showCrosshairs && <Crosshairs mousePosition={mousePosition} />}
-      <RegionSelectAndTransformBoxes
-        regions={regions}
-        mouseEvents={mouseEvents}
-        projectRegionBox={projectRegionBox}
-        dragWithPrimary={dragWithPrimary}
-        createWithPrimary={createWithPrimary}
-        zoomWithPrimary={zoomWithPrimary}
-        onBeginMovePoint={onBeginMovePoint}
-        onSelectRegion={onSelectRegion}
-        layoutParams={layoutParams}
-        mat={mat}
-        onBeginBoxTransform={onBeginBoxTransform}
-        onBeginMovePolygonPoint={onBeginMovePolygonPoint}
-        onAddPolygonPoint={onAddPolygonPoint}
-      />
-      {showTags && (
+      {imageLoaded && (
+        <RegionSelectAndTransformBoxes
+          regions={regions}
+          mouseEvents={mouseEvents}
+          projectRegionBox={projectRegionBox}
+          dragWithPrimary={dragWithPrimary}
+          createWithPrimary={createWithPrimary}
+          zoomWithPrimary={zoomWithPrimary}
+          onBeginMovePoint={onBeginMovePoint}
+          onSelectRegion={onSelectRegion}
+          layoutParams={layoutParams}
+          mat={mat}
+          onBeginBoxTransform={onBeginBoxTransform}
+          onBeginMovePolygonPoint={onBeginMovePolygonPoint}
+          onAddPolygonPoint={onAddPolygonPoint}
+        />
+      )}
+      {imageLoaded && showTags && (
         <PreventScrollToParents>
           <RegionTags
             regions={regions}
@@ -437,7 +454,15 @@ export default ({
       >
         <>
           <canvas className={classes.canvas} ref={canvasEl} />
-          <img
+          <VideoOrImageCanvasBackground
+            imagePosition={imagePosition}
+            mouseEvents={mouseEvents}
+            onLoad={onVideoOrImageLoaded}
+            videoTime={videoTime}
+            videoSrc={videoSrc}
+            imageSrc={imageSrc}
+          />
+          {/* <img
             src={imageSrc}
             className={classes.image}
             {...mouseEvents}
@@ -447,7 +472,7 @@ export default ({
               width: imagePosition.bottomRight.x - imagePosition.topLeft.x,
               height: imagePosition.bottomRight.y - imagePosition.topLeft.y
             }}
-          />
+          /> */}
         </>
       </PreventScrollToParents>
       <div className={classes.zoomIndicator}>
