@@ -11,6 +11,7 @@ import type {
 } from "../MainLayout/types"
 import SettingsProvider from "../SettingsProvider"
 import reducer from "./reducer"
+import makeImmutable from "seamless-immutable"
 
 type Props = {
   taskDescription: string,
@@ -28,7 +29,7 @@ type Props = {
   onExit: MainLayoutState => any
 }
 
-export default ({
+export const Annotator = ({
   images,
   allowedArea,
   selectedImage = images.length > 0 ? images[0].src : undefined,
@@ -43,24 +44,27 @@ export default ({
   taskDescription,
   onExit
 }: Props) => {
-  const [state, dispatchToReducer] = useReducer(reducer, {
-    showTags,
-    allowedArea,
-    selectedImage,
-    showPointDistances,
-    pointDistancePrecision,
-    selectedTool: "select",
-    mode: null,
-    taskDescription,
-    images,
-    labelImages: imageClsList.length > 0 || imageTagList.length > 0,
-    regionClsList,
-    regionTagList,
-    imageClsList,
-    imageTagList,
-    enabledTools,
-    history: []
-  })
+  const [state, dispatchToReducer] = useReducer(
+    reducer,
+    makeImmutable({
+      showTags,
+      allowedArea,
+      selectedImage,
+      showPointDistances,
+      pointDistancePrecision,
+      selectedTool: "select",
+      mode: null,
+      taskDescription,
+      images,
+      labelImages: imageClsList.length > 0 || imageTagList.length > 0,
+      regionClsList,
+      regionTagList,
+      imageClsList,
+      imageTagList,
+      enabledTools,
+      history: []
+    })
+  )
 
   const dispatch = (action: Action) => {
     if (
@@ -82,3 +86,5 @@ export default ({
     </SettingsProvider>
   )
 }
+
+export default Annotator

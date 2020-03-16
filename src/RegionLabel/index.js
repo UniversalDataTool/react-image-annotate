@@ -1,6 +1,6 @@
 // @flow
 
-import React, { useState } from "react"
+import React, { useState, memo } from "react"
 import Paper from "@material-ui/core/Paper"
 import { makeStyles } from "@material-ui/core/styles"
 import styles from "./styles"
@@ -12,6 +12,7 @@ import TrashIcon from "@material-ui/icons/Delete"
 import CheckIcon from "@material-ui/icons/Check"
 import UndoIcon from "@material-ui/icons/Undo"
 import Select from "react-select"
+import { asMutable } from "seamless-immutable"
 
 const useStyles = makeStyles(styles)
 
@@ -28,11 +29,11 @@ type Props = {
   onOpen: Region => null
 }
 
-export default ({
+export const RegionLabel = ({
   region,
   editing,
-  allowedClasses = ["Laptop", "Mouse", "Compuda"],
-  allowedTags = ["Dog", "Cat", "Woof", "Electronic Device"],
+  allowedClasses,
+  allowedTags,
   onDelete,
   onChange,
   onClose,
@@ -97,7 +98,7 @@ export default ({
               <TrashIcon style={{ marginTop: -8, width: 16, height: 16 }} />
             </IconButton>
           </div>
-          {allowedClasses.length > 0 && (
+          {(allowedClasses || []).length > 0 && (
             <div style={{ marginTop: 6 }}>
               <Select
                 placeholder="Classification"
@@ -110,11 +111,13 @@ export default ({
                 value={
                   region.cls ? { label: region.cls, value: region.cls } : null
                 }
-                options={allowedClasses.map(c => ({ value: c, label: c }))}
+                options={asMutable(
+                  allowedClasses.map(c => ({ value: c, label: c }))
+                )}
               />
             </div>
           )}
-          {allowedTags.length > 0 && (
+          {(allowedTags || []).length > 0 && (
             <div style={{ marginTop: 4 }}>
               <Select
                 onChange={newTags =>
@@ -126,7 +129,9 @@ export default ({
                 placeholder="Tags"
                 value={(region.tags || []).map(c => ({ label: c, value: c }))}
                 isMulti
-                options={allowedTags.map(c => ({ value: c, label: c }))}
+                options={asMutable(
+                  allowedTags.map(c => ({ value: c, label: c }))
+                )}
               />
             </div>
           )}
@@ -146,3 +151,15 @@ export default ({
     </Paper>
   )
 }
+
+export default memo(
+  RegionLabel,
+  (prevProps, nextProps) =>
+    prevProps.editing === nextProps.editing &&
+    prevProps.region.x === nextProps.region.x &&
+    prevProps.region.y === nextProps.region.y &&
+    prevProps.region.tags === nextProps.region.tags &&
+    prevProps.region.cls === nextProps.region.cls &&
+    prevProps.region.color === nextProps.region.color &&
+    prevProps.region.highlighted === nextProps.region.highlighted
+)

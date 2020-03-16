@@ -41,7 +41,9 @@ type Props = {
   onRestoreHistory: () => any
 }
 
-export default ({
+const emptyArr = []
+
+export const Sidebar = ({
   debug,
   taskDescription,
   images,
@@ -60,6 +62,8 @@ export default ({
 }: Props) => {
   const classes = useStyles()
 
+  if (!regions) regions = emptyArr
+
   return (
     <div>
       {debug && <DebugBox state={debug} lastAction={debug.lastAction} />}
@@ -73,14 +77,18 @@ export default ({
           expandedByDefault
         />
       )}
-      <ImageSelector onSelect={onSelectImage} images={images} />
+      {images.length > 0 && (
+        <ImageSelector onSelect={onSelectImage} images={images} />
+      )}
       <RegionSelector
         regions={regions}
         onSelectRegion={onSelectRegion}
         onChangeRegion={onChangeRegion}
         onDeleteRegion={onDeleteRegion}
       />
-      <History history={history} onRestoreHistory={() => onRestoreHistory()} />
+      <History history={history} onRestoreHistory={onRestoreHistory} />
     </div>
   )
 }
+
+export default Sidebar

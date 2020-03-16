@@ -3,6 +3,7 @@
 import React, { useState } from "react"
 import { RemoveScroll } from "react-remove-scroll"
 import { styled } from "@material-ui/core/styles"
+import useEventCallback from "use-event-callback"
 
 const Container = styled("div")({
   "& > div": {
@@ -11,13 +12,27 @@ const Container = styled("div")({
   }
 })
 
-export default ({ children, ...otherProps }) => {
+export const PreventScrollToParents = ({ children, ...otherProps }) => {
   const [mouseOver, changeMouseOver] = useState(false)
+  const onMouseMove = useEventCallback(e => {
+    if (!mouseOver) changeMouseOver(true)
+    if (otherProps.onMouseMove) {
+      otherProps.onMouseMove(e)
+    }
+  })
+  const onMouseLeave = useEventCallback(e => {
+    setTimeout(() => {
+      if (mouseOver) {
+        changeMouseOver(false)
+      }
+    }, 100)
+  })
+
   return (
     <Container
       {...otherProps}
-      onMouseEnter={e => changeMouseOver(true)}
-      onMouseLeave={e => changeMouseOver(false)}
+      onMouseMove={onMouseMove}
+      onMouseLeave={onMouseLeave}
     >
       <RemoveScroll enabled={mouseOver} removeScrollBar={false}>
         {children}
@@ -25,3 +40,5 @@ export default ({ children, ...otherProps }) => {
     </Container>
   )
 }
+
+export default PreventScrollToParents

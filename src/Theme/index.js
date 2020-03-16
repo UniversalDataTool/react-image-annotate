@@ -26,7 +26,7 @@ const theme = createMuiTheme({
   }
 })
 
-export default ({ children }: any) => {
+export const Theme = ({ children }: any) => {
   const classes = useStyles()
   return (
     <ThemeProvider theme={theme}>
@@ -34,3 +34,5 @@ export default ({ children }: any) => {
     </ThemeProvider>
   )
 }
+
+export default Theme

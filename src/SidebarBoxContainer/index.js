@@ -1,6 +1,6 @@
 // @flow
 
-import React, { useState } from "react"
+import React, { useState, memo } from "react"
 import Paper from "@material-ui/core/Paper"
 import { makeStyles } from "@material-ui/core/styles"
 import ExpandIcon from "@material-ui/icons/ExpandMore"
@@ -8,6 +8,7 @@ import IconButton from "@material-ui/core/IconButton"
 import Collapse from "@material-ui/core/Collapse"
 import { grey } from "@material-ui/core/colors"
 import classnames from "classnames"
+import useEventCallback from "use-event-callback"
 
 const useStyles = makeStyles({
   container: { margin: 8 },
@@ -54,7 +55,7 @@ const useStyles = makeStyles({
   }
 })
 
-export default ({
+export const SidebarBoxContainer = ({
   icon,
   title,
   subTitle,
@@ -72,6 +73,7 @@ export default ({
   )
 
   const [expanded, changeExpanded] = useState(expandedByDefault)
+  const toggleExpanded = useEventCallback(() => changeExpanded(!expanded))
   return (
     <Paper className={classes.container}>
       <div className={classes.header}>
@@ -79,10 +81,7 @@ export default ({
         <div className={classes.title}>
           {title} <span>{subTitle}</span>
         </div>
-        <IconButton
-          onClick={() => changeExpanded(!expanded)}
-          className={classes.expandButton}
-        >
+        <IconButton onClick={toggleExpanded} className={classes.expandButton}>
           <ExpandIcon className={classnames("icon", expanded && "expanded")} />
         </IconButton>
       </div>
@@ -96,3 +95,8 @@ export default ({
     </Paper>
   )
 }
+
+export default memo(
+  SidebarBoxContainer,
+  (prev, next) => prev.title === next.title && prev.children === next.children
+)

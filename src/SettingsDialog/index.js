@@ -9,7 +9,7 @@ import Button from "@material-ui/core/Button"
 import Survey from "material-survey/components/Survey"
 import { useSettings } from "../SettingsProvider"
 
-export default ({ open, onClose }) => {
+export const SettingsDialog = ({ open, onClose }) => {
   const settings = useSettings()
   return (
     <Dialog open={open} onClose={onClose}>
@@ -37,3 +37,5 @@ export default ({ open, onClose }) => {
     </Dialog>
   )
 }
+
+export default SettingsDialog

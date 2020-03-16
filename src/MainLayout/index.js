@@ -1,6 +1,6 @@
 // @flow
 
-import React, { useState } from "react"
+import React, { useState, useRef } from "react"
 import Grid from "@material-ui/core/Grid"
 import { makeStyles } from "@material-ui/core/styles"
 import Sidebar from "../Sidebar"
@@ -22,19 +22,28 @@ type Props = {
   dispatch: Action => any
 }
 
-export default ({ state, dispatch }: Props) => {
+export const MainLayout = ({ state, dispatch }: Props) => {
   const classes = useStyles()
   const settings = useSettings()
 
-  const action = (type: string, ...params: Array<string>) => (...args: any) =>
-    params.length > 0
-      ? dispatch(
-          ({
-            type,
-            ...params.reduce((acc, p, i) => ((acc[p] = args[i]), acc), {})
-          }: any)
-        )
-      : dispatch({ type, ...args[0] })
+  const memoizedActionFns = useRef({})
+  const action = (type: string, ...params: Array<string>) => {
+    const fnKey = `${type}(${params.join(",")})`
+    if (memoizedActionFns.current[fnKey])
+      return memoizedActionFns.current[fnKey]
+
+    const fn = (...args: any) =>
+      params.length > 0
+        ? dispatch(
+            ({
+              type,
+              ...params.reduce((acc, p, i) => ((acc[p] = args[i]), acc), {})
+            }: any)
+          )
+        : dispatch({ type, ...args[0] })
+    memoizedActionFns.current[fnKey] = fn
+    return fn
+  }
 
   const currentImage = state.images.find(img => img.src === state.selectedImage)
 
@@ -130,7 +139,7 @@ export default ({ state, dispatch }: Props) => {
               debug={window.localStorage.$ANNOTATE_DEBUG_MODE && state}
               taskDescription={state.taskDescription}
               images={state.images}
-              regions={currentImage ? currentImage.regions || [] : []}
+              regions={currentImage ? currentImage.regions : null}
               history={state.history}
               currentImage={currentImage}
               labelImages={state.labelImages}
@@ -158,3 +167,5 @@ export default ({ state, dispatch }: Props) => {
     </Fullscreen>
   )
 }
+
+export default MainLayout

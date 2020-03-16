@@ -21,7 +21,7 @@ type Props = {
   multipleImages?: boolean
 }
 
-export default ({
+export const Header = ({
   onHeaderButtonClick,
   title,
   inFullScreen,
@@ -53,3 +53,5 @@ export default ({
     </div>
   )
 }
+
+export default Header

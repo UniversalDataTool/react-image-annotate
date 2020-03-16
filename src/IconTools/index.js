@@ -1,6 +1,6 @@
 // @flow
 
-import React from "react"
+import React, { useMemo } from "react"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import {
   faArrowsAlt,
@@ -37,18 +37,22 @@ type Props = {
   onClickTool: string => any
 }
 
-export default ({
+const defaultTools = ["select", "create-point", "create-box", "create-polygon"]
+
+export const IconTools = ({
   showTags,
   selectedTool,
   onClickTool,
-  enabledTools = ["select", "create-point", "create-box", "create-polygon"]
+  enabledTools = defaultTools
 }: Props) => {
   const classes = useStyles()
+  const selectedToolContextValue = useMemo(
+    () => ({ enabledTools, selectedTool, onClickTool }),
+    [enabledTools, selectedTool]
+  )
   return (
     <div className={classes.iconTools}>
-      <SelectedTool.Provider
-        value={{ enabledTools, selectedTool, onClickTool }}
-      >
+      <SelectedTool.Provider value={selectedToolContextValue}>
         <SmallToolButton
           id="select"
           name="Select Region"
@@ -108,3 +112,5 @@ export default ({
     </div>
   )
 }
+
+export default IconTools

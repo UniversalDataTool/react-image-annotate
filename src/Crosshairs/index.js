@@ -2,7 +2,7 @@
 
 import React, { Fragment, useEffect, useState } from "react"
 
-export default ({
+export const Crosshairs = ({
   mousePosition,
   x,
   y
@@ -58,3 +58,5 @@ export default ({
     </Fragment>
   )
 }
+
+export default Crosshairs
