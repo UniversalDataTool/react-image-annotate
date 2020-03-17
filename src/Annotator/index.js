@@ -10,7 +10,12 @@ import type {
   Action
 } from "../MainLayout/types"
 import SettingsProvider from "../SettingsProvider"
-import reducer from "./reducer"
+
+import combineReducers from "./reducers/combine-reducers.js"
+import generalReducer from "./reducers/general-reducer.js"
+import imageReducer from "./reducers/image-reducer.js"
+import videoReducer from "./reducers/video-reducer.js"
+
 import makeImmutable from "seamless-immutable"
 
 type Props = {
@@ -32,7 +37,8 @@ type Props = {
 export const Annotator = ({
   images,
   allowedArea,
-  selectedImage = images.length > 0 ? images[0].src : undefined,
+  selectedImage = images && images.length > 0 ? images[0].src : undefined,
+  selectedVideoTime = 0,
   showPointDistances,
   pointDistancePrecision,
   showTags = true,
@@ -42,10 +48,13 @@ export const Annotator = ({
   imageTagList = [],
   imageClsList = [],
   taskDescription,
+  videoSrc,
   onExit
 }: Props) => {
+  if (!images) return 'Missing required prop "images" or "videoSrc"'
   const [state, dispatchToReducer] = useReducer(
-    reducer,
+    combineReducers(generalReducer),
+    // reducer,
     makeImmutable({
       showTags,
       allowedArea,
@@ -82,7 +91,7 @@ export const Annotator = ({
 
   return (
     <SettingsProvider>
-      <MainLayout debug state={state} dispatch={dispatch} />
+      <MainLayout state={state} dispatch={dispatch} />
     </SettingsProvider>
   )
 }

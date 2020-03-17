@@ -1,7 +1,7 @@
 // @flow
 
-import type { MainLayoutState, Action } from "../MainLayout/types"
-import { moveRegion } from "../ImageCanvas/region-tools.js"
+import type { MainLayoutState, Action } from "../../MainLayout/types"
+import { moveRegion } from "../../ImageCanvas/region-tools.js"
 import { setIn, updateIn } from "seamless-immutable"
 import moment from "moment"
 import isEqual from "lodash/isEqual"
@@ -28,13 +28,11 @@ const typesToSaveWithHistory = {
   DELETE_REGION: "Delete Region"
 }
 
-let lastMouseMoveCall = Date.now()
-
 export default (state: MainLayoutState, action: Action) => {
   // Throttle certain actions
   if (action.type === "MOUSE_MOVE") {
-    if (Date.now() - lastMouseMoveCall < 16) return state
-    lastMouseMoveCall = Date.now()
+    if (Date.now() - ((state: any).lastMouseMoveCall || 0) < 16) return state
+    state = setIn(state, ["lastMouseMoveCall"], Date.now())
   }
   if (!action.type.includes("MOUSE")) {
     state = setIn(state, ["lastAction"], action)
@@ -554,7 +552,6 @@ export default (state: MainLayoutState, action: Action) => {
         }
       }
       return state
-      // return setIn(state, [""]
     }
     case "SELECT_TOOL": {
       state = setIn(state, ["mode"], null)

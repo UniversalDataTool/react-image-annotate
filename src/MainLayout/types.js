@@ -22,7 +22,8 @@ export type Image = {
   name: string,
   regions?: Array<Region>,
   pixelSize?: { w: number, h: number },
-  realSize?: { w: number, h: number, unitName: string }
+  realSize?: { w: number, h: number, unitName: string },
+  videoTime?: number
 }
 
 export type Mode =
@@ -39,19 +40,17 @@ export type Mode =
     |}
   | {| mode: "MOVE_REGION" |}
 
-export type MainLayoutState = {|
+export type MainLayoutStateBase = {|
+  annotationType: "video" | "image",
   fullScreen?: boolean,
   settingsOpen?: boolean,
   minRegionSize?: number,
   showTags: boolean,
   showPointDistances?: boolean,
   pointDistancePrecision?: number,
-  selectedImage?: string,
   selectedTool: ToolEnum,
   mode: Mode,
   taskDescription: string,
-  images: Array<Image>,
-  labelImages?: boolean,
   allowedArea?: { x: number, y: number, w: number, h: number },
   regionClsList?: Array<string>,
   regionTagList?: Array<string>,
@@ -60,6 +59,38 @@ export type MainLayoutState = {|
   enabledTools: Array<string>,
   history: Array<{ time: Date, state: MainLayoutState, name: string }>
 |}
+
+export type MainLayoutImageAnnotationState = {|
+  ...MainLayoutStateBase,
+  annotationType: "image",
+
+  selectedImage?: string,
+  images: Array<Image>,
+  labelImages?: boolean,
+
+  // If the selectedImage corresponds to a frame of a video
+  selectedVideoTime?: number
+|}
+
+export type MainLayoutVideoAnnotationState = {|
+  ...MainLayoutStateBase,
+  annotationType: "video",
+
+  videoSrc: string,
+  currentVideoTime: number,
+  keyframes: {
+    [time: number]: {
+      time: number,
+      regions: Array<Region>
+    }
+  },
+  pixelSize?: { w: number, h: number },
+  realSize?: { w: number, h: number, unitName: string }
+|}
+
+export type MainLayoutState =
+  | MainLayoutImageAnnotationState
+  | MainLayoutVideoAnnotationState
 
 export type Action =
   | {| type: "@@INIT" |}
