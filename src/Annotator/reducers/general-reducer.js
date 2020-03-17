@@ -243,7 +243,7 @@ export default (state: MainLayoutState, action: Action) => {
     case "MOUSE_MOVE": {
       const { x, y } = action
       if (!state.mode) return state
-      if (currentImageIndex === null) return state
+      if (!activeImage) return state
       switch (state.mode.mode) {
         case "MOVE_POLYGON_POINT": {
           const { pointIndex, regionId } = state.mode
@@ -340,7 +340,7 @@ export default (state: MainLayoutState, action: Action) => {
       const { x, y } = action
 
       let newRegion
-      if (currentImageIndex !== null) {
+      if (activeImage) {
         if (state.allowedArea) {
           const aa = state.allowedArea
           if (x < aa.x || x > aa.x + aa.w || y < aa.y || y > aa.y + aa.h) {
@@ -579,11 +579,11 @@ export default (state: MainLayoutState, action: Action) => {
         }
       }
       // Close any open boxes
-      const regions: any = state.images[currentImageIndex].regions
+      const regions: any = activeImage.regions
       if (regions.some(r => r.editingLabels)) {
         return setIn(
           state,
-          ["images", currentImageIndex, "regions"],
+          [...pathToActiveImage, "regions"],
           regions.map(r => ({
             ...r,
             editingLabels: false
@@ -592,7 +592,7 @@ export default (state: MainLayoutState, action: Action) => {
       } else {
         return setIn(
           state,
-          ["images", currentImageIndex, "regions"],
+          [...pathToActiveImage, "regions"],
           regions.map(r => ({
             ...r,
             highlighted: false
