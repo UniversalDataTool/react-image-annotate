@@ -1,6 +1,7 @@
 // @flow
 
 import React, { useReducer } from "react"
+import type { Node } from "react"
 import MainLayout from "../MainLayout"
 import type {
   ToolEnum,
@@ -26,6 +27,7 @@ type Props = {
   images: Array<Image>,
   showPointDistances?: boolean,
   pointDistancePrecision?: number,
+  RegionEditLabel?: Node,
   onExit: MainLayoutState => any
 }
 
@@ -42,6 +44,7 @@ export const Annotator = ({
   imageTagList = [],
   imageClsList = [],
   taskDescription,
+  RegionEditLabel,
   onExit
 }: Props) => {
   const [state, dispatchToReducer] = useReducer(
@@ -82,7 +85,12 @@ export const Annotator = ({
 
   return (
     <SettingsProvider>
-      <MainLayout debug state={state} dispatch={dispatch} />
+      <MainLayout
+        debug
+        state={state}
+        dispatch={dispatch}
+        RegionEditLabel={RegionEditLabel}
+      />
     </SettingsProvider>
   )
 }
