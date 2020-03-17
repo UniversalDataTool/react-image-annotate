@@ -61,6 +61,7 @@ All of the following properties can be defined on the Annotator...
 | `showPointDistances`     | `boolean`                                        | Show distances between points.                                                          | `false`       |
 | `pointDistancePrecision` | `number`                                         | Precision on displayed points (e.g. 3 => 0.123)                                         |               |
 | `onExit`                 | `MainLayoutState => any`                         | Called when "Save" is called.                                                           |               |
+| `EditForm`               | `Node`                                           | React Node overiding the form to update the region (see [`RegionLabel`](https://github.com/waoai/react-image-annotate/blob/master/src/RegionLabel/index.js))                                                           |               |
 
 ## Developers
 
