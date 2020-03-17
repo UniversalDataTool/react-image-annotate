@@ -38,7 +38,10 @@ export default (state: MainLayoutState, action: Action) => {
     state = setIn(state, ["lastAction"], action)
   }
   let currentImageIndex = state.images.findIndex(
-    img => img.src === state.selectedImage
+    img =>
+      img.src === state.selectedImage &&
+      (state.selectedImageFrameTime !== undefined &&
+        img.frameTime === state.selectedImageFrameTime)
   )
   if (currentImageIndex === -1) currentImageIndex = null
   const getRegionIndex = region => {
@@ -119,8 +122,13 @@ export default (state: MainLayoutState, action: Action) => {
     )
   }
 
-  const setNewImage = (newImage: string) => {
-    return setIn(state, ["selectedImage"], newImage)
+  const setNewImage = (img: string | Object) => {
+    let { src, frameTime } = typeof img === "object" ? img : { src: img }
+    return setIn(
+      setIn(state, ["selectedImage"], src),
+      ["selectedImageFrameTime"],
+      frameTime
+    )
   }
 
   switch (action.type) {
@@ -128,7 +136,7 @@ export default (state: MainLayoutState, action: Action) => {
       return state
     }
     case "SELECT_IMAGE": {
-      return setNewImage(action.image.src)
+      return setNewImage(action.image)
     }
     case "IMAGE_LOADED": {
       return setIn(state, ["images", currentImageIndex, "pixelSize"], {
@@ -523,12 +531,21 @@ export default (state: MainLayoutState, action: Action) => {
         case "prev": {
           if (currentImageIndex === null) return state
           if (currentImageIndex === 0) return state
-          return setNewImage(state.images[currentImageIndex - 1].src)
+          return setNewImage(state.images[currentImageIndex - 1])
         }
         case "next": {
           if (currentImageIndex === null) return state
           if (currentImageIndex === state.images.length - 1) return state
-          return setNewImage(state.images[currentImageIndex + 1].src)
+          return setNewImage(state.images[currentImageIndex + 1])
+        }
+        case "clone": {
+          if (currentImageIndex === null) return state
+          if (currentImageIndex === state.images.length - 1) return state
+          return setIn(
+            setNewImage(state.images[currentImageIndex + 1]),
+            ["images", currentImageIndex + 1, "regions"],
+            state.images[currentImageIndex].regions
+          )
         }
         case "settings": {
           return setIn(state, ["settingsOpen"], !state.settingsOpen)

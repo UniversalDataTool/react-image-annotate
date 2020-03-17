@@ -364,3 +364,37 @@ storiesOf("Annotator", module)
       />
     </div>
   ))
+  .add("Video with frames as each image", () => (
+    <div
+      style={{
+        width: "100vw",
+        height: "100vh",
+        boxSizing: "border-box"
+      }}
+    >
+      <Annotator
+        onExit={actionAddon("onExit")}
+        showTags={false}
+        middlewares={[
+          store => next => action => {
+            actionAddon(action.type)(action)
+            return next(action)
+          }
+        ]}
+        images={[
+          {
+            src:
+              "https://s3.amazonaws.com/asset.workaround.online/SampleVideo_1280x720_1mb.mp4",
+            frameTime: 0,
+            name: "Frame 1"
+          },
+          {
+            src:
+              "https://s3.amazonaws.com/asset.workaround.online/SampleVideo_1280x720_1mb.mp4",
+            frameTime: 4500,
+            name: "Frame 2"
+          }
+        ]}
+      />
+    </div>
+  ))

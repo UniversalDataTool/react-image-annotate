@@ -9,6 +9,7 @@ import SettingsIcon from "@material-ui/icons/Settings"
 import HelpIcon from "@material-ui/icons/Help"
 import FullscreenIcon from "@material-ui/icons/Fullscreen"
 import ExitIcon from "@material-ui/icons/ExitToApp"
+import QueuePlayNextIcon from "@material-ui/icons/QueuePlayNext"
 import HotkeysIcon from "@material-ui/icons/Keyboard"
 import styles from "./styles"
 
@@ -18,13 +19,16 @@ type Props = {
   onHeaderButtonClick: string => any,
   title: string,
   inFullScreen?: boolean,
-  multipleImages?: boolean
+  multipleImages?: boolean,
+  isAVideoFrame?: boolean
 }
 
 export const Header = ({
   onHeaderButtonClick,
   title,
   inFullScreen,
+  isAVideoFrame = false,
+  nextVideoFrameHasRegions = false,
   multipleImages
 }: Props) => {
   const classes = useStyles()
@@ -37,6 +41,11 @@ export const Header = ({
             <>
               <HeaderButton name="Prev" Icon={BackIcon} />
               <HeaderButton name="Next" Icon={NextIcon} />
+              <HeaderButton
+                name="Clone"
+                disabled={nextVideoFrameHasRegions}
+                Icon={QueuePlayNextIcon}
+              />
             </>
           )}
           <HeaderButton name="Settings" Icon={SettingsIcon} />

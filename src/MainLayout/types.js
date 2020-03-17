@@ -23,7 +23,7 @@ export type Image = {
   regions?: Array<Region>,
   pixelSize?: { w: number, h: number },
   realSize?: { w: number, h: number, unitName: string },
-  videoTime?: number
+  frameTime?: number
 }
 
 export type Mode =
@@ -69,7 +69,7 @@ export type MainLayoutImageAnnotationState = {|
   labelImages?: boolean,
 
   // If the selectedImage corresponds to a frame of a video
-  selectedVideoTime?: number
+  selectedImageFrameTime?: number
 |}
 
 export type MainLayoutVideoAnnotationState = {|
@@ -79,10 +79,10 @@ export type MainLayoutVideoAnnotationState = {|
   videoSrc: string,
   currentVideoTime: number,
   keyframes: {
-    [time: number]: {
+    [time: number]: {|
       time: number,
       regions: Array<Region>
-    }
+    |}
   },
   pixelSize?: { w: number, h: number },
   realSize?: { w: number, h: number, unitName: string }

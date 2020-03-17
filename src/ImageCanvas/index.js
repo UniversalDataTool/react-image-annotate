@@ -475,17 +475,6 @@ export default ({
             videoSrc={videoSrc}
             imageSrc={imageSrc}
           />
-          {/* <img
-            src={imageSrc}
-            className={classes.image}
-            {...mouseEvents}
-            style={{
-              left: imagePosition.topLeft.x,
-              top: imagePosition.topLeft.y,
-              width: imagePosition.bottomRight.x - imagePosition.topLeft.x,
-              height: imagePosition.bottomRight.y - imagePosition.topLeft.y
-            }}
-          /> */}
         </>
       </PreventScrollToParents>
       <div className={classes.zoomIndicator}>

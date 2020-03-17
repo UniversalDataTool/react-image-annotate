@@ -28,10 +28,13 @@ type Props = {
   enabledTools?: Array<string>,
   showTags?: boolean,
   selectedImage?: string,
-  images: Array<Image>,
+  images?: Array<Image>,
   showPointDistances?: boolean,
   pointDistancePrecision?: number,
-  onExit: MainLayoutState => any
+  onExit: MainLayoutState => any,
+  selectedVideoTime?: number,
+  videoSrc?: string,
+  keyframes?: Object
 }
 
 export const Annotator = ({
@@ -47,41 +50,53 @@ export const Annotator = ({
   regionClsList = [],
   imageTagList = [],
   imageClsList = [],
+  keyframes = {},
   taskDescription,
   videoSrc,
   onExit
 }: Props) => {
-  if (!images) return 'Missing required prop "images" or "videoSrc"'
+  if (!images && !videoSrc)
+    return 'Missing required prop "images" or "videoSrc"'
+  const annotationType = images ? "image" : "video"
   const [state, dispatchToReducer] = useReducer(
-    combineReducers(generalReducer),
-    // reducer,
+    combineReducers(
+      generalReducer,
+      annotationType === "image" ? imageReducer : videoReducer
+    ),
     makeImmutable({
+      annotationType,
       showTags,
       allowedArea,
-      selectedImage,
       showPointDistances,
       pointDistancePrecision,
       selectedTool: "select",
       mode: null,
       taskDescription,
-      images,
       labelImages: imageClsList.length > 0 || imageTagList.length > 0,
       regionClsList,
       regionTagList,
       imageClsList,
       imageTagList,
       enabledTools,
-      history: []
+      history: [],
+      ...(annotationType === "image"
+        ? {
+            selectedImage,
+            images,
+            selectedImageFrameTime:
+              images && images.length > 0 ? images[0].frameTime : undefined
+          }
+        : {
+            videoSrc,
+            keyframes
+          })
     })
   )
 
   const dispatch = (action: Action) => {
     if (
       action.type === "HEADER_BUTTON_CLICKED" &&
-      (action.buttonName === "Exit" ||
-        action.buttonName === "Done" ||
-        action.buttonName === "Save" ||
-        action.buttonName === "Complete")
+      ["Exit", "Done", "Save", "Complete"].includes(action.buttonName)
     ) {
       onExit({ ...state, history: undefined })
     } else {

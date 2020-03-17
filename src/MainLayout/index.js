@@ -45,11 +45,20 @@ export const MainLayout = ({ state, dispatch }: Props) => {
     return fn
   }
 
-  const currentImage = state.images.find(img => img.src === state.selectedImage)
+  const currentImageIndex = state.images.findIndex(
+    img =>
+      img.src === state.selectedImage &&
+      (state.selectedImageFrameTime !== undefined &&
+        state.selectedImageFrameTime === img.frameTime)
+  )
+  const currentImage = state.images[currentImageIndex]
+  const nextImage = state.images[currentImageIndex + 1]
 
   useKey(() => dispatch({ type: "CANCEL" }), {
     detectKeys: [27]
   })
+
+  const isAVideoFrame = currentImage.frameTime !== undefined
 
   return (
     <Fullscreen
@@ -70,6 +79,10 @@ export const MainLayout = ({ state, dispatch }: Props) => {
           <Header
             onHeaderButtonClick={action("HEADER_BUTTON_CLICKED", "buttonName")}
             inFullScreen={state.fullScreen}
+            isAVideoFrame={isAVideoFrame}
+            nextVideoFrameHasRegions={
+              nextImage && nextImage.regions && nextImage.regions.length > 0
+            }
             multipleImages={Boolean(state.images.length > 1)}
             title={currentImage ? currentImage.name : "No Image Selected"}
           />
@@ -97,13 +110,15 @@ export const MainLayout = ({ state, dispatch }: Props) => {
                   regionTagList={state.regionTagList}
                   regions={currentImage ? currentImage.regions || [] : []}
                   realSize={currentImage ? currentImage.realSize : undefined}
-                  imageSrc={state.selectedImage}
+                  imageSrc={isAVideoFrame ? null : state.selectedImage}
+                  videoSrc={isAVideoFrame ? state.selectedImage : null}
                   pointDistancePrecision={state.pointDistancePrecision}
                   createWithPrimary={state.selectedTool.includes("create")}
                   dragWithPrimary={state.selectedTool === "pan"}
                   zoomWithPrimary={state.selectedTool === "zoom"}
                   showPointDistances={state.showPointDistances}
                   pointDistancePrecision={state.pointDistancePrecision}
+                  videoTime={state.selectedImageFrameTime}
                   onMouseMove={action("MOUSE_MOVE")}
                   onMouseDown={action("MOUSE_DOWN")}
                   onMouseUp={action("MOUSE_UP")}
