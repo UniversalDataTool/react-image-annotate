@@ -2,9 +2,11 @@
 
 import type { MainLayoutState, Action } from "../../MainLayout/types"
 import { moveRegion } from "../../ImageCanvas/region-tools.js"
-import { setIn, updateIn } from "seamless-immutable"
+import { getIn, setIn, updateIn } from "seamless-immutable"
 import moment from "moment"
 import isEqual from "lodash/isEqual"
+import merge from "lodash/fp/merge"
+import getActiveImage from "./get-active-image"
 
 const getRandomId = () =>
   Math.random()
@@ -37,55 +39,52 @@ export default (state: MainLayoutState, action: Action) => {
   if (!action.type.includes("MOUSE")) {
     state = setIn(state, ["lastAction"], action)
   }
-  let currentImageIndex = state.images.findIndex(
-    img =>
-      img.src === state.selectedImage &&
-      (state.selectedImageFrameTime !== undefined &&
-        img.frameTime === state.selectedImageFrameTime)
+
+  const { currentImageIndex, pathToActiveImage, activeImage } = getActiveImage(
+    state
   )
-  if (currentImageIndex === -1) currentImageIndex = null
+
   const getRegionIndex = region => {
     const regionId = typeof region === "string" ? region : region.id
-    if (currentImageIndex === null) return null
-    const regionIndex = (
-      state.images[currentImageIndex].regions || []
-    ).findIndex(r => r.id === regionId)
+    if (!activeImage) return null
+    const regionIndex = (activeImage.regions || []).findIndex(
+      r => r.id === regionId
+    )
     return regionIndex === -1 ? null : regionIndex
   }
   const getRegion = regionId => {
+    if (!activeImage) return null
     const regionIndex = getRegionIndex(regionId)
     if (regionIndex === null) return [null, null]
-    const region = state.images[currentImageIndex].regions[regionIndex]
+    const region = activeImage.regions[regionIndex]
     return [region, regionIndex]
   }
   const modifyRegion = (regionId, obj) => {
     const [region, regionIndex] = getRegion(regionId)
     if (!region) return state
     if (obj !== null) {
-      return setIn(
+      return updateIn(
         state,
-        ["images", currentImageIndex, "regions", regionIndex],
-        {
-          ...state.images[currentImageIndex].regions[regionIndex],
-          ...obj
-        }
+        [...pathToActiveImage, "regions", regionIndex],
+        merge,
+        obj
       )
     } else {
       // delete region
-      const regions = state.images[currentImageIndex].regions
+      const regions = activeImage.regions
       return setIn(
         state,
-        ["images", currentImageIndex, "regions"],
+        [...pathToActiveImage, "regions"],
         (regions || []).filter(r => r.id !== region.id)
       )
     }
   }
   const unselectRegions = (state: MainLayoutState) => {
-    if (currentImageIndex === null) return state
+    if (!activeImage) return state
     return setIn(
       state,
-      ["images", currentImageIndex, "regions"],
-      (state.images[currentImageIndex].regions || []).map(r => ({
+      [...pathToActiveImage, "regions"],
+      (activeImage.regions || []).map(r => ({
         ...r,
         highlighted: false
       }))
@@ -114,7 +113,7 @@ export default (state: MainLayoutState, action: Action) => {
     if (currentImageIndex === null) return state
     return setIn(
       state,
-      ["images", currentImageIndex, "regions"],
+      [...pathToActiveImage, "regions"],
       (state.images[currentImageIndex].regions || []).map(r => ({
         ...r,
         editingLabels: false
@@ -137,12 +136,6 @@ export default (state: MainLayoutState, action: Action) => {
     }
     case "SELECT_IMAGE": {
       return setNewImage(action.image)
-    }
-    case "IMAGE_LOADED": {
-      return setIn(state, ["images", currentImageIndex, "pixelSize"], {
-        w: action.image.width,
-        h: action.image.height
-      })
     }
     case "CHANGE_REGION": {
       const regionIndex = getRegionIndex(action.region)
@@ -291,7 +284,7 @@ export default (state: MainLayoutState, action: Action) => {
           } = state.mode
           const regionIndex = getRegionIndex(regionId)
           if (regionIndex === null) return state
-          const box = state.images[currentImageIndex].regions[regionIndex]
+          const box = activeImage.regions[regionIndex]
 
           const dx = xFree === 0 ? ox : xFree === -1 ? Math.min(ox + ow, x) : ox
           const dw =
@@ -316,11 +309,13 @@ export default (state: MainLayoutState, action: Action) => {
             state = setIn(state, ["mode", "freedom"], [xFree, yFree * -1])
           }
 
-          return setIn(
-            state,
-            ["images", currentImageIndex, "regions", regionIndex],
-            { ...box, x: dx, w: dw, y: dy, h: dh }
-          )
+          return setIn(state, [...pathToActiveImage, "regions", regionIndex], {
+            ...box,
+            x: dx,
+            w: dw,
+            y: dy,
+            h: dh
+          })
         }
         case "DRAW_POLYGON": {
           const { regionId } = state.mode
@@ -329,8 +324,7 @@ export default (state: MainLayoutState, action: Action) => {
           return setIn(
             state,
             [
-              "images",
-              currentImageIndex,
+              ...pathToActiveImage,
               "regions",
               regionIndex,
               "points",
@@ -347,8 +341,6 @@ export default (state: MainLayoutState, action: Action) => {
 
       let newRegion
       if (currentImageIndex !== null) {
-        const region = state.images[currentImageIndex].regions
-
         if (state.allowedArea) {
           const aa = state.allowedArea
           if (x < aa.x || x > aa.x + aa.w || y < aa.y || y > aa.y + aa.h) {
@@ -425,21 +417,21 @@ export default (state: MainLayoutState, action: Action) => {
             if (!polygon) break
             state = setIn(
               state,
-              ["images", currentImageIndex, "regions", regionIndex],
+              [...pathToActiveImage, "regions", regionIndex],
               { ...polygon, points: polygon.points.concat([[x, y]]) }
             )
           }
         }
       }
 
-      const regions = [...(state.images[currentImageIndex].regions || [])]
+      const regions = [...(activeImage.regions || [])]
         .map(r => ({
           ...r,
           editingLabels: false
         }))
         .concat(newRegion ? [newRegion] : [])
 
-      return setIn(state, ["images", currentImageIndex, "regions"], regions)
+      return setIn(state, [...pathToActiveImage, "regions"], regions)
     }
     case "MOUSE_UP": {
       const { x, y } = action
@@ -478,7 +470,7 @@ export default (state: MainLayoutState, action: Action) => {
       if (regionIndex === null) return state
       return setIn(
         state,
-        ["images", currentImageIndex, "regions", regionIndex],
+        [...pathToActiveImage, "regions", regionIndex],
         region
       )
     }
@@ -487,42 +479,36 @@ export default (state: MainLayoutState, action: Action) => {
       const regionIndex = getRegionIndex(action.region)
       if (regionIndex === null) return state
       const newRegions = setIn(
-        state.images[currentImageIndex].regions.map(r => ({
+        activeImage.regions.map(r => ({
           ...r,
           highlighted: false,
           editingLabels: false
         })),
         [regionIndex],
         {
-          ...(state.images[currentImageIndex].regions || [])[regionIndex],
+          ...(activeImage.regions || [])[regionIndex],
           highlighted: true,
           editingLabels: true
         }
       )
-      return setIn(state, ["images", currentImageIndex, "regions"], newRegions)
+      return setIn(state, [...pathToActiveImage, "regions"], newRegions)
     }
     case "CLOSE_REGION_EDITOR": {
       const { region } = action
       const regionIndex = getRegionIndex(action.region)
       if (regionIndex === null) return state
-      return setIn(
-        state,
-        ["images", currentImageIndex, "regions", regionIndex],
-        {
-          ...(state.images[currentImageIndex].regions || [])[regionIndex],
-          editingLabels: false
-        }
-      )
+      return setIn(state, [...pathToActiveImage, "regions", regionIndex], {
+        ...(activeImage.regions || [])[regionIndex],
+        editingLabels: false
+      })
     }
     case "DELETE_REGION": {
       const regionIndex = getRegionIndex(action.region)
       if (regionIndex === null) return state
       return setIn(
         state,
-        ["images", currentImageIndex, "regions"],
-        (state.images[currentImageIndex].regions || []).filter(
-          r => r.id !== action.region.id
-        )
+        [...pathToActiveImage, "regions"],
+        (activeImage.regions || []).filter(r => r.id !== action.region.id)
       )
     }
     case "HEADER_BUTTON_CLICKED": {

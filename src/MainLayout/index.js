@@ -14,6 +14,7 @@ import classnames from "classnames"
 import { useSettings } from "../SettingsProvider"
 import SettingsDialog from "../SettingsDialog"
 import Fullscreen from "../Fullscreen"
+import getActiveImage from "../Annotator/reducers/get-active-image"
 
 const useStyles = makeStyles(styles)
 
@@ -45,20 +46,17 @@ export const MainLayout = ({ state, dispatch }: Props) => {
     return fn
   }
 
-  const currentImageIndex = state.images.findIndex(
-    img =>
-      img.src === state.selectedImage &&
-      (state.selectedImageFrameTime !== undefined &&
-        state.selectedImageFrameTime === img.frameTime)
-  )
-  const currentImage = state.images[currentImageIndex]
-  const nextImage = state.images[currentImageIndex + 1]
+  const { currentImageIndex, activeImage } = getActiveImage(state)
+  let nextImage
+  if (currentImageIndex !== null) {
+    nextImage = state.images[currentImageIndex + 1]
+  }
 
   useKey(() => dispatch({ type: "CANCEL" }), {
     detectKeys: [27]
   })
 
-  const isAVideoFrame = currentImage.frameTime !== undefined
+  const isAVideoFrame = activeImage && activeImage.frameTime !== undefined
 
   return (
     <Fullscreen
@@ -81,10 +79,10 @@ export const MainLayout = ({ state, dispatch }: Props) => {
             inFullScreen={state.fullScreen}
             isAVideoFrame={isAVideoFrame}
             nextVideoFrameHasRegions={
-              nextImage && nextImage.regions && nextImage.regions.length > 0
+              !nextImage || (nextImage.regions && nextImage.regions.length > 0)
             }
-            multipleImages={Boolean(state.images.length > 1)}
-            title={currentImage ? currentImage.name : "No Image Selected"}
+            multipleImages={state.images && state.images.length > 1}
+            title={activeImage ? activeImage.name : "No Image Selected"}
           />
         </div>
         <div className={classes.workspace}>
@@ -97,7 +95,7 @@ export const MainLayout = ({ state, dispatch }: Props) => {
             />
           </div>
           <div className={classes.imageCanvasContainer}>
-            {!state.selectedImage ? (
+            {state.annotationType === "image" && !state.selectedImage ? (
               <div className={classes.noImageSelected}>No Image Selected</div>
             ) : (
               <div style={{ height: "100%", width: "100%" }}>
@@ -108,17 +106,27 @@ export const MainLayout = ({ state, dispatch }: Props) => {
                   allowedArea={state.allowedArea}
                   regionClsList={state.regionClsList}
                   regionTagList={state.regionTagList}
-                  regions={currentImage ? currentImage.regions || [] : []}
-                  realSize={currentImage ? currentImage.realSize : undefined}
-                  imageSrc={isAVideoFrame ? null : state.selectedImage}
-                  videoSrc={isAVideoFrame ? state.selectedImage : null}
+                  regions={activeImage ? activeImage.regions || [] : []}
+                  realSize={activeImage ? activeImage.realSize : undefined}
+                  imageSrc={
+                    state.annotationType === "image"
+                      ? state.selectedImage
+                      : null
+                  }
+                  videoSrc={
+                    state.annotationType === "video" ? state.videoSrc : null
+                  }
                   pointDistancePrecision={state.pointDistancePrecision}
                   createWithPrimary={state.selectedTool.includes("create")}
                   dragWithPrimary={state.selectedTool === "pan"}
                   zoomWithPrimary={state.selectedTool === "zoom"}
                   showPointDistances={state.showPointDistances}
                   pointDistancePrecision={state.pointDistancePrecision}
-                  videoTime={state.selectedImageFrameTime}
+                  videoTime={
+                    state.annotationType === "image"
+                      ? state.selectedImageFrameTime
+                      : state.currentVideoTime
+                  }
                   onMouseMove={action("MOUSE_MOVE")}
                   onMouseDown={action("MOUSE_DOWN")}
                   onMouseUp={action("MOUSE_UP")}
@@ -154,9 +162,9 @@ export const MainLayout = ({ state, dispatch }: Props) => {
               debug={window.localStorage.$ANNOTATE_DEBUG_MODE && state}
               taskDescription={state.taskDescription}
               images={state.images}
-              regions={currentImage ? currentImage.regions : null}
+              regions={activeImage ? activeImage.regions : null}
               history={state.history}
-              currentImage={currentImage}
+              currentImage={activeImage}
               labelImages={state.labelImages}
               imageClsList={state.imageClsList}
               imageTagList={state.imageTagList}

@@ -24,7 +24,7 @@ type Image = {
 type Props = {
   debug: any,
   taskDescription: string,
-  images: Array<Image>,
+  images?: Array<Image>,
   regions: Array<Region>,
   history: Array<{ state: Object, name: string, time: Date }>,
 
@@ -67,7 +67,9 @@ export const Sidebar = ({
   return (
     <div>
       {debug && <DebugBox state={debug} lastAction={debug.lastAction} />}
-      <TaskDescription description={taskDescription} />
+      {(taskDescription || "").length > 1 && (
+        <TaskDescription description={taskDescription} />
+      )}
       {labelImages && (
         <TagsSidebarBox
           currentImage={currentImage}
@@ -77,7 +79,7 @@ export const Sidebar = ({
           expandedByDefault
         />
       )}
-      {images.length > 0 && (
+      {images && images.length > 1 && (
         <ImageSelector onSelect={onSelectImage} images={images} />
       )}
       <RegionSelector

@@ -398,3 +398,18 @@ storiesOf("Annotator", module)
       />
     </div>
   ))
+  .add("Keyframe video", () => (
+    <div
+      style={{
+        width: "100vw",
+        height: "100vh",
+        boxSizing: "border-box"
+      }}
+    >
+      <Annotator
+        onExit={actionAddon("onExit")}
+        showTags
+        videoSrc="https://s3.amazonaws.com/asset.workaround.online/SampleVideo_1280x720_1mb.mp4"
+      />
+    </div>
+  ))
