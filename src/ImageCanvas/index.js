@@ -59,6 +59,7 @@ type Props = {
   regionClsList?: Array<string>,
   regionTagList?: Array<string>,
   allowedArea?: { x: number, y: number, w: number, h: number },
+  videoPlaying?: boolean,
 
   onChangeRegion: Region => any,
   onBeginRegionEdit: Region => any,
@@ -69,7 +70,12 @@ type Props = {
   onAddPolygonPoint: (Polygon, point: [number, number], index: number) => any,
   onSelectRegion: Region => any,
   onBeginMovePoint: Point => any,
-  onImageLoaded: ({ width: number, height: number }) => any
+  onImageOrVideoLoaded: ({
+    naturalWidth: number,
+    naturalHeight: number,
+    duration?: number
+  }) => any,
+  onChangeVideoTime: number => any
 }
 
 const getDefaultMat = () => Matrix.from(1, 0, 0, 1, -10, -10)
@@ -93,8 +99,9 @@ export default ({
   showCrosshairs,
   showPointDistances,
   allowedArea,
+  videoPlaying = false,
 
-  onImageLoaded,
+  onImageOrVideoLoaded,
   onChangeRegion,
   onBeginRegionEdit,
   onCloseRegionEdit,
@@ -103,7 +110,9 @@ export default ({
   onAddPolygonPoint,
   onSelectRegion,
   onBeginMovePoint,
-  onDeleteRegion
+  onDeleteRegion,
+  onChangeVideoTime,
+  onChangeVideoPlaying
 }: Props) => {
   const classes = useStyles()
 
@@ -147,13 +156,12 @@ export default ({
   const [imageDimensions, changeImageDimensions] = useState()
   const imageLoaded = Boolean(imageDimensions && imageDimensions.naturalWidth)
   const onVideoOrImageLoaded = useEventCallback(
-    ({ naturalWidth, naturalHeight }) => {
-      changeImageDimensions({ naturalWidth, naturalHeight })
+    ({ naturalWidth, naturalHeight, duration }) => {
+      const dims = { naturalWidth, naturalHeight, duration }
+      if (onImageOrVideoLoaded) onImageOrVideoLoaded(dims)
+      changeImageDimensions(dims)
       // Redundant update to fix rerendering issues
-      setTimeout(
-        () => changeImageDimensions({ naturalWidth, naturalHeight }),
-        10
-      )
+      setTimeout(() => changeImageDimensions(dims), 10)
     }
   )
 
@@ -468,12 +476,15 @@ export default ({
         <>
           <canvas className={classes.canvas} ref={canvasEl} />
           <VideoOrImageCanvasBackground
+            videoPlaying={videoPlaying}
             imagePosition={imagePosition}
             mouseEvents={mouseEvents}
             onLoad={onVideoOrImageLoaded}
             videoTime={videoTime}
             videoSrc={videoSrc}
             imageSrc={imageSrc}
+            onChangeVideoTime={onChangeVideoTime}
+            onChangeVideoPlaying={onChangeVideoPlaying}
           />
         </>
       </PreventScrollToParents>

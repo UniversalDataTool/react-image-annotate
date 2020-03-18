@@ -81,8 +81,12 @@ export const MainLayout = ({ state, dispatch }: Props) => {
             nextVideoFrameHasRegions={
               !nextImage || (nextImage.regions && nextImage.regions.length > 0)
             }
+            videoDuration={state.videoDuration}
             multipleImages={state.images && state.images.length > 1}
             title={activeImage ? activeImage.name : "No Image Selected"}
+            onChangeCurrentTime={action("CHANGE_VIDEO_TIME", "newTime")}
+            videoPlaying={state.videoPlaying}
+            currentVideoTime={state.currentVideoTime}
           />
         </div>
         <div className={classes.workspace}>
@@ -108,6 +112,7 @@ export const MainLayout = ({ state, dispatch }: Props) => {
                   regionTagList={state.regionTagList}
                   regions={activeImage ? activeImage.regions || [] : []}
                   realSize={activeImage ? activeImage.realSize : undefined}
+                  videoPlaying={state.videoPlaying}
                   imageSrc={
                     state.annotationType === "image"
                       ? state.selectedImage
@@ -152,7 +157,15 @@ export const MainLayout = ({ state, dispatch }: Props) => {
                   )}
                   onSelectRegion={action("SELECT_REGION", "region")}
                   onBeginMovePoint={action("BEGIN_MOVE_POINT", "point")}
-                  onImageLoaded={action("IMAGE_LOADED", "image")}
+                  onImageOrVideoLoaded={action(
+                    "IMAGE_OR_VIDEO_LOADED",
+                    "metadata"
+                  )}
+                  onChangeVideoTime={action("CHANGE_VIDEO_TIME", "newTime")}
+                  onChangeVideoPlaying={action(
+                    "CHANGE_VIDEO_PLAYING",
+                    "isPlaying"
+                  )}
                 />
               </div>
             )}

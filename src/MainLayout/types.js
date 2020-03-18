@@ -78,6 +78,8 @@ export type MainLayoutVideoAnnotationState = {|
 
   videoSrc: string,
   currentVideoTime: number,
+  videoPlaying: boolean,
+  videoDuration?: number,
   keyframes: {
     [time: number]: {|
       time: number,
@@ -95,7 +97,14 @@ export type MainLayoutState =
 export type Action =
   | {| type: "@@INIT" |}
   | {| type: "SELECT_IMAGE", image: Image |}
-  | {| type: "IMAGE_LOADED", image: { width: number, height: number } |}
+  | {|
+      type: "IMAGE_OR_VIDEO_LOADED",
+      metadata: {
+        naturalWidth: number,
+        naturalHeight: number,
+        duration?: number
+      }
+    |}
   | {| type: "CHANGE_REGION", region: Region |}
   | {| type: "RESTORE_HISTORY" |}
   | {| type: "CLOSE_POLYGON", polygon: Polygon |}

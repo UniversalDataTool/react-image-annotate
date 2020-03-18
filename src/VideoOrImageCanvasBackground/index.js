@@ -20,16 +20,50 @@ export default ({
   videoTime = 0,
   videoSrc,
   imageSrc,
-  onLoad
+  onLoad,
+  videoPlaying,
+  onChangeVideoTime,
+  onChangeVideoPlaying
 }) => {
   const videoRef = useRef()
   const imageRef = useRef()
 
   useEffect(() => {
-    if (videoRef.current) {
+    if (!videoPlaying && videoRef.current) {
       videoRef.current.currentTime = videoTime / 1000
     }
   }, [videoTime])
+
+  useEffect(() => {
+    let renderLoopRunning = false
+    if (videoRef.current) {
+      if (videoPlaying) {
+        videoRef.current.play()
+        renderLoopRunning = true
+      } else {
+        videoRef.current.pause()
+      }
+    }
+
+    function checkForNewFrame() {
+      if (!renderLoopRunning) return
+      if (!videoRef.current) return
+      const newVideoTime = Math.floor(videoRef.current.currentTime * 1000)
+      if (videoTime !== newVideoTime) {
+        onChangeVideoTime(newVideoTime)
+      }
+      if (videoRef.current.paused) {
+        renderLoopRunning = false
+        onChangeVideoPlaying(false)
+      }
+      requestAnimationFrame(checkForNewFrame)
+    }
+    checkForNewFrame()
+
+    return () => {
+      renderLoopRunning = false
+    }
+  }, [videoPlaying])
 
   const onLoadedVideoMetadata = useEventCallback(event => {
     const videoElm = event.currentTarget
@@ -38,7 +72,8 @@ export default ({
       onLoad({
         naturalWidth: videoElm.videoWidth,
         naturalHeight: videoElm.videoHeight,
-        videoElm: videoElm
+        videoElm: videoElm,
+        duration: videoElm.duration
       })
   })
   const onImageLoaded = useEventCallback(event => {
