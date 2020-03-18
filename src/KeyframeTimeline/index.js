@@ -64,6 +64,39 @@ const PositionCursor = styled("div")({
   }
 })
 
+const KeyframeMarker = styled("div")({
+  position: "absolute",
+  bottom: 8,
+  cursor: "pointer",
+  opacity: 0.75,
+  fontSize: 10,
+  fontWeight: "bold",
+  color: "#fff",
+  display: "grid",
+  placeItems: "center",
+  width: 16,
+  marginLeft: 0,
+  borderTopLeftRadius: 2,
+  borderTopRightRadius: 2,
+  height: 12,
+  marginLeft: -8,
+  backgroundColor: colors.red[500],
+  userSelect: "none",
+  fontVariantNumeric: "tabular-nums",
+
+  "&::before": {
+    position: "absolute",
+    bottom: -8,
+    left: 0,
+    content: '""',
+    width: 0,
+    height: 0,
+    borderTop: `8px solid ${colors.red[500]}`,
+    borderLeft: "8px solid transparent",
+    borderRight: "8px solid transparent"
+  }
+})
+
 const min = 60000
 const displayIntervalPairs = [
   [50, 250],
@@ -98,6 +131,10 @@ export default ({
   const [ref, bounds] = useMeasure()
   const [instantCurrentTime, changeInstantCurrentTime] = useState(currentTime)
   const [draggingTime, changeDraggingTime] = useRafState(false)
+  const keyframeTimes = Object.keys(keyframes || {})
+    .map(t => parseInt(t))
+    .filter(t => !isNaN(t))
+    .sort((a, b) => a - b)
 
   useEffect(() => {
     if (currentTime !== instantCurrentTime) {
@@ -159,6 +196,13 @@ export default ({
             }}
           />
         ))}
+      {keyframeTimes.map(kt => (
+        <KeyframeMarker
+          onClick={() => onChangeCurrentTime(kt)}
+          key={kt}
+          style={{ left: (kt / duration) * bounds.width }}
+        />
+      ))}
       <PositionCursor
         onMouseDown={e => changeDraggingTime(true)}
         style={{

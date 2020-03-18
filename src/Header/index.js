@@ -43,7 +43,8 @@ export const Header = ({
   currentVideoTime,
   multipleImages,
   videoPlaying,
-  onChangeCurrentTime
+  onChangeCurrentTime,
+  keyframes
 }: Props) => {
   const classes = useStyles()
   return (
@@ -53,6 +54,7 @@ export const Header = ({
         currentTime={currentVideoTime}
         duration={videoDuration}
         onChangeCurrentTime={onChangeCurrentTime}
+        keyframes={keyframes}
       />
       <div className={classes.headerActions}>
         <HeaderButtonContext.Provider value={{ onHeaderButtonClick }}>

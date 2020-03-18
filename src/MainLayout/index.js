@@ -90,6 +90,7 @@ export const MainLayout = ({ state, dispatch }: Props) => {
             onChangeCurrentTime={action("CHANGE_VIDEO_TIME", "newTime")}
             videoPlaying={state.videoPlaying}
             currentVideoTime={state.currentVideoTime}
+            keyframes={state.keyframes}
           />
         </div>
         <div className={classes.workspace}>
