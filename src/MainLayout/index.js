@@ -15,6 +15,7 @@ import { useSettings } from "../SettingsProvider"
 import SettingsDialog from "../SettingsDialog"
 import Fullscreen from "../Fullscreen"
 import getActiveImage from "../Annotator/reducers/get-active-image"
+import useImpliedVideoRegions from "./use-implied-video-regions"
 
 const useStyles = makeStyles(styles)
 
@@ -57,6 +58,8 @@ export const MainLayout = ({ state, dispatch }: Props) => {
   })
 
   const isAVideoFrame = activeImage && activeImage.frameTime !== undefined
+
+  let impliedVideoRegions = useImpliedVideoRegions(state)
 
   return (
     <Fullscreen
@@ -110,7 +113,11 @@ export const MainLayout = ({ state, dispatch }: Props) => {
                   allowedArea={state.allowedArea}
                   regionClsList={state.regionClsList}
                   regionTagList={state.regionTagList}
-                  regions={activeImage ? activeImage.regions || [] : []}
+                  regions={
+                    state.annotationType === "image"
+                      ? activeImage.regions || []
+                      : impliedVideoRegions
+                  }
                   realSize={activeImage ? activeImage.realSize : undefined}
                   videoPlaying={state.videoPlaying}
                   imageSrc={
@@ -181,12 +188,14 @@ export const MainLayout = ({ state, dispatch }: Props) => {
               labelImages={state.labelImages}
               imageClsList={state.imageClsList}
               imageTagList={state.imageTagList}
+              keyframes={state.keyframes}
               onChangeImage={action("CHANGE_IMAGE", "delta")}
               onSelectRegion={action("SELECT_REGION", "region")}
               onDeleteRegion={action("DELETE_REGION", "region")}
               onSelectImage={action("SELECT_IMAGE", "image")}
               onChangeRegion={action("CHANGE_REGION", "region")}
               onRestoreHistory={action("RESTORE_HISTORY")}
+              onChangeVideoTime={action("CHANGE_VIDEO_TIME", "newTime")}
             />
           </div>
         </div>

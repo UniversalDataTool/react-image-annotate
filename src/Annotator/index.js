@@ -32,7 +32,7 @@ type Props = {
   showPointDistances?: boolean,
   pointDistancePrecision?: number,
   onExit: MainLayoutState => any,
-  selectedVideoTime?: number,
+  videoTime?: number,
   videoSrc?: string,
   keyframes?: Object
 }
@@ -41,7 +41,6 @@ export const Annotator = ({
   images,
   allowedArea,
   selectedImage = images && images.length > 0 ? images[0].src : undefined,
-  selectedVideoTime = 0,
   showPointDistances,
   pointDistancePrecision,
   showTags = true,
@@ -53,6 +52,7 @@ export const Annotator = ({
   keyframes = {},
   taskDescription,
   videoSrc,
+  videoTime = 0,
   onExit
 }: Props) => {
   if (!images && !videoSrc)
@@ -60,8 +60,8 @@ export const Annotator = ({
   const annotationType = images ? "image" : "video"
   const [state, dispatchToReducer] = useReducer(
     combineReducers(
-      generalReducer,
-      annotationType === "image" ? imageReducer : videoReducer
+      annotationType === "image" ? imageReducer : videoReducer,
+      generalReducer
     ),
     makeImmutable({
       annotationType,
@@ -77,6 +77,7 @@ export const Annotator = ({
       regionTagList,
       imageClsList,
       imageTagList,
+      currentVideoTime: videoTime,
       enabledTools,
       history: [],
       ...(annotationType === "image"
@@ -92,6 +93,7 @@ export const Annotator = ({
           })
     })
   )
+  console.log(state)
 
   const dispatch = (action: Action) => {
     if (

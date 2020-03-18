@@ -114,7 +114,7 @@ export default (state: MainLayoutState, action: Action) => {
     return setIn(
       state,
       [...pathToActiveImage, "regions"],
-      (state.images[currentImageIndex].regions || []).map(r => ({
+      (activeImage.regions || []).map(r => ({
         ...r,
         editingLabels: false
       }))
@@ -140,7 +140,7 @@ export default (state: MainLayoutState, action: Action) => {
     case "CHANGE_REGION": {
       const regionIndex = getRegionIndex(action.region)
       if (regionIndex === null) return state
-      const oldRegion = state.images[currentImageIndex].regions[regionIndex]
+      const oldRegion = activeImage.regions[regionIndex]
       if (oldRegion.cls !== action.region.cls) {
         state = saveToHistory(state, "Change Region Classification")
       }
@@ -149,7 +149,7 @@ export default (state: MainLayoutState, action: Action) => {
       }
       return setIn(
         state,
-        ["images", currentImageIndex, "regions", regionIndex],
+        [...pathToActiveImage, "regions", regionIndex],
         action.region
       )
     }
@@ -160,12 +160,12 @@ export default (state: MainLayoutState, action: Action) => {
       return state
     }
     case "CHANGE_IMAGE": {
-      if (currentImageIndex === null) return state
+      if (!activeImage) return state
       const { delta } = action
       for (const key of Object.keys(delta)) {
         if (key === "cls") saveToHistory(state, "Change Image Class")
         if (key === "tags") saveToHistory(state, "Change Image Tags")
-        state = setIn(state, ["images", currentImageIndex, key], delta[key])
+        state = setIn(state, [...pageToActiveImage, key], delta[key])
       }
       return state
     }
@@ -173,14 +173,12 @@ export default (state: MainLayoutState, action: Action) => {
       const { region } = action
       const regionIndex = getRegionIndex(action.region)
       if (regionIndex === null) return state
-      const regions = [...(state.images[currentImageIndex].regions || [])].map(
-        r => ({
-          ...r,
-          highlighted: r.id === region.id,
-          editingLabels: r.id === region.id
-        })
-      )
-      return setIn(state, ["images", currentImageIndex, "regions"], regions)
+      const regions = [...(activeImage.regions || [])].map(r => ({
+        ...r,
+        highlighted: r.id === region.id,
+        editingLabels: r.id === region.id
+      }))
+      return setIn(state, [...pathToActiveImage, "regions"], regions)
     }
     case "BEGIN_MOVE_POINT": {
       state = closeEditors(state)
@@ -234,11 +232,10 @@ export default (state: MainLayoutState, action: Action) => {
       if (regionIndex === null) return state
       const points = [...polygon.points]
       points.splice(pointIndex, 0, point)
-      return setIn(
-        state,
-        ["images", currentImageIndex, "regions", regionIndex],
-        { ...polygon, points }
-      )
+      return setIn(state, [...pathToActiveImage, "regions", regionIndex], {
+        ...polygon,
+        points
+      })
     }
     case "MOUSE_MOVE": {
       const { x, y } = action
@@ -252,8 +249,7 @@ export default (state: MainLayoutState, action: Action) => {
           return setIn(
             state,
             [
-              "images",
-              currentImageIndex,
+              ...pathToActiveImage,
               "regions",
               regionIndex,
               "points",
@@ -268,12 +264,8 @@ export default (state: MainLayoutState, action: Action) => {
           if (regionIndex === null) return state
           return setIn(
             state,
-            ["images", currentImageIndex, "regions", regionIndex],
-            moveRegion(
-              state.images[currentImageIndex].regions[regionIndex],
-              x,
-              y
-            )
+            [...pathToActiveImage, "regions", regionIndex],
+            moveRegion(activeImage.regions[regionIndex], x, y)
           )
         }
         case "RESIZE_BOX": {
@@ -530,7 +522,7 @@ export default (state: MainLayoutState, action: Action) => {
           return setIn(
             setNewImage(state.images[currentImageIndex + 1]),
             ["images", currentImageIndex + 1, "regions"],
-            state.images[currentImageIndex].regions
+            activeImage.regions
           )
         }
         case "settings": {

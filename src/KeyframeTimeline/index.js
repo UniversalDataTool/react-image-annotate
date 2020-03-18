@@ -7,12 +7,13 @@ import * as colors from "@material-ui/core/colors"
 import useMeasure from "react-use-measure"
 import useEventCallback from "use-event-callback"
 import { useRafState } from "react-use"
+import getTimeString from "./get-time-string"
 
 const Container = styled("div")({
   position: "relative",
   display: "flex",
   flexGrow: 1,
-  minWidth: 200,
+  minWidth: 240,
   marginLeft: 16,
   marginRight: 16
 })
@@ -48,6 +49,7 @@ const PositionCursor = styled("div")({
   height: 24,
   backgroundColor: colors.blue[500],
   userSelect: "none",
+  fontVariantNumeric: "tabular-nums",
 
   "&::before": {
     position: "absolute",
@@ -85,28 +87,6 @@ const getMajorInterval = duration => {
     }
   }
   return [duration / 4, duration]
-}
-
-const getTimeString = ms => {
-  if (ms < 1000) {
-    return ms + "ms"
-  } else {
-    const secs = ms / 1000
-    if (secs < 60) {
-      if (Number.isInteger(secs)) {
-        return secs + "s"
-      } else {
-        return secs.toFixed(1) + "s"
-      }
-    } else {
-      const mins = secs / 60
-      if (Number.isInteger(mins)) {
-        return mins + "m"
-      } else {
-        return mins.toFixed(1) + "m"
-      }
-    }
-  }
 }
 
 export default ({

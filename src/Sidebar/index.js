@@ -8,6 +8,7 @@ import RegionSelector from "../RegionSelectorSidebarBox"
 import History from "../HistorySidebarBox"
 import DebugBox from "../DebugSidebarBox"
 import TagsSidebarBox from "../TagsSidebarBox"
+import KeyframesSelector from "../KeyframesSelectorSidebarBox"
 import type { Region } from "../ImageCanvas/region-tools.js"
 
 const useStyles = makeStyles({})
@@ -46,6 +47,7 @@ const emptyArr = []
 export const Sidebar = ({
   debug,
   taskDescription,
+  keyframes,
   images,
   regions,
   history,
@@ -58,7 +60,8 @@ export const Sidebar = ({
   onSelectImage,
   onChangeRegion,
   onDeleteRegion,
-  onRestoreHistory
+  onRestoreHistory,
+  onChangeVideoTime
 }: Props) => {
   const classes = useStyles()
 
@@ -88,6 +91,12 @@ export const Sidebar = ({
         onChangeRegion={onChangeRegion}
         onDeleteRegion={onDeleteRegion}
       />
+      {keyframes && (
+        <KeyframesSelector
+          keyframes={keyframes}
+          onChangeVideoTime={onChangeVideoTime}
+        />
+      )}
       <History history={history} onRestoreHistory={onRestoreHistory} />
     </div>
   )

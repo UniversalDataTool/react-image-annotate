@@ -410,6 +410,35 @@ storiesOf("Annotator", module)
         onExit={actionAddon("onExit")}
         showTags
         videoSrc="https://s3.amazonaws.com/asset.workaround.online/SampleVideo_1280x720_1mb.mp4"
+        videoTime={1000}
+        keyframes={{
+          "0": {
+            regions: [
+              {
+                type: "point",
+                x: 0.1608187134502924,
+                y: 0.5769980506822612,
+                highlighted: true,
+                editingLabels: true,
+                color: "hsl(238,100%,50%)",
+                id: "9995495728521284"
+              }
+            ]
+          },
+          "3443": {
+            regions: [
+              {
+                type: "point",
+                x: 0.4239766081871345,
+                y: 0.1871345029239766,
+                highlighted: true,
+                editingLabels: true,
+                color: "hsl(238,100%,50%)",
+                id: "9995495728521284"
+              }
+            ]
+          }
+        }}
       />
     </div>
   ))
