@@ -4,7 +4,7 @@ import type {
   MainLayoutVideoAnnotationState,
   Action
 } from "../../MainLayout/types"
-import { setIn } from "seamless-immutable"
+import { setIn, without } from "seamless-immutable"
 
 export default (state: MainLayoutVideoAnnotationState, action: Action) => {
   if (!action.type.includes("MOUSE_")) console.log(action.type, action)
@@ -48,6 +48,9 @@ export default (state: MainLayoutVideoAnnotationState, action: Action) => {
     }
     case "CHANGE_VIDEO_PLAYING": {
       return setIn(state, ["videoPlaying"], action.isPlaying)
+    }
+    case "DELETE_KEYFRAME": {
+      return setIn(state, ["keyframes"], without(state.keyframes, action.time))
     }
   }
 

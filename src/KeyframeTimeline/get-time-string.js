@@ -1,6 +1,6 @@
 // @flow
 
-const getTimeString = ms => {
+const getTimeString = (ms, precision = 1) => {
   if (ms < 1000) {
     return ms + "ms"
   } else {
@@ -9,14 +9,14 @@ const getTimeString = ms => {
       if (Number.isInteger(secs)) {
         return secs + "s"
       } else {
-        return secs.toFixed(1) + "s"
+        return secs.toFixed(precision) + "s"
       }
     } else {
       const mins = secs / 60
       if (Number.isInteger(mins)) {
         return mins + "m"
       } else {
-        return mins.toFixed(1) + "m"
+        return mins.toFixed(precision) + "m"
       }
     }
   }

@@ -419,22 +419,44 @@ storiesOf("Annotator", module)
                 x: 0.1608187134502924,
                 y: 0.5769980506822612,
                 highlighted: true,
-                editingLabels: true,
+                editingLabels: false,
                 color: "hsl(238,100%,50%)",
                 id: "9995495728521284"
+              },
+              {
+                type: "box",
+                x: 0.089171974522293,
+                y: 0.36801132342533616,
+                w: 0.30573248407643316,
+                h: 0.4170794998820476,
+                highlighted: true,
+                editingLabels: false,
+                color: "hsl(263,100%,50%)",
+                id: "04858393322065635"
               }
             ]
           },
-          "3443": {
+          "3333": {
             regions: [
               {
                 type: "point",
-                x: 0.4239766081871345,
-                y: 0.1871345029239766,
+                x: 0.1608187134502924,
+                y: 0.5769980506822612,
                 highlighted: true,
-                editingLabels: true,
+                editingLabels: false,
                 color: "hsl(238,100%,50%)",
                 id: "9995495728521284"
+              },
+              {
+                type: "box",
+                x: 0.14861995753715496,
+                y: 0.0934182590233546,
+                w: 0.3163481953290871,
+                h: 0.7596131163010142,
+                highlighted: true,
+                editingLabels: false,
+                color: "hsl(263,100%,50%)",
+                id: "04858393322065635"
               }
             ]
           }

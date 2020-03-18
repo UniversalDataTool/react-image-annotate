@@ -53,6 +53,7 @@ export const Sidebar = ({
   history,
   labelImages,
   currentImage,
+  currentVideoTime,
   imageClsList,
   imageTagList,
   onChangeImage,
@@ -61,7 +62,8 @@ export const Sidebar = ({
   onChangeRegion,
   onDeleteRegion,
   onRestoreHistory,
-  onChangeVideoTime
+  onChangeVideoTime,
+  onDeleteKeyframe
 }: Props) => {
   const classes = useStyles()
 
@@ -93,8 +95,10 @@ export const Sidebar = ({
       />
       {keyframes && (
         <KeyframesSelector
+          currentVideoTime={currentVideoTime}
           keyframes={keyframes}
           onChangeVideoTime={onChangeVideoTime}
+          onDeleteKeyframe={onDeleteKeyframe}
         />
       )}
       <History history={history} onRestoreHistory={onRestoreHistory} />

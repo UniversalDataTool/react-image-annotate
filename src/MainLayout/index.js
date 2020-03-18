@@ -190,6 +190,7 @@ export const MainLayout = ({ state, dispatch }: Props) => {
               imageClsList={state.imageClsList}
               imageTagList={state.imageTagList}
               keyframes={state.keyframes}
+              currentVideoTime={state.currentVideoTime}
               onChangeImage={action("CHANGE_IMAGE", "delta")}
               onSelectRegion={action("SELECT_REGION", "region")}
               onDeleteRegion={action("DELETE_REGION", "region")}
@@ -197,6 +198,7 @@ export const MainLayout = ({ state, dispatch }: Props) => {
               onChangeRegion={action("CHANGE_REGION", "region")}
               onRestoreHistory={action("RESTORE_HISTORY")}
               onChangeVideoTime={action("CHANGE_VIDEO_TIME", "newTime")}
+              onDeleteKeyframe={action("DELETE_KEYFRAME", "time")}
             />
           </div>
         </div>
