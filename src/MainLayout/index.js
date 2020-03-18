@@ -79,6 +79,7 @@ export const MainLayout = ({ state, dispatch }: Props) => {
         <div className={classes.headerContainer}>
           <Header
             onHeaderButtonClick={action("HEADER_BUTTON_CLICKED", "buttonName")}
+            videoMode={state.annotationType === "video"}
             inFullScreen={state.fullScreen}
             isAVideoFrame={isAVideoFrame}
             nextVideoFrameHasRegions={

@@ -11,6 +11,10 @@ export default {
   },
   fileInfo: {
     alignItems: "center",
+    flexGrow: 1,
+    "&.videoMode": {
+      flexMode: 0.1
+    },
     display: "flex",
     fontWeight: "bold",
     color: grey[800],

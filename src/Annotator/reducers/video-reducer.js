@@ -6,14 +6,17 @@ import type {
 } from "../../MainLayout/types"
 import { setIn, without } from "seamless-immutable"
 import getImpliedVideoRegions from "./get-implied-video-regions"
+import { saveToHistory } from "./history-handler.js"
 
 export default (state: MainLayoutVideoAnnotationState, action: Action) => {
-  if (!action.type.includes("MOUSE_MOVE")) console.log(action.type, action)
-
   const copyImpliedRegions = () => {
-    return setIn(state, ["keyframes", state.currentVideoTime], {
-      regions: getImpliedVideoRegions(state.keyframes, state.currentVideoTime)
-    })
+    return setIn(
+      saveToHistory(state, "Add Keyframe"),
+      ["keyframes", state.currentVideoTime],
+      {
+        regions: getImpliedVideoRegions(state.keyframes, state.currentVideoTime)
+      }
+    )
   }
 
   switch (action.type) {
@@ -55,6 +58,7 @@ export default (state: MainLayoutVideoAnnotationState, action: Action) => {
       case "SELECT_REGION":
       case "CHANGE_REGION":
       case "DELETE_REGION":
+      case "OPEN_REGION_EDITOR":
         return copyImpliedRegions()
       case "MOUSE_DOWN": {
         switch (state.selectedTool) {

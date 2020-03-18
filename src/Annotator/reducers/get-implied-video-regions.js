@@ -22,6 +22,8 @@ export default (
     return (
       keyframes[keyframeTimes[keyframeTimes.length - 1]].regions || emptyArr
     )
+  } else if (nextKeyframeTimeIndex === 0) {
+    return emptyArr
   }
 
   const t1 = keyframeTimes[nextKeyframeTimeIndex - 1]
@@ -78,7 +80,7 @@ export default (
             ...prev,
             highlighted: false,
             editingLabels: false,
-            points: prev.map((pp, i) => [
+            points: prev.points.map((pp, i) => [
               pp[0] * w1 + next.points[i][0] * w2,
               pp[1] * w1 + next.points[i][1] * w2
             ])

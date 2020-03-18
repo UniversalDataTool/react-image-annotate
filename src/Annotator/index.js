@@ -15,6 +15,7 @@ import combineReducers from "./reducers/combine-reducers.js"
 import generalReducer from "./reducers/general-reducer.js"
 import imageReducer from "./reducers/image-reducer.js"
 import videoReducer from "./reducers/video-reducer.js"
+import historyHandler from "./reducers/history-handler.js"
 
 import makeImmutable from "seamless-immutable"
 
@@ -61,9 +62,11 @@ export const Annotator = ({
     return 'Missing required prop "images" or "videoSrc"'
   const annotationType = images ? "image" : "video"
   const [state, dispatchToReducer] = useReducer(
-    combineReducers(
-      annotationType === "image" ? imageReducer : videoReducer,
-      generalReducer
+    historyHandler(
+      combineReducers(
+        annotationType === "image" ? imageReducer : videoReducer,
+        generalReducer
+      )
     ),
     makeImmutable({
       annotationType,

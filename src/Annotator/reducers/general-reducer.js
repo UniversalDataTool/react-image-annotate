@@ -5,8 +5,8 @@ import { moveRegion } from "../../ImageCanvas/region-tools.js"
 import { getIn, setIn, updateIn } from "seamless-immutable"
 import moment from "moment"
 import isEqual from "lodash/isEqual"
-import merge from "lodash/fp/merge"
 import getActiveImage from "./get-active-image"
+import { saveToHistory } from "./history-handler.js"
 
 const getRandomId = () =>
   Math.random()
@@ -22,12 +22,6 @@ const getRandomColor = () => {
   const s = 100
   const l = 50
   return `hsl(${h},${s}%,${l}%)`
-}
-
-const typesToSaveWithHistory = {
-  BEGIN_BOX_TRANSFORM: "Transform/Move Box",
-  BEGIN_MOVE_POINT: "Move Point",
-  DELETE_REGION: "Delete Region"
 }
 
 export default (state: MainLayoutState, action: Action) => {
@@ -63,12 +57,10 @@ export default (state: MainLayoutState, action: Action) => {
     const [region, regionIndex] = getRegion(regionId)
     if (!region) return state
     if (obj !== null) {
-      return updateIn(
-        state,
-        [...pathToActiveImage, "regions", regionIndex],
-        merge,
-        obj
-      )
+      return setIn(state, [...pathToActiveImage, "regions", regionIndex], {
+        ...region,
+        ...obj
+      })
     } else {
       // delete region
       const regions = activeImage.regions
@@ -88,24 +80,6 @@ export default (state: MainLayoutState, action: Action) => {
         ...r,
         highlighted: false
       }))
-    )
-  }
-
-  const saveToHistory = (state: MainLayoutState, name: string) =>
-    updateIn(state, ["history"], h =>
-      [
-        {
-          time: moment().toDate(),
-          state,
-          name
-        }
-      ].concat((h || []).slice(0, 9))
-    )
-
-  if (Object.keys(typesToSaveWithHistory).includes(action.type)) {
-    state = saveToHistory(
-      state,
-      typesToSaveWithHistory[action.type] || action.type
     )
   }
 
@@ -153,19 +127,13 @@ export default (state: MainLayoutState, action: Action) => {
         action.region
       )
     }
-    case "RESTORE_HISTORY": {
-      if (state.history.length > 0) {
-        return state.history[0].state
-      }
-      return state
-    }
     case "CHANGE_IMAGE": {
       if (!activeImage) return state
       const { delta } = action
       for (const key of Object.keys(delta)) {
         if (key === "cls") saveToHistory(state, "Change Image Class")
         if (key === "tags") saveToHistory(state, "Change Image Tags")
-        state = setIn(state, [...pageToActiveImage, key], delta[key])
+        state = setIn(state, [...pathToActiveImage, key], delta[key])
       }
       return state
     }
@@ -406,7 +374,7 @@ export default (state: MainLayoutState, action: Action) => {
           case "DRAW_POLYGON": {
             const [polygon, regionIndex] = getRegion(state.mode.regionId)
             if (!polygon) break
-            state = setIn(
+            return setIn(
               state,
               [...pathToActiveImage, "regions", regionIndex],
               { ...polygon, points: polygon.points.concat([[x, y]]) }
