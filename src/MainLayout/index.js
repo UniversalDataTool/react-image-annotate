@@ -86,7 +86,13 @@ export const MainLayout = ({ state, dispatch }: Props) => {
             }
             videoDuration={state.videoDuration}
             multipleImages={state.images && state.images.length > 1}
-            title={activeImage ? activeImage.name : "No Image Selected"}
+            title={
+              state.annotationType === "image"
+                ? activeImage
+                  ? activeImage.name
+                  : "No Image Selected"
+                : state.videoName || ""
+            }
             onChangeCurrentTime={action("CHANGE_VIDEO_TIME", "newTime")}
             videoPlaying={state.videoPlaying}
             currentVideoTime={state.currentVideoTime}

@@ -10,11 +10,11 @@ export default {
     boxShadow: "0px 3px 8px rgba(0,0,0,.1)"
   },
   fileInfo: {
-    flexGrow: 1,
     alignItems: "center",
     display: "flex",
     fontWeight: "bold",
     color: grey[800],
+    marginRight: 16,
     fontSize: 24,
     paddingLeft: 16
   }

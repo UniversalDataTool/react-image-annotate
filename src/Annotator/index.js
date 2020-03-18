@@ -34,7 +34,8 @@ type Props = {
   onExit: MainLayoutState => any,
   videoTime?: number,
   videoSrc?: string,
-  keyframes?: Object
+  keyframes?: Object,
+  videoName?: string
 }
 
 export const Annotator = ({
@@ -53,6 +54,7 @@ export const Annotator = ({
   taskDescription,
   videoSrc,
   videoTime = 0,
+  videoName,
   onExit
 }: Props) => {
   if (!images && !videoSrc)
@@ -80,6 +82,7 @@ export const Annotator = ({
       currentVideoTime: videoTime,
       enabledTools,
       history: [],
+      videoName,
       ...(annotationType === "image"
         ? {
             selectedImage,
@@ -93,7 +96,6 @@ export const Annotator = ({
           })
     })
   )
-  console.log(state)
 
   const dispatch = (action: Action) => {
     if (

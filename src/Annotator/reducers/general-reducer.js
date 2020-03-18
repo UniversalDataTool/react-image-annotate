@@ -329,72 +329,71 @@ export default (state: MainLayoutState, action: Action) => {
       return state
     }
     case "MOUSE_DOWN": {
+      if (!activeImage) return state
       const { x, y } = action
 
       let newRegion
-      if (activeImage) {
-        if (state.allowedArea) {
-          const aa = state.allowedArea
-          if (x < aa.x || x > aa.x + aa.w || y < aa.y || y > aa.y + aa.h) {
-            return state
-          }
+      if (state.allowedArea) {
+        const aa = state.allowedArea
+        if (x < aa.x || x > aa.x + aa.w || y < aa.y || y > aa.y + aa.h) {
+          return state
         }
+      }
 
-        switch (state.selectedTool) {
-          case "create-point": {
-            state = saveToHistory(state, "Create Point")
-            newRegion = {
-              type: "point",
-              x,
-              y,
-              highlighted: true,
-              editingLabels: true,
-              color: getRandomColor(),
-              id: getRandomId()
-            }
-            break
+      switch (state.selectedTool) {
+        case "create-point": {
+          state = saveToHistory(state, "Create Point")
+          newRegion = {
+            type: "point",
+            x,
+            y,
+            highlighted: true,
+            editingLabels: true,
+            color: getRandomColor(),
+            id: getRandomId()
           }
-          case "create-box": {
-            state = saveToHistory(state, "Create Box")
-            newRegion = {
-              type: "box",
-              x: x,
-              y: y,
-              w: 0.01,
-              h: 0.01,
-              highlighted: true,
-              editingLabels: false,
-              color: getRandomColor(),
-              id: getRandomId()
-            }
-            state = unselectRegions(state)
-            state = setIn(state, ["mode"], {
-              mode: "RESIZE_BOX",
-              editLabelEditorAfter: true,
-              regionId: newRegion.id,
-              freedom: [1, 1],
-              original: { x, y, w: newRegion.w, h: newRegion.h },
-              isNew: true
-            })
-            break
+          break
+        }
+        case "create-box": {
+          state = saveToHistory(state, "Create Box")
+          newRegion = {
+            type: "box",
+            x: x,
+            y: y,
+            w: 0.01,
+            h: 0.01,
+            highlighted: true,
+            editingLabels: false,
+            color: getRandomColor(),
+            id: getRandomId()
           }
-          case "create-polygon": {
-            if (state.mode && state.mode.mode === "DRAW_POLYGON") break
-            state = saveToHistory(state, "Create Polygon")
-            newRegion = {
-              type: "polygon",
-              points: [[x, y], [x, y]],
-              open: true,
-              highlighted: true,
-              color: getRandomColor(),
-              id: getRandomId()
-            }
-            state = setIn(state, ["mode"], {
-              mode: "DRAW_POLYGON",
-              regionId: newRegion.id
-            })
-            break
+          state = unselectRegions(state)
+          state = setIn(state, ["mode"], {
+            mode: "RESIZE_BOX",
+            editLabelEditorAfter: true,
+            regionId: newRegion.id,
+            freedom: [1, 1],
+            original: { x, y, w: newRegion.w, h: newRegion.h },
+            isNew: true
+          })
+          break
+        }
+        case "create-polygon": {
+          if (state.mode && state.mode.mode === "DRAW_POLYGON") break
+          state = saveToHistory(state, "Create Polygon")
+          newRegion = {
+            type: "polygon",
+            points: [[x, y], [x, y]],
+            open: true,
+            highlighted: true,
+            color: getRandomColor(),
+            id: getRandomId()
           }
+          state = setIn(state, ["mode"], {
+            mode: "DRAW_POLYGON",
+            regionId: newRegion.id
+          })
+          break
         }
       }
 

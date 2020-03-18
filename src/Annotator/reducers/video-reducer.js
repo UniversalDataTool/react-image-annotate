@@ -5,26 +5,14 @@ import type {
   Action
 } from "../../MainLayout/types"
 import { setIn, without } from "seamless-immutable"
+import getImpliedVideoRegions from "./get-implied-video-regions"
 
 export default (state: MainLayoutVideoAnnotationState, action: Action) => {
-  if (!action.type.includes("MOUSE_")) console.log(action.type, action)
+  if (!action.type.includes("MOUSE_MOVE")) console.log(action.type, action)
 
   const copyImpliedRegions = () => {
-    const keyframeTimes = Object.keys(state.keyframes)
-      .map(t => parseInt(t))
-      .filter(a => !isNaN(a))
-
-    keyframeTimes.sort((a, b) => b - a) // reverse sort
-    const prevKeyframeTimeIndex = keyframeTimes.findIndex(
-      kt => kt < state.currentVideoTime
-    )
-    if (prevKeyframeTimeIndex === -1) {
-      return setIn(state, ["keyframes", state.currentVideoTime], {
-        regions: []
-      })
-    }
     return setIn(state, ["keyframes", state.currentVideoTime], {
-      regions: state.keyframes[keyframeTimes[prevKeyframeTimeIndex]].regions
+      regions: getImpliedVideoRegions(state.keyframes, state.currentVideoTime)
     })
   }
 
@@ -64,6 +52,7 @@ export default (state: MainLayoutVideoAnnotationState, action: Action) => {
       case "BEGIN_BOX_TRANSFORM":
       case "BEGIN_MOVE_POLYGON_POINT":
       case "ADD_POLYGON_POINT":
+      case "SELECT_REGION":
       case "CHANGE_REGION":
       case "DELETE_REGION":
         return copyImpliedRegions()

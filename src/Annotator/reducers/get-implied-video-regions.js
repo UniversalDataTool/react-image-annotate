@@ -33,8 +33,6 @@ export default (
   for (const region of prevKeyframe.regions) prevRegionMap[region.id] = region
   for (const region of nextKeyframe.regions) nextRegionMap[region.id] = region
 
-  console.log({ prevRegionMap, nextRegionMap, keyframes, t2 })
-
   const impliedRegions = []
 
   // Weighted time coefficients for linear transition
