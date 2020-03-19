@@ -24,6 +24,10 @@ export const DebugSidebarBox = ({ state, lastAction }: any) => {
           <b>mode</b>:
         </div>
         <pre>{JSON.stringify(state.mode, null, "  ")}</pre>
+        <div>
+          <b>frame:</b>
+        </div>
+        <pre>{JSON.stringify(state.selectedImageFrameTime, null, "  ")}</pre>
       </div>
     </SidebarBoxContainer>
   )

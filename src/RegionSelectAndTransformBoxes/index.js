@@ -41,7 +41,7 @@ export const RegionSelectAndTransformBoxes = ({
       const pbox = projectRegionBox(r)
       const { iw, ih } = layoutParams.current
       return (
-        <Fragment>
+        <Fragment key={r.id}>
           <PreventScrollToParents>
             <HighlightBox
               region={r}

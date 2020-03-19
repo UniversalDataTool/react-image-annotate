@@ -27,6 +27,7 @@ export const TagsSidebarBox = ({
   imageTagList = emptyArr,
   onChangeImage
 }: Props) => {
+  if (!currentImage) return null
   const { tags = [], cls = null } = currentImage
   const onChangeClassification = useEventCallback(o =>
     onChangeImage({ cls: o.value })

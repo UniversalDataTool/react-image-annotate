@@ -12,6 +12,9 @@ const useStyles = makeStyles({
   highlightBox: {
     zIndex: 2,
     transition: "opacity 500ms",
+    "&.highlighted": {
+      zIndex: 3
+    },
     "&:not(.highlighted)": {
       opacity: 0
     },

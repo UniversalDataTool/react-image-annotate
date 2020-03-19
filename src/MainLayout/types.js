@@ -22,7 +22,8 @@ export type Image = {
   name: string,
   regions?: Array<Region>,
   pixelSize?: { w: number, h: number },
-  realSize?: { w: number, h: number, unitName: string }
+  realSize?: { w: number, h: number, unitName: string },
+  frameTime?: number
 }
 
 export type Mode =
@@ -34,23 +35,22 @@ export type Mode =
       editLabelEditorAfter?: boolean,
       regionId: string,
       freedom: [number, number],
-      original: { x: number, y: number, w: number, h: number }
+      original: { x: number, y: number, w: number, h: number },
+      isNew?: boolean
     |}
   | {| mode: "MOVE_REGION" |}
 
-export type MainLayoutState = {|
+export type MainLayoutStateBase = {|
+  annotationType: "video" | "image",
   fullScreen?: boolean,
   settingsOpen?: boolean,
   minRegionSize?: number,
   showTags: boolean,
   showPointDistances?: boolean,
   pointDistancePrecision?: number,
-  selectedImage?: string,
   selectedTool: ToolEnum,
   mode: Mode,
   taskDescription: string,
-  images: Array<Image>,
-  labelImages?: boolean,
   allowedArea?: { x: number, y: number, w: number, h: number },
   regionClsList?: Array<string>,
   regionTagList?: Array<string>,
@@ -60,10 +60,52 @@ export type MainLayoutState = {|
   history: Array<{ time: Date, state: MainLayoutState, name: string }>
 |}
 
+export type MainLayoutImageAnnotationState = {|
+  ...MainLayoutStateBase,
+  annotationType: "image",
+
+  selectedImage?: string,
+  images: Array<Image>,
+  labelImages?: boolean,
+
+  // If the selectedImage corresponds to a frame of a video
+  selectedImageFrameTime?: number
+|}
+
+export type MainLayoutVideoAnnotationState = {|
+  ...MainLayoutStateBase,
+  annotationType: "video",
+
+  videoSrc: string,
+  currentVideoTime: number,
+  videoName?: string,
+  videoPlaying: boolean,
+  videoDuration?: number,
+  keyframes: {
+    [time: number]: {|
+      time: number,
+      regions: Array<Region>
+    |}
+  },
+  pixelSize?: { w: number, h: number },
+  realSize?: { w: number, h: number, unitName: string }
+|}
+
+export type MainLayoutState =
+  | MainLayoutImageAnnotationState
+  | MainLayoutVideoAnnotationState
+
 export type Action =
   | {| type: "@@INIT" |}
   | {| type: "SELECT_IMAGE", image: Image |}
-  | {| type: "IMAGE_LOADED", image: { width: number, height: number } |}
+  | {|
+      type: "IMAGE_OR_VIDEO_LOADED",
+      metadata: {
+        naturalWidth: number,
+        naturalHeight: number,
+        duration?: number
+      }
+    |}
   | {| type: "CHANGE_REGION", region: Region |}
   | {| type: "RESTORE_HISTORY" |}
   | {| type: "CLOSE_POLYGON", polygon: Polygon |}
