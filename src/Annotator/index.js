@@ -1,6 +1,6 @@
 // @flow
 
-import React, { useReducer } from "react"
+import React, { useReducer, useEffect } from "react"
 import MainLayout from "../MainLayout"
 import type {
   ToolEnum,
@@ -16,8 +16,8 @@ import generalReducer from "./reducers/general-reducer.js"
 import imageReducer from "./reducers/image-reducer.js"
 import videoReducer from "./reducers/video-reducer.js"
 import historyHandler from "./reducers/history-handler.js"
-import useEventCallback from "use-event-callback"
 
+import useEventCallback from "use-event-callback"
 import makeImmutable, { without } from "seamless-immutable"
 
 type Props = {
@@ -58,6 +58,8 @@ export const Annotator = ({
   videoTime = 0,
   videoName,
   onExit
+  onNextImage,
+  onPrevImage
 }: Props) => {
   if (!images && !videoSrc)
     return 'Missing required prop "images" or "videoSrc"'
@@ -102,19 +104,30 @@ export const Annotator = ({
   )
 
   const dispatch = useEventCallback((action: Action) => {
-    if (
-      action.type === "HEADER_BUTTON_CLICKED" &&
-      ["Exit", "Done", "Save", "Complete"].includes(action.buttonName)
-    ) {
-      onExit(without(state, "history"))
-    } else {
-      dispatchToReducer(action)
+    if (action.type === "HEADER_BUTTON_CLICKED") {
+      if (["Exit", "Done", "Save", "Complete"].includes(action.buttonName)) {
+        return onExit(without(state, "history"))
+      } else if (action.buttonName === "Next") {
+        return onNextImage(without(state, "history"))
+      } else if (action.buttonName === "Prev") {
+        return onPrevImage(without(state, "history"))
+      }
     }
+    dispatchToReducer(action)
   })
+
+  useEffect(() => {
+    dispatchToReducer({ type: "SELECT_IMAGE", image: state.images.find(img => img.src === selectedImage) })
+  }, [selectedImage])
 
   return (
     <SettingsProvider>
-      <MainLayout state={state} dispatch={dispatch} />
+      <MainLayout
+        alwaysShowNextButton={Boolean(onNextImage)}
+        alwaysShowPrevButton={Boolean(onPrevImage)}
+        state={state}
+        dispatch={dispatch}
+      />
     </SettingsProvider>
   )
 }

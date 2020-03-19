@@ -127,5 +127,5 @@ export type Action =
   | {| type: "CLOSE_REGION_EDITOR", region: Region |}
   | {| type: "DELETE_REGION", region: Region |}
   | {| type: "HEADER_BUTTON_CLICKED", buttonName: string |}
-  | {| type: "SELECT_TOOL", selectedTool: string |}
+  | {| type: "SELECT_TOOL", selectedTool: ToolEnum |}
   | {| type: "CANCEL" |}

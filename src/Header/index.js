@@ -46,7 +46,9 @@ export const Header = ({
   multipleImages,
   videoPlaying,
   onChangeCurrentTime,
-  keyframes
+  keyframes,
+  alwaysShowPrevButton,
+  alwaysShowNextButton
 }: Props) => {
   const classes = useStyles()
   return (
@@ -65,9 +67,11 @@ export const Header = ({
       )}
       <div className={classes.headerActions}>
         <HeaderButtonContext.Provider value={{ onHeaderButtonClick }}>
-          {multipleImages && (
+          {(multipleImages || alwaysShowPrevButton) && (
+            <HeaderButton name="Prev" Icon={BackIcon} />
+          )}
+          {(multipleImages || alwaysShowNextButton) && (
             <>
-              <HeaderButton name="Prev" Icon={BackIcon} />
               <HeaderButton name="Next" Icon={NextIcon} />
               <HeaderButton
                 name="Clone"

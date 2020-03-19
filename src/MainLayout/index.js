@@ -21,10 +21,12 @@ const useStyles = makeStyles(styles)
 
 type Props = {
   state: MainLayoutState,
-  dispatch: Action => any
+  dispatch: Action => any,
+  alwaysShowNextButton: boolean,
+  alwaysShowPrevButton: boolean
 }
 
-export const MainLayout = ({ state, dispatch }: Props) => {
+export default ({ state, dispatch, alwaysShowNextButton = false, alwaysShowPrevButton = false }: Props) => {
   const classes = useStyles()
   const settings = useSettings()
 
@@ -80,6 +82,8 @@ export const MainLayout = ({ state, dispatch }: Props) => {
           <Header
             onHeaderButtonClick={action("HEADER_BUTTON_CLICKED", "buttonName")}
             videoMode={state.annotationType === "video"}
+            alwaysShowNextButton={alwaysShowNextButton}
+            alwaysShowPrevButton={alwaysShowPrevButton}
             inFullScreen={state.fullScreen}
             isAVideoFrame={isAVideoFrame}
             nextVideoFrameHasRegions={
@@ -206,6 +210,7 @@ export const MainLayout = ({ state, dispatch }: Props) => {
               onRestoreHistory={action("RESTORE_HISTORY")}
               onChangeVideoTime={action("CHANGE_VIDEO_TIME", "newTime")}
               onDeleteKeyframe={action("DELETE_KEYFRAME", "time")}
+              onShortcutActionDispatched={dispatch}
             />
           </div>
         </div>
