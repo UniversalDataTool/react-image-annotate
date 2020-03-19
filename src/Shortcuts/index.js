@@ -61,22 +61,21 @@ export default ({ action }) =>{
     }, [])
 
     const onChangeShortcut = (actionId, keyName) => {
-        console.log({ keyName })
         setShortcuts(setIn(shortcuts, [actionId, "key"], keyName))
     }
 
     useEffect(() => {
         const handleKeyPress = (e) => {
-             for (const actionId in shortcuts) {
-                 const shortcut = shortcuts[actionId]
-                 if (!shortcut || !shortcut.key){
-                    continue
-                 }
-                 if (e.key === shortcut.key) {
-                    //TODO:  Add Switch case for finding correct action type when user press right/left or another key
-                    action({ type: "SELECT_TOOL", selectedTool: actionId })
-                 }
-             }
+            for (const actionId in shortcuts) {
+                const shortcut = shortcuts[actionId]
+                if (!shortcut || !shortcut.key){
+                   continue
+                }
+                if (e.key === shortcut.key) {
+                   //TODO:  Add Switch case for finding correct action type when user press right/left or another key
+                   action({ type: "SELECT_TOOL", selectedTool: actionId })
+                }
+            }
          }
 
          window.addEventListener("keypress", handleKeyPress)
