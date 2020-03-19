@@ -76,12 +76,14 @@ export default ({ action }) =>{
                    action({ type: "SELECT_TOOL", selectedTool: actionId })
                 }
             }
-         }
+        }
 
-         window.addEventListener("keypress", handleKeyPress)
+        window.addEventListener("keypress", handleKeyPress)
 
          return () => {
-             window.removeEventListener("keypress", handleKeyPress)
+            window.removeEventListener("keypress", handleKeyPress)
+            // When one of the shortcuts changed it's not focused that input anymore
+            if (document.activeElement !== document.body) document.activeElement.blur();
          }
      }, [shortcuts])
     
