@@ -22,7 +22,7 @@ type Props = {
   dispatch: Action => any
 }
 
-export default ({ state, dispatch }: Props) => {
+export default ({ state, dispatch, alwaysShowNextButton = false, alwaysShowPrevButton = false }: Props) => {
   const classes = useStyles()
   const settings = useSettings()
 
@@ -60,6 +60,8 @@ export default ({ state, dispatch }: Props) => {
         <div className={classes.headerContainer}>
           <Header
             onHeaderButtonClick={action("HEADER_BUTTON_CLICKED", "buttonName")}
+            alwaysShowNextButton={alwaysShowNextButton}
+            alwaysShowPrevButton={alwaysShowPrevButton}
             inFullScreen={state.fullScreen}
             multipleImages={Boolean(state.images.length > 1)}
             title={currentImage ? currentImage.name : "No Image Selected"}
@@ -142,6 +144,7 @@ export default ({ state, dispatch }: Props) => {
               onSelectImage={action("SELECT_IMAGE", "image")}
               onChangeRegion={action("CHANGE_REGION", "region")}
               onRestoreHistory={action("RESTORE_HISTORY")}
+              action={dispatch}
             />
           </div>
         </div>

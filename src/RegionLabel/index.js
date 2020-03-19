@@ -42,6 +42,15 @@ export default ({
 
   return (
     <Paper
+      onKeyPress={e => {
+        e.stopPropagation()
+      }}
+      onKeyDown={e => {
+        e.stopPropagation()
+      }}
+      onKeyUp={e => {
+        e.stopPropagation()
+      }}
       onClick={() => (!editing ? onOpen(region) : null)}
       className={classnames(classes.regionInfo, {
         highlighted: region.highlighted

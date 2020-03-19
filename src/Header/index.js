@@ -25,7 +25,9 @@ export default ({
   onHeaderButtonClick,
   title,
   inFullScreen,
-  multipleImages
+  multipleImages,
+  alwaysShowPrevButton,
+  alwaysShowNextButton
 }: Props) => {
   const classes = useStyles()
   return (
@@ -33,12 +35,12 @@ export default ({
       <div className={classes.fileInfo}>{title}</div>
       <div className={classes.headerActions}>
         <HeaderButtonContext.Provider value={{ onHeaderButtonClick }}>
-          {multipleImages && (
-            <>
+          {(multipleImages || alwaysShowPrevButton) &&
               <HeaderButton name="Prev" Icon={BackIcon} />
+          }
+          {(multipleImages || alwaysShowNextButton) &&
               <HeaderButton name="Next" Icon={NextIcon} />
-            </>
-          )}
+          }
           <HeaderButton name="Settings" Icon={SettingsIcon} />
           {/* <HeaderButton name="Help" Icon={HelpIcon} /> */}
           {inFullScreen ? (

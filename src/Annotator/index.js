@@ -1,6 +1,6 @@
 // @flow
 
-import React, { useReducer } from "react"
+import React, { useReducer, useEffect } from "react"
 import MainLayout from "../MainLayout"
 import type {
   ToolEnum,
@@ -11,6 +11,7 @@ import type {
 } from "../MainLayout/types"
 import SettingsProvider from "../SettingsProvider"
 import reducer from "./reducer"
+import { useKey, useLocalStorage } from 'react-use';
 
 type Props = {
   taskDescription: string,
@@ -41,7 +42,9 @@ export default ({
   imageTagList = [],
   imageClsList = [],
   taskDescription,
-  onExit
+  onExit,
+  onNextImage,
+  onPrevImage
 }: Props) => {
   const [state, dispatchToReducer] = useReducer(reducer, {
     showTags,
@@ -63,22 +66,67 @@ export default ({
   })
 
   const dispatch = (action: Action) => {
-    if (
-      action.type === "HEADER_BUTTON_CLICKED" &&
-      (action.buttonName === "Exit" ||
-        action.buttonName === "Done" ||
-        action.buttonName === "Save" ||
-        action.buttonName === "Complete")
-    ) {
-      onExit({ ...state, history: undefined })
-    } else {
-      dispatchToReducer(action)
+    if (!action.type.includes("MOUSE_"))
+    switch (action.type) {
+      case "HEADER_BUTTON_CLICKED":
+        if (
+          (
+            action.buttonName === "Exit" ||
+            action.buttonName === "Done" ||
+            action.buttonName === "Save" ||
+            action.buttonName === "Complete")
+        ) {
+          onExit({ ...state, history: undefined })
+          return
+        }
+        if (action.buttonName === "Next" && onNextImage) {
+          return onNextImage({...state, history: undefined})
+        }
+        if (action.buttonName === "Prev" && onPrevImage) {
+          return onPrevImage({...state, history: undefined})
+        }
+      default:
+        dispatchToReducer(action)
     }
   }
 
+  useKey('ArrowRight', (event) =>{
+    // if selected tool === none
+    event.preventDefault()
+    event.stopPropagation()
+    if (onNextImage) {
+      onNextImage({ ...state, history: undefined })
+    }else{
+      const nextImageIndex = (state.images.findIndex(img => img.src === state.selectedImage) + 1) % state.images.length
+      const nextImage  = state.images[nextImageIndex]
+      dispatchToReducer({ type: 'SELECT_IMAGE', image: nextImage })
+    }
+  })
+
+  useKey('ArrowLeft', (event) =>{
+    event.preventDefault()
+    event.stopPropagation()
+    if (onPrevImage){
+      onPrevImage({ ...state, history: undefined })
+    }else{
+      const prevImageIndex = (state.images.findIndex(img => img.src === state.selectedImage) - 1 + state.images.length) % state.images.length
+      const prevImage  = state.images[prevImageIndex]
+      dispatchToReducer({ type: 'SELECT_IMAGE', image: prevImage })
+    }
+  })
+
+  useEffect(() => {
+    dispatchToReducer({ type: "SELECT_IMAGE", image: state.images.find(img => img.src === selectedImage) })
+  }, [selectedImage])
+
   return (
     <SettingsProvider>
-      <MainLayout debug state={state} dispatch={dispatch} />
+      <MainLayout
+        alwaysShowNextButton={Boolean(onNextImage)}
+        alwaysShowPrevButton={Boolean(onPrevImage)}
+        state={state}
+        dispatch={dispatch}
+      />
     </SettingsProvider>
   )
 }

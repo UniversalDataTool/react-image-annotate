@@ -1,6 +1,6 @@
 // @flow
 
-import React from "react"
+import React, { useState } from "react"
 
 import { storiesOf } from "@storybook/react"
 import { action as actionAddon } from "@storybook/addon-actions"
@@ -364,3 +364,43 @@ storiesOf("Annotator", module)
       />
     </div>
   ))
+  .add("Override Next/Prev Button Handling", () => {
+    const images = [
+      exampleImage,
+      "https://loremflickr.com/100/100/cars?lock=1",
+      "https://loremflickr.com/100/100/cars?lock=2"
+    ]
+    const [selectedImageIndex, changeSelectedImageIndex] = useState(0)
+
+    return (
+    <Annotator
+      onExit={actionAddon("onExit")}
+      onNextImage={() => {
+        actionAddon("onNextImage")()
+        changeSelectedImageIndex((selectedImageIndex + 1)%3)
+      }}
+      onPrevImage={() => {
+        actionAddon("onPrevImage")()
+        changeSelectedImageIndex((selectedImageIndex - 1 + 3)%3)
+      }}
+      labelImages
+      selectedImage={images[selectedImageIndex]}
+      regionClsList={["Alpha", "Beta", "Charlie", "Delta"]}
+      imageClsList={["Alpha", "Beta", "Charlie", "Delta"]}
+      images={[
+        {
+          src: exampleImage,
+          name: "Seve's Desk",
+        },
+        {
+          src: images[1],
+          name: "Frame 0036"
+        },
+        {
+          src: images[2],
+          name: "Frame 0037"
+        }
+      ]}
+    />
+  )
+})

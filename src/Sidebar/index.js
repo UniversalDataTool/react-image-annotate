@@ -9,6 +9,7 @@ import History from "../HistorySidebarBox"
 import DebugBox from "../DebugSidebarBox"
 import TagsSidebarBox from "../TagsSidebarBox"
 import type { Region } from "../ImageCanvas/region-tools.js"
+import Shortcuts from "../Shortcuts"
 
 const useStyles = makeStyles({})
 
@@ -56,7 +57,8 @@ export default ({
   onSelectImage,
   onChangeRegion,
   onDeleteRegion,
-  onRestoreHistory
+  onRestoreHistory,
+  action
 }: Props) => {
   const classes = useStyles()
 
@@ -81,6 +83,7 @@ export default ({
         onDeleteRegion={onDeleteRegion}
       />
       <History history={history} onRestoreHistory={() => onRestoreHistory()} />
+      <Shortcuts action={action} />
     </div>
   )
 }
