@@ -16,8 +16,9 @@ import generalReducer from "./reducers/general-reducer.js"
 import imageReducer from "./reducers/image-reducer.js"
 import videoReducer from "./reducers/video-reducer.js"
 import historyHandler from "./reducers/history-handler.js"
+import useEventCallback from "use-event-callback"
 
-import makeImmutable from "seamless-immutable"
+import makeImmutable, { without } from "seamless-immutable"
 
 type Props = {
   taskDescription: string,
@@ -100,16 +101,16 @@ export const Annotator = ({
     })
   )
 
-  const dispatch = (action: Action) => {
+  const dispatch = useEventCallback((action: Action) => {
     if (
       action.type === "HEADER_BUTTON_CLICKED" &&
       ["Exit", "Done", "Save", "Complete"].includes(action.buttonName)
     ) {
-      onExit({ ...state, history: undefined })
+      onExit(without(state, "history"))
     } else {
       dispatchToReducer(action)
     }
-  }
+  })
 
   return (
     <SettingsProvider>

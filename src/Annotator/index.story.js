@@ -407,7 +407,10 @@ storiesOf("Annotator", module)
       }}
     >
       <Annotator
-        onExit={actionAddon("onExit")}
+        onExit={(...args) => {
+          console.log(...args)
+          actionAddon("onExit")(...args)
+        }}
         showTags
         videoSrc="https://s3.amazonaws.com/asset.workaround.online/SampleVideo_1280x720_1mb.mp4"
         videoTime={1000}
