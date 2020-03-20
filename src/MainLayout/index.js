@@ -227,5 +227,3 @@ export default ({ state, dispatch, alwaysShowNextButton = false, alwaysShowPrevB
     </Fullscreen>
   )
 }
-
-export default MainLayout
