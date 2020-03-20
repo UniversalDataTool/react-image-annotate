@@ -123,14 +123,13 @@ const Editor = ({ onOpenAnnotator, lastOutput }: any) => {
             className="button"
             variant="outlined"
             disabled={Boolean(currentError)}
-            onClick={() =>{
-                onOpenAnnotator(
-                  selectedExample === "Custom"
-                    ? loadSavedInput()
-                    : examples[selectedExample]
-                )
-              }
-            }
+            onClick={() => {
+              onOpenAnnotator(
+                selectedExample === "Custom"
+                  ? loadSavedInput()
+                  : examples[selectedExample]
+              )
+            }}
           >
             Open Annotator
           </Button>
