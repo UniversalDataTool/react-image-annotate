@@ -107,9 +107,9 @@ export const Annotator = ({
     if (action.type === "HEADER_BUTTON_CLICKED") {
       if (["Exit", "Done", "Save", "Complete"].includes(action.buttonName)) {
         return onExit(without(state, "history"))
-      } else if (action.buttonName === "Next") {
+      } else if (action.buttonName === "Next" && onNextImage) {
         return onNextImage(without(state, "history"))
-      } else if (action.buttonName === "Prev") {
+      } else if (action.buttonName === "Prev" && onPrevImage) {
         return onPrevImage(without(state, "history"))
       }
     }
