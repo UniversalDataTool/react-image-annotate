@@ -5,35 +5,60 @@ import ShortcutField from "./ShortcutField"
 
 const defaultShortcuts = {
   select: {
+    action: {
+      type: "SELECT_TOOL"
+    },
     name: "Select Region",
     key: "Escape"
   },
   zoom: {
+    action: {
+      type: "SELECT_TOOL"
+    },
     name: "Zoom In/Out",
     key: "z"
   },
   "create-point": {
+    action: {
+      type: "SELECT_TOOL"
+    },
     name: "Create Point"
   },
   "create-box": {
+    action: {
+      type: "SELECT_TOOL"
+    },
     name: "Add Bounding Box",
     key: "b"
   },
   pan: {
+    action: {
+      type: "SELECT_TOOL"
+    },
     name: "Pan"
   },
   "create-polygon": {
+    action: {
+      type: "SELECT_TOOL"
+    },
     name: "Create Polygon"
   },
   "create-pixel": {
+    action: {
+      type: "SELECT_TOOL"
+    },
     name: "Create Pixel"
   },
   "prev-image": {
-    //TODO: { type: "GO_TO_PREV_IMAGE" }
+    action: {
+      type: "GO_TO_PREV_IMAGE"
+    },
     name: "Previous Image"
   },
   "next-image": {
-    //TODO: { type: "GO_TO_NEXT_IMAGE" }
+    action: {
+      type: "GO_TO_NEXT_IMAGE"
+    },
     name: "Next Image"
   }
 }
@@ -64,7 +89,7 @@ export default ({ onShortcutActionDispatched }) => {
         }
         if (e.key === shortcut.key) {
           onShortcutActionDispatched({
-            type: "SELECT_TOOL",
+            type: shortcut.action.type,
             selectedTool: actionId
           })
         }
