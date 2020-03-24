@@ -57,7 +57,7 @@ export const Annotator = ({
   videoSrc,
   videoTime = 0,
   videoName,
-  onExit
+  onExit,
   onNextImage,
   onPrevImage
 }: Props) => {
