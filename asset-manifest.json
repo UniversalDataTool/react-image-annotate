@@ -1,15 +1,15 @@
 {
-  "main.css": "/react-image-annotate/static/css/main.8f878e76.chunk.css",
-  "main.js": "/react-image-annotate/static/js/main.fb5e6a20.chunk.js",
-  "main.js.map": "/react-image-annotate/static/js/main.fb5e6a20.chunk.js.map",
+  "main.css": "/react-image-annotate/static/css/main.256d7db5.chunk.css",
+  "main.js": "/react-image-annotate/static/js/main.f47c15de.chunk.js",
+  "main.js.map": "/react-image-annotate/static/js/main.f47c15de.chunk.js.map",
   "runtime~main.js": "/react-image-annotate/static/js/runtime~main.3f5c9a4f.js",
   "runtime~main.js.map": "/react-image-annotate/static/js/runtime~main.3f5c9a4f.js.map",
-  "static/css/2.9f5477e2.chunk.css": "/react-image-annotate/static/css/2.9f5477e2.chunk.css",
-  "static/js/2.cb103d04.chunk.js": "/react-image-annotate/static/js/2.cb103d04.chunk.js",
-  "static/js/2.cb103d04.chunk.js.map": "/react-image-annotate/static/js/2.cb103d04.chunk.js.map",
+  "static/css/2.10e38f4d.chunk.css": "/react-image-annotate/static/css/2.10e38f4d.chunk.css",
+  "static/js/2.8fa56030.chunk.js": "/react-image-annotate/static/js/2.8fa56030.chunk.js",
+  "static/js/2.8fa56030.chunk.js.map": "/react-image-annotate/static/js/2.8fa56030.chunk.js.map",
   "index.html": "/react-image-annotate/index.html",
-  "precache-manifest.86a3d4353999d86638529bf0f4880006.js": "/react-image-annotate/precache-manifest.86a3d4353999d86638529bf0f4880006.js",
+  "precache-manifest.ab081ae102d2c6b93702218312c02f17.js": "/react-image-annotate/precache-manifest.ab081ae102d2c6b93702218312c02f17.js",
   "service-worker.js": "/react-image-annotate/service-worker.js",
-  "static/css/2.9f5477e2.chunk.css.map": "/react-image-annotate/static/css/2.9f5477e2.chunk.css.map",
-  "static/css/main.8f878e76.chunk.css.map": "/react-image-annotate/static/css/main.8f878e76.chunk.css.map"
+  "static/css/2.10e38f4d.chunk.css.map": "/react-image-annotate/static/css/2.10e38f4d.chunk.css.map",
+  "static/css/main.256d7db5.chunk.css.map": "/react-image-annotate/static/css/main.256d7db5.chunk.css.map"
 }
