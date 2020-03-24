@@ -111,7 +111,7 @@ export default ({
 
   if (!videoSrc && !imageSrc) return "No imageSrc or videoSrc provided"
 
-  return imageSrc ? (
+  return imageSrc && videoTime === undefined ? (
     <StyledImage
       {...mouseEvents}
       src={imageSrc}
@@ -125,7 +125,7 @@ export default ({
       ref={videoRef}
       style={stylePosition}
       onLoadedMetadata={onLoadedVideoMetadata}
-      src={videoSrc}
+      src={videoSrc || imageSrc}
     />
   )
 }
