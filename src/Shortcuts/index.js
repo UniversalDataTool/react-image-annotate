@@ -53,13 +53,15 @@ const defaultShortcuts = {
     action: {
       type: "GO_TO_PREV_IMAGE"
     },
-    name: "Previous Image"
+    name: "Previous Image",
+    key: "ArrowLeft"
   },
   "next-image": {
     action: {
       type: "GO_TO_NEXT_IMAGE"
     },
-    name: "Next Image"
+    name: "Next Image",
+    key: "ArrowRight"
   }
 }
 
@@ -83,6 +85,7 @@ export default ({ onShortcutActionDispatched }) => {
   useEffect(() => {
     const handleKeyPress = e => {
       for (const actionId in shortcuts) {
+        console.log(e)
         const shortcut = shortcuts[actionId]
         if (!shortcut || !shortcut.key) {
           continue
