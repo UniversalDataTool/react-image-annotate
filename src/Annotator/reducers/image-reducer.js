@@ -19,16 +19,6 @@ export default (state: MainLayoutImageAnnotationState, action: Action) => {
         h: action.image.height
       })
     }
-    case "GO_TO_NEXT_IMAGE": {
-      return setIn(
-        state,
-        ["selectedImage"],
-        (currentImageIndex + 1) % state.images.length
-      )
-    }
-    case "GO_TO_PREVIOUS_IMAGE": {
-      return (state.images.findIndex(img => img.src === state.selectedImage) - 1 + state.images.length) % state.images.length
-    }
   }
   return state
 }

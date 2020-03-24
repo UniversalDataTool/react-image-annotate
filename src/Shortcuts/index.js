@@ -1,4 +1,4 @@
-import React, { useState, useReducer, useEffect, useCallback } from "react"
+import React, { useState, useEffect } from "react"
 import SidebarBoxContainer from "../SidebarBoxContainer"
 import { setIn } from "seamless-immutable"
 import ShortcutField from "./ShortcutField"
@@ -51,17 +51,19 @@ const defaultShortcuts = {
   },
   "prev-image": {
     action: {
-      type: "GO_TO_PREV_IMAGE"
+      type: "HEADER_BUTTON_CLICKED",
+      buttonName: "Prev"
     },
     name: "Previous Image",
-    key: "ArrowLeft"
+    key: "a"
   },
   "next-image": {
     action: {
-      type: "GO_TO_NEXT_IMAGE"
+      type: "HEADER_BUTTON_CLICKED",
+      buttonName: "Next"
     },
     name: "Next Image",
-    key: "ArrowRight"
+    key: "d"//"ArrowRight"
   }
 }
 
@@ -85,14 +87,13 @@ export default ({ onShortcutActionDispatched }) => {
   useEffect(() => {
     const handleKeyPress = e => {
       for (const actionId in shortcuts) {
-        console.log(e)
         const shortcut = shortcuts[actionId]
         if (!shortcut || !shortcut.key) {
           continue
         }
         if (e.key === shortcut.key) {
           onShortcutActionDispatched({
-            type: shortcut.action.type,
+            ...shortcut.action,
             selectedTool: actionId
           })
         }
@@ -103,6 +104,7 @@ export default ({ onShortcutActionDispatched }) => {
 
     return () => {
       window.removeEventListener("keypress", handleKeyPress)
+        document.activeElement.blur()
     }
   }, [shortcuts])
 
