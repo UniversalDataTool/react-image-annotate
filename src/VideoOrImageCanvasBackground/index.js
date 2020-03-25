@@ -18,7 +18,7 @@ const StyledImage = styled("img")({
 export default ({
   imagePosition,
   mouseEvents,
-  videoTime = 0,
+  videoTime,
   videoSrc,
   imageSrc,
   onLoad,
