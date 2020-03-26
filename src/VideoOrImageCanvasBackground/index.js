@@ -32,7 +32,7 @@ export default ({
 
   useEffect(() => {
     if (!videoPlaying && videoRef.current) {
-      videoRef.current.currentTime = videoTime / 1000
+      videoRef.current.currentTime = (videoTime || 0) / 1000
     }
   }, [videoTime])
 
@@ -74,7 +74,7 @@ export default ({
 
   const onLoadedVideoMetadata = useEventCallback(event => {
     const videoElm = event.currentTarget
-    videoElm.currentTime = videoTime / 1000
+    videoElm.currentTime = (videoTime || 0) / 1000
     if (onLoad)
       onLoad({
         naturalWidth: videoElm.videoWidth,
