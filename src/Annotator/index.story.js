@@ -1,6 +1,6 @@
 // @flow
 
-import React from "react"
+import React, { useState } from "react"
 
 import { storiesOf } from "@storybook/react"
 import { action as actionAddon } from "@storybook/addon-actions"
@@ -364,3 +364,146 @@ storiesOf("Annotator", module)
       />
     </div>
   ))
+  .add("Video with frames as each image", () => (
+    <div
+      style={{
+        width: "100vw",
+        height: "100vh",
+        boxSizing: "border-box"
+      }}
+    >
+      <Annotator
+        onExit={actionAddon("onExit")}
+        showTags={false}
+        middlewares={[
+          store => next => action => {
+            actionAddon(action.type)(action)
+            return next(action)
+          }
+        ]}
+        images={[
+          {
+            src:
+              "https://s3.amazonaws.com/asset.workaround.online/SampleVideo_1280x720_1mb.mp4",
+            frameTime: 0,
+            name: "Frame 1"
+          },
+          {
+            src:
+              "https://s3.amazonaws.com/asset.workaround.online/SampleVideo_1280x720_1mb.mp4",
+            frameTime: 4500,
+            name: "Frame 2"
+          }
+        ]}
+      />
+    </div>
+  ))
+  .add("Keyframe video", () => (
+    <div
+      style={{
+        width: "100vw",
+        height: "100vh",
+        boxSizing: "border-box"
+      }}
+    >
+      <Annotator
+        onExit={(...args) => {
+          console.log(...args)
+          actionAddon("onExit")(...args)
+        }}
+        showTags
+        videoSrc="https://s3.amazonaws.com/asset.workaround.online/SampleVideo_1280x720_1mb.mp4"
+        videoTime={1000}
+        keyframes={{
+          "0": {
+            regions: [
+              {
+                type: "point",
+                x: 0.1608187134502924,
+                y: 0.5769980506822612,
+                highlighted: true,
+                editingLabels: false,
+                color: "hsl(238,100%,50%)",
+                id: "9995495728521284"
+              },
+              {
+                type: "box",
+                x: 0.089171974522293,
+                y: 0.36801132342533616,
+                w: 0.30573248407643316,
+                h: 0.4170794998820476,
+                highlighted: true,
+                editingLabels: false,
+                color: "hsl(263,100%,50%)",
+                id: "04858393322065635"
+              }
+            ]
+          },
+          "3333": {
+            regions: [
+              {
+                type: "point",
+                x: 0.1608187134502924,
+                y: 0.5769980506822612,
+                highlighted: true,
+                editingLabels: false,
+                color: "hsl(238,100%,50%)",
+                id: "9995495728521284"
+              },
+              {
+                type: "box",
+                x: 0.14861995753715496,
+                y: 0.0934182590233546,
+                w: 0.3163481953290871,
+                h: 0.7596131163010142,
+                highlighted: true,
+                editingLabels: false,
+                color: "hsl(263,100%,50%)",
+                id: "04858393322065635"
+              }
+            ]
+          }
+        }}
+      />
+    </div>
+  ))
+  .add("Override Next/Prev Button Handling", () => {
+    const images = [
+      exampleImage,
+      "https://loremflickr.com/100/100/cars?lock=1",
+      "https://loremflickr.com/100/100/cars?lock=2"
+    ]
+    const [selectedImageIndex, changeSelectedImageIndex] = useState(0)
+
+    return (
+    <Annotator
+      onExit={actionAddon("onExit")}
+      onNextImage={() => {
+        actionAddon("onNextImage")()
+        changeSelectedImageIndex((selectedImageIndex + 1)%3)
+      }}
+      onPrevImage={() => {
+        actionAddon("onPrevImage")()
+        changeSelectedImageIndex((selectedImageIndex - 1 + 3)%3)
+      }}
+      labelImages
+      selectedImage={images[selectedImageIndex]}
+      regionClsList={["Alpha", "Beta", "Charlie", "Delta"]}
+      imageClsList={["Alpha", "Beta", "Charlie", "Delta"]}
+      images={[
+        {
+          src: exampleImage,
+          name: "Seve's Desk",
+        },
+        {
+          src: images[1],
+          name: "Frame 0036"
+        },
+        {
+          src: images[2],
+          name: "Frame 0037"
+        }
+      ]}
+    />
+  )
+})

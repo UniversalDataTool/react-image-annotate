@@ -8,7 +8,9 @@ import RegionSelector from "../RegionSelectorSidebarBox"
 import History from "../HistorySidebarBox"
 import DebugBox from "../DebugSidebarBox"
 import TagsSidebarBox from "../TagsSidebarBox"
+import KeyframesSelector from "../KeyframesSelectorSidebarBox"
 import type { Region } from "../ImageCanvas/region-tools.js"
+import Shortcuts from "../Shortcuts"
 
 const useStyles = makeStyles({})
 
@@ -24,7 +26,7 @@ type Image = {
 type Props = {
   debug: any,
   taskDescription: string,
-  images: Array<Image>,
+  images?: Array<Image>,
   regions: Array<Region>,
   history: Array<{ state: Object, name: string, time: Date }>,
 
@@ -38,7 +40,8 @@ type Props = {
   onSelectImage: Image => any,
   onChangeRegion: Region => any,
   onDeleteRegion: Region => any,
-  onRestoreHistory: () => any
+  onRestoreHistory: () => any,
+  onShortcutActionDispatched: (action: any) => any
 }
 
 const emptyArr = []
@@ -46,11 +49,13 @@ const emptyArr = []
 export const Sidebar = ({
   debug,
   taskDescription,
+  keyframes,
   images,
   regions,
   history,
   labelImages,
   currentImage,
+  currentVideoTime,
   imageClsList,
   imageTagList,
   onChangeImage,
@@ -58,7 +63,10 @@ export const Sidebar = ({
   onSelectImage,
   onChangeRegion,
   onDeleteRegion,
-  onRestoreHistory
+  onRestoreHistory,
+  onChangeVideoTime,
+  onDeleteKeyframe,
+  onShortcutActionDispatched
 }: Props) => {
   const classes = useStyles()
 
@@ -67,7 +75,9 @@ export const Sidebar = ({
   return (
     <div>
       {debug && <DebugBox state={debug} lastAction={debug.lastAction} />}
-      <TaskDescription description={taskDescription} />
+      {(taskDescription || "").length > 1 && (
+        <TaskDescription description={taskDescription} />
+      )}
       {labelImages && (
         <TagsSidebarBox
           currentImage={currentImage}
@@ -77,7 +87,7 @@ export const Sidebar = ({
           expandedByDefault
         />
       )}
-      {images.length > 0 && (
+      {images && images.length > 1 && (
         <ImageSelector onSelect={onSelectImage} images={images} />
       )}
       <RegionSelector
@@ -86,7 +96,16 @@ export const Sidebar = ({
         onChangeRegion={onChangeRegion}
         onDeleteRegion={onDeleteRegion}
       />
-      <History history={history} onRestoreHistory={onRestoreHistory} />
+      {keyframes && (
+        <KeyframesSelector
+          currentVideoTime={currentVideoTime}
+          keyframes={keyframes}
+          onChangeVideoTime={onChangeVideoTime}
+          onDeleteKeyframe={onDeleteKeyframe}
+        />
+      )}
+      <History history={history} onRestoreHistory={() => onRestoreHistory()} />
+      <Shortcuts onShortcutActionDispatched={onShortcutActionDispatched} />
     </div>
   )
 }

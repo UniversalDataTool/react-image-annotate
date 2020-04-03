@@ -15,6 +15,8 @@ import classnames from "classnames"
 import { useSettings } from "../SettingsProvider"
 import SettingsDialog from "../SettingsDialog"
 import Fullscreen from "../Fullscreen"
+import getActiveImage from "../Annotator/reducers/get-active-image"
+import useImpliedVideoRegions from "./use-implied-video-regions"
 
 const useStyles = makeStyles(styles)
 
@@ -25,6 +27,12 @@ type Props = {
 }
 
 export const MainLayout = ({ state, dispatch, RegionEditLabel }: Props) => {
+  dispatch: Action => any,
+  alwaysShowNextButton: boolean,
+  alwaysShowPrevButton: boolean
+}
+
+export default ({ state, dispatch, alwaysShowNextButton = false, alwaysShowPrevButton = false }: Props) => {
   const classes = useStyles()
   const settings = useSettings()
 
@@ -47,11 +55,19 @@ export const MainLayout = ({ state, dispatch, RegionEditLabel }: Props) => {
     return fn
   }
 
-  const currentImage = state.images.find(img => img.src === state.selectedImage)
+  const { currentImageIndex, activeImage } = getActiveImage(state)
+  let nextImage
+  if (currentImageIndex !== null) {
+    nextImage = state.images[currentImageIndex + 1]
+  }
 
   useKey(() => dispatch({ type: "CANCEL" }), {
     detectKeys: [27]
   })
+
+  const isAVideoFrame = activeImage && activeImage.frameTime !== undefined
+
+  let impliedVideoRegions = useImpliedVideoRegions(state)
 
   return (
     <Fullscreen
@@ -71,9 +87,27 @@ export const MainLayout = ({ state, dispatch, RegionEditLabel }: Props) => {
         <div className={classes.headerContainer}>
           <Header
             onHeaderButtonClick={action("HEADER_BUTTON_CLICKED", "buttonName")}
+            videoMode={state.annotationType === "video"}
+            alwaysShowNextButton={alwaysShowNextButton}
+            alwaysShowPrevButton={alwaysShowPrevButton}
             inFullScreen={state.fullScreen}
-            multipleImages={Boolean(state.images.length > 1)}
-            title={currentImage ? currentImage.name : "No Image Selected"}
+            isAVideoFrame={isAVideoFrame}
+            nextVideoFrameHasRegions={
+              !nextImage || (nextImage.regions && nextImage.regions.length > 0)
+            }
+            videoDuration={state.videoDuration}
+            multipleImages={state.images && state.images.length > 1}
+            title={
+              state.annotationType === "image"
+                ? activeImage
+                  ? activeImage.name
+                  : "No Image Selected"
+                : state.videoName || ""
+            }
+            onChangeCurrentTime={action("CHANGE_VIDEO_TIME", "newTime")}
+            videoPlaying={state.videoPlaying}
+            currentVideoTime={state.currentVideoTime}
+            keyframes={state.keyframes}
           />
         </div>
         <div className={classes.workspace}>
@@ -86,7 +120,7 @@ export const MainLayout = ({ state, dispatch, RegionEditLabel }: Props) => {
             />
           </div>
           <div className={classes.imageCanvasContainer}>
-            {!state.selectedImage ? (
+            {state.annotationType === "image" && !state.selectedImage ? (
               <div className={classes.noImageSelected}>No Image Selected</div>
             ) : (
               <div style={{ height: "100%", width: "100%" }}>
@@ -97,14 +131,32 @@ export const MainLayout = ({ state, dispatch, RegionEditLabel }: Props) => {
                   allowedArea={state.allowedArea}
                   regionClsList={state.regionClsList}
                   regionTagList={state.regionTagList}
-                  regions={currentImage ? currentImage.regions || [] : []}
-                  realSize={currentImage ? currentImage.realSize : undefined}
-                  imageSrc={state.selectedImage}
+                  regions={
+                    state.annotationType === "image"
+                      ? activeImage.regions || []
+                      : impliedVideoRegions
+                  }
+                  realSize={activeImage ? activeImage.realSize : undefined}
+                  videoPlaying={state.videoPlaying}
+                  imageSrc={
+                    state.annotationType === "image"
+                      ? state.selectedImage
+                      : null
+                  }
+                  videoSrc={
+                    state.annotationType === "video" ? state.videoSrc : null
+                  }
                   pointDistancePrecision={state.pointDistancePrecision}
                   createWithPrimary={state.selectedTool.includes("create")}
                   dragWithPrimary={state.selectedTool === "pan"}
                   zoomWithPrimary={state.selectedTool === "zoom"}
                   showPointDistances={state.showPointDistances}
+                  pointDistancePrecision={state.pointDistancePrecision}
+                  videoTime={
+                    state.annotationType === "image"
+                      ? state.selectedImageFrameTime
+                      : state.currentVideoTime
+                  }
                   onMouseMove={action("MOUSE_MOVE")}
                   onMouseDown={action("MOUSE_DOWN")}
                   onMouseUp={action("MOUSE_UP")}
@@ -132,6 +184,15 @@ export const MainLayout = ({ state, dispatch, RegionEditLabel }: Props) => {
                   onBeginMovePoint={action("BEGIN_MOVE_POINT", "point")}
                   onImageLoaded={action("IMAGE_LOADED", "image")}
                   RegionEditLabel={RegionEditLabel}
+                  onImageOrVideoLoaded={action(
+                    "IMAGE_OR_VIDEO_LOADED",
+                    "metadata"
+                  )}
+                  onChangeVideoTime={action("CHANGE_VIDEO_TIME", "newTime")}
+                  onChangeVideoPlaying={action(
+                    "CHANGE_VIDEO_PLAYING",
+                    "isPlaying"
+                  )}
                 />
               </div>
             )}
@@ -141,18 +202,23 @@ export const MainLayout = ({ state, dispatch, RegionEditLabel }: Props) => {
               debug={window.localStorage.$ANNOTATE_DEBUG_MODE && state}
               taskDescription={state.taskDescription}
               images={state.images}
-              regions={currentImage ? currentImage.regions : null}
+              regions={activeImage ? activeImage.regions : null}
               history={state.history}
-              currentImage={currentImage}
+              currentImage={activeImage}
               labelImages={state.labelImages}
               imageClsList={state.imageClsList}
               imageTagList={state.imageTagList}
+              keyframes={state.keyframes}
+              currentVideoTime={state.currentVideoTime}
               onChangeImage={action("CHANGE_IMAGE", "delta")}
               onSelectRegion={action("SELECT_REGION", "region")}
               onDeleteRegion={action("DELETE_REGION", "region")}
               onSelectImage={action("SELECT_IMAGE", "image")}
               onChangeRegion={action("CHANGE_REGION", "region")}
               onRestoreHistory={action("RESTORE_HISTORY")}
+              onChangeVideoTime={action("CHANGE_VIDEO_TIME", "newTime")}
+              onDeleteKeyframe={action("DELETE_KEYFRAME", "time")}
+              onShortcutActionDispatched={dispatch}
             />
           </div>
         </div>
@@ -169,5 +235,3 @@ export const MainLayout = ({ state, dispatch, RegionEditLabel }: Props) => {
     </Fullscreen>
   )
 }
-
-export default MainLayout

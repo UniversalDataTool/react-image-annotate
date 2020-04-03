@@ -49,7 +49,7 @@ export const HistorySidebarBox = ({
               secondary={moment(time).format("LT")}
             />
             {i === 0 && (
-              <ListItemSecondaryAction onClick={onRestoreHistory}>
+              <ListItemSecondaryAction onClick={() => onRestoreHistory()}>
                 <IconButton>
                   <UndoIcon />
                 </IconButton>

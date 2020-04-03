@@ -38,6 +38,7 @@ export const Crosshairs = ({
           position: "absolute",
           height: "100%",
           width: 1,
+          zIndex: 10,
           backgroundColor: "#f00",
           left: x,
           pointerEvents: "none",
@@ -48,6 +49,7 @@ export const Crosshairs = ({
         style={{
           position: "absolute",
           width: "100%",
+          zIndex: 10,
           height: 1,
           backgroundColor: "#f00",
           top: y,

@@ -49,6 +49,7 @@ export const RegionTags = ({
       if (region.locked) {
         return (
           <div
+            key={region.id}
             style={{
               position: "absolute",
               ...coords,
@@ -76,6 +77,7 @@ export const RegionTags = ({
       }
       return (
         <div
+          key={region.id}
           style={{
             position: "absolute",
             ...coords,

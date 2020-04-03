@@ -17,21 +17,38 @@ const IconName = styled("div")({
 export const HeaderButtonContext = createContext()
 
 const MemoizedHeaderButton = memo(
-  ({ name, Icon, onClick }) => (
-    <StyledButton onClick={onClick}>
+  ({ name, disabled, Icon, onClick }) => (
+    <StyledButton disabled={disabled} onClick={onClick}>
       <div>
         <Icon />
         <IconName>{name}</IconName>
       </div>
     </StyledButton>
   ),
-  (prevProps, nextProps) => prevProps.name === nextProps.name
+  (prevProps, nextProps) =>
+    prevProps.name === nextProps.name &&
+    prevProps.disabled === nextProps.disabled
 )
 
-export const HeaderButton = ({ name, Icon }: { name: string, Icon: any }) => {
+export const HeaderButton = ({
+  name,
+  disabled,
+  Icon
+}: {
+  name: string,
+  disabled?: boolean,
+  Icon: any
+}) => {
   const { onHeaderButtonClick } = useContext(HeaderButtonContext)
   const onClick = useEventCallback(() => onHeaderButtonClick(name))
-  return <MemoizedHeaderButton name={name} Icon={Icon} onClick={onClick} />
+  return (
+    <MemoizedHeaderButton
+      name={name}
+      disabled={disabled}
+      Icon={Icon}
+      onClick={onClick}
+    />
+  )
 }
 
 export default HeaderButton
