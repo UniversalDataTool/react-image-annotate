@@ -1,6 +1,7 @@
 // @flow
 
 import React, { useState, useRef } from "react"
+import type { Node } from "react"
 import Grid from "@material-ui/core/Grid"
 import { makeStyles } from "@material-ui/core/styles"
 import Sidebar from "../Sidebar"
@@ -21,6 +22,11 @@ const useStyles = makeStyles(styles)
 
 type Props = {
   state: MainLayoutState,
+  RegionEditLabel?: Node,
+  dispatch: Action => any
+}
+
+export const MainLayout = ({ state, dispatch, RegionEditLabel }: Props) => {
   dispatch: Action => any,
   alwaysShowNextButton: boolean,
   alwaysShowPrevButton: boolean
@@ -176,6 +182,8 @@ export default ({ state, dispatch, alwaysShowNextButton = false, alwaysShowPrevB
                   )}
                   onSelectRegion={action("SELECT_REGION", "region")}
                   onBeginMovePoint={action("BEGIN_MOVE_POINT", "point")}
+                  onImageLoaded={action("IMAGE_LOADED", "image")}
+                  RegionEditLabel={RegionEditLabel}
                   onImageOrVideoLoaded={action(
                     "IMAGE_OR_VIDEO_LOADED",
                     "metadata"

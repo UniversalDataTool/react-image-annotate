@@ -2,7 +2,7 @@
 
 import React from "react"
 import Paper from "@material-ui/core/Paper"
-import RegionLabel from "../RegionLabel"
+import DefaultRegionLabel from "../RegionLabel"
 import LockIcon from "@material-ui/icons/Lock"
 
 const copyWithout = (obj, ...args) => {
@@ -23,8 +23,12 @@ export const RegionTags = ({
   onChangeRegion,
   onCloseRegionEdit,
   onDeleteRegion,
-  layoutParams
+  layoutParams,
+  imageSrc,
+  RegionEditLabel
 }) => {
+  const RegionLabel =
+    RegionEditLabel != null ? RegionEditLabel : DefaultRegionLabel
   return regions
     .filter(r => r.visible || r.visible === undefined)
     .map(region => {
@@ -109,6 +113,8 @@ export const RegionTags = ({
               onDelete={onDeleteRegion}
               editing={region.editingLabels}
               region={region}
+              regions={regions}
+              imageSrc={imageSrc}
             />
           </div>
         </div>

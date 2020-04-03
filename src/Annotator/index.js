@@ -1,6 +1,7 @@
 // @flow
 
 import React, { useReducer, useEffect } from "react"
+import type { Node } from "react"
 import MainLayout from "../MainLayout"
 import type {
   ToolEnum,
@@ -33,6 +34,7 @@ type Props = {
   images?: Array<Image>,
   showPointDistances?: boolean,
   pointDistancePrecision?: number,
+  RegionEditLabel?: Node,
   onExit: MainLayoutState => any,
   videoTime?: number,
   videoSrc?: string,
@@ -54,6 +56,7 @@ export const Annotator = ({
   imageClsList = [],
   keyframes = {},
   taskDescription,
+  RegionEditLabel,
   videoSrc,
   videoTime = 0,
   videoName,
@@ -123,6 +126,7 @@ export const Annotator = ({
   return (
     <SettingsProvider>
       <MainLayout
+        RegionEditLabel={RegionEditLabel}
         alwaysShowNextButton={Boolean(onNextImage)}
         alwaysShowPrevButton={Boolean(onPrevImage)}
         state={state}

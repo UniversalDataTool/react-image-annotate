@@ -7,6 +7,7 @@ import React, {
   useLayoutEffect,
   useEffect
 } from "react"
+import type { Node } from "react"
 import { Matrix } from "transformation-matrix-js"
 import getImageData from "get-image-data"
 import Crosshairs from "../Crosshairs"
@@ -59,6 +60,7 @@ type Props = {
   regionClsList?: Array<string>,
   regionTagList?: Array<string>,
   allowedArea?: { x: number, y: number, w: number, h: number },
+  RegionEditLabel?: Node,
   videoPlaying?: boolean,
 
   onChangeRegion: Region => any,
@@ -99,6 +101,7 @@ export default ({
   showCrosshairs,
   showPointDistances,
   allowedArea,
+  RegionEditLabel = null,
   videoPlaying = false,
 
   onImageOrVideoLoaded,
@@ -212,7 +215,12 @@ export default ({
       const { x, y, w, h } = allowedArea
       context.save()
       context.globalAlpha = 0.25
-      const outer = [[0, 0], [iw, 0], [iw, ih], [0, ih]]
+      const outer = [
+        [0, 0],
+        [iw, 0],
+        [iw, ih],
+        [0, ih]
+      ]
       const inner = [
         [x * iw, y * ih],
         [x * iw + w * iw, y * ih],
@@ -442,9 +450,12 @@ export default ({
             onCloseRegionEdit={onCloseRegionEdit}
             onDeleteRegion={onDeleteRegion}
             layoutParams={layoutParams}
+            imageSrc={imageSrc}
+            RegionEditLabel={RegionEditLabel}
           />
         </PreventScrollToParents>
       )}
+
       {zoomWithPrimary && zoomBox !== null && (
         <div
           key="zoomBox"
