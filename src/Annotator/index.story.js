@@ -476,34 +476,89 @@ storiesOf("Annotator", module)
     const [selectedImageIndex, changeSelectedImageIndex] = useState(0)
 
     return (
-    <Annotator
-      onExit={actionAddon("onExit")}
-      onNextImage={() => {
-        actionAddon("onNextImage")()
-        changeSelectedImageIndex((selectedImageIndex + 1)%3)
-      }}
-      onPrevImage={() => {
-        actionAddon("onPrevImage")()
-        changeSelectedImageIndex((selectedImageIndex - 1 + 3)%3)
-      }}
-      labelImages
-      selectedImage={images[selectedImageIndex]}
-      regionClsList={["Alpha", "Beta", "Charlie", "Delta"]}
-      imageClsList={["Alpha", "Beta", "Charlie", "Delta"]}
-      images={[
-        {
-          src: exampleImage,
-          name: "Seve's Desk",
-        },
-        {
-          src: images[1],
-          name: "Frame 0036"
-        },
-        {
-          src: images[2],
-          name: "Frame 0037"
-        }
-      ]}
-    />
-  )
-})
+      <Annotator
+        onExit={actionAddon("onExit")}
+        onNextImage={() => {
+          actionAddon("onNextImage")()
+          changeSelectedImageIndex((selectedImageIndex + 1) % 3)
+        }}
+        onPrevImage={() => {
+          actionAddon("onPrevImage")()
+          changeSelectedImageIndex((selectedImageIndex - 1 + 3) % 3)
+        }}
+        labelImages
+        selectedImage={images[selectedImageIndex]}
+        regionClsList={["Alpha", "Beta", "Charlie", "Delta"]}
+        imageClsList={["Alpha", "Beta", "Charlie", "Delta"]}
+        images={[
+          {
+            src: exampleImage,
+            name: "Seve's Desk"
+          },
+          {
+            src: images[1],
+            name: "Frame 0036"
+          },
+          {
+            src: images[2],
+            name: "Frame 0037"
+          }
+        ]}
+      />
+    )
+  })
+  .add("Override RegionEditLabel", () => {
+    const images = [
+      exampleImage,
+      "https://loremflickr.com/100/100/cars?lock=1",
+      "https://loremflickr.com/100/100/cars?lock=2"
+    ]
+
+    const NewRegionEditLabel = ({
+      region,
+      editing,
+      onDelete,
+      onChange,
+      onClose,
+      onOpen
+    }) => {
+      return (
+        <div style={{ backgroundColor: "white" }}>
+          I'm the closed part
+          <div style={{ display: editing ? "block" : "none" }}>
+            I'm the part that shows when it's being edited!
+            <button onClick={() => onDelete(region)}>Delete This Region</button>
+            <button
+              onClick={() => onChange({ ...region, cls: "awesome-value" })}
+            >
+              Set Classification to "awesome-value"
+            </button>
+            <button onClick={() => onClose(region)}>Close the edit mode</button>
+          </div>
+        </div>
+      )
+    }
+
+    return (
+      <Annotator
+        onExit={actionAddon("onExit")}
+        labelImages
+        selectedImage={images[0]}
+        RegionEditLabel={NewRegionEditLabel}
+        images={[
+          {
+            src: exampleImage,
+            name: "Seve's Desk"
+          },
+          {
+            src: images[1],
+            name: "Frame 0036"
+          },
+          {
+            src: images[2],
+            name: "Frame 0037"
+          }
+        ]}
+      />
+    )
+  })

@@ -23,16 +23,18 @@ const useStyles = makeStyles(styles)
 type Props = {
   state: MainLayoutState,
   RegionEditLabel?: Node,
-  dispatch: Action => any
-}
-
-export const MainLayout = ({ state, dispatch, RegionEditLabel }: Props) => {
   dispatch: Action => any,
-  alwaysShowNextButton: boolean,
-  alwaysShowPrevButton: boolean
+  alwaysShowNextButton?: boolean,
+  alwaysShowPrevButton?: boolean
 }
 
-export default ({ state, dispatch, alwaysShowNextButton = false, alwaysShowPrevButton = false }: Props) => {
+export default ({
+  state,
+  dispatch,
+  alwaysShowNextButton = false,
+  alwaysShowPrevButton = false,
+  RegionEditLabel
+}: Props) => {
   const classes = useStyles()
   const settings = useSettings()
 
