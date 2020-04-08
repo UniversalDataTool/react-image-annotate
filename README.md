@@ -74,6 +74,8 @@ This project uses [react-storybook](https://storybook.js.org/). To begin develop
 
 A browser tab will automatically open with the project components.
 
+See more details in the [contributing guidelines](https://github.com/waoai/react-image-annotate/wiki/Setup-for-Development).
+
 ### Icons
 
 Consult these icon repositories:
