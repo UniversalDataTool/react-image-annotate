@@ -2,7 +2,7 @@
 
 import { useRef, useCallback, useLayoutEffect, useEffect } from "react"
 
-export default fn => {
+export default (fn) => {
   let ref = useRef()
   useLayoutEffect(() => {
     ref.current = fn

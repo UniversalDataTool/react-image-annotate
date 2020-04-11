@@ -12,7 +12,7 @@ import Avatar from "@material-ui/core/Avatar"
 import isEqual from "lodash/isEqual"
 
 const useStyles = makeStyles({
-  img: { width: 40, height: 40, borderRadius: 8 }
+  img: { width: 40, height: 40, borderRadius: 8 },
 })
 
 export const ImageSelectorSidebarBox = ({ images, onSelect }) => {
@@ -40,7 +40,7 @@ export const ImageSelectorSidebarBox = ({ images, onSelect }) => {
   )
 }
 
-const mapUsedImageProps = a => [a.name, (a.regions || []).length, a.src]
+const mapUsedImageProps = (a) => [a.name, (a.regions || []).length, a.src]
 
 export default memo(ImageSelectorSidebarBox, (prevProps, nextProps) =>
   isEqual(

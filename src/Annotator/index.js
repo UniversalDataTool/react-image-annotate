@@ -8,7 +8,7 @@ import type {
   Image,
   Mode,
   MainLayoutState,
-  Action
+  Action,
 } from "../MainLayout/types"
 import SettingsProvider from "../SettingsProvider"
 
@@ -35,11 +35,11 @@ type Props = {
   showPointDistances?: boolean,
   pointDistancePrecision?: number,
   RegionEditLabel?: Node,
-  onExit: MainLayoutState => any,
+  onExit: (MainLayoutState) => any,
   videoTime?: number,
   videoSrc?: string,
   keyframes?: Object,
-  videoName?: string
+  videoName?: string,
 }
 
 export const Annotator = ({
@@ -62,7 +62,7 @@ export const Annotator = ({
   videoName,
   onExit,
   onNextImage,
-  onPrevImage
+  onPrevImage,
 }: Props) => {
   if (!images && !videoSrc)
     return 'Missing required prop "images" or "videoSrc"'
@@ -97,12 +97,12 @@ export const Annotator = ({
             selectedImage,
             images,
             selectedImageFrameTime:
-              images && images.length > 0 ? images[0].frameTime : undefined
+              images && images.length > 0 ? images[0].frameTime : undefined,
           }
         : {
             videoSrc,
-            keyframes
-          })
+            keyframes,
+          }),
     })
   )
 
@@ -120,7 +120,10 @@ export const Annotator = ({
   })
 
   useEffect(() => {
-    dispatchToReducer({ type: "SELECT_IMAGE", image: state.images.find(img => img.src === selectedImage) })
+    dispatchToReducer({
+      type: "SELECT_IMAGE",
+      image: state.images.find((img) => img.src === selectedImage),
+    })
   }, [selectedImage])
 
   return (

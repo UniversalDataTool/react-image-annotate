@@ -8,7 +8,7 @@ export default {
     "& .icon": {
       marginTop: 4,
       width: 16,
-      height: 16
+      height: 16,
     },
     "& .icon2": {
       opacity: 0.5,
@@ -17,23 +17,23 @@ export default {
       transition: "200ms opacity",
       "&:hover": {
         cursor: "pointer",
-        opacity: 1
-      }
-    }
+        opacity: 1,
+      },
+    },
   },
   row: {
     padding: 4,
     cursor: "pointer",
     "&.header:hover": {
-      backgroundColor: "#fff"
+      backgroundColor: "#fff",
     },
     "&.highlighted": {
-      backgroundColor: blue[100]
+      backgroundColor: blue[100],
     },
     "&:hover": {
       backgroundColor: blue[50],
-      color: grey[800]
-    }
+      color: grey[800],
+    },
   },
   chip: {
     display: "flex",
@@ -47,8 +47,8 @@ export default {
       borderRadius: 5,
       width: 10,
       height: 10,
-      marginRight: 4
+      marginRight: 4,
     },
-    "& .text": {}
-  }
+    "& .text": {},
+  },
 }

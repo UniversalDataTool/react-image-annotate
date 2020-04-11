@@ -28,26 +28,26 @@ storiesOf("MainLayout", module)
           {
             src: exampleImage,
             name: "Seve's Desk",
-            regions: testRegions
+            regions: testRegions,
           },
           {
             src: "https://loremflickr.com/100/100/cars?lock=1",
-            name: "Frame 0036"
+            name: "Frame 0036",
           },
           {
             src: "https://loremflickr.com/100/100/cars?lock=2",
-            name: "Frame 0037"
+            name: "Frame 0037",
           },
           {
             src: "https://loremflickr.com/100/100/cars?lock=3",
-            name: "Frame 0038"
-          }
+            name: "Frame 0038",
+          },
         ],
         mode: null,
         enabledTools: [],
-        history: [{ name: "Reset Stuff", state: null, time: moment() }]
+        history: [{ name: "Reset Stuff", state: null, time: moment() }],
       }}
-      dispatch={a => action(a.type)(a)}
+      dispatch={(a) => action(a.type)(a)}
     />
   ))
   .add("Completing a Polygon", () => (
@@ -59,7 +59,7 @@ storiesOf("MainLayout", module)
         taskDescription: "",
         mode: {
           mode: "DRAW_POLYGON",
-          regionId: "p1"
+          regionId: "p1",
         },
         images: [
           {
@@ -68,19 +68,23 @@ storiesOf("MainLayout", module)
             regions: [
               {
                 type: "polygon",
-                points: [[0.25, 0.25], [0.25, 0.5], [0.5, 0.5]],
+                points: [
+                  [0.25, 0.25],
+                  [0.25, 0.5],
+                  [0.5, 0.5],
+                ],
                 highlighted: true,
                 open: true,
                 color: "#00f",
-                id: "p1"
-              }
-            ]
-          }
+                id: "p1",
+              },
+            ],
+          },
         ],
         enabledTools: [],
-        history: []
+        history: [],
       }}
-      dispatch={a => action(a.type)(a)}
+      dispatch={(a) => action(a.type)(a)}
     />
   ))
   .add("Region Overlap Clicking", () => (
@@ -93,7 +97,7 @@ storiesOf("MainLayout", module)
         showTags: true,
         mode: {
           mode: "DRAW_POLYGON",
-          regionId: "p1"
+          regionId: "p1",
         },
         images: [
           {
@@ -108,7 +112,7 @@ storiesOf("MainLayout", module)
                 w: 0.5,
                 h: 0.5,
                 color: "#00f",
-                id: "p1"
+                id: "p1",
               },
               {
                 type: "box",
@@ -119,17 +123,17 @@ storiesOf("MainLayout", module)
                 h: 0.1,
                 highlighted: true,
                 color: "#00f",
-                id: "p1"
-              }
-            ]
-          }
+                id: "p1",
+              },
+            ],
+          },
         ],
         clsList: [],
         tagList: [],
         enabledTools: [],
-        history: []
+        history: [],
       }}
-      dispatch={a => !a.type.includes("MOUSE_MOVE") && action(a.type)(a)}
+      dispatch={(a) => !a.type.includes("MOUSE_MOVE") && action(a.type)(a)}
     />
   ))
   .add("Point Distances", () => (
@@ -153,7 +157,7 @@ storiesOf("MainLayout", module)
                 x: 0.25,
                 y: 0.25,
                 color: "#f00",
-                id: "p1"
+                id: "p1",
               },
               {
                 type: "point",
@@ -161,7 +165,7 @@ storiesOf("MainLayout", module)
                 x: 0.5,
                 y: 0.25,
                 color: "#0f0",
-                id: "p2"
+                id: "p2",
               },
               {
                 type: "point",
@@ -169,17 +173,17 @@ storiesOf("MainLayout", module)
                 x: 0.5,
                 y: 0.5,
                 color: "#00f",
-                id: "p3"
-              }
-            ]
-          }
+                id: "p3",
+              },
+            ],
+          },
         ],
         clsList: [],
         tagList: [],
         enabledTools: [],
-        history: []
+        history: [],
       }}
-      dispatch={a => !a.type.includes("MOUSE_MOVE") && action(a.type)(a)}
+      dispatch={(a) => !a.type.includes("MOUSE_MOVE") && action(a.type)(a)}
     />
   ))
   .add("Point distances real units", () => (
@@ -205,7 +209,7 @@ storiesOf("MainLayout", module)
                 x: 0.25,
                 y: 0.25,
                 color: "#f00",
-                id: "p1"
+                id: "p1",
               },
               {
                 type: "point",
@@ -213,7 +217,7 @@ storiesOf("MainLayout", module)
                 x: 0.5,
                 y: 0.25,
                 color: "#0f0",
-                id: "p2"
+                id: "p2",
               },
               {
                 type: "point",
@@ -221,16 +225,16 @@ storiesOf("MainLayout", module)
                 x: 0.5,
                 y: 0.5,
                 color: "#00f",
-                id: "p3"
-              }
-            ]
-          }
+                id: "p3",
+              },
+            ],
+          },
         ],
         clsList: [],
         tagList: [],
         enabledTools: [],
-        history: []
+        history: [],
       }}
-      dispatch={a => !a.type.includes("MOUSE_MOVE") && action(a.type)(a)}
+      dispatch={(a) => !a.type.includes("MOUSE_MOVE") && action(a.type)(a)}
     />
   ))

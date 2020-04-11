@@ -13,11 +13,11 @@ export default (
   }
   // Get surrounding video keyframes
   const keyframeTimes = Object.keys(keyframes)
-    .map(a => parseInt(a))
-    .filter(a => !isNaN(a))
+    .map((a) => parseInt(a))
+    .filter((a) => !isNaN(a))
   if (keyframeTimes.length === 0) return emptyArr
   keyframeTimes.sort((a, b) => a - b)
-  let nextKeyframeTimeIndex = keyframeTimes.findIndex(kt => kt >= time)
+  let nextKeyframeTimeIndex = keyframeTimes.findIndex((kt) => kt >= time)
   if (nextKeyframeTimeIndex === -1) {
     return (
       keyframes[keyframeTimes[keyframeTimes.length - 1]].regions || emptyArr
@@ -47,7 +47,7 @@ export default (
       impliedRegions.push({
         ...prev,
         highlighted: false,
-        editingLabels: false
+        editingLabels: false,
       })
       continue
     }
@@ -58,7 +58,7 @@ export default (
           highlighted: false,
           editingLabels: false,
           x: prev.x * w1 + next.x * w2,
-          y: prev.y * w1 + next.y * w2
+          y: prev.y * w1 + next.y * w2,
         })
         break
       }
@@ -70,7 +70,7 @@ export default (
           x: prev.x * w1 + next.x * w2,
           y: prev.y * w1 + next.y * w2,
           w: prev.w * w1 + next.w * w2,
-          h: prev.h * w1 + next.h * w2
+          h: prev.h * w1 + next.h * w2,
         })
         break
       }
@@ -82,8 +82,8 @@ export default (
             editingLabels: false,
             points: prev.points.map((pp, i) => [
               pp[0] * w1 + next.points[i][0] * w2,
-              pp[1] * w1 + next.points[i][1] * w2
-            ])
+              pp[1] * w1 + next.points[i][1] * w2,
+            ]),
           })
         } else {
           impliedRegions.push(prev)

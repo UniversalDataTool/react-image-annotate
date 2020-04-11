@@ -6,65 +6,65 @@ import ShortcutField from "./ShortcutField"
 const defaultShortcuts = {
   select: {
     action: {
-      type: "SELECT_TOOL"
+      type: "SELECT_TOOL",
     },
     name: "Select Region",
-    key: "Escape"
+    key: "Escape",
   },
   zoom: {
     action: {
-      type: "SELECT_TOOL"
+      type: "SELECT_TOOL",
     },
     name: "Zoom In/Out",
-    key: "z"
+    key: "z",
   },
   "create-point": {
     action: {
-      type: "SELECT_TOOL"
+      type: "SELECT_TOOL",
     },
-    name: "Create Point"
+    name: "Create Point",
   },
   "create-box": {
     action: {
-      type: "SELECT_TOOL"
+      type: "SELECT_TOOL",
     },
     name: "Add Bounding Box",
-    key: "b"
+    key: "b",
   },
   pan: {
     action: {
-      type: "SELECT_TOOL"
+      type: "SELECT_TOOL",
     },
-    name: "Pan"
+    name: "Pan",
   },
   "create-polygon": {
     action: {
-      type: "SELECT_TOOL"
+      type: "SELECT_TOOL",
     },
-    name: "Create Polygon"
+    name: "Create Polygon",
   },
   "create-pixel": {
     action: {
-      type: "SELECT_TOOL"
+      type: "SELECT_TOOL",
     },
-    name: "Create Pixel"
+    name: "Create Pixel",
   },
   "prev-image": {
     action: {
       type: "HEADER_BUTTON_CLICKED",
-      buttonName: "Prev"
+      buttonName: "Prev",
     },
     name: "Previous Image",
-    key: "a"
+    key: "a",
   },
   "next-image": {
     action: {
       type: "HEADER_BUTTON_CLICKED",
-      buttonName: "Next"
+      buttonName: "Next",
     },
     name: "Next Image",
-    key: "d"//"ArrowRight"
-  }
+    key: "d", //"ArrowRight"
+  },
 }
 
 export default ({ onShortcutActionDispatched }) => {
@@ -85,7 +85,7 @@ export default ({ onShortcutActionDispatched }) => {
   }
 
   useEffect(() => {
-    const handleKeyPress = e => {
+    const handleKeyPress = (e) => {
       for (const actionId in shortcuts) {
         const shortcut = shortcuts[actionId]
         if (!shortcut || !shortcut.key) {
@@ -94,7 +94,7 @@ export default ({ onShortcutActionDispatched }) => {
         if (e.key === shortcut.key) {
           onShortcutActionDispatched({
             ...shortcut.action,
-            selectedTool: actionId
+            selectedTool: actionId,
           })
         }
       }
@@ -104,7 +104,7 @@ export default ({ onShortcutActionDispatched }) => {
 
     return () => {
       window.removeEventListener("keypress", handleKeyPress)
-        document.activeElement.blur()
+      document.activeElement.blur()
     }
   }, [shortcuts])
 

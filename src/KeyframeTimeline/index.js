@@ -15,7 +15,7 @@ const Container = styled("div")({
   flexGrow: 1,
   minWidth: 240,
   marginLeft: 16,
-  marginRight: 16
+  marginRight: 16,
 })
 
 const Tick = styled("div")({
@@ -24,7 +24,7 @@ const Tick = styled("div")({
   marginLeft: -1,
   height: "100%",
   backgroundColor: colors.grey[300],
-  bottom: 0
+  bottom: 0,
 })
 const TickText = styled("div")({
   position: "absolute",
@@ -32,7 +32,7 @@ const TickText = styled("div")({
   fontSize: 10,
   color: colors.grey[600],
   fontWeight: "bold",
-  bottom: 0
+  bottom: 0,
 })
 
 const PositionCursor = styled("div")({
@@ -60,8 +60,8 @@ const PositionCursor = styled("div")({
     height: 0,
     borderTop: `8px solid ${colors.blue[500]}`,
     borderLeft: "8px solid transparent",
-    borderRight: "8px solid transparent"
-  }
+    borderRight: "8px solid transparent",
+  },
 })
 
 const KeyframeMarker = styled("div")({
@@ -93,8 +93,8 @@ const KeyframeMarker = styled("div")({
     height: 0,
     borderTop: `8px solid ${colors.red[500]}`,
     borderLeft: "8px solid transparent",
-    borderRight: "8px solid transparent"
-  }
+    borderRight: "8px solid transparent",
+  },
 })
 
 const min = 60000
@@ -110,10 +110,10 @@ const displayIntervalPairs = [
   [min * 5, min * 30],
   [min * 10, min * 60],
   [min * 30, min * 60 * 3],
-  [min * 60, min * 60 * 5]
+  [min * 60, min * 60 * 5],
 ]
 
-const getMajorInterval = duration => {
+const getMajorInterval = (duration) => {
   for (const [minor, major] of displayIntervalPairs) {
     if (duration / major < 6 && duration / major > 2) {
       return [minor, major]
@@ -126,14 +126,14 @@ export default ({
   currentTime = 0,
   duration,
   onChangeCurrentTime,
-  keyframes
+  keyframes,
 }) => {
   const [ref, bounds] = useMeasure()
   const [instantCurrentTime, changeInstantCurrentTime] = useState(currentTime)
   const [draggingTime, changeDraggingTime] = useRafState(false)
   const keyframeTimes = Object.keys(keyframes || {})
-    .map(t => parseInt(t))
-    .filter(t => !isNaN(t))
+    .map((t) => parseInt(t))
+    .filter((t) => !isNaN(t))
     .sort((a, b) => a - b)
 
   useEffect(() => {
@@ -147,7 +147,7 @@ export default ({
     [duration]
   )
 
-  const onMouseMove = useEventCallback(e => {
+  const onMouseMove = useEventCallback((e) => {
     if (draggingTime) {
       const px = (e.clientX - bounds.left) / bounds.width
       changeInstantCurrentTime(
@@ -156,7 +156,7 @@ export default ({
     }
   })
 
-  const onMouseUp = useEventCallback(e => {
+  const onMouseUp = useEventCallback((e) => {
     changeDraggingTime(false)
     const px = (e.clientX - bounds.left) / bounds.width
     const newTime = Math.min(duration, Math.max(0, Math.floor(px * duration)))
@@ -169,7 +169,7 @@ export default ({
 
   return (
     <Container onMouseMove={onMouseMove} onMouseUp={onMouseUp} ref={ref}>
-      {range(0, duration, majorInterval).map(a => (
+      {range(0, duration, majorInterval).map((a) => (
         <>
           <Tick
             key={a}
@@ -178,7 +178,7 @@ export default ({
           <TickText
             style={{
               left: (a / duration) * bounds.width + 8,
-              bottom: "calc(50% - 12px)"
+              bottom: "calc(50% - 12px)",
             }}
           >
             {getTimeString(a)}
@@ -186,17 +186,17 @@ export default ({
         </>
       ))}
       {range(0, duration, minorInterval)
-        .filter(a => !Number.isInteger(a / majorInterval))
-        .map(a => (
+        .filter((a) => !Number.isInteger(a / majorInterval))
+        .map((a) => (
           <Tick
             key={a}
             style={{
               left: (a / duration) * bounds.width,
-              height: "25%"
+              height: "25%",
             }}
           />
         ))}
-      {keyframeTimes.map(kt => (
+      {keyframeTimes.map((kt) => (
         <KeyframeMarker
           onClick={() => onChangeCurrentTime(kt)}
           key={kt}
@@ -204,10 +204,10 @@ export default ({
         />
       ))}
       <PositionCursor
-        onMouseDown={e => changeDraggingTime(true)}
+        onMouseDown={(e) => changeDraggingTime(true)}
         style={{
           cursor: draggingTime ? "grabbing" : "grab",
-          left: (instantCurrentTime / duration) * bounds.width
+          left: (instantCurrentTime / duration) * bounds.width,
         }}
       >
         {getTimeString(instantCurrentTime)}

@@ -15,7 +15,7 @@ storiesOf("RemoveScrollOnChildren", module).add("Basic", () => (
           display: "inline-block",
           width: 100,
           height: 100,
-          backgroundColor: "red"
+          backgroundColor: "red",
         }}
       />
     </RemoveScrollOnChildren>

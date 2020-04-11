@@ -16,10 +16,10 @@ const KeyframeRow = styled("div")({
   fontSize: 14,
   color: colors.grey[700],
   "&.current": {
-    backgroundColor: colors.blue[100]
+    backgroundColor: colors.blue[100],
   },
   "&:hover": {
-    backgroundColor: colors.grey[100]
+    backgroundColor: colors.grey[100],
   },
   "& .time": {
     flexGrow: 1,
@@ -27,8 +27,8 @@ const KeyframeRow = styled("div")({
     "& .regionCount": {
       marginLeft: 8,
       fontWeight: "normal",
-      color: colors.grey[500]
-    }
+      color: colors.grey[500],
+    },
   },
   "& .trash": {
     "& .icon": {
@@ -37,19 +37,19 @@ const KeyframeRow = styled("div")({
       transition: "transform 80ms",
       "&:hover": {
         color: colors.grey[800],
-        transform: "scale(1.25,1.25)"
-      }
-    }
-  }
+        transform: "scale(1.25,1.25)",
+      },
+    },
+  },
 })
 
 const KeyframesSelector = ({
   currentVideoTime,
   keyframes,
   onChangeVideoTime,
-  onDeleteKeyframe
+  onDeleteKeyframe,
 }) => {
-  const keyframeTimes = Object.keys(keyframes).map(t => parseInt(t))
+  const keyframeTimes = Object.keys(keyframes).map((t) => parseInt(t))
   return (
     <SidebarBoxContainer
       title="Keyframes"
@@ -57,7 +57,7 @@ const KeyframesSelector = ({
       icon={<AddLocationIcon style={{ color: colors.grey[700] }} />}
       expandedByDefault
     >
-      {keyframeTimes.map(t => (
+      {keyframeTimes.map((t) => (
         <KeyframeRow
           fullWidth
           key={t}
@@ -72,7 +72,7 @@ const KeyframesSelector = ({
           </div>
           <div className="trash">
             <TrashIcon
-              onClick={e => {
+              onClick={(e) => {
                 onDeleteKeyframe(t)
                 e.stopPropagation()
               }}

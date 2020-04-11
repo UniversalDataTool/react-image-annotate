@@ -20,7 +20,7 @@ type Image = {
   cls?: string,
   tags?: Array<string>,
   thumbnailSrc?: string,
-  regions?: Array<Region>
+  regions?: Array<Region>,
 }
 
 type Props = {
@@ -35,13 +35,13 @@ type Props = {
   imageClsList?: Array<string>,
   imageTagList?: Array<string>,
 
-  onChangeImage: Image => any,
-  onSelectRegion: Region => any,
-  onSelectImage: Image => any,
-  onChangeRegion: Region => any,
-  onDeleteRegion: Region => any,
+  onChangeImage: (Image) => any,
+  onSelectRegion: (Region) => any,
+  onSelectImage: (Image) => any,
+  onChangeRegion: (Region) => any,
+  onDeleteRegion: (Region) => any,
   onRestoreHistory: () => any,
-  onShortcutActionDispatched: (action: any) => any
+  onShortcutActionDispatched: (action: any) => any,
 }
 
 const emptyArr = []
@@ -66,7 +66,7 @@ export const Sidebar = ({
   onRestoreHistory,
   onChangeVideoTime,
   onDeleteKeyframe,
-  onShortcutActionDispatched
+  onShortcutActionDispatched,
 }: Props) => {
   const classes = useStyles()
 

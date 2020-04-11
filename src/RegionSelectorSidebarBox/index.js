@@ -22,7 +22,7 @@ const useStyles = makeStyles(styles)
 const HeaderSep = styled("div")({
   borderTop: `1px solid ${grey[200]}`,
   marginTop: 2,
-  marginBottom: 2
+  marginBottom: 2,
 })
 
 const Chip = ({ color, text }) => {
@@ -45,7 +45,7 @@ const RowLayout = ({
   trash,
   lock,
   visible,
-  onClick
+  onClick,
 }) => {
   const classes = useStyles()
   const [mouseOver, changeMouseOver] = useState(false)
@@ -107,7 +107,7 @@ const Row = ({
   locked,
   color,
   cls,
-  index
+  index,
 }) => {
   return (
     <RowLayout
@@ -164,7 +164,7 @@ export const RegionSelectorSidebarBox = ({
   regions,
   onDeleteRegion,
   onChangeRegion,
-  onSelectRegion
+  onSelectRegion,
 }) => {
   const classes = useStyles()
   return (
@@ -193,12 +193,12 @@ export const RegionSelectorSidebarBox = ({
   )
 }
 
-const mapUsedRegionProperties = r => [
+const mapUsedRegionProperties = (r) => [
   r.id,
   r.color,
   r.locked,
   r.visible,
-  r.highlighted
+  r.highlighted,
 ]
 
 export default memo(RegionSelectorSidebarBox, (prevProps, nextProps) =>

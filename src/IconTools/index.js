@@ -12,7 +12,7 @@ import {
   faDrawPolygon,
   faVectorSquare,
   faHandPaper,
-  faSearch
+  faSearch,
 } from "@fortawesome/free-solid-svg-icons"
 import SmallToolButton, { SelectedTool } from "../SmallToolButton"
 import { makeStyles } from "@material-ui/core/styles"
@@ -26,15 +26,15 @@ const useStyles = makeStyles({
     zIndex: 9,
     boxShadow: "0px 0px 5px rgba(0,0,0,0.1)",
     borderRight: `1px solid ${grey[300]}`,
-    backgroundColor: grey[100]
-  }
+    backgroundColor: grey[100],
+  },
 })
 
 type Props = {
   showTags?: boolean,
   enabledTools?: Array<string>,
   selectedTool: string,
-  onClickTool: string => any
+  onClickTool: (string) => any,
 }
 
 const defaultTools = ["select", "create-point", "create-box", "create-polygon"]
@@ -43,7 +43,7 @@ export const IconTools = ({
   showTags,
   selectedTool,
   onClickTool,
-  enabledTools = defaultTools
+  enabledTools = defaultTools,
 }: Props) => {
   const classes = useStyles()
   const selectedToolContextValue = useMemo(

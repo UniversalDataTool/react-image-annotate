@@ -20,7 +20,7 @@ import classnames from "classnames"
 const useStyles = makeStyles(styles)
 
 type Props = {
-  onHeaderButtonClick: string => any,
+  onHeaderButtonClick: (string) => any,
   title: string,
   inFullScreen?: boolean,
   multipleImages?: boolean,
@@ -31,7 +31,7 @@ type Props = {
 
   onChangeCurrentTime?: (newTime: number) => any,
   onPlayVideo?: Function,
-  onPauseVideo?: Function
+  onPauseVideo?: Function,
 }
 
 export const Header = ({
@@ -48,7 +48,7 @@ export const Header = ({
   onChangeCurrentTime,
   keyframes,
   alwaysShowPrevButton,
-  alwaysShowNextButton
+  alwaysShowNextButton,
 }: Props) => {
   const classes = useStyles()
   return (

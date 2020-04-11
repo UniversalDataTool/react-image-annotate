@@ -19,7 +19,7 @@ const MarkdownContainer = styled("div")({
   "& h6": { fontSize: 12 },
   "& p": { fontSize: 12 },
   "& a": {},
-  "& img": { width: "100%" }
+  "& img": { width: "100%" },
 })
 
 export const TaskDescriptionSidebarBox = ({ description }) => {

@@ -8,10 +8,7 @@ import isEqual from "lodash/isEqual"
 import getActiveImage from "./get-active-image"
 import { saveToHistory } from "./history-handler.js"
 
-const getRandomId = () =>
-  Math.random()
-    .toString()
-    .split(".")[1]
+const getRandomId = () => Math.random().toString().split(".")[1]
 
 const getRandomInt = (min, max) => {
   return Math.floor(Math.random() * (max - min + 1)) + min
@@ -38,15 +35,15 @@ export default (state: MainLayoutState, action: Action) => {
     state
   )
 
-  const getRegionIndex = region => {
+  const getRegionIndex = (region) => {
     const regionId = typeof region === "string" ? region : region.id
     if (!activeImage) return null
     const regionIndex = (activeImage.regions || []).findIndex(
-      r => r.id === regionId
+      (r) => r.id === regionId
     )
     return regionIndex === -1 ? null : regionIndex
   }
-  const getRegion = regionId => {
+  const getRegion = (regionId) => {
     if (!activeImage) return null
     const regionIndex = getRegionIndex(regionId)
     if (regionIndex === null) return [null, null]
@@ -59,7 +56,7 @@ export default (state: MainLayoutState, action: Action) => {
     if (obj !== null) {
       return setIn(state, [...pathToActiveImage, "regions", regionIndex], {
         ...region,
-        ...obj
+        ...obj,
       })
     } else {
       // delete region
@@ -67,7 +64,7 @@ export default (state: MainLayoutState, action: Action) => {
       return setIn(
         state,
         [...pathToActiveImage, "regions"],
-        (regions || []).filter(r => r.id !== region.id)
+        (regions || []).filter((r) => r.id !== region.id)
       )
     }
   }
@@ -76,9 +73,9 @@ export default (state: MainLayoutState, action: Action) => {
     return setIn(
       state,
       [...pathToActiveImage, "regions"],
-      (activeImage.regions || []).map(r => ({
+      (activeImage.regions || []).map((r) => ({
         ...r,
-        highlighted: false
+        highlighted: false,
       }))
     )
   }
@@ -88,9 +85,9 @@ export default (state: MainLayoutState, action: Action) => {
     return setIn(
       state,
       [...pathToActiveImage, "regions"],
-      (activeImage.regions || []).map(r => ({
+      (activeImage.regions || []).map((r) => ({
         ...r,
-        editingLabels: false
+        editingLabels: false,
       }))
     )
   }
@@ -141,10 +138,10 @@ export default (state: MainLayoutState, action: Action) => {
       const { region } = action
       const regionIndex = getRegionIndex(action.region)
       if (regionIndex === null) return state
-      const regions = [...(activeImage.regions || [])].map(r => ({
+      const regions = [...(activeImage.regions || [])].map((r) => ({
         ...r,
         highlighted: r.id === region.id,
-        editingLabels: r.id === region.id
+        editingLabels: r.id === region.id,
       }))
       return setIn(state, [...pathToActiveImage, "regions"], regions)
     }
@@ -152,7 +149,7 @@ export default (state: MainLayoutState, action: Action) => {
       state = closeEditors(state)
       return setIn(state, ["mode"], {
         mode: "MOVE_REGION",
-        regionId: action.point.id
+        regionId: action.point.id,
       })
     }
     case "BEGIN_BOX_TRANSFORM": {
@@ -165,7 +162,7 @@ export default (state: MainLayoutState, action: Action) => {
           mode: "RESIZE_BOX",
           regionId: box.id,
           freedom: directions,
-          original: { x: box.x, y: box.y, w: box.w, h: box.h }
+          original: { x: box.x, y: box.y, w: box.w, h: box.h },
         })
       }
     }
@@ -180,7 +177,7 @@ export default (state: MainLayoutState, action: Action) => {
         return setIn(
           modifyRegion(polygon, {
             points: polygon.points.slice(0, -1),
-            open: false
+            open: false,
           }),
           ["mode"],
           null
@@ -191,7 +188,7 @@ export default (state: MainLayoutState, action: Action) => {
       return setIn(state, ["mode"], {
         mode: "MOVE_POLYGON_POINT",
         regionId: polygon.id,
-        pointIndex
+        pointIndex,
       })
     }
     case "ADD_POLYGON_POINT": {
@@ -202,7 +199,7 @@ export default (state: MainLayoutState, action: Action) => {
       points.splice(pointIndex, 0, point)
       return setIn(state, [...pathToActiveImage, "regions", regionIndex], {
         ...polygon,
-        points
+        points,
       })
     }
     case "MOUSE_MOVE": {
@@ -221,7 +218,7 @@ export default (state: MainLayoutState, action: Action) => {
               "regions",
               regionIndex,
               "points",
-              pointIndex
+              pointIndex,
             ],
             [x, y]
           )
@@ -240,7 +237,7 @@ export default (state: MainLayoutState, action: Action) => {
           const {
             regionId,
             freedom: [xFree, yFree],
-            original: { x: ox, y: oy, w: ow, h: oh }
+            original: { x: ox, y: oy, w: ow, h: oh },
           } = state.mode
           const regionIndex = getRegionIndex(regionId)
           if (regionIndex === null) return state
@@ -274,7 +271,7 @@ export default (state: MainLayoutState, action: Action) => {
             x: dx,
             w: dw,
             y: dy,
-            h: dh
+            h: dh,
           })
         }
         case "DRAW_POLYGON": {
@@ -288,7 +285,7 @@ export default (state: MainLayoutState, action: Action) => {
               "regions",
               regionIndex,
               "points",
-              (region: any).points.length - 1
+              (region: any).points.length - 1,
             ],
             [x, y]
           )
@@ -318,7 +315,7 @@ export default (state: MainLayoutState, action: Action) => {
             highlighted: true,
             editingLabels: true,
             color: getRandomColor(),
-            id: getRandomId()
+            id: getRandomId(),
           }
           break
         }
@@ -333,7 +330,7 @@ export default (state: MainLayoutState, action: Action) => {
             highlighted: true,
             editingLabels: false,
             color: getRandomColor(),
-            id: getRandomId()
+            id: getRandomId(),
           }
           state = unselectRegions(state)
           state = setIn(state, ["mode"], {
@@ -342,7 +339,7 @@ export default (state: MainLayoutState, action: Action) => {
             regionId: newRegion.id,
             freedom: [1, 1],
             original: { x, y, w: newRegion.w, h: newRegion.h },
-            isNew: true
+            isNew: true,
           })
           break
         }
@@ -351,15 +348,18 @@ export default (state: MainLayoutState, action: Action) => {
           state = saveToHistory(state, "Create Polygon")
           newRegion = {
             type: "polygon",
-            points: [[x, y], [x, y]],
+            points: [
+              [x, y],
+              [x, y],
+            ],
             open: true,
             highlighted: true,
             color: getRandomColor(),
-            id: getRandomId()
+            id: getRandomId(),
           }
           state = setIn(state, ["mode"], {
             mode: "DRAW_POLYGON",
-            regionId: newRegion.id
+            regionId: newRegion.id,
           })
           break
         }
@@ -384,9 +384,9 @@ export default (state: MainLayoutState, action: Action) => {
       }
 
       const regions = [...(activeImage.regions || [])]
-        .map(r => ({
+        .map((r) => ({
           ...r,
-          editingLabels: false
+          editingLabels: false,
         }))
         .concat(newRegion ? [newRegion] : [])
 
@@ -412,7 +412,7 @@ export default (state: MainLayoutState, action: Action) => {
           if (state.mode.editLabelEditorAfter) {
             return {
               ...modifyRegion(state.mode.regionId, { editingLabels: true }),
-              mode: null
+              mode: null,
             }
           }
         }
@@ -438,16 +438,16 @@ export default (state: MainLayoutState, action: Action) => {
       const regionIndex = getRegionIndex(action.region)
       if (regionIndex === null) return state
       const newRegions = setIn(
-        activeImage.regions.map(r => ({
+        activeImage.regions.map((r) => ({
           ...r,
           highlighted: false,
-          editingLabels: false
+          editingLabels: false,
         })),
         [regionIndex],
         {
           ...(activeImage.regions || [])[regionIndex],
           highlighted: true,
-          editingLabels: true
+          editingLabels: true,
         }
       )
       return setIn(state, [...pathToActiveImage, "regions"], newRegions)
@@ -458,7 +458,7 @@ export default (state: MainLayoutState, action: Action) => {
       if (regionIndex === null) return state
       return setIn(state, [...pathToActiveImage, "regions", regionIndex], {
         ...(activeImage.regions || [])[regionIndex],
-        editingLabels: false
+        editingLabels: false,
       })
     }
     case "DELETE_REGION": {
@@ -467,7 +467,7 @@ export default (state: MainLayoutState, action: Action) => {
       return setIn(
         state,
         [...pathToActiveImage, "regions"],
-        (activeImage.regions || []).filter(r => r.id !== action.region.id)
+        (activeImage.regions || []).filter((r) => r.id !== action.region.id)
       )
     }
     case "HEADER_BUTTON_CLICKED": {
@@ -539,22 +539,22 @@ export default (state: MainLayoutState, action: Action) => {
       }
       // Close any open boxes
       const regions: any = activeImage.regions
-      if (regions.some(r => r.editingLabels)) {
+      if (regions.some((r) => r.editingLabels)) {
         return setIn(
           state,
           [...pathToActiveImage, "regions"],
-          regions.map(r => ({
+          regions.map((r) => ({
             ...r,
-            editingLabels: false
+            editingLabels: false,
           }))
         )
       } else {
         return setIn(
           state,
           [...pathToActiveImage, "regions"],
-          regions.map(r => ({
+          regions.map((r) => ({
             ...r,
-            highlighted: false
+            highlighted: false,
           }))
         )
       }

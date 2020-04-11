@@ -23,9 +23,9 @@ const useStyles = makeStyles(styles)
 type Props = {
   state: MainLayoutState,
   RegionEditLabel?: Node,
-  dispatch: Action => any,
+  dispatch: (Action) => any,
   alwaysShowNextButton?: boolean,
-  alwaysShowPrevButton?: boolean
+  alwaysShowPrevButton?: boolean,
 }
 
 export default ({
@@ -33,7 +33,7 @@ export default ({
   dispatch,
   alwaysShowNextButton = false,
   alwaysShowPrevButton = false,
-  RegionEditLabel
+  RegionEditLabel,
 }: Props) => {
   const classes = useStyles()
   const settings = useSettings()
@@ -49,7 +49,7 @@ export default ({
         ? dispatch(
             ({
               type,
-              ...params.reduce((acc, p, i) => ((acc[p] = args[i]), acc), {})
+              ...params.reduce((acc, p, i) => ((acc[p] = args[i]), acc), {}),
             }: any)
           )
         : dispatch({ type, ...args[0] })
@@ -64,7 +64,7 @@ export default ({
   }
 
   useKey(() => dispatch({ type: "CANCEL" }), {
-    detectKeys: [27]
+    detectKeys: [27],
   })
 
   const isAVideoFrame = activeImage && activeImage.frameTime !== undefined
@@ -74,7 +74,7 @@ export default ({
   return (
     <Fullscreen
       enabled={state.fullScreen}
-      onChange={open => {
+      onChange={(open) => {
         if (!open) {
           action("HEADER_BUTTON_CLICKED", "buttonName")("Exit Fullscreen")
         }
@@ -229,7 +229,7 @@ export default ({
           onClose={() =>
             dispatch({
               type: "HEADER_BUTTON_CLICKED",
-              buttonName: "Settings"
+              buttonName: "Settings",
             })
           }
         />

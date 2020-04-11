@@ -12,7 +12,7 @@ export default (imageSrc, onImageLoaded) => {
       if (onImageLoaded)
         onImageLoaded({
           width: image.current.naturalWidth,
-          height: image.current.naturalHeight
+          height: image.current.naturalHeight,
         })
     }
     image.current.src = imageSrc

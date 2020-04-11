@@ -12,7 +12,7 @@ export default class ErrorBoundaryDialog extends Component {
   componentDidCatch(err, info) {
     this.setState({
       hasError: true,
-      err: err.toString() + "\n\n" + info.componentStack
+      err: err.toString() + "\n\n" + info.componentStack,
     })
   }
   render() {

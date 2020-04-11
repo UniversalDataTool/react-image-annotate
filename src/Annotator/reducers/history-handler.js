@@ -7,21 +7,21 @@ import moment from "moment"
 const typesToSaveWithHistory = {
   BEGIN_BOX_TRANSFORM: "Transform/Move Box",
   BEGIN_MOVE_POINT: "Move Point",
-  DELETE_REGION: "Delete Region"
+  DELETE_REGION: "Delete Region",
 }
 
 export const saveToHistory = (state: MainLayoutState, name: string) =>
-  updateIn(state, ["history"], h =>
+  updateIn(state, ["history"], (h) =>
     [
       {
         time: moment().toDate(),
         state: without(state, "history"),
-        name
-      }
+        name,
+      },
     ].concat((h || []).slice(0, 9))
   )
 
-export default reducer => {
+export default (reducer) => {
   return (state: MainLayoutState, action: Action) => {
     const prevState = state
     const nextState = reducer(state, action)
@@ -46,8 +46,8 @@ export default reducer => {
             {
               time: moment().toDate(),
               state: without(prevState, "history"),
-              name: typesToSaveWithHistory[action.type] || action.type
-            }
+              name: typesToSaveWithHistory[action.type] || action.type,
+            },
           ]
             .concat(nextState.history || [])
             .slice(0, 9)

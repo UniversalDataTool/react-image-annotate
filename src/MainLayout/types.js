@@ -4,7 +4,7 @@ import type {
   Region,
   Polygon,
   Box,
-  Point
+  Point,
 } from "../ImageCanvas/region-tools.js"
 
 import type { Node } from "react"
@@ -25,7 +25,7 @@ export type Image = {
   regions?: Array<Region>,
   pixelSize?: { w: number, h: number },
   realSize?: { w: number, h: number, unitName: string },
-  frameTime?: number
+  frameTime?: number,
 }
 
 export type Mode =
@@ -38,7 +38,7 @@ export type Mode =
       regionId: string,
       freedom: [number, number],
       original: { x: number, y: number, w: number, h: number },
-      isNew?: boolean
+      isNew?: boolean,
     |}
   | {| mode: "MOVE_REGION" |}
 
@@ -59,7 +59,7 @@ export type MainLayoutStateBase = {|
   imageClsList?: Array<string>,
   imageTagList?: Array<string>,
   enabledTools: Array<string>,
-  history: Array<{ time: Date, state: MainLayoutState, name: string }>
+  history: Array<{ time: Date, state: MainLayoutState, name: string }>,
 |}
 
 export type MainLayoutImageAnnotationState = {|
@@ -71,7 +71,7 @@ export type MainLayoutImageAnnotationState = {|
   labelImages?: boolean,
 
   // If the selectedImage corresponds to a frame of a video
-  selectedImageFrameTime?: number
+  selectedImageFrameTime?: number,
 |}
 
 export type MainLayoutVideoAnnotationState = {|
@@ -86,11 +86,11 @@ export type MainLayoutVideoAnnotationState = {|
   keyframes: {
     [time: number]: {|
       time: number,
-      regions: Array<Region>
-    |}
+      regions: Array<Region>,
+    |},
   },
   pixelSize?: { w: number, h: number },
-  realSize?: { w: number, h: number, unitName: string }
+  realSize?: { w: number, h: number, unitName: string },
 |}
 
 export type MainLayoutState =
@@ -105,8 +105,8 @@ export type Action =
       metadata: {
         naturalWidth: number,
         naturalHeight: number,
-        duration?: number
-      }
+        duration?: number,
+      },
     |}
   | {| type: "CHANGE_REGION", region: Region |}
   | {| type: "RESTORE_HISTORY" |}
@@ -119,7 +119,7 @@ export type Action =
       type: "ADD_POLYGON_POINT",
       polygon: Polygon,
       point: { x: number, y: number },
-      pointIndex: number
+      pointIndex: number,
     |}
   | {| type: "MOUSE_MOVE", x: number, y: number |}
   | {| type: "MOUSE_DOWN", x: number, y: number |}

@@ -1,12 +1,12 @@
 import { getIn } from "seamless-immutable"
 
-export default state => {
+export default (state) => {
   let currentImageIndex = null,
     pathToActiveImage,
     activeImage
   if (state.annotationType === "image") {
     currentImageIndex = state.images.findIndex(
-      img =>
+      (img) =>
         img.src === state.selectedImage &&
         (state.selectedImageFrameTime === undefined ||
           img.frameTime === state.selectedImageFrameTime)

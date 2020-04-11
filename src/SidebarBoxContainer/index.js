@@ -18,7 +18,7 @@ const useStyles = makeStyles({
     alignItems: "center",
     padding: 8,
     paddingLeft: 16,
-    paddingRight: 16
+    paddingRight: 16,
   },
   title: {
     fontSize: 14,
@@ -28,8 +28,8 @@ const useStyles = makeStyles({
     color: grey[800],
     "& span": {
       color: grey[600],
-      fontSize: 12
-    }
+      fontSize: 12,
+    },
   },
   expandButton: {
     padding: 0,
@@ -41,18 +41,18 @@ const useStyles = makeStyles({
       height: 20,
       transition: "500ms transform",
       "&.expanded": {
-        transform: "rotate(180deg)"
-      }
-    }
+        transform: "rotate(180deg)",
+      },
+    },
   },
   expandedContent: {
     maxHeight: 300,
     overflowY: "auto",
     "&.noScroll": {
       overflowY: "visible",
-      overflow: "visible"
-    }
-  }
+      overflow: "visible",
+    },
+  },
 })
 
 export const SidebarBoxContainer = ({
@@ -61,7 +61,7 @@ export const SidebarBoxContainer = ({
   subTitle,
   children,
   noScroll = false,
-  expandedByDefault = false
+  expandedByDefault = false,
 }) => {
   const classes = useStyles()
   const content = (

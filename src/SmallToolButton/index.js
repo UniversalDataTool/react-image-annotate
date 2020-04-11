@@ -13,14 +13,14 @@ export const SmallToolButton = ({
   icon,
   selected,
   togglable,
-  alwaysShowing = false
+  alwaysShowing = false,
 }: {
   id: string,
   name: string,
   icon: any,
   alwaysShowing?: boolean,
   selected?: boolean,
-  togglable?: boolean
+  togglable?: boolean,
 }) => {
   const { enabledTools, selectedTool, onClickTool } = useContext(SelectedTool)
   if (!enabledTools.includes(id) && !alwaysShowing) return null
@@ -37,7 +37,7 @@ export const SmallToolButton = ({
             width: 50,
             height: 50,
             margin: 1,
-            color: selected ? blue[500] : undefined
+            color: selected ? blue[500] : undefined,
           }}
         >
           {icon}

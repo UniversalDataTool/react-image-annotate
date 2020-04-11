@@ -2,7 +2,7 @@
 
 import type {
   MainLayoutVideoAnnotationState,
-  Action
+  Action,
 } from "../../MainLayout/types"
 import { setIn, without } from "seamless-immutable"
 import getImpliedVideoRegions from "./get-implied-video-regions"
@@ -14,7 +14,10 @@ export default (state: MainLayoutVideoAnnotationState, action: Action) => {
       saveToHistory(state, "Add Keyframe"),
       ["keyframes", state.currentVideoTime],
       {
-        regions: getImpliedVideoRegions(state.keyframes, state.currentVideoTime)
+        regions: getImpliedVideoRegions(
+          state.keyframes,
+          state.currentVideoTime
+        ),
       }
     )
   }

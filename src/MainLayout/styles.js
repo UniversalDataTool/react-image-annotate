@@ -15,8 +15,8 @@ export default {
       left: 0,
       right: 0,
       top: 0,
-      bottom: 0
-    }
+      bottom: 0,
+    },
   },
   workspace: {
     backgroundColor: grey[200],
@@ -24,19 +24,19 @@ export default {
     display: "flex",
     flexDirection: "row",
     height: "100%",
-    overflow: "hidden"
+    overflow: "hidden",
   },
   iconToolsContainer: { display: "flex" },
   imageCanvasContainer: {
     display: "flex",
     flexGrow: 1,
     alignItems: "center",
-    justifyContent: "center"
+    justifyContent: "center",
   },
   noImageSelected: {
     fontWeight: "bold",
     fontSize: 32,
-    color: grey[500]
+    color: grey[500],
   },
   sidebarContainer: {
     width: 300,
@@ -46,6 +46,6 @@ export default {
     borderLeft: `1px solid ${grey[300]}`,
     zIndex: 9,
     height: "100%",
-    boxShadow: "0px 0px 5px rgba(0,0,0,0.1)"
-  }
+    boxShadow: "0px 0px 5px rgba(0,0,0,0.1)",
+  },
 }

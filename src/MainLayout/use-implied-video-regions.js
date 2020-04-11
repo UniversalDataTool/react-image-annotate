@@ -12,6 +12,6 @@ export default (state: MainLayoutVideoAnnotationState) => {
   // TODO memoize
   return useMemo(() => getImpliedVideoRegions(keyframes, currentVideoTime), [
     keyframes,
-    currentVideoTime
+    currentVideoTime,
   ])
 }

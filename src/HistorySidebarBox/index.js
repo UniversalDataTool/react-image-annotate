@@ -20,15 +20,15 @@ const useStyles = makeStyles({
     fontWeight: "bold",
     color: grey[500],
     textAlign: "center",
-    padding: 20
-  }
+    padding: 20,
+  },
 })
 
 export const HistorySidebarBox = ({
   history,
-  onRestoreHistory
+  onRestoreHistory,
 }: {
-  history: Array<{ name: string, time: Date }>
+  history: Array<{ name: string, time: Date }>,
 }) => {
   const classes = useStyles()
 
@@ -64,7 +64,7 @@ export const HistorySidebarBox = ({
 
 export default memo(HistorySidebarBox, (prevProps, nextProps) =>
   isEqual(
-    prevProps.history.map(a => [a.name, a.time]),
-    nextProps.history.map(a => [a.name, a.time])
+    prevProps.history.map((a) => [a.name, a.time]),
+    nextProps.history.map((a) => [a.name, a.time])
   )
 )

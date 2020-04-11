@@ -23,10 +23,10 @@ type Props = {
   allowedTags?: Array<string>,
   cls?: string,
   tags?: Array<string>,
-  onDelete: Region => null,
-  onChange: Region => null,
-  onClose: Region => null,
-  onOpen: Region => null
+  onDelete: (Region) => null,
+  onChange: (Region) => null,
+  onClose: (Region) => null,
+  onOpen: (Region) => null,
 }
 
 export const RegionLabel = ({
@@ -37,24 +37,24 @@ export const RegionLabel = ({
   onDelete,
   onChange,
   onClose,
-  onOpen
+  onOpen,
 }: Props) => {
   const classes = useStyles()
 
   return (
     <Paper
-      onKeyPress={e => {
+      onKeyPress={(e) => {
         e.stopPropagation()
       }}
-      onKeyDown={e => {
+      onKeyDown={(e) => {
         e.stopPropagation()
       }}
-      onKeyUp={e => {
+      onKeyUp={(e) => {
         e.stopPropagation()
       }}
       onClick={() => (!editing ? onOpen(region) : null)}
       className={classnames(classes.regionInfo, {
-        highlighted: region.highlighted
+        highlighted: region.highlighted,
       })}
     >
       {!editing ? (
@@ -70,7 +70,7 @@ export const RegionLabel = ({
           )}
           {region.tags && (
             <div className="tags">
-              {region.tags.map(t => (
+              {region.tags.map((t) => (
                 <div key={t} className="tag">
                   {t}
                 </div>
@@ -91,7 +91,7 @@ export const RegionLabel = ({
                 paddingRight: 8,
                 borderRadius: 4,
                 fontWeight: "bold",
-                textShadow: "0px 0px 5px rgba(0,0,0,0.4)"
+                textShadow: "0px 0px 5px rgba(0,0,0,0.4)",
               }}
             >
               {region.type}
@@ -111,17 +111,17 @@ export const RegionLabel = ({
             <div style={{ marginTop: 6 }}>
               <Select
                 placeholder="Classification"
-                onChange={o =>
+                onChange={(o) =>
                   onChange({
                     ...(region: any),
-                    cls: o.value
+                    cls: o.value,
                   })
                 }
                 value={
                   region.cls ? { label: region.cls, value: region.cls } : null
                 }
                 options={asMutable(
-                  allowedClasses.map(c => ({ value: c, label: c }))
+                  allowedClasses.map((c) => ({ value: c, label: c }))
                 )}
               />
             </div>
@@ -129,17 +129,17 @@ export const RegionLabel = ({
           {(allowedTags || []).length > 0 && (
             <div style={{ marginTop: 4 }}>
               <Select
-                onChange={newTags =>
+                onChange={(newTags) =>
                   onChange({
                     ...(region: any),
-                    tags: newTags.map(t => t.value)
+                    tags: newTags.map((t) => t.value),
                   })
                 }
                 placeholder="Tags"
-                value={(region.tags || []).map(c => ({ label: c, value: c }))}
+                value={(region.tags || []).map((c) => ({ label: c, value: c }))}
                 isMulti
                 options={asMutable(
-                  allowedTags.map(c => ({ value: c, label: c }))
+                  allowedTags.map((c) => ({ value: c, label: c }))
                 )}
               />
             </div>

@@ -16,7 +16,7 @@ type Props = {
   currentImage: { cls?: string, tags?: Array<string> },
   imageClsList?: Array<string>,
   imageTagList?: Array<string>,
-  onChangeImage: (Array<string>) => any
+  onChangeImage: (Array<string>) => any,
 }
 
 const emptyArr = []
@@ -25,29 +25,29 @@ export const TagsSidebarBox = ({
   currentImage,
   imageClsList = emptyArr,
   imageTagList = emptyArr,
-  onChangeImage
+  onChangeImage,
 }: Props) => {
   if (!currentImage) return null
   const { tags = [], cls = null } = currentImage
-  const onChangeClassification = useEventCallback(o =>
+  const onChangeClassification = useEventCallback((o) =>
     onChangeImage({ cls: o.value })
   )
-  const onChangeTags = useEventCallback(o =>
-    onChangeImage({ tags: o.map(a => a.value) })
+  const onChangeTags = useEventCallback((o) =>
+    onChangeImage({ tags: o.map((a) => a.value) })
   )
   const selectValue = useMemo(() => (cls ? { value: cls, label: cls } : null), [
-    cls
+    cls,
   ])
   const memoImgClsList = useMemo(
-    () => asMutable(imageClsList.map(c => ({ value: c, label: c }))),
+    () => asMutable(imageClsList.map((c) => ({ value: c, label: c }))),
     [imageClsList]
   )
   const memoImgTagList = useMemo(
-    () => asMutable(imageTagList.map(c => ({ value: c, label: c }))),
+    () => asMutable(imageTagList.map((c) => ({ value: c, label: c }))),
     [imageTagList]
   )
   const memoCurrentTags = useMemo(
-    () => tags.map(r => ({ value: r, label: r })),
+    () => tags.map((r) => ({ value: r, label: r })),
     [tags]
   )
 

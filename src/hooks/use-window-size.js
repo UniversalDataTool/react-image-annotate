@@ -8,7 +8,7 @@ const useWindowSize = (initialWidth = Infinity, initialHeight = Infinity) => {
   const isClient = typeof window !== "undefined"
   const [state, setState] = useRafState({
     width: isClient ? window.innerWidth : initialWidth,
-    height: isClient ? window.innerHeight : initialHeight
+    height: isClient ? window.innerHeight : initialHeight,
   })
 
   useEffect(() => {
@@ -16,7 +16,7 @@ const useWindowSize = (initialWidth = Infinity, initialHeight = Infinity) => {
     const handler = () => {
       setState({
         width: window.innerWidth,
-        height: window.innerHeight
+        height: window.innerHeight,
       })
     }
 
@@ -35,7 +35,7 @@ const useWindowSize = (initialWidth = Infinity, initialHeight = Infinity) => {
     ) {
       setState({
         width: window.innerWidth,
-        height: window.innerHeight
+        height: window.innerHeight,
       })
     }
   }, 100)

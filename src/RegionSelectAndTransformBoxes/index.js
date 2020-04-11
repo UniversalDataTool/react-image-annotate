@@ -10,13 +10,13 @@ const TransformGrabber = styled("div")({
   height: 8,
   zIndex: 2,
   border: "2px solid #FFF",
-  position: "absolute"
+  position: "absolute",
 })
 
 const boxCursorMap = [
   ["nw-resize", "n-resize", "ne-resize"],
   ["w-resize", "grab", "e-resize"],
-  ["sw-resize", "s-resize", "se-resize"]
+  ["sw-resize", "s-resize", "se-resize"],
 ]
 
 export const RegionSelectAndTransformBoxes = ({
@@ -32,11 +32,11 @@ export const RegionSelectAndTransformBoxes = ({
   mat,
   onBeginBoxTransform,
   onBeginMovePolygonPoint,
-  onAddPolygonPoint
+  onAddPolygonPoint,
 }) => {
   return regions
-    .filter(r => r.visible || r.visible === undefined)
-    .filter(r => !r.locked)
+    .filter((r) => r.visible || r.visible === undefined)
+    .filter((r) => !r.locked)
     .map((r, i) => {
       const pbox = projectRegionBox(r)
       const { iw, ih } = layoutParams.current
@@ -68,12 +68,12 @@ export const RegionSelectAndTransformBoxes = ({
                 [0.5, 1],
                 [0, 1],
                 [0, 0.5],
-                [0.5, 0.5]
+                [0.5, 0.5],
               ].map(([px, py], i) => (
                 <TransformGrabber
                   key={i}
                   {...mouseEvents}
-                  onMouseDown={e => {
+                  onMouseDown={(e) => {
                     if (e.button === 0)
                       return onBeginBoxTransform(r, [px * 2 - 1, py * 2 - 1])
                     mouseEvents.onMouseDown(e)
@@ -82,7 +82,7 @@ export const RegionSelectAndTransformBoxes = ({
                     left: pbox.x - 4 - 2 + pbox.w * px,
                     top: pbox.y - 4 - 2 + pbox.h * py,
                     cursor: boxCursorMap[py * 2][px * 2],
-                    borderRadius: px === 0.5 && py === 0.5 ? 4 : undefined
+                    borderRadius: px === 0.5 && py === 0.5 ? 4 : undefined,
                   }}
                 />
               ))}
@@ -100,7 +100,7 @@ export const RegionSelectAndTransformBoxes = ({
                   <TransformGrabber
                     key={i}
                     {...mouseEvents}
-                    onMouseDown={e => {
+                    onMouseDown={(e) => {
                       if (e.button === 0 && (!r.open || i === 0))
                         return onBeginMovePolygonPoint(r, i)
                       mouseEvents.onMouseDown(e)
@@ -116,7 +116,7 @@ export const RegionSelectAndTransformBoxes = ({
                           ? "none"
                           : undefined,
                       left: proj.x - 4,
-                      top: proj.y - 4
+                      top: proj.y - 4,
                     }}
                   />
                 )
@@ -140,7 +140,7 @@ export const RegionSelectAndTransformBoxes = ({
                     <TransformGrabber
                       key={i}
                       {...mouseEvents}
-                      onMouseDown={e => {
+                      onMouseDown={(e) => {
                         if (e.button === 0)
                           return onAddPolygonPoint(r, pa, i + 1)
                         mouseEvents.onMouseDown(e)
@@ -150,7 +150,7 @@ export const RegionSelectAndTransformBoxes = ({
                         left: proj.x - 4,
                         top: proj.y - 4,
                         border: "2px dotted #fff",
-                        opacity: 0.5
+                        opacity: 0.5,
                       }}
                     />
                   )

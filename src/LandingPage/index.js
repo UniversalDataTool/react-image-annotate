@@ -17,14 +17,14 @@ const contentMd = raw("./content.md")
 const RootContainer = styled("div")({
   display: "flex",
   flexDirection: "column",
-  alignItems: "center"
+  alignItems: "center",
 })
 const ContentContainer = styled("div")({
   width: "100%",
   boxSizing: "border-box",
   display: "flex",
   flexDirection: "column",
-  maxWidth: 1200
+  maxWidth: 1200,
 })
 const Header = styled("div")({
   width: "100%",
@@ -32,14 +32,14 @@ const Header = styled("div")({
   justifyContent: "center",
   backgroundColor: colors.blue[600],
   padding: 8,
-  boxSizing: "border-box"
+  boxSizing: "border-box",
 })
 const HeaderButton = styled(Button)({
   color: "white",
   margin: 8,
   padding: 16,
   paddingLeft: 24,
-  paddingRight: 24
+  paddingRight: 24,
 })
 const Hero = styled("div")({
   display: "flex",
@@ -48,29 +48,29 @@ const Hero = styled("div")({
   backgroundColor: colors.blue[500],
   padding: 16,
   color: "white",
-  boxSizing: "border-box"
+  boxSizing: "border-box",
 })
 const HeroMain = styled("div")({
   fontSize: 48,
   fontWeight: "bold",
   paddingTop: 64,
-  textShadow: "0px 1px 5px rgba(0,0,0,0.3)"
+  textShadow: "0px 1px 5px rgba(0,0,0,0.3)",
 })
 const HeroSub = styled("div")({
   paddingTop: 32,
   lineHeight: 1.5,
   fontSize: 24,
-  textShadow: "0px 1px 3px rgba(0,0,0,0.2)"
+  textShadow: "0px 1px 3px rgba(0,0,0,0.2)",
 })
 const HeroButtons = styled("div")({
   paddingTop: 32,
-  paddingBottom: 48
+  paddingBottom: 48,
 })
 const Section = styled("div")({
   display: "flex",
   padding: 16,
   paddingTop: 32,
-  flexDirection: "column"
+  flexDirection: "column",
 })
 
 const CodeBlock = ({ language, value }) => {
@@ -131,7 +131,7 @@ const LandingPage = () => {
             source={contentMd}
             renderers={{
               code: CodeBlock,
-              heading: HeadingRenderer
+              heading: HeadingRenderer,
             }}
           />
         </Section>

@@ -8,14 +8,14 @@ export type BaseRegion = {
   color: string,
   editingLabels?: boolean,
   highlighted?: boolean,
-  tags?: Array<string>
+  tags?: Array<string>,
 }
 
 export type Point = {|
   ...$Exact<BaseRegion>,
   type: "point",
   x: number,
-  y: number
+  y: number,
 |}
 
 export type PixelRegion =
@@ -26,12 +26,12 @@ export type PixelRegion =
       sy: number,
       w: number,
       h: number,
-      src: string
+      src: string,
     |}
   | {|
       ...$Exact<BaseRegion>,
       type: "pixel",
-      points: Array<[number, number]>
+      points: Array<[number, number]>,
     |}
 export type Box = {|
   ...$Exact<BaseRegion>,
@@ -39,13 +39,13 @@ export type Box = {|
   x: number,
   y: number,
   w: number,
-  h: number
+  h: number,
 |}
 export type Polygon = {|
   ...$Exact<BaseRegion>,
   type: "polygon",
   open?: boolean,
-  points: Array<[number, number]>
+  points: Array<[number, number]>,
 |}
 
 export type Region = Point | PixelRegion | Box | Polygon
@@ -57,7 +57,7 @@ export const getEnclosingBox = (region: Region) => {
         x: Math.min(...region.points.map(([x, y]) => x)),
         y: Math.min(...region.points.map(([x, y]) => y)),
         w: 0,
-        h: 0
+        h: 0,
       }
       box.w = Math.max(...region.points.map(([x, y]) => x)) - box.x
       box.h = Math.max(...region.points.map(([x, y]) => y)) - box.y
@@ -83,7 +83,7 @@ export const getEnclosingBox = (region: Region) => {
           x: Math.min(...region.points.map(([x, y]) => x)),
           y: Math.min(...region.points.map(([x, y]) => y)),
           w: 0,
-          h: 0
+          h: 0,
         }
         box.w = Math.max(...region.points.map(([x, y]) => x)) - box.x
         box.h = Math.max(...region.points.map(([x, y]) => y)) - box.y

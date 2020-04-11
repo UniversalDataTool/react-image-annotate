@@ -3,7 +3,7 @@
 import React, { createContext, useContext, useState } from "react"
 
 const defaultSettings = {
-  showCrosshairs: false
+  showCrosshairs: false,
 }
 
 export const SettingsContext = createContext(defaultSettings)

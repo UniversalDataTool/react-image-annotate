@@ -10,13 +10,13 @@ export default {
     opacity: 0.7,
     "&:hover": {
       opacity: 0.9,
-      cursor: "pointer"
+      cursor: "pointer",
     },
     "&.highlighted": {
       opacity: 0.9,
       "&:hover": {
-        opacity: 1
-      }
+        opacity: 1,
+      },
     },
     // pointerEvents: "none",
     fontWeight: 600,
@@ -31,8 +31,8 @@ export default {
         boxShadow: "0px 0px 2px rgba(0,0,0,0.4)",
         width: 10,
         height: 10,
-        borderRadius: 5
-      }
+        borderRadius: 5,
+      },
     },
     "& .tags": {
       "& .tag": {
@@ -40,8 +40,8 @@ export default {
         display: "inline-block",
         margin: 1,
         fontSize: 10,
-        textDecoration: "underline"
-      }
-    }
-  }
+        textDecoration: "underline",
+      },
+    },
+  },
 }

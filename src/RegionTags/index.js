@@ -25,13 +25,13 @@ export const RegionTags = ({
   onDeleteRegion,
   layoutParams,
   imageSrc,
-  RegionEditLabel
+  RegionEditLabel,
 }) => {
   const RegionLabel =
     RegionEditLabel != null ? RegionEditLabel : DefaultRegionLabel
   return regions
-    .filter(r => r.visible || r.visible === undefined)
-    .map(region => {
+    .filter((r) => r.visible || r.visible === undefined)
+    .map((region) => {
       const pbox = projectRegionBox(region)
       const { iw, ih } = layoutParams.current
       let margin = 8
@@ -43,7 +43,7 @@ export const RegionTags = ({
       const coords = displayOnTop
         ? {
             left: pbox.x,
-            top: pbox.y - margin / 2
+            top: pbox.y - margin / 2,
           }
         : { left: pbox.x, top: pbox.y + pbox.h + margin / 2 }
       if (region.locked) {
@@ -53,7 +53,7 @@ export const RegionTags = ({
             style={{
               position: "absolute",
               ...coords,
-              zIndex: 10 + (region.editingLabels ? 5 : 0)
+              zIndex: 10 + (region.editingLabels ? 5 : 0),
             }}
           >
             <Paper
@@ -67,7 +67,7 @@ export const RegionTags = ({
                 padding: 2,
                 paddingBottom: 0,
                 opacity: 0.5,
-                pointerEvents: "none"
+                pointerEvents: "none",
               }}
             >
               <LockIcon style={{ width: 16, height: 16, color: "#333" }} />
@@ -82,11 +82,11 @@ export const RegionTags = ({
             position: "absolute",
             ...coords,
             zIndex: 10 + (region.editingLabels ? 5 : 0),
-            width: 200
+            width: 200,
           }}
-          onMouseDown={e => e.preventDefault()}
-          onMouseUp={e => e.preventDefault()}
-          onMouseEnter={e => {
+          onMouseDown={(e) => e.preventDefault()}
+          onMouseUp={(e) => e.preventDefault()}
+          onMouseEnter={(e) => {
             if (region.editingLabels) {
               mouseEvents.onMouseUp(e)
               e.button = 1
@@ -98,7 +98,7 @@ export const RegionTags = ({
             style={{
               position: "absolute",
               left: 0,
-              ...(displayOnTop ? { bottom: 0 } : { top: 0 })
+              ...(displayOnTop ? { bottom: 0 } : { top: 0 }),
             }}
             {...(!region.editingLabels
               ? copyWithout(mouseEvents, "onMouseDown", "onMouseUp")

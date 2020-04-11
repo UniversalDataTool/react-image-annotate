@@ -5,11 +5,11 @@ import React, { Fragment, useEffect, useState } from "react"
 export const Crosshairs = ({
   mousePosition,
   x,
-  y
+  y,
 }: {
   mousePosition: { current: { x: number, y: number } },
   x?: number,
-  y?: number
+  y?: number,
 }) => {
   const [forceRenderState, changeForceRenderState] = useState()
 
@@ -24,7 +24,7 @@ export const Crosshairs = ({
       if (x !== mousePosition.current.x || y !== mousePosition.current.y) {
         changeForceRenderState([
           mousePosition.current.x,
-          mousePosition.current.y
+          mousePosition.current.y,
         ])
       }
     }, 10)
@@ -42,7 +42,7 @@ export const Crosshairs = ({
           backgroundColor: "#f00",
           left: x,
           pointerEvents: "none",
-          top: 0
+          top: 0,
         }}
       />
       <div
@@ -54,7 +54,7 @@ export const Crosshairs = ({
           backgroundColor: "#f00",
           top: y,
           pointerEvents: "none",
-          left: 0
+          left: 0,
         }}
       />
     </Fragment>

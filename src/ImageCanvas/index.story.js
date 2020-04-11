@@ -18,7 +18,7 @@ export const testRegions = [
     x: 0.8,
     y: 0.5,
     visible: true,
-    color: "#f00"
+    color: "#f00",
   },
   {
     type: "point",
@@ -28,7 +28,7 @@ export const testRegions = [
     x: 0.1,
     y: 0.15,
     visible: true,
-    color: "#0F0"
+    color: "#0F0",
   },
   {
     type: "box",
@@ -40,7 +40,7 @@ export const testRegions = [
     w: 0.067,
     h: 0.045,
     visible: true,
-    color: "#ff0"
+    color: "#ff0",
   },
   {
     type: "polygon",
@@ -55,10 +55,10 @@ export const testRegions = [
       [0.4157, 0.6801],
       [0.6579, 0.656],
       [0.6115, 0.5674],
-      [0.5792, 0.4895]
+      [0.5792, 0.4895],
     ],
     visible: true,
-    color: "#f0f"
+    color: "#f0f",
   },
   {
     type: "polygon",
@@ -68,10 +68,10 @@ export const testRegions = [
       [0.1201, 0.5987],
       [0.0674, 0.7063],
       [0.0726, 0.7477],
-      [0.2132, 0.7311]
+      [0.2132, 0.7311],
     ],
     visible: true,
-    color: "#00f"
+    color: "#00f",
   },
   {
     type: "pixel",
@@ -84,8 +84,8 @@ export const testRegions = [
     h: 0.67 - 0.5847,
     src: exampleMask,
     visible: true,
-    color: "#00f"
-  }
+    color: "#00f",
+  },
 ]
 
 const events = {
@@ -108,7 +108,7 @@ const events = {
   onClosePolygon: action("onClosePolygon"),
 
   onBeginMovePoint: action("onBeginMovePoint"),
-  onDeleteRegion: action("onDeleteRegion")
+  onDeleteRegion: action("onDeleteRegion"),
 }
 
 storiesOf("ImageCanvas", module)

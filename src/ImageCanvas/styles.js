@@ -11,6 +11,6 @@ export default {
     opacity: 0.5,
     fontWeight: "bolder",
     fontSize: 14,
-    padding: 4
-  }
+    padding: 4,
+  },
 }

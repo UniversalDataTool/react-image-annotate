@@ -20,7 +20,7 @@ export default () => {
         >
           <Annotator
             {...(annotatorProps: any)}
-            onExit={output => {
+            onExit={(output) => {
               delete (output: any)["lastAction"]
               changeLastOutput(output)
               changeAnnotatorOpen(false)
@@ -30,7 +30,7 @@ export default () => {
       ) : (
         <Editor
           lastOutput={lastOutput}
-          onOpenAnnotator={props => {
+          onOpenAnnotator={(props) => {
             changeAnnotatorProps(props)
             changeAnnotatorOpen(true)
           }}

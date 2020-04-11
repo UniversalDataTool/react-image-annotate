@@ -18,15 +18,15 @@ const useStyles = makeStyles({
     backgroundColor: "#f8f8f8",
     display: "flex",
     alignItems: "center",
-    "& .button": { margin: 5 }
+    "& .button": { margin: 5 },
   },
   select: { width: 240, fontSize: 14 },
   contentArea: {
-    padding: 10
+    padding: 10,
   },
   specificationArea: {
-    padding: 10
-  }
+    padding: 10,
+  },
 })
 
 const loadSavedInput = () => {
@@ -51,14 +51,14 @@ export const examples = {
       {
         src:
           "https://images.unsplash.com/photo-1496905583330-eb54c7e5915a?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=634&q=80",
-        name: "hot-dogs-1"
+        name: "hot-dogs-1",
       },
       {
         src:
           "https://www.bianchi.com/wp-content/uploads/2019/07/YPB17I555K.jpg",
-        name: "bianchi-oltre-xr4"
-      }
-    ]
+        name: "bianchi-oltre-xr4",
+      },
+    ],
   }),
   "Simple Segmentation": () => ({
     taskDescription:
@@ -69,11 +69,11 @@ export const examples = {
       {
         src:
           "https://images.unsplash.com/photo-1561518776-e76a5e48f731?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=750&q=80",
-        name: "car-image-1"
-      }
-    ]
+        name: "car-image-1",
+      },
+    ],
   }),
-  Custom: () => loadSavedInput()
+  Custom: () => loadSavedInput(),
 }
 
 const Editor = ({ onOpenAnnotator, lastOutput }: any) => {
@@ -98,11 +98,11 @@ const Editor = ({ onOpenAnnotator, lastOutput }: any) => {
             <Select
               className={c.select}
               value={{ label: selectedExample, value: selectedExample }}
-              options={Object.keys(examples).map(s => ({
+              options={Object.keys(examples).map((s) => ({
                 label: s,
-                value: s
+                value: s,
               }))}
-              onChange={selectedOption => {
+              onChange={(selectedOption) => {
                 changeSelectedExample(selectedOption.value)
 
                 changeCurrentJSONValue(
@@ -152,7 +152,7 @@ const Editor = ({ onOpenAnnotator, lastOutput }: any) => {
           <MonacoEditor
             value={currentJSONValue}
             language="javascript"
-            onChange={code => {
+            onChange={(code) => {
               try {
                 window.localStorage.setItem(
                   "customInput",

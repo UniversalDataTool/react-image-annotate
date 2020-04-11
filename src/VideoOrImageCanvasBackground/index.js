@@ -7,12 +7,12 @@ import { useSettings } from "../SettingsProvider"
 
 const Video = styled("video")({
   zIndex: 0,
-  position: "absolute"
+  position: "absolute",
 })
 
 const StyledImage = styled("img")({
   zIndex: 0,
-  position: "absolute"
+  position: "absolute",
 })
 
 export default ({
@@ -24,7 +24,7 @@ export default ({
   onLoad,
   videoPlaying,
   onChangeVideoTime,
-  onChangeVideoPlaying
+  onChangeVideoPlaying,
 }) => {
   const settings = useSettings()
   const videoRef = useRef()
@@ -72,7 +72,7 @@ export default ({
     }
   }, [videoPlaying])
 
-  const onLoadedVideoMetadata = useEventCallback(event => {
+  const onLoadedVideoMetadata = useEventCallback((event) => {
     const videoElm = event.currentTarget
     videoElm.currentTime = (videoTime || 0) / 1000
     if (onLoad)
@@ -80,16 +80,16 @@ export default ({
         naturalWidth: videoElm.videoWidth,
         naturalHeight: videoElm.videoHeight,
         videoElm: videoElm,
-        duration: videoElm.duration
+        duration: videoElm.duration,
       })
   })
-  const onImageLoaded = useEventCallback(event => {
+  const onImageLoaded = useEventCallback((event) => {
     const imageElm = event.currentTarget
     if (onLoad)
       onLoad({
         naturalWidth: imageElm.naturalWidth,
         naturalHeight: imageElm.naturalHeight,
-        imageElm
+        imageElm,
       })
   })
 
@@ -100,13 +100,13 @@ export default ({
       left: imagePosition.topLeft.x,
       top: imagePosition.topLeft.y,
       width: isNaN(width) ? 0 : width,
-      height: isNaN(height) ? 0 : height
+      height: isNaN(height) ? 0 : height,
     }
   }, [
     imagePosition.topLeft.x,
     imagePosition.topLeft.y,
     imagePosition.bottomRight.x,
-    imagePosition.bottomRight.y
+    imagePosition.bottomRight.y,
   ])
 
   if (!videoSrc && !imageSrc) return "No imageSrc or videoSrc provided"

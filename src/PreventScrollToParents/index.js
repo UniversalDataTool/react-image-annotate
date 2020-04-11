@@ -8,19 +8,19 @@ import useEventCallback from "use-event-callback"
 const Container = styled("div")({
   "& > div": {
     width: "100%",
-    height: "100%"
-  }
+    height: "100%",
+  },
 })
 
 export const PreventScrollToParents = ({ children, ...otherProps }) => {
   const [mouseOver, changeMouseOver] = useState(false)
-  const onMouseMove = useEventCallback(e => {
+  const onMouseMove = useEventCallback((e) => {
     if (!mouseOver) changeMouseOver(true)
     if (otherProps.onMouseMove) {
       otherProps.onMouseMove(e)
     }
   })
-  const onMouseLeave = useEventCallback(e => {
+  const onMouseLeave = useEventCallback((e) => {
     setTimeout(() => {
       if (mouseOver) {
         changeMouseOver(false)

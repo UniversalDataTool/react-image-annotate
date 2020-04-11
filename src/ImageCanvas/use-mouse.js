@@ -20,7 +20,7 @@ export default ({
   onMouseMove,
   onMouseUp,
   onMouseDown,
-  dragging
+  dragging,
 }) => {
   const mousePosition = useRef({ x: 0, y: 0 })
   const prevMousePosition = useRef({ x: 0, y: 0 })
@@ -40,7 +40,7 @@ export default ({
   }
 
   const mouseEvents = {
-    onMouseMove: e => {
+    onMouseMove: (e) => {
       const { left, top } = canvasEl.current.getBoundingClientRect()
       prevMousePosition.current.x = mousePosition.current.x
       prevMousePosition.current.y = mousePosition.current.y
@@ -95,7 +95,7 @@ export default ({
         onMouseDown({ x: projMouse.x / iw, y: projMouse.y / ih })
       }
     },
-    onMouseUp: e => {
+    onMouseUp: (e) => {
       e.preventDefault()
       const projMouse = mat.applyToPoint(
         mousePosition.current.x,
@@ -147,11 +147,11 @@ export default ({
         onMouseUp({ x: projMouse.x / iw, y: projMouse.y / ih })
       }
     },
-    onWheel: e => {
+    onWheel: (e) => {
       const direction = e.deltaY > 0 ? 1 : e.deltaY < 0 ? -1 : 0
       zoomIn(direction, mousePosition.current)
       // e.preventDefault()
-    }
+    },
   }
   return { mouseEvents, mousePosition }
 }

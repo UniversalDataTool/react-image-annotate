@@ -5,7 +5,7 @@ import React, {
   useRef,
   useState,
   useLayoutEffect,
-  useEffect
+  useEffect,
 } from "react"
 import type { Node } from "react"
 import { Matrix } from "transformation-matrix-js"
@@ -16,7 +16,7 @@ import type {
   PixelRegion,
   Point,
   Polygon,
-  Box
+  Box,
 } from "./region-tools.js"
 import { getEnclosingBox } from "./region-tools.js"
 import { makeStyles } from "@material-ui/core/styles"
@@ -63,21 +63,21 @@ type Props = {
   RegionEditLabel?: Node,
   videoPlaying?: boolean,
 
-  onChangeRegion: Region => any,
-  onBeginRegionEdit: Region => any,
-  onCloseRegionEdit: Region => any,
-  onDeleteRegion: Region => any,
+  onChangeRegion: (Region) => any,
+  onBeginRegionEdit: (Region) => any,
+  onCloseRegionEdit: (Region) => any,
+  onDeleteRegion: (Region) => any,
   onBeginBoxTransform: (Box, [number, number]) => any,
   onBeginMovePolygonPoint: (Polygon, index: number) => any,
   onAddPolygonPoint: (Polygon, point: [number, number], index: number) => any,
-  onSelectRegion: Region => any,
-  onBeginMovePoint: Point => any,
+  onSelectRegion: (Region) => any,
+  onBeginMovePoint: (Point) => any,
   onImageOrVideoLoaded: ({
     naturalWidth: number,
     naturalHeight: number,
-    duration?: number
+    duration?: number,
   }) => any,
-  onChangeVideoTime: number => any
+  onChangeVideoTime: (number) => any,
 }
 
 const getDefaultMat = () => Matrix.from(1, 0, 0, 1, -10, -10)
@@ -89,9 +89,9 @@ export default ({
   videoTime,
   realSize,
   showTags,
-  onMouseMove = p => null,
-  onMouseDown = p => null,
-  onMouseUp = p => null,
+  onMouseMove = (p) => null,
+  onMouseDown = (p) => null,
+  onMouseUp = (p) => null,
   dragWithPrimary = false,
   zoomWithPrimary = false,
   createWithPrimary = false,
@@ -115,7 +115,7 @@ export default ({
   onBeginMovePoint,
   onDeleteRegion,
   onChangeVideoTime,
-  onChangeVideoPlaying
+  onChangeVideoPlaying,
 }: Props) => {
   const classes = useStyles()
 
@@ -144,7 +144,7 @@ export default ({
     dragWithPrimary,
     onMouseMove,
     onMouseDown,
-    onMouseUp
+    onMouseUp,
   })
 
   useLayoutEffect(() => changeMat(mat.clone()), [windowSize])
@@ -181,7 +181,7 @@ export default ({
 
     const [iw, ih] = [
       imageDimensions.naturalWidth / fitScale,
-      imageDimensions.naturalHeight / fitScale
+      imageDimensions.naturalHeight / fitScale,
     ]
 
     layoutParams.current = {
@@ -189,7 +189,7 @@ export default ({
       ih,
       fitScale,
       canvasWidth: clientWidth,
-      canvasHeight: clientHeight
+      canvasHeight: clientHeight,
     }
   }
 
@@ -201,12 +201,7 @@ export default ({
     const context = canvas.getContext("2d")
 
     context.save()
-    context.transform(
-      ...mat
-        .clone()
-        .inverse()
-        .toArray()
-    )
+    context.transform(...mat.clone().inverse().toArray())
 
     const { iw, ih } = layoutParams.current
 
@@ -219,22 +214,22 @@ export default ({
         [0, 0],
         [iw, 0],
         [iw, ih],
-        [0, ih]
+        [0, ih],
       ]
       const inner = [
         [x * iw, y * ih],
         [x * iw + w * iw, y * ih],
         [x * iw + w * iw, y * ih + h * ih],
-        [x * iw, y * ih + h * ih]
+        [x * iw, y * ih + h * ih],
       ]
       context.moveTo(...outer[0])
-      outer.forEach(p => context.lineTo(...p))
+      outer.forEach((p) => context.lineTo(...p))
       context.lineTo(...outer[0])
       context.closePath()
 
       inner.reverse()
       context.moveTo(...inner[0])
-      inner.forEach(p => context.lineTo(...p))
+      inner.forEach((p) => context.lineTo(...p))
       context.lineTo(...inner[0])
 
       context.fillStyle = excludePattern || "#f00"
@@ -251,7 +246,7 @@ export default ({
       context.shadowBlur = 4
     }
     for (const region of regions.filter(
-      r => r.visible || r.visible === undefined
+      (r) => r.visible || r.visible === undefined
     )) {
       switch (region.type) {
         case "point": {
@@ -366,12 +361,9 @@ export default ({
     !zoomStart || !zoomEnd
       ? null
       : {
-          ...mat
-            .clone()
-            .inverse()
-            .applyToPoint(zoomStart.x, zoomStart.y),
+          ...mat.clone().inverse().applyToPoint(zoomStart.x, zoomStart.y),
           w: (zoomEnd.x - zoomStart.x) / mat.a,
-          h: (zoomEnd.y - zoomStart.y) / mat.d
+          h: (zoomEnd.y - zoomStart.y) / mat.d,
         }
   if (zoomBox) {
     if (zoomBox.w < 0) {
@@ -385,14 +377,8 @@ export default ({
   }
 
   const imagePosition = {
-    topLeft: mat
-      .clone()
-      .inverse()
-      .applyToPoint(0, 0),
-    bottomRight: mat
-      .clone()
-      .inverse()
-      .applyToPoint(iw, ih)
+    topLeft: mat.clone().inverse().applyToPoint(0, 0),
+    bottomRight: mat.clone().inverse().applyToPoint(iw, ih),
   }
 
   return (
@@ -413,7 +399,7 @@ export default ({
           ? mat.a < 1
             ? "zoom-out"
             : "zoom-in"
-          : undefined
+          : undefined,
       }}
     >
       {showCrosshairs && (
@@ -467,7 +453,7 @@ export default ({
             left: zoomBox.x,
             top: zoomBox.y,
             width: zoomBox.w,
-            height: zoomBox.h
+            height: zoomBox.h,
           }}
         />
       )}

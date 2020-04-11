@@ -8,7 +8,7 @@ export default () => {
   if (excludePattern.current === null) {
     excludePattern.current = {
       image: new Image(),
-      pattern: null
+      pattern: null,
     }
     const canvas = document.createElement("canvas")
     canvas.width = 100

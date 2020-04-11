@@ -5,9 +5,9 @@ import SidebarBoxContainer from "../SidebarBoxContainer"
 
 export const DebugSidebarBox = ({ state, lastAction }: any) => {
   const image = (state.images || []).find(
-    img => img.src === state.selectedImage
+    (img) => img.src === state.selectedImage
   )
-  const region = image ? (image.regions || []).find(r => r.highlighted) : null
+  const region = image ? (image.regions || []).find((r) => r.highlighted) : null
 
   return (
     <SidebarBoxContainer title="Debug" icon={<span />} expandedByDefault>

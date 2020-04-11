@@ -17,10 +17,10 @@ storiesOf("Annotator", module)
     <Annotator
       onExit={actionAddon("onExit")}
       middlewares={[
-        store => next => action => {
+        (store) => (next) => (action) => {
           actionAddon(action.type)(action)
           return next(action)
-        }
+        },
       ]}
       labelImages
       regionClsList={["Alpha", "Beta", "Charlie", "Delta"]}
@@ -31,20 +31,20 @@ storiesOf("Annotator", module)
         {
           src: exampleImage,
           name: "Seve's Desk",
-          regions: testRegions
+          regions: testRegions,
         },
         {
           src: "https://loremflickr.com/100/100/cars?lock=1",
-          name: "Frame 0036"
+          name: "Frame 0036",
         },
         {
           src: "https://loremflickr.com/100/100/cars?lock=2",
-          name: "Frame 0037"
+          name: "Frame 0037",
         },
         {
           src: "https://loremflickr.com/100/100/cars?lock=3",
-          name: "Frame 0038"
-        }
+          name: "Frame 0038",
+        },
       ]}
     />
   ))
@@ -55,17 +55,17 @@ storiesOf("Annotator", module)
         regionClsList={["Alpha", "Beta", "Charlie", "Delta"]}
         regionTagList={["tag1", "tag2", "tag3"]}
         middlewares={[
-          store => next => action => {
+          (store) => (next) => (action) => {
             actionAddon(action.type)(action)
             return next(action)
-          }
+          },
         ]}
         images={[
           {
             src: exampleImage,
             name: "Seve's Desk",
-            regions: testRegions
-          }
+            regions: testRegions,
+          },
         ]}
       />
     </div>
@@ -74,17 +74,17 @@ storiesOf("Annotator", module)
     <Annotator
       onExit={actionAddon("onExit")}
       middlewares={[
-        store => next => action => {
+        (store) => (next) => (action) => {
           actionAddon(action.type)(action)
           return next(action)
-        }
+        },
       ]}
       images={[
         {
           src: exampleImage,
           name: "Seve's Desk",
-          regions: testRegions
-        }
+          regions: testRegions,
+        },
       ]}
     />
   ))
@@ -94,23 +94,23 @@ storiesOf("Annotator", module)
       enabledTools={[]}
       showTags={false}
       middlewares={[
-        store => next => action => {
+        (store) => (next) => (action) => {
           actionAddon(action.type)(action)
           return next(action)
-        }
+        },
       ]}
       images={[
         {
           src: exampleImage,
           name: "Seve's Desk",
-          regions: testRegions
-        }
+          regions: testRegions,
+        },
       ]}
     />
   ))
   .add("Bounding Box Annotator with output to console.log", () => (
     <Annotator
-      onExit={out => {
+      onExit={(out) => {
         window.lastOutput = out
         console.log(out)
       }}
@@ -124,14 +124,14 @@ storiesOf("Annotator", module)
           src:
             "https://s3.amazonaws.com/jobstorage.workaround.online/Atheer/video-frames/VID_20190111_161054.mp4_frame017.png",
           name: "Bounding Box Test",
-          regions: []
+          regions: [],
         },
         {
           src:
             "https://s3.amazonaws.com/jobstorage.workaround.online/Atheer/video-frames/VID_20190111_161054.mp4_frame001.png",
           name: "Bounding Box Test",
-          regions: []
-        }
+          regions: [],
+        },
       ]}
     />
   ))
@@ -148,8 +148,8 @@ storiesOf("Annotator", module)
           src:
             "https://s3.amazonaws.com/jobstorage.workaround.online/Atheer/video-frames/VID_20190111_161054.mp4_frame017.png",
           name: "Bounding Box Test",
-          regions: []
-        }
+          regions: [],
+        },
       ]}
     />
   ))
@@ -157,10 +157,10 @@ storiesOf("Annotator", module)
     <Annotator
       onExit={actionAddon("onExit")}
       middlewares={[
-        store => next => action => {
+        (store) => (next) => (action) => {
           actionAddon(action.type)(action)
           return next(action)
-        }
+        },
       ]}
       labelImages
       regionClsList={["Car", "Sign", "Construction Barrier"]}
@@ -183,7 +183,7 @@ storiesOf("Annotator", module)
               id: "8776160642957009",
               tags: ["Stopped"],
               highlighted: false,
-              editingLabels: false
+              editingLabels: false,
             },
             {
               cls: "Car",
@@ -196,7 +196,7 @@ storiesOf("Annotator", module)
               y: 0.5566583219431673,
               h: 0.268717618171478,
               highlighted: false,
-              editingLabels: false
+              editingLabels: false,
             },
             {
               cls: "Car",
@@ -209,7 +209,7 @@ storiesOf("Annotator", module)
               id: "5952553512262024",
               tags: ["Stopped"],
               highlighted: false,
-              editingLabels: false
+              editingLabels: false,
             },
             {
               type: "box",
@@ -221,9 +221,9 @@ storiesOf("Annotator", module)
               editingLabels: false,
               color: "hsl(268,100%,50%)",
               id: "5647593040225252",
-              cls: "Sign"
-            }
-          ]
+              cls: "Sign",
+            },
+          ],
         },
         {
           src: bikeImg2,
@@ -240,7 +240,7 @@ storiesOf("Annotator", module)
               color: "hsl(171,100%,50%)",
               id: "014393439034159128",
               cls: "Car",
-              tags: ["Stopped"]
+              tags: ["Stopped"],
             },
             {
               type: "box",
@@ -253,7 +253,7 @@ storiesOf("Annotator", module)
               color: "hsl(17,100%,50%)",
               id: "02954614542034717",
               cls: "Car",
-              tags: ["Moving"]
+              tags: ["Moving"],
             },
             {
               type: "box",
@@ -266,7 +266,7 @@ storiesOf("Annotator", module)
               color: "hsl(337,100%,50%)",
               id: "9124138360972984",
               cls: "Construction Barrier",
-              tags: ["Obstacle"]
+              tags: ["Obstacle"],
             },
             {
               type: "box",
@@ -278,7 +278,7 @@ storiesOf("Annotator", module)
               editingLabels: false,
               color: "hsl(89,100%,50%)",
               id: "5960600741979638",
-              cls: "Construction Barrier"
+              cls: "Construction Barrier",
             },
             {
               type: "box",
@@ -290,7 +290,7 @@ storiesOf("Annotator", module)
               editingLabels: false,
               color: "hsl(326,100%,50%)",
               id: "7955287536996538",
-              cls: "Construction Barrier"
+              cls: "Construction Barrier",
             },
             {
               type: "box",
@@ -303,12 +303,12 @@ storiesOf("Annotator", module)
               color: "hsl(66,100%,50%)",
               id: "49573139861381166",
               cls: "Car",
-              tags: ["Stopped"]
-            }
-          ]
-        }
+              tags: ["Stopped"],
+            },
+          ],
+        },
       ]}
-      onExit={out => {
+      onExit={(out) => {
         window.lastOutput = out
         console.log(JSON.stringify(out.images))
       }}
@@ -320,17 +320,17 @@ storiesOf("Annotator", module)
         onExit={actionAddon("onExit")}
         showTags={false}
         middlewares={[
-          store => next => action => {
+          (store) => (next) => (action) => {
             actionAddon(action.type)(action)
             return next(action)
-          }
+          },
         ]}
         images={[
           {
             src: exampleImage,
             name: "Seve's Desk",
-            regions: testRegions
-          }
+            regions: testRegions,
+          },
         ]}
       />
       <div style={{ color: "red" }}>You shouldn't be able to see this</div>
@@ -342,24 +342,24 @@ storiesOf("Annotator", module)
         width: "100vw",
         height: "100vh",
         padding: 100,
-        boxSizing: "border-box"
+        boxSizing: "border-box",
       }}
     >
       <Annotator
         onExit={actionAddon("onExit")}
         showTags={false}
         middlewares={[
-          store => next => action => {
+          (store) => (next) => (action) => {
             actionAddon(action.type)(action)
             return next(action)
-          }
+          },
         ]}
         images={[
           {
             src: exampleImage,
             name: "Seve's Desk",
-            regions: testRegions
-          }
+            regions: testRegions,
+          },
         ]}
       />
     </div>
@@ -369,31 +369,31 @@ storiesOf("Annotator", module)
       style={{
         width: "100vw",
         height: "100vh",
-        boxSizing: "border-box"
+        boxSizing: "border-box",
       }}
     >
       <Annotator
         onExit={actionAddon("onExit")}
         showTags={false}
         middlewares={[
-          store => next => action => {
+          (store) => (next) => (action) => {
             actionAddon(action.type)(action)
             return next(action)
-          }
+          },
         ]}
         images={[
           {
             src:
               "https://s3.amazonaws.com/asset.workaround.online/SampleVideo_1280x720_1mb.mp4",
             frameTime: 0,
-            name: "Frame 1"
+            name: "Frame 1",
           },
           {
             src:
               "https://s3.amazonaws.com/asset.workaround.online/SampleVideo_1280x720_1mb.mp4",
             frameTime: 4500,
-            name: "Frame 2"
-          }
+            name: "Frame 2",
+          },
         ]}
       />
     </div>
@@ -403,7 +403,7 @@ storiesOf("Annotator", module)
       style={{
         width: "100vw",
         height: "100vh",
-        boxSizing: "border-box"
+        boxSizing: "border-box",
       }}
     >
       <Annotator
@@ -424,7 +424,7 @@ storiesOf("Annotator", module)
                 highlighted: true,
                 editingLabels: false,
                 color: "hsl(238,100%,50%)",
-                id: "9995495728521284"
+                id: "9995495728521284",
               },
               {
                 type: "box",
@@ -435,9 +435,9 @@ storiesOf("Annotator", module)
                 highlighted: true,
                 editingLabels: false,
                 color: "hsl(263,100%,50%)",
-                id: "04858393322065635"
-              }
-            ]
+                id: "04858393322065635",
+              },
+            ],
           },
           "3333": {
             regions: [
@@ -448,7 +448,7 @@ storiesOf("Annotator", module)
                 highlighted: true,
                 editingLabels: false,
                 color: "hsl(238,100%,50%)",
-                id: "9995495728521284"
+                id: "9995495728521284",
               },
               {
                 type: "box",
@@ -459,10 +459,10 @@ storiesOf("Annotator", module)
                 highlighted: true,
                 editingLabels: false,
                 color: "hsl(263,100%,50%)",
-                id: "04858393322065635"
-              }
-            ]
-          }
+                id: "04858393322065635",
+              },
+            ],
+          },
         }}
       />
     </div>
@@ -471,7 +471,7 @@ storiesOf("Annotator", module)
     const images = [
       exampleImage,
       "https://loremflickr.com/100/100/cars?lock=1",
-      "https://loremflickr.com/100/100/cars?lock=2"
+      "https://loremflickr.com/100/100/cars?lock=2",
     ]
     const [selectedImageIndex, changeSelectedImageIndex] = useState(0)
 
@@ -493,16 +493,16 @@ storiesOf("Annotator", module)
         images={[
           {
             src: exampleImage,
-            name: "Seve's Desk"
+            name: "Seve's Desk",
           },
           {
             src: images[1],
-            name: "Frame 0036"
+            name: "Frame 0036",
           },
           {
             src: images[2],
-            name: "Frame 0037"
-          }
+            name: "Frame 0037",
+          },
         ]}
       />
     )
@@ -511,7 +511,7 @@ storiesOf("Annotator", module)
     const images = [
       exampleImage,
       "https://loremflickr.com/100/100/cars?lock=1",
-      "https://loremflickr.com/100/100/cars?lock=2"
+      "https://loremflickr.com/100/100/cars?lock=2",
     ]
 
     const NewRegionEditLabel = ({
@@ -520,7 +520,7 @@ storiesOf("Annotator", module)
       onDelete,
       onChange,
       onClose,
-      onOpen
+      onOpen,
     }) => {
       return (
         <div style={{ backgroundColor: "white" }}>
@@ -548,16 +548,16 @@ storiesOf("Annotator", module)
         images={[
           {
             src: exampleImage,
-            name: "Seve's Desk"
+            name: "Seve's Desk",
           },
           {
             src: images[1],
-            name: "Frame 0036"
+            name: "Frame 0036",
           },
           {
             src: images[2],
-            name: "Frame 0037"
-          }
+            name: "Frame 0037",
+          },
         ]}
       />
     )

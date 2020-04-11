@@ -7,11 +7,11 @@ import useEventCallback from "use-event-callback"
 
 const StyledButton = styled(Button)({
   width: 80,
-  margin: 2
+  margin: 2,
 })
 
 const IconName = styled("div")({
-  fontWeight: "bold"
+  fontWeight: "bold",
 })
 
 export const HeaderButtonContext = createContext()
@@ -33,11 +33,11 @@ const MemoizedHeaderButton = memo(
 export const HeaderButton = ({
   name,
   disabled,
-  Icon
+  Icon,
 }: {
   name: string,
   disabled?: boolean,
-  Icon: any
+  Icon: any,
 }) => {
   const { onHeaderButtonClick } = useContext(HeaderButtonContext)
   const onClick = useEventCallback(() => onHeaderButtonClick(name))
