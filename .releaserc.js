@@ -5,7 +5,6 @@ module.exports = {
     "@semantic-release/release-notes-generator",
     ["@semantic-release/npm", { npmPublish: false }],
     ["@semantic-release/npm", { npmPublish: true, pkgRoot: "dist" }],
-    ["@semantic-release/npm", { npmPublish: false, pkgRoot: "." }],
     "@semantic-release/github",
     [
       "@semantic-release/git",
