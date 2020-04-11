@@ -37,7 +37,6 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "prepublishOnly": "echo 'You must be in the dist directory to publish' && [ -f ./Annotator/index.js ]",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "storybook": "start-storybook -p 9090 -s public",
