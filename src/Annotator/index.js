@@ -120,6 +120,7 @@ export const Annotator = ({
   })
 
   useEffect(() => {
+    if (!selectedImage) return
     dispatchToReducer({
       type: "SELECT_IMAGE",
       image: state.images.find((img) => img.src === selectedImage),
