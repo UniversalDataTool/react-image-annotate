@@ -27,7 +27,7 @@ export const TaskDescriptionSidebarBox = ({ description }) => {
     <SidebarBoxContainer
       title="Task Description"
       icon={<DescriptionIcon style={{ color: grey[700] }} />}
-      expandedByDefault={(description && description !== "")? false : true}
+      expandedByDefault={description && description !== "" ? false : true}
     >
       <MarkdownContainer>
         <Markdown source={description} />
