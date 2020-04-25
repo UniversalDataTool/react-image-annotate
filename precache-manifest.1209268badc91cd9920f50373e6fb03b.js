@@ -1,11 +1,11 @@
 self.__precacheManifest = [
   {
-    "revision": "62cf140cdeea3589b118",
+    "revision": "a3f349eac73b577223cc",
     "url": "/react-image-annotate/static/css/main.77914b14.chunk.css"
   },
   {
-    "revision": "62cf140cdeea3589b118",
-    "url": "/react-image-annotate/static/js/main.70d8272e.chunk.js"
+    "revision": "a3f349eac73b577223cc",
+    "url": "/react-image-annotate/static/js/main.ec9792a4.chunk.js"
   },
   {
     "revision": "9aafae87b94098b78bd4",
@@ -20,7 +20,7 @@ self.__precacheManifest = [
     "url": "/react-image-annotate/static/js/2.6431b3ec.chunk.js"
   },
   {
-    "revision": "832bc629f926d9152ef9a4265155fe2e",
+    "revision": "2a2028b9a998da0e36cc764911334632",
     "url": "/react-image-annotate/index.html"
   }
 ];
