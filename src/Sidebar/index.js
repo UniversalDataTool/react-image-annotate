@@ -75,7 +75,7 @@ export const Sidebar = ({
   return (
     <div>
       {debug && <DebugBox state={debug} lastAction={debug.lastAction} />}
-      {(taskDescription || "").length > 1 && (
+      {taskDescription && (taskDescription || "").length > 1 && (
         <TaskDescription description={taskDescription} />
       )}
       {labelImages && (
