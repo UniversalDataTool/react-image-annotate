@@ -86,6 +86,8 @@ export default ({ onShortcutActionDispatched }) => {
 
   useEffect(() => {
     const handleKeyPress = (e) => {
+      e.preventDefault()
+      e.stopPropagation()
       for (const actionId in shortcuts) {
         const shortcut = shortcuts[actionId]
         if (!shortcut || !shortcut.key) {
