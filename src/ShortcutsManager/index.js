@@ -17,8 +17,14 @@ export const defaultHotkeys = [
     description: "Create a point",
   },
   {
+    id: "create_bounding_box",
+    description: "Create a bounding box",
+    binding: "b",
+  },
+  {
     id: "pan_tool",
     description: "Select the Pan Tool",
+    binding: "p",
   },
   {
     id: "create_polygon",
@@ -31,10 +37,12 @@ export const defaultHotkeys = [
   {
     id: "save_and_previous_sample",
     description: "Save and go to previous sample",
+    binding: "a",
   },
   {
     id: "save_and_next_sample",
     description: "Save and go to next sample",
+    binding: "d",
   },
   {
     id: "save_and_exit_sample",
@@ -48,7 +56,7 @@ export const defaultHotkeys = [
 export const defaultKeyMap = {}
 for (const { id, binding } of defaultHotkeys) defaultKeyMap[id] = binding
 
-export default ({ children, dispatch }) => {
+export const useDispatchHotkeyHandlers = ({ dispatch }) => {
   const handlers = useMemo(
     () => ({
       select_tool: () => {
@@ -67,6 +75,12 @@ export default ({ children, dispatch }) => {
         dispatch({
           type: "SELECT_TOOL",
           selectedTool: "create-point",
+        })
+      },
+      create_bounding_box: () => {
+        dispatch({
+          type: "SELECT_TOOL",
+          selectedTool: "create-box",
         })
       },
       pan_tool: () => {
@@ -114,6 +128,11 @@ export default ({ children, dispatch }) => {
     }),
     [dispatch]
   )
+  return handlers
+}
+
+export default ({ children, dispatch }) => {
+  const handlers = useDispatchHotkeyHandlers({ dispatch })
   return (
     <HotKeys allowChanges handlers={handlers}>
       {children}
