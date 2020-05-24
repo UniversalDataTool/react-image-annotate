@@ -54,7 +54,7 @@ export default ({ children, dispatch }) => {
       select_tool: () => {
         dispatch({
           type: "SELECT_TOOL",
-          selectedTool: "select-tool",
+          selectedTool: "select",
         })
       },
       zoom_tool: () => {

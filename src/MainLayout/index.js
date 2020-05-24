@@ -68,6 +68,7 @@ export default ({
   })
 
   const isAVideoFrame = activeImage && activeImage.frameTime !== undefined
+  const innerContainerRef = useRef()
 
   let impliedVideoRegions = useImpliedVideoRegions(state)
 
@@ -81,6 +82,14 @@ export default ({
       }}
     >
       <div
+        ref={innerContainerRef}
+        tabIndex={-1}
+        onMouseOver={(e) => {
+          if (innerContainerRef.current) innerContainerRef.current.focus()
+        }}
+        onMouseDown={(e) => {
+          if (innerContainerRef.current) innerContainerRef.current.focus()
+        }}
         className={classnames(
           classes.container,
           state.fullScreen && "Fullscreen"
