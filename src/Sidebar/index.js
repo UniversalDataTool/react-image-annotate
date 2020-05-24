@@ -105,7 +105,7 @@ export const Sidebar = ({
         />
       )}
       <History history={history} onRestoreHistory={() => onRestoreHistory()} />
-      <Shortcuts onShortcutActionDispatched={onShortcutActionDispatched} />
+      {/* <Shortcuts onShortcutActionDispatched={onShortcutActionDispatched} /> */}
     </div>
   )
 }

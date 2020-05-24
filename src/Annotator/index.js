@@ -17,6 +17,7 @@ import generalReducer from "./reducers/general-reducer.js"
 import imageReducer from "./reducers/image-reducer.js"
 import videoReducer from "./reducers/video-reducer.js"
 import historyHandler from "./reducers/history-handler.js"
+import ShortcutsManager from "../ShortcutsManager"
 
 import useEventCallback from "use-event-callback"
 import makeImmutable, { without } from "seamless-immutable"
@@ -131,13 +132,15 @@ export const Annotator = ({
 
   return (
     <SettingsProvider>
-      <MainLayout
-        RegionEditLabel={RegionEditLabel}
-        alwaysShowNextButton={Boolean(onNextImage)}
-        alwaysShowPrevButton={Boolean(onPrevImage)}
-        state={state}
-        dispatch={dispatch}
-      />
+      <ShortcutsManager dispatch={dispatch}>
+        <MainLayout
+          RegionEditLabel={RegionEditLabel}
+          alwaysShowNextButton={Boolean(onNextImage)}
+          alwaysShowPrevButton={Boolean(onPrevImage)}
+          state={state}
+          dispatch={dispatch}
+        />
+      </ShortcutsManager>
     </SettingsProvider>
   )
 }

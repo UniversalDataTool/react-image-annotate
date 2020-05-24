@@ -12,6 +12,7 @@
     "material-survey": "^1.0.34",
     "moment": "^2.23.0",
     "react-full-screen": "^0.2.4",
+    "react-hotkeys": "^2.0.0",
     "react-json-view": "^1.19.1",
     "react-markdown": "^4.0.6",
     "react-monaco-editor": "^0.25.1",
@@ -68,7 +69,7 @@
     "babel-loader": "^8.0.5",
     "babel-preset-react-app": "^7.0.0",
     "gh-pages": "^2.0.1",
-    "prettier": "^2.0.4",
+    "prettier": "^2.0.5",
     "raw.macro": "^0.3.0",
     "react-github-btn": "^1.1.1",
     "react-scripts": "^2.1.8"

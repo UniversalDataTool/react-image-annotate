@@ -7,4 +7,5 @@ import { action } from "@storybook/addon-actions"
 
 import DemoSite from "./"
 
-storiesOf("DemoSite", module).add("Basic", () => <DemoSite />)
+storiesOf("DemoSite", module)
+  .add("Basic", () => <DemoSite />)

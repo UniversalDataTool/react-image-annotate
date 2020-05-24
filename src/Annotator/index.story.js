@@ -7,6 +7,8 @@ import { action as actionAddon } from "@storybook/addon-actions"
 import exampleImage from "../ImageCanvas/seves_desk.story.jpg"
 import bikeImg1 from "./bike-pic.png"
 import bikeImg2 from "./bike-pic2.png"
+import { HotKeys } from "react-hotkeys"
+import { defaultKeyMap } from "../ShortcutsManager"
 
 import Annotator from "./"
 
@@ -560,5 +562,46 @@ storiesOf("Annotator", module)
           },
         ]}
       />
+    )
+  })
+  .add("Two on sample page w/ hotkeys", () => {
+    console.log({ defaultKeyMap })
+    return (
+      <HotKeys keyMap={defaultKeyMap}>
+        <div>
+          <Annotator
+            onExit={actionAddon("onExit")}
+            middlewares={[
+              (store) => (next) => (action) => {
+                actionAddon(action.type)(action)
+                return next(action)
+              },
+            ]}
+            images={[
+              {
+                src: exampleImage,
+                name: "Seve's Desk",
+                regions: testRegions,
+              },
+            ]}
+          />
+          <Annotator
+            onExit={actionAddon("onExit")}
+            middlewares={[
+              (store) => (next) => (action) => {
+                actionAddon(action.type)(action)
+                return next(action)
+              },
+            ]}
+            images={[
+              {
+                src: exampleImage,
+                name: "Seve's Desk",
+                regions: testRegions,
+              },
+            ]}
+          />
+        </div>
+      </HotKeys>
     )
   })
