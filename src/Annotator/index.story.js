@@ -605,38 +605,44 @@ storiesOf("Annotator", module)
     return (
       <HotKeys keyMap={defaultKeyMap}>
         <div>
-          <Annotator
-            onExit={actionAddon("onExit")}
-            middlewares={[
-              (store) => (next) => (action) => {
-                actionAddon(action.type)(action)
-                return next(action)
-              },
-            ]}
-            images={[
-              {
-                src: exampleImage,
-                name: "Seve's Desk",
-                regions: testRegions,
-              },
-            ]}
-          />
-          <Annotator
-            onExit={actionAddon("onExit")}
-            middlewares={[
-              (store) => (next) => (action) => {
-                actionAddon(action.type)(action)
-                return next(action)
-              },
-            ]}
-            images={[
-              {
-                src: exampleImage,
-                name: "Seve's Desk",
-                regions: testRegions,
-              },
-            ]}
-          />
+          <div style={{ height: 600 }}>
+            <Annotator
+              onExit={actionAddon("onExit")}
+              regionClsList={["Alpha", "Beta", "Charlie", "Delta"]}
+              imageClsList={["Alpha", "Beta", "Charlie", "Delta"]}
+              middlewares={[
+                (store) => (next) => (action) => {
+                  actionAddon(action.type)(action)
+                  return next(action)
+                },
+              ]}
+              images={[
+                {
+                  src: exampleImage,
+                  name: "Seve's Desk",
+                  regions: testRegions,
+                },
+              ]}
+            />
+          </div>
+          <div style={{ height: 600 }}>
+            <Annotator
+              onExit={actionAddon("onExit")}
+              middlewares={[
+                (store) => (next) => (action) => {
+                  actionAddon(action.type)(action)
+                  return next(action)
+                },
+              ]}
+              images={[
+                {
+                  src: exampleImage,
+                  name: "Seve's Desk",
+                  regions: testRegions,
+                },
+              ]}
+            />
+          </div>
         </div>
       </HotKeys>
     )

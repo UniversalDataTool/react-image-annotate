@@ -1,6 +1,6 @@
 // @flow
 
-import React, { useState, useRef } from "react"
+import React, { useState, useRef, useCallback } from "react"
 import type { Node } from "react"
 import Grid from "@material-ui/core/Grid"
 import { makeStyles } from "@material-ui/core/styles"
@@ -81,6 +81,15 @@ export default ({
 
   let impliedVideoRegions = useImpliedVideoRegions(state)
 
+  const refocusOnMouseEvent = useCallback((e) => {
+    if (!innerContainerRef.current) return
+    if (innerContainerRef.current.contains(document.activeElement)) return
+    if (innerContainerRef.current.contains(e.target)) {
+      innerContainerRef.current.focus()
+      e.target.focus()
+    }
+  }, [])
+
   return (
     <Fullscreen
       enabled={state.fullScreen}
@@ -93,12 +102,8 @@ export default ({
       <HotkeyDiv
         tabIndex={-1}
         divRef={innerContainerRef}
-        onMouseDown={(e) => {
-          if (innerContainerRef.current) innerContainerRef.current.focus()
-        }}
-        onMouseOver={(e) => {
-          if (innerContainerRef.current) innerContainerRef.current.focus()
-        }}
+        onMouseDown={refocusOnMouseEvent}
+        onMouseOver={refocusOnMouseEvent}
         allowChanges
         handlers={hotkeyHandlers}
         className={classnames(
