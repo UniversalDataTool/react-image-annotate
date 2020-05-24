@@ -539,7 +539,7 @@ export default (state: MainLayoutState, action: Action) => {
       }
       // Close any open boxes
       const regions: any = activeImage.regions
-      if (regions.some((r) => r.editingLabels)) {
+      if (regions && regions.some((r) => r.editingLabels)) {
         return setIn(
           state,
           [...pathToActiveImage, "regions"],
