@@ -548,7 +548,7 @@ export default (state: MainLayoutState, action: Action) => {
             editingLabels: false,
           }))
         )
-      } else {
+      } else if (regions) {
         return setIn(
           state,
           [...pathToActiveImage, "regions"],
