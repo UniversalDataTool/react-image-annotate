@@ -50,6 +50,43 @@ storiesOf("Annotator", module)
       ]}
     />
   ))
+  .add("Fixed Size Container", () => (
+    <div style={{ width: 500, height: 500 }}>
+      <Annotator
+        onExit={actionAddon("onExit")}
+        middlewares={[
+          (store) => (next) => (action) => {
+            actionAddon(action.type)(action)
+            return next(action)
+          },
+        ]}
+        labelImages
+        regionClsList={["Alpha", "Beta", "Charlie", "Delta"]}
+        regionTagList={["tag1", "tag2", "tag3"]}
+        imageClsList={["Alpha", "Beta", "Charlie", "Delta"]}
+        imageTagList={["tag1", "tag2", "tag3"]}
+        images={[
+          {
+            src: exampleImage,
+            name: "Seve's Desk",
+            regions: testRegions,
+          },
+          {
+            src: "https://loremflickr.com/100/100/cars?lock=1",
+            name: "Frame 0036",
+          },
+          {
+            src: "https://loremflickr.com/100/100/cars?lock=2",
+            name: "Frame 0037",
+          },
+          {
+            src: "https://loremflickr.com/100/100/cars?lock=3",
+            name: "Frame 0038",
+          },
+        ]}
+      />
+    </div>
+  ))
   .add("Shrunk Annotator (Test Fullscreen)", () => (
     <div style={{ padding: 100 }}>
       <Annotator
@@ -565,7 +602,6 @@ storiesOf("Annotator", module)
     )
   })
   .add("Two on sample page w/ hotkeys", () => {
-    console.log({ defaultKeyMap })
     return (
       <HotKeys keyMap={defaultKeyMap}>
         <div>

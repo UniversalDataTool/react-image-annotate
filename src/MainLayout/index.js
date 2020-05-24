@@ -17,8 +17,16 @@ import SettingsDialog from "../SettingsDialog"
 import Fullscreen from "../Fullscreen"
 import getActiveImage from "../Annotator/reducers/get-active-image"
 import useImpliedVideoRegions from "./use-implied-video-regions"
+import { useDispatchHotkeyHandlers } from "../ShortcutsManager"
+import { withHotKeys } from "react-hotkeys"
 
 const useStyles = makeStyles(styles)
+
+const HotkeyDiv = withHotKeys(({ hotKeys, children, divRef, ...props }) => (
+  <div {...{ ...hotKeys, ...props }} ref={divRef}>
+    {children}
+  </div>
+))
 
 type Props = {
   state: MainLayoutState,
@@ -69,6 +77,7 @@ export default ({
 
   const isAVideoFrame = activeImage && activeImage.frameTime !== undefined
   const innerContainerRef = useRef()
+  const hotkeyHandlers = useDispatchHotkeyHandlers({ dispatch })
 
   let impliedVideoRegions = useImpliedVideoRegions(state)
 
@@ -81,15 +90,17 @@ export default ({
         }
       }}
     >
-      <div
-        ref={innerContainerRef}
+      <HotkeyDiv
         tabIndex={-1}
-        onMouseOver={(e) => {
-          if (innerContainerRef.current) innerContainerRef.current.focus()
-        }}
+        divRef={innerContainerRef}
         onMouseDown={(e) => {
           if (innerContainerRef.current) innerContainerRef.current.focus()
         }}
+        onMouseOver={(e) => {
+          if (innerContainerRef.current) innerContainerRef.current.focus()
+        }}
+        allowChanges
+        handlers={hotkeyHandlers}
         className={classnames(
           classes.container,
           state.fullScreen && "Fullscreen"
@@ -242,7 +253,7 @@ export default ({
             })
           }
         />
-      </div>
+      </HotkeyDiv>
     </Fullscreen>
   )
 }
