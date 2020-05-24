@@ -114,5 +114,9 @@ export default ({ children, dispatch }) => {
     }),
     [dispatch]
   )
-  return <HotKeys handlers={handlers}>{children}</HotKeys>
+  return (
+    <HotKeys allowChanges handlers={handlers}>
+      {children}
+    </HotKeys>
+  )
 }
