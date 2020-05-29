@@ -33,7 +33,7 @@ export const RegionSelectAndTransformBoxes = ({
   onBeginBoxTransform,
   onBeginMovePolygonPoint,
   onAddPolygonPoint,
-  showHighlightBox
+  showHighlightBox,
 }) => {
   return regions
     .filter((r) => r.visible || r.visible === undefined)
