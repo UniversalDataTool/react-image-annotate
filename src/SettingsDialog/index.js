@@ -28,6 +28,11 @@ export const SettingsDialog = ({ open, onClose }) => {
                 name: "showCrosshairs",
               },
               {
+                type: "boolean",
+                title: "Show Highlight Box",
+                name: "showHighlightBox",
+              },
+              {
                 type: "dropdown",
                 title: "Video Playback Speed",
                 name: "videoPlaybackSpeed",

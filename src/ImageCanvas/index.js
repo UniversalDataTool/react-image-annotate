@@ -55,6 +55,7 @@ type Props = {
   showTags?: boolean,
   realSize?: { width: number, height: number, unitName: string },
   showCrosshairs?: boolean,
+  showHighlightBox?: boolean,
   showPointDistances?: boolean,
   pointDistancePrecision?: number,
   regionClsList?: Array<string>,
@@ -99,6 +100,7 @@ export default ({
   regionClsList,
   regionTagList,
   showCrosshairs,
+  showHighlightBox,
   showPointDistances,
   allowedArea,
   RegionEditLabel = null,
@@ -421,6 +423,7 @@ export default ({
           onBeginBoxTransform={onBeginBoxTransform}
           onBeginMovePolygonPoint={onBeginMovePolygonPoint}
           onAddPolygonPoint={onAddPolygonPoint}
+          showHighlightBox={showHighlightBox}
         />
       )}
       {imageLoaded && showTags && (
