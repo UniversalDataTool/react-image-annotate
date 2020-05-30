@@ -33,6 +33,7 @@ export const RegionSelectAndTransformBoxes = ({
   onBeginBoxTransform,
   onBeginMovePolygonPoint,
   onAddPolygonPoint,
+  showHighlightBox,
 }) => {
   return regions
     .filter((r) => r.visible || r.visible === undefined)
@@ -43,16 +44,18 @@ export const RegionSelectAndTransformBoxes = ({
       return (
         <Fragment key={r.id}>
           <PreventScrollToParents>
-            <HighlightBox
-              region={r}
-              mouseEvents={mouseEvents}
-              dragWithPrimary={dragWithPrimary}
-              createWithPrimary={createWithPrimary}
-              zoomWithPrimary={zoomWithPrimary}
-              onBeginMovePoint={onBeginMovePoint}
-              onSelectRegion={onSelectRegion}
-              pbox={pbox}
-            />
+            {showHighlightBox && (
+              <HighlightBox
+                region={r}
+                mouseEvents={mouseEvents}
+                dragWithPrimary={dragWithPrimary}
+                createWithPrimary={createWithPrimary}
+                zoomWithPrimary={zoomWithPrimary}
+                onBeginMovePoint={onBeginMovePoint}
+                onSelectRegion={onSelectRegion}
+                pbox={pbox}
+              />
+            )}
             {r.type === "box" &&
               !dragWithPrimary &&
               !zoomWithPrimary &&
