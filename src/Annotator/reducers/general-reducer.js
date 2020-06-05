@@ -290,8 +290,9 @@ export default (state: MainLayoutState, action: Action) => {
             [x, y]
           )
         }
+        default:
+          return state
       }
-      return state
     }
     case "MOUSE_DOWN": {
       if (!activeImage) return state
@@ -363,6 +364,8 @@ export default (state: MainLayoutState, action: Action) => {
           })
           break
         }
+        default:
+          break
       }
 
       if (newRegion) {
@@ -380,6 +383,8 @@ export default (state: MainLayoutState, action: Action) => {
               { ...polygon, points: polygon.points.concat([[x, y]]) }
             )
           }
+          default:
+            return state
         }
       }
 
@@ -420,18 +425,9 @@ export default (state: MainLayoutState, action: Action) => {
         case "MOVE_POLYGON_POINT": {
           return { ...state, mode: null }
         }
+        default:
+          return state
       }
-      return state
-    }
-    case "CHANGE_REGION": {
-      const { region } = action
-      const regionIndex = getRegionIndex(action.region)
-      if (regionIndex === null) return state
-      return setIn(
-        state,
-        [...pathToActiveImage, "regions", regionIndex],
-        region
-      )
     }
     case "OPEN_REGION_EDITOR": {
       const { region } = action
@@ -512,8 +508,9 @@ export default (state: MainLayoutState, action: Action) => {
         case "done": {
           return state
         }
+        default:
+          return state
       }
-      return state
     }
     case "SELECT_TOOL": {
       state = setIn(state, ["mode"], null)
@@ -535,6 +532,8 @@ export default (state: MainLayoutState, action: Action) => {
           case "MOVE_REGION": {
             return setIn(state, ["mode"], null)
           }
+          default:
+            return state
         }
       }
       // Close any open boxes
@@ -558,7 +557,10 @@ export default (state: MainLayoutState, action: Action) => {
           }))
         )
       }
+      break
     }
+    default:
+      break
   }
   return state
 }
