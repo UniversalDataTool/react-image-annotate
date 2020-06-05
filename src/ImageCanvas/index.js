@@ -1,40 +1,21 @@
 // @flow weak
 
-import React, {
-  Fragment,
-  useRef,
-  useState,
-  useLayoutEffect,
-  useEffect,
-} from "react"
+import React, { useRef, useState, useLayoutEffect } from "react"
 import type { Node } from "react"
 import { Matrix } from "transformation-matrix-js"
-import getImageData from "get-image-data"
 import Crosshairs from "../Crosshairs"
-import type {
-  Region,
-  PixelRegion,
-  Point,
-  Polygon,
-  Box,
-} from "./region-tools.js"
-import { getEnclosingBox } from "./region-tools.js"
+import type { Region, Point, Polygon, Box } from "./region-tools.js"
 import { makeStyles } from "@material-ui/core/styles"
 import styles from "./styles"
-import classnames from "classnames"
-import RegionLabel from "../RegionLabel"
-import LockIcon from "@material-ui/icons/Lock"
-import Paper from "@material-ui/core/Paper"
-import HighlightBox from "../HighlightBox"
 import PreventScrollToParents from "../PreventScrollToParents"
 import useWindowSize from "../hooks/use-window-size.js"
 import useMouse from "./use-mouse"
 import useProjectRegionBox from "./use-project-box"
-import useLoadImage from "../hooks/use-load-image"
 import useExcludePattern from "../hooks/use-exclude-pattern"
 import { useRafState } from "react-use"
 import PointDistances from "../PointDistances"
 import RegionTags from "../RegionTags"
+import ImageMask from "../ImageMask"
 import RegionSelectAndTransformBoxes from "../RegionSelectAndTransformBoxes"
 import VideoOrImageCanvasBackground from "../VideoOrImageCanvasBackground"
 import useEventCallback from "use-event-callback"
@@ -63,6 +44,8 @@ type Props = {
   allowedArea?: { x: number, y: number, w: number, h: number },
   RegionEditLabel?: Node,
   videoPlaying?: boolean,
+  mask?: ImageData,
+  maskVersion?: any,
 
   onChangeRegion: (Region) => any,
   onBeginRegionEdit: (Region) => any,
@@ -100,11 +83,13 @@ export default ({
   regionClsList,
   regionTagList,
   showCrosshairs,
-  showHighlightBox,
+  showHighlightBox = true,
   showPointDistances,
   allowedArea,
   RegionEditLabel = null,
   videoPlaying = false,
+  mask,
+  maskVersion,
 
   onImageOrVideoLoaded,
   onChangeRegion,
@@ -474,6 +459,7 @@ export default ({
         {...mouseEvents}
       >
         <>
+          {mask && <ImageMask maskVersion={maskVersion} imageData={mask} />}
           <canvas className={classes.canvas} ref={canvasEl} />
           <VideoOrImageCanvasBackground
             videoPlaying={videoPlaying}
