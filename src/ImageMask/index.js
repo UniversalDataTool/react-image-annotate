@@ -1,10 +1,7 @@
 // @flow
 
 import React, { useState, useEffect, useMemo } from "react"
-// videoPlaying={videoPlaying}
-            // imagePosition={imagePosition}
-            // mouse-events -> none
-export default ({ imageData, imagePosition, videoPlaying, maskVersion, opacity = 0.5, zIndex = 999, position = 'absolute'}) => {
+export default ({ imageData, imagePosition, videoPlaying, maskVersion, pointerEvents = "none", opacity = 0.5, zIndex = 999, position = 'absolute'}) => {
   const [canvasRef, setCanvasRef] = useState(null)
 
   useEffect(() => {
@@ -23,7 +20,8 @@ export default ({ imageData, imagePosition, videoPlaying, maskVersion, opacity =
       height: isNaN(height) ? 0 : height,
       zIndex,
       position,
-      opacity
+      opacity,
+      pointerEvents
     }
   }, [
     imagePosition.topLeft.x,
@@ -32,7 +30,8 @@ export default ({ imageData, imagePosition, videoPlaying, maskVersion, opacity =
     imagePosition.bottomRight.y,
     zIndex,
     position,
-    opacity
+    opacity,
+    pointerEvents
   ])
 
   return (
