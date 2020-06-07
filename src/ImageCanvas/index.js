@@ -459,7 +459,7 @@ export const ImageCanvas = ({
         {...mouseEvents}
       >
         <>
-          {mask && <ImageMask maskVersion={maskVersion} imageData={mask} />}
+          {mask && <ImageMask maskVersion={maskVersion} videoPlaying={videoPlaying} imagePosition={imagePosition} imageData={mask} />}
           <canvas className={classes.canvas} ref={canvasEl} />
           <VideoOrImageCanvasBackground
             videoPlaying={videoPlaying}

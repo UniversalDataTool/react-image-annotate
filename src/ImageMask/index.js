@@ -1,8 +1,10 @@
 // @flow
 
 import React, { useState, useEffect, useMemo } from "react"
-
-export default ({ imageData, maskVersion, opacity = 0.5 }) => {
+// videoPlaying={videoPlaying}
+            // imagePosition={imagePosition}
+            // mouse-events -> none
+export default ({ imageData, imagePosition, videoPlaying, maskVersion, opacity = 0.5, zIndex = 999, position = 'absolute'}) => {
   const [canvasRef, setCanvasRef] = useState(null)
 
   useEffect(() => {
@@ -11,7 +13,25 @@ export default ({ imageData, maskVersion, opacity = 0.5 }) => {
     context.putImageData(imageData, 0, 0)
   }, [canvasRef, imageData, maskVersion])
 
-  const style = useMemo(() => ({ opacity }), [opacity])
+  const style = useMemo(() => {
+    let width = imagePosition.bottomRight.x - imagePosition.topLeft.x
+    let height = imagePosition.bottomRight.y - imagePosition.topLeft.y
+    return {
+      left: imagePosition.topLeft.x,
+      top: imagePosition.topLeft.y,
+      width: isNaN(width) ? 0 : width,
+      height: isNaN(height) ? 0 : height,
+      zIndex,
+      position
+    }
+  }, [
+    imagePosition.topLeft.x,
+    imagePosition.topLeft.y,
+    imagePosition.bottomRight.x,
+    imagePosition.bottomRight.y,
+    zIndex,
+    position
+  ])
 
   return (
     <canvas
