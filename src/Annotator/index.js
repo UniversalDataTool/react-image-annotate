@@ -63,6 +63,7 @@ export const Annotator = ({
   videoTime = 0,
   videoName,
   onExit,
+  mask,
   onNextImage,
   onPrevImage,
 }: Props) => {
@@ -135,6 +136,8 @@ export const Annotator = ({
         RegionEditLabel={RegionEditLabel}
         alwaysShowNextButton={Boolean(onNextImage)}
         alwaysShowPrevButton={Boolean(onPrevImage)}
+        mask={mask}
+        // maskVersion={maskVersion}
         state={state}
         dispatch={dispatch}
       />

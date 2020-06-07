@@ -36,11 +36,12 @@ type Props = {
   alwaysShowPrevButton?: boolean,
 }
 
-export default ({
+export const MainLayout = ({
   state,
   dispatch,
   alwaysShowNextButton = false,
   alwaysShowPrevButton = false,
+  mask,
   RegionEditLabel,
 }: Props) => {
   const classes = useStyles()
@@ -154,6 +155,7 @@ export default ({
                 <ImageCanvas
                   {...settings}
                   key={state.selectedImage}
+                  mask={mask}
                   showTags={state.showTags}
                   allowedArea={state.allowedArea}
                   regionClsList={state.regionClsList}
@@ -262,3 +264,5 @@ export default ({
     </Fullscreen>
   )
 }
+
+export default MainLayout

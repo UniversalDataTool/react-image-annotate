@@ -9,7 +9,7 @@ import ImageMask from "./"
 
 const [width, height] = [200, 200]
 
-const uint8Array = new Uint8ClampedArray(4 * width * width)
+const uint8Array = new Uint8ClampedArray(4 * width * height)
 
 for (let ri = 0; ri < width; ri++) {
   for (let ci = 0; ci < height; ci++) {

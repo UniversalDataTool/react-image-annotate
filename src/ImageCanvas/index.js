@@ -66,7 +66,7 @@ type Props = {
 
 const getDefaultMat = () => Matrix.from(1, 0, 0, 1, -10, -10)
 
-export default ({
+export const ImageCanvas = ({
   regions,
   imageSrc,
   videoSrc,
@@ -480,3 +480,5 @@ export default ({
     </div>
   )
 }
+
+export default ImageCanvas
