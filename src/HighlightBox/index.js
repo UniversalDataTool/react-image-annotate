@@ -101,6 +101,7 @@ export const HighlightBox = ({
         top: pbox.y - 5,
         width: pbox.w + 10,
         height: pbox.h + 10,
+        transform: 'rotate(-45deg)'
       }}
     >
       <path
