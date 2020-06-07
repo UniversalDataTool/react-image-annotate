@@ -22,7 +22,8 @@ export default ({ imageData, imagePosition, videoPlaying, maskVersion, opacity =
       width: isNaN(width) ? 0 : width,
       height: isNaN(height) ? 0 : height,
       zIndex,
-      position
+      position,
+      opacity
     }
   }, [
     imagePosition.topLeft.x,
@@ -30,7 +31,8 @@ export default ({ imageData, imagePosition, videoPlaying, maskVersion, opacity =
     imagePosition.bottomRight.x,
     imagePosition.bottomRight.y,
     zIndex,
-    position
+    position,
+    opacity
   ])
 
   return (
