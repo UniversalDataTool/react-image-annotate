@@ -12,6 +12,8 @@ import TrashIcon from "@material-ui/icons/Delete"
 import CheckIcon from "@material-ui/icons/Check"
 import UndoIcon from "@material-ui/icons/Undo"
 import Select from "react-select"
+import CreatableSelect from "react-select/creatable"
+
 import { asMutable } from "seamless-immutable"
 
 const useStyles = makeStyles(styles)
@@ -100,7 +102,7 @@ export const RegionLabel = ({
           </div>
           {(allowedClasses || []).length > 0 && (
             <div style={{ marginTop: 6 }}>
-              <Select
+              <CreatableSelect
                 placeholder="Classification"
                 onChange={(o) =>
                   onChange({
