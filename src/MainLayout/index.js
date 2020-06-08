@@ -42,6 +42,7 @@ export const MainLayout = ({
   alwaysShowNextButton = false,
   alwaysShowPrevButton = false,
   mask,
+  fullImageSegmentationMode,
   RegionEditLabel,
 }: Props) => {
   const classes = useStyles()
@@ -156,6 +157,7 @@ export const MainLayout = ({
                   {...settings}
                   key={state.selectedImage}
                   mask={mask}
+                  fullImageSegmentationMode={fullImageSegmentationMode}
                   showTags={state.showTags}
                   allowedArea={state.allowedArea}
                   regionClsList={state.regionClsList}

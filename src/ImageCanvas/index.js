@@ -90,7 +90,7 @@ export const ImageCanvas = ({
   videoPlaying = false,
   mask,
   maskVersion,
-
+  fullImageSegmentationMode,
   onImageOrVideoLoaded,
   onChangeRegion,
   onBeginRegionEdit,
@@ -237,22 +237,41 @@ export const ImageCanvas = ({
     )) {
       switch (region.type) {
         case "point": {
-          context.save()
+          if(!fullImageSegmentationMode){
+            context.save()
+            
+            context.beginPath()
+            context.strokeStyle = region.color
+            context.moveTo(region.x * iw - 10, region.y * ih)
+            context.lineTo(region.x * iw - 2, region.y * ih)
+            context.moveTo(region.x * iw + 10, region.y * ih)
+            context.lineTo(region.x * iw + 2, region.y * ih)
+            context.moveTo(region.x * iw, region.y * ih - 10)
+            context.lineTo(region.x * iw, region.y * ih - 2)
+            context.moveTo(region.x * iw, region.y * ih + 10)
+            context.lineTo(region.x * iw, region.y * ih + 2)
+            context.moveTo(region.x * iw + 5, region.y * ih)
+            context.arc(region.x * iw, region.y * ih, 5, 0, 2 * Math.PI)
+            context.stroke()
+            context.restore()
+          }else {
+            const length = 4
+            context.save()
 
-          context.beginPath()
-          context.strokeStyle = region.color
-          context.moveTo(region.x * iw - 10, region.y * ih)
-          context.lineTo(region.x * iw - 2, region.y * ih)
-          context.moveTo(region.x * iw + 10, region.y * ih)
-          context.lineTo(region.x * iw + 2, region.y * ih)
-          context.moveTo(region.x * iw, region.y * ih - 10)
-          context.lineTo(region.x * iw, region.y * ih - 2)
-          context.moveTo(region.x * iw, region.y * ih + 10)
-          context.lineTo(region.x * iw, region.y * ih + 2)
-          context.moveTo(region.x * iw + 5, region.y * ih)
-          context.arc(region.x * iw, region.y * ih, 5, 0, 2 * Math.PI)
-          context.stroke()
-          context.restore()
+            context.beginPath()
+            context.strokeStyle = region.color
+
+            context.moveTo(region.x * iw, region.y * ih+ length)
+            context.lineTo(region.x * iw + length, region.y * ih)
+            context.moveTo(region.x * iw, region.y * ih- length)
+            context.lineTo(region.x * iw + length, region.y * ih)
+            context.moveTo(region.x * iw, region.y * ih-length)
+            context.lineTo(region.x * iw - length, region.y * ih)
+            context.moveTo(region.x * iw, region.y * ih+length)
+            context.lineTo(region.x * iw - length, region.y * ih)
+            context.stroke()
+            context.restore()
+          }
           break
         }
         case "box": {

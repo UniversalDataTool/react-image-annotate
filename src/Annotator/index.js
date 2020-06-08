@@ -58,6 +58,7 @@ export const Annotator = ({
   imageClsList = [],
   keyframes = {},
   taskDescription,
+  fullImageSegmentationMode,
   RegionEditLabel,
   videoSrc,
   videoTime = 0,
@@ -137,6 +138,7 @@ export const Annotator = ({
         alwaysShowNextButton={Boolean(onNextImage)}
         alwaysShowPrevButton={Boolean(onPrevImage)}
         mask={mask}
+        fullImageSegmentationMode={fullImageSegmentationMode}
         // maskVersion={maskVersion}
         state={state}
         dispatch={dispatch}

@@ -1,7 +1,14 @@
 // @flow
 
 import React, { useState, useEffect, useMemo } from "react"
-export default ({ imageData, imagePosition, videoPlaying, maskVersion, pointerEvents = "none", opacity = 0.5, zIndex = 999, position = 'absolute'}) => {
+export default ({ imageData,
+    imagePosition,
+    videoPlaying, maskVersion,
+    pointerEvents = "none",
+    opacity = 0.5,
+    zIndex = 999,
+    position = 'absolute'
+  }) => {
   const [canvasRef, setCanvasRef] = useState(null)
 
   useEffect(() => {

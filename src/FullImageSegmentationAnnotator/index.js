@@ -20,5 +20,11 @@ const imageData = new ImageData(uint8Array, width, height)
 // TODO remove this !!!!
 
 export default ({ onExit, images }) => {
-  return <Annotator mask={imageData} images={images} onExit={onExit} />
+  return (
+    <Annotator
+      images={images}
+      onExit={onExit}
+      fullImageSegmentationMode={true}
+    />
+  )
 }
