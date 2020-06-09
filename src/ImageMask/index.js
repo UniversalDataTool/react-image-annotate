@@ -1,14 +1,20 @@
 // @flow
 
 import React, { useState, useEffect, useMemo } from "react"
-export default ({ imageData,
-    imagePosition,
-    videoPlaying, maskVersion,
-    pointerEvents = "none",
-    opacity = 0.5,
-    zIndex = 999,
-    position = 'absolute'
-  }) => {
+
+import mmgc from "mmgc1-cpp"
+
+export default ({
+  classPoints,
+  imageData,
+  imagePosition,
+  videoPlaying,
+  maskVersion,
+  pointerEvents = "none",
+  opacity = 0.5,
+  zIndex = 999,
+  position = "absolute",
+}) => {
   const [canvasRef, setCanvasRef] = useState(null)
 
   useEffect(() => {
@@ -28,7 +34,7 @@ export default ({ imageData,
       zIndex,
       position,
       opacity,
-      pointerEvents
+      pointerEvents,
     }
   }, [
     imagePosition.topLeft.x,
@@ -38,7 +44,7 @@ export default ({ imageData,
     zIndex,
     position,
     opacity,
-    pointerEvents
+    pointerEvents,
   ])
 
   return (

@@ -46,6 +46,7 @@ type Props = {
   videoPlaying?: boolean,
   mask?: ImageData,
   maskVersion?: any,
+  fullImageSegmentationMode?: boolean,
 
   onChangeRegion: (Region) => any,
   onBeginRegionEdit: (Region) => any,
@@ -62,6 +63,7 @@ type Props = {
     duration?: number,
   }) => any,
   onChangeVideoTime: (number) => any,
+  onChangeVideoPlaying?: Function,
 }
 
 const getDefaultMat = () => Matrix.from(1, 0, 0, 1, -10, -10)
@@ -237,9 +239,9 @@ export const ImageCanvas = ({
     )) {
       switch (region.type) {
         case "point": {
-          if(!fullImageSegmentationMode){
+          if (!fullImageSegmentationMode) {
             context.save()
-            
+
             context.beginPath()
             context.strokeStyle = region.color
             context.moveTo(region.x * iw - 10, region.y * ih)
@@ -254,20 +256,20 @@ export const ImageCanvas = ({
             context.arc(region.x * iw, region.y * ih, 5, 0, 2 * Math.PI)
             context.stroke()
             context.restore()
-          }else {
+          } else {
             const length = 4
             context.save()
 
             context.beginPath()
             context.strokeStyle = region.color
 
-            context.moveTo(region.x * iw, region.y * ih+ length)
+            context.moveTo(region.x * iw, region.y * ih + length)
             context.lineTo(region.x * iw + length, region.y * ih)
-            context.moveTo(region.x * iw, region.y * ih- length)
+            context.moveTo(region.x * iw, region.y * ih - length)
             context.lineTo(region.x * iw + length, region.y * ih)
-            context.moveTo(region.x * iw, region.y * ih-length)
+            context.moveTo(region.x * iw, region.y * ih - length)
             context.lineTo(region.x * iw - length, region.y * ih)
-            context.moveTo(region.x * iw, region.y * ih+length)
+            context.moveTo(region.x * iw, region.y * ih + length)
             context.lineTo(region.x * iw - length, region.y * ih)
             context.stroke()
             context.restore()
@@ -478,7 +480,14 @@ export const ImageCanvas = ({
         {...mouseEvents}
       >
         <>
-          {mask && <ImageMask maskVersion={maskVersion} videoPlaying={videoPlaying} imagePosition={imagePosition} imageData={mask} />}
+          {mask && (
+            <ImageMask
+              maskVersion={maskVersion}
+              videoPlaying={videoPlaying}
+              imagePosition={imagePosition}
+              imageData={mask}
+            />
+          )}
           <canvas className={classes.canvas} ref={canvasEl} />
           <VideoOrImageCanvasBackground
             videoPlaying={videoPlaying}
