@@ -3551,7 +3551,7 @@ babel-plugin-macros@^2.0.0:
     cosmiconfig "^5.2.0"
     resolve "^1.10.0"
 
-babel-plugin-macros@^2.1.0, babel-plugin-macros@^2.7.0:
+babel-plugin-macros@^2.7.0:
   version "2.8.0"
   resolved "https://registry.yarnpkg.com/babel-plugin-macros/-/babel-plugin-macros-2.8.0.tgz#0f958a7cc6556b1e65344465d99111a1e5e10138"
   integrity sha512-SEP5kJpfGYqYKpBrj5XU3ahw5p5GOHJ0U5ssOSQ/WBVdwkD2Dzlce95exQTs3jOVWPPKLBN2rlEWkCK7dSmLvg==
@@ -10820,10 +10820,10 @@ mkdirp@0.5.1, mkdirp@0.5.x, mkdirp@^0.5.0, mkdirp@^0.5.1, mkdirp@~0.5.0, mkdirp@
   dependencies:
     minimist "0.0.8"
 
-mmgc1-cpp@^1.0.0:
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/mmgc1-cpp/-/mmgc1-cpp-1.0.0.tgz#59b4532c82958733049e818c6831c7f7aa7cc1b7"
-  integrity sha512-QqIkVp428kdTeV0X8nnAVFWq6sutTZrb/hG0eMDQNv4m3cLkMoHBmAe7x8V8/m/NOT5ujMRKC8zMjZz3odqJvQ==
+mmgc1-cpp@^1.0.2:
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/mmgc1-cpp/-/mmgc1-cpp-1.0.2.tgz#6bf7d8c322a094181f1258ad98a5d3cc2355afa9"
+  integrity sha512-UQ0xUJx0L4LVy5H6tQwDLswiLrMXnsrUAo1Fd2sFHlBuNwW+x5xV+ZA+MW3yAoRXJcut5bXJ5MsVOd7dzr5ucA==
 
 moment@^2.23.0:
   version "2.24.0"
@@ -13126,13 +13126,6 @@ raw-loader@^3.1.0:
   dependencies:
     loader-utils "^1.1.0"
     schema-utils "^2.0.1"
-
-raw.macro@^0.3.0:
-  version "0.3.0"
-  resolved "https://registry.yarnpkg.com/raw.macro/-/raw.macro-0.3.0.tgz#b62391c5c7a77fd5673b688ac031ba0c5cbff1dc"
-  integrity sha512-VGX8RNUyZ7cZDa4dM8tvysaqryMSQRPbZqmTKKIur2uaGbpmG9Jj9CAY3ndpO8J3RMu0zf2K0JvIwbYMS29TOQ==
-  dependencies:
-    babel-plugin-macros "^2.1.0"
 
 rc@^1.0.1, rc@^1.1.6, rc@^1.2.7, rc@^1.2.8:
   version "1.2.8"

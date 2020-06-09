@@ -14,7 +14,7 @@ storiesOf("FullImageSegmentationAnnotator", module).add("Basic", () => (
       images={[
         {
           name: "Seve's Desk",
-          src: exampleImage,
+          src: "https://a.allegroimg.com/s128/113a6e/09d2c0ed4f278610e555c95b1d50/Rama-BIANCHI-OLTRE-XR4-DISC-carbon-Vision-ACR-51cm-Dedykowany-a-do-kolarstwo-szosowe",
         },
       ]}
       onExit={action("onExit")}

@@ -1,6 +1,6 @@
 // @flow weak
 
-import React, { useRef, useState, useLayoutEffect } from "react"
+import React, { useRef, useState, useLayoutEffect, useMemo } from "react"
 import type { Node } from "react"
 import { Matrix } from "transformation-matrix-js"
 import Crosshairs from "../Crosshairs"
@@ -44,8 +44,6 @@ type Props = {
   allowedArea?: { x: number, y: number, w: number, h: number },
   RegionEditLabel?: Node,
   videoPlaying?: boolean,
-  mask?: ImageData,
-  maskVersion?: any,
   fullImageSegmentationMode?: boolean,
 
   onChangeRegion: (Region) => any,
@@ -90,8 +88,6 @@ export const ImageCanvas = ({
   allowedArea,
   RegionEditLabel = null,
   videoPlaying = false,
-  mask,
-  maskVersion,
   fullImageSegmentationMode,
   onImageOrVideoLoaded,
   onChangeRegion,
@@ -388,6 +384,12 @@ export const ImageCanvas = ({
     topLeft: mat.clone().inverse().applyToPoint(0, 0),
     bottomRight: mat.clone().inverse().applyToPoint(iw, ih),
   }
+  
+  const classPoints = useMemo(() => {
+    console.log("TODO this shouldn't be called on mouse moves")
+      return regions.filter(region => region.type === "point")
+  }
+  ,[regions])
 
   return (
     <div
@@ -480,14 +482,13 @@ export const ImageCanvas = ({
         {...mouseEvents}
       >
         <>
-          {mask && (
-            <ImageMask
-              maskVersion={maskVersion}
-              videoPlaying={videoPlaying}
-              imagePosition={imagePosition}
-              imageData={mask}
-            />
-          )}
+          {fullImageSegmentationMode && <ImageMask
+            imagePosition={imagePosition}
+            regionClsList={regionClsList}
+            imageSrc={imageSrc}
+            classPoints={classPoints
+            }
+          />}
           <canvas className={classes.canvas} ref={canvasEl} />
           <VideoOrImageCanvasBackground
             videoPlaying={videoPlaying}

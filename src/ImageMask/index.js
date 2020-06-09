@@ -1,27 +1,98 @@
 // @flow
 
-import React, { useState, useEffect, useMemo } from "react"
+import React, { useState, useEffect, useMemo, useRef } from "react"
 
 import mmgc from "mmgc1-cpp"
 
+console.log(mmgc)
+
 export default ({
   classPoints,
-  imageData,
+  regionClsList,
+  imageSrc,
   imagePosition,
-  videoPlaying,
-  maskVersion,
-  pointerEvents = "none",
   opacity = 0.5,
   zIndex = 999,
   position = "absolute",
 }) => {
   const [canvasRef, setCanvasRef] = useState(null)
+  
+  const lastTimeMMGCRun = useRef(Date.now());
+  const superPixelsGenerated = useRef(false)
+  const [sampleImageData, setSampleImageData] = useState()
+  
+  useEffect(() => {
+    if (!imageSrc) return;
+    const canvas = document.querySelector("canvas");
+    const ctx = canvas.getContext("2d");
+    
+    const image = new Image();
+    image.src = imageSrc;
+    image.onload = () => {
+      ctx.width = image.naturalWidth
+      ctx.height = image.naturalHeight
+      ctx.drawImage(image, 0, 0);
+      const imageData = ctx.getImageData(0, 0, image.naturalWidth, image.naturalHeight)
+      superPixelsGenerated.current = false;
+      setSampleImageData(imageData)
+    }
+  }, [imageSrc])
+  
 
   useEffect(() => {
     if (!canvasRef) return
+    if (!sampleImageData) return
+    if (!mmgc.setImage) return
+    if (Date.now() < lastTimeMMGCRun.current + 5000) return
     const context = canvasRef.getContext("2d")
-    context.putImageData(imageData, 0, 0)
-  }, [canvasRef, imageData, maskVersion])
+    
+    console.log("got the sample image data and ready to mmgc!")
+    
+    if (!superPixelsGenerated.current) {
+      console.log("generating super pixels...")
+      mmgc.setImage(sampleImageData.data, sampleImageData.width, sampleImageData.height);
+      mmgc.computeSuperPixels()
+      superPixelsGenerated.current = true
+    }
+  
+    // mmgc.setClassColor(0, 0xffffffff)
+    // mmgc.setClassColor(1, 0x00000000)
+    console.log("generating mask...")
+    mmgc.clearClassPoints()
+    for (const classPoint of classPoints) {
+      if (!classPoint.cls) continue
+      if (classPoint.x < 0) continue
+      ///etc...
+      console.log(
+        regionClsList.indexOf(classPoint.cls), Math.floor(
+        classPoint.y * sampleImageData.height
+        ), Math.floor(classPoint.x * sampleImageData.width
+        )
+      )
+      mmgc.addClassPoint(regionClsList.indexOf(classPoint.cls), Math.floor(
+        classPoint.y * sampleImageData.height
+        ), Math.floor(classPoint.x * sampleImageData.width
+        ))
+    }
+    // mmgc.addClassPoint(0, 100, 125)
+    // mmgc.addClassPoint(1, 10, 10)
+    // mmgc.addClassPoint(1, 240, 300)
+    mmgc.computeMasks()
+    const maskAddress = mmgc.getColoredMask()
+    const cppImDataUint8 = new Uint8ClampedArray(
+      mmgc.HEAPU8.buffer,
+      maskAddress,
+      sampleImageData.width * sampleImageData.height * 4
+    )
+    
+    const maskImageData = new ImageData(cppImDataUint8, sampleImageData.width, sampleImageData.height)
+
+    // for (const i = 0; i < cppImDataUint8.length;i++){
+    //   sampleImageData.data[i] = cppImDataUint8[i]
+    // }
+    context.clearRect(0,0,sampleImageData.width, sampleImageData.height)
+    context.putImageData(maskImageData, 0, 0)
+  }, [canvasRef, sampleImageData, JSON.stringify(classPoints.map(c => [c.x, c.y, c.cls]))])
 
   const style = useMemo(() => {
     let width = imagePosition.bottomRight.x - imagePosition.topLeft.x
@@ -34,7 +105,7 @@ export default ({
       zIndex,
       position,
       opacity,
-      pointerEvents,
+      pointerEvents: "none",
     }
   }, [
     imagePosition.topLeft.x,
@@ -44,14 +115,13 @@ export default ({
     zIndex,
     position,
     opacity,
-    pointerEvents,
   ])
-
+  
   return (
     <canvas
       style={style}
-      width={imageData.width}
-      height={imageData.height}
+      width={sampleImageData ? sampleImageData.width : 0}
+      height={sampleImageData ? sampleImageData.height : 0}
       ref={setCanvasRef}
     />
   )
