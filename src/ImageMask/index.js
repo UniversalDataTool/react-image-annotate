@@ -17,7 +17,7 @@ export default ({
 }) => {
   const [canvasRef, setCanvasRef] = useState(null)
   
-  const lastTimeMMGCRun = useRef(Date.now());
+  const lastTimeMMGCRun = useRef(0);
   const superPixelsGenerated = useRef(false)
   const [sampleImageData, setSampleImageData] = useState()
   
@@ -43,7 +43,9 @@ export default ({
     if (!canvasRef) return
     if (!sampleImageData) return
     if (!mmgc.setImage) return
-    if (Date.now() < lastTimeMMGCRun.current + 5000) return
+    // NEEDS DEBOUNCE
+    if (Date.now() < lastTimeMMGCRun.current + 500) return
+    lastTimeMMGCRun.current = Date.now()
     const context = canvasRef.getContext("2d")
     
     console.log("got the sample image data and ready to mmgc!")
@@ -72,24 +74,29 @@ export default ({
       mmgc.addClassPoint(regionClsList.indexOf(classPoint.cls), Math.floor(
         classPoint.y * sampleImageData.height
         ), Math.floor(classPoint.x * sampleImageData.width
-        ))
+      ))
     }
     // mmgc.addClassPoint(0, 100, 125)
     // mmgc.addClassPoint(1, 10, 10)
     // mmgc.addClassPoint(1, 240, 300)
     mmgc.computeMasks()
     const maskAddress = mmgc.getColoredMask()
-    const cppImDataUint8 = new Uint8ClampedArray(
+    const cppImDataUint8 = new Uint8Array(
       mmgc.HEAPU8.buffer,
       maskAddress,
-      sampleImageData.width * sampleImageData.height * 4
+      sampleImageData.data.length
+      // sampleImageData.width * sampleImageData.height * 4
     )
+    const clampedArray = Uint8ClampedArray.from(cppImDataUint8)
     
-    const maskImageData = new ImageData(cppImDataUint8, sampleImageData.width, sampleImageData.height)
+    window.uint8Arrays = (window.uint8Arrays || []).concat([cppImDataUint8])
+    
+    const maskImageData = new ImageData(clampedArray, sampleImageData.width, sampleImageData.height)
 
     // for (const i = 0; i < cppImDataUint8.length;i++){
     //   sampleImageData.data[i] = cppImDataUint8[i]
     // }
+    console.log(maskImageData.data)
     context.clearRect(0,0,sampleImageData.width, sampleImageData.height)
     context.putImageData(maskImageData, 0, 0)
   }, [canvasRef, sampleImageData, JSON.stringify(classPoints.map(c => [c.x, c.y, c.cls]))])
