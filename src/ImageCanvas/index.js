@@ -20,6 +20,17 @@ import RegionSelectAndTransformBoxes from "../RegionSelectAndTransformBoxes"
 import VideoOrImageCanvasBackground from "../VideoOrImageCanvasBackground"
 import useEventCallback from "use-event-callback"
 
+const getRandomInt = (min, max) => {
+  return Math.floor(Math.random() * (max - min + 1)) + min
+}
+
+const getRandomColor = () => {
+  const h = getRandomInt(0, 360)
+  const s = 100
+  const l = 50
+  return `hsl(${h},${s}%,${l}%)`
+}
+
 const useStyles = makeStyles(styles)
 
 type Props = {
@@ -142,6 +153,8 @@ export const ImageCanvas = ({
   const projectRegionBox = useProjectRegionBox({ layoutParams, mat })
 
   const [imageDimensions, changeImageDimensions] = useState()
+  const [colorForCls, setColorForCls] = useState([])
+  
   const imageLoaded = Boolean(imageDimensions && imageDimensions.naturalWidth)
   const onVideoOrImageLoaded = useEventCallback(
     ({ naturalWidth, naturalHeight, duration }) => {
@@ -253,11 +266,25 @@ export const ImageCanvas = ({
             context.stroke()
             context.restore()
           } else {
+            let color;
+            let colorIndex = colorForCls.findIndex(index => index.cls === region.cls)
+            
+            if(colorIndex === -1){
+              const randomColor = getRandomColor()
+              setColorForCls([
+                ...colorForCls,
+                { cls: region.cls, color: getRandomColor() }
+              ])
+              color = randomColor
+            }else{
+              color = colorForCls[colorIndex].color
+            }
+
             const length = 4
             context.save()
 
             context.beginPath()
-            context.strokeStyle = region.color
+            context.strokeStyle = color
 
             context.moveTo(region.x * iw, region.y * ih + length)
             context.lineTo(region.x * iw + length, region.y * ih)
