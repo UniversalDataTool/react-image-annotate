@@ -4,7 +4,7 @@ import React from "react"
 
 import { storiesOf } from "@storybook/react"
 import { action } from "@storybook/addon-actions"
-import exampleImage from "../ImageCanvas/seves_desk.story.jpg"
+import orange from "./orange.story.png"
 
 import FullImageSegmentationAnnotator from "./"
 
@@ -14,7 +14,26 @@ storiesOf("FullImageSegmentationAnnotator", module).add("Basic", () => (
       images={[
         {
           name: "Seve's Desk",
-          src: "https://a.allegroimg.com/s128/113a6e/09d2c0ed4f278610e555c95b1d50/Rama-BIANCHI-OLTRE-XR4-DISC-carbon-Vision-ACR-51cm-Dedykowany-a-do-kolarstwo-szosowe",
+          // src:
+          //   "https://a.allegroimg.com/s128/113a6e/09d2c0ed4f278610e555c95b1d50/Rama-BIANCHI-OLTRE-XR4-DISC-carbon-Vision-ACR-51cm-Dedykowany-a-do-kolarstwo-szosowe",
+          // src: "https://i.imgur.com/Dv5lkQZ.png",
+          src: orange,
+          regions: [
+            [0, 100, 125],
+            [0, 100, 150],
+            [1, 40, 280],
+            [1, 10, 10],
+            [1, 240, 300],
+          ].map(([cls, y, x], i) => ({
+            cls: ["cat", "dog"][cls],
+            color: "hsl(162,100%,50%)",
+            editingLabels: false,
+            highlighted: false,
+            id: "a" + i,
+            type: "point",
+            x: x / 320,
+            y: y / 249,
+          })),
         },
       ]}
       onExit={action("onExit")}

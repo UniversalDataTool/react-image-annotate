@@ -23,7 +23,11 @@ for (let ri = 0; ri < width; ri++) {
 const imageData = new ImageData(uint8Array, width, width)
 
 storiesOf("ImageMask", module)
-  .add("Basic", () => <ImageMask imagePosition={{topLeft: {x: 0, y: 0}}} />)
+  .add("Basic", () => (
+    <ImageMask
+      imagePosition={{ topLeft: { x: 0, y: 0 }, bottomRight: { x: 10, y: 10 } }}
+    />
+  ))
   .add("Changing", () => {
     const [version, incVersion] = useReducer((state) => state + 1, 0)
 
@@ -38,5 +42,5 @@ storiesOf("ImageMask", module)
         incVersion()
       }, 500)
     }, [])
-    return <ImageMask maskVersion={version} imageData={imageData} />
+    return <ImageMask />
   })

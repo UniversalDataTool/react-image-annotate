@@ -306,6 +306,11 @@ export default (state: MainLayoutState, action: Action) => {
         }
       }
 
+      let defaultRegion = undefined
+      if (activeImage) {
+        defaultRegion = activeImage.regions.slice(-1)[0].cls
+      }
+
       switch (state.selectedTool) {
         case "create-point": {
           state = saveToHistory(state, "Create Point")
@@ -317,6 +322,7 @@ export default (state: MainLayoutState, action: Action) => {
             editingLabels: true,
             color: getRandomColor(),
             id: getRandomId(),
+            cls: defaultRegion,
           }
           break
         }
