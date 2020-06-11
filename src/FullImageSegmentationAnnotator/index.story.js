@@ -5,6 +5,9 @@ import React from "react"
 import { storiesOf } from "@storybook/react"
 import { action } from "@storybook/addon-actions"
 import orange from "./orange.story.png"
+import hard1 from "./hard1.story.jpg"
+import hard2 from "./hard2.story.jpg"
+import hard3 from "./hard3.story.jpg"
 
 import FullImageSegmentationAnnotator from "./"
 
@@ -68,6 +71,48 @@ storiesOf("FullImageSegmentationAnnotator", module)
           },
         ]}
         regionClsList={["orange", "bg", "hand"]}
+        onExit={action("onExit")}
+      />
+    </div>
+  ))
+  .add("Hard 1, 8 Class", () => (
+    <div style={{ width: "100vw", height: "100vh" }}>
+      <FullImageSegmentationAnnotator
+        images={[
+          {
+            name: "Hard",
+            src: hard1,
+          },
+        ]}
+        regionClsList={["1", "2", "3", "4", "5", "6", "7", "8"]}
+        onExit={action("onExit")}
+      />
+    </div>
+  ))
+  .add("Hard 2, 8 Class", () => (
+    <div style={{ width: "100vw", height: "100vh" }}>
+      <FullImageSegmentationAnnotator
+        images={[
+          {
+            name: "Really Hard",
+            src: hard2,
+          },
+        ]}
+        regionClsList={["1", "2", "3", "4", "5", "6", "7", "8"]}
+        onExit={action("onExit")}
+      />
+    </div>
+  ))
+  .add("Hard 3, 8 Class", () => (
+    <div style={{ width: "100vw", height: "100vh" }}>
+      <FullImageSegmentationAnnotator
+        images={[
+          {
+            name: "Extremely Hard",
+            src: hard3,
+          },
+        ]}
+        regionClsList={["1", "2", "3", "4", "5", "6", "7", "8"]}
         onExit={action("onExit")}
       />
     </div>
