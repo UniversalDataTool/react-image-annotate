@@ -21,6 +21,4 @@ export const colorInts: Array<number> = colors.map(
   (c) => (parseInt(c.substr(1), 16) | 0xff000000) >>> 0
 )
 
-console.log(colorInts)
-
 export default colors

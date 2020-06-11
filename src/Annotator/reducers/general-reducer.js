@@ -370,10 +370,6 @@ export default (state: MainLayoutState, action: Action) => {
           break
       }
 
-      if (newRegion) {
-        state = unselectRegions(state)
-      }
-
       if (state.mode) {
         switch (state.mode.mode) {
           case "DRAW_POLYGON": {
@@ -394,6 +390,7 @@ export default (state: MainLayoutState, action: Action) => {
         .map((r) => ({
           ...r,
           editingLabels: false,
+          highlighted: false,
         }))
         .concat(newRegion ? [newRegion] : [])
 

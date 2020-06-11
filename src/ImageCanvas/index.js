@@ -414,7 +414,7 @@ export const ImageCanvas = ({
       {showCrosshairs && (
         <Crosshairs key="crossHairs" mousePosition={mousePosition} />
       )}
-      {imageLoaded && (
+      {imageLoaded && !dragging && (
         <RegionSelectAndTransformBoxes
           key="regionSelectAndTransformBoxes"
           regions={regions}
@@ -433,7 +433,7 @@ export const ImageCanvas = ({
           showHighlightBox={showHighlightBox}
         />
       )}
-      {imageLoaded && showTags && (
+      {imageLoaded && showTags && !dragging && (
         <PreventScrollToParents key="regionTags">
           <RegionTags
             regions={regions}

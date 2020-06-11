@@ -23,6 +23,7 @@
     "react-use": "^13.27.0",
     "react-use-measure": "^2.0.0",
     "seamless-immutable": "^7.1.4",
+    "shallow-equal": "^1.2.1",
     "storybook": "^5.3.14",
     "transformation-matrix-js": "^2.7.6",
     "use-event-callback": "^0.1.0",
