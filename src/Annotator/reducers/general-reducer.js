@@ -1,5 +1,4 @@
 // @flow
-
 import type { MainLayoutState, Action } from "../../MainLayout/types"
 import { moveRegion } from "../../ImageCanvas/region-tools.js"
 import { getIn, setIn, updateIn } from "seamless-immutable"
@@ -7,19 +6,9 @@ import moment from "moment"
 import isEqual from "lodash/isEqual"
 import getActiveImage from "./get-active-image"
 import { saveToHistory } from "./history-handler.js"
+import colors from "../../colors"
 
 const getRandomId = () => Math.random().toString().split(".")[1]
-
-const getRandomInt = (min, max) => {
-  return Math.floor(Math.random() * (max - min + 1)) + min
-}
-
-const getRandomColor = () => {
-  const h = getRandomInt(0, 360)
-  const s = 100
-  const l = 50
-  return `hsl(${h},${s}%,${l}%)`
-}
 
 export default (state: MainLayoutState, action: Action) => {
   // Throttle certain actions
@@ -306,9 +295,14 @@ export default (state: MainLayoutState, action: Action) => {
         }
       }
 
-      let defaultRegion = undefined
-      if (activeImage) {
-        defaultRegion = activeImage.regions.slice(-1)[0].cls
+      let defaultRegionCls = undefined,
+        defaultRegionColor = "#333333"
+      if (activeImage && (activeImage.regions || []).length > 0) {
+        defaultRegionCls = activeImage.regions.slice(-1)[0].cls
+        const clsIndex = (state.regionClsList || []).indexOf(defaultRegionCls)
+        if (clsIndex !== -1) {
+          defaultRegionColor = colors[clsIndex % colors.length]
+        }
       }
 
       switch (state.selectedTool) {
@@ -320,9 +314,9 @@ export default (state: MainLayoutState, action: Action) => {
             y,
             highlighted: true,
             editingLabels: true,
-            color: getRandomColor(),
+            color: defaultRegionColor,
             id: getRandomId(),
-            cls: defaultRegion,
+            cls: defaultRegionCls,
           }
           break
         }
@@ -336,7 +330,8 @@ export default (state: MainLayoutState, action: Action) => {
             h: 0.01,
             highlighted: true,
             editingLabels: false,
-            color: getRandomColor(),
+            color: defaultRegionColor,
+            cls: defaultRegionCls,
             id: getRandomId(),
           }
           state = unselectRegions(state)
@@ -361,7 +356,8 @@ export default (state: MainLayoutState, action: Action) => {
             ],
             open: true,
             highlighted: true,
-            color: getRandomColor(),
+            color: defaultRegionColor,
+            defaultRegionCls: defaultRegionCls,
             id: getRandomId(),
           }
           state = setIn(state, ["mode"], {

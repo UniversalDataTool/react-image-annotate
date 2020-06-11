@@ -384,12 +384,11 @@ export const ImageCanvas = ({
     topLeft: mat.clone().inverse().applyToPoint(0, 0),
     bottomRight: mat.clone().inverse().applyToPoint(iw, ih),
   }
-  
+
   const classPoints = useMemo(() => {
-    console.log("TODO this shouldn't be called on mouse moves")
-      return regions.filter(region => region.type === "point")
-  }
-  ,[regions])
+    // This shouldn't be called on mouse moves
+    return regions.filter((region) => region.type === "point")
+  }, [regions])
 
   return (
     <div
@@ -482,13 +481,14 @@ export const ImageCanvas = ({
         {...mouseEvents}
       >
         <>
-          {fullImageSegmentationMode && <ImageMask
-            imagePosition={imagePosition}
-            regionClsList={regionClsList}
-            imageSrc={imageSrc}
-            classPoints={classPoints
-            }
-          />}
+          {fullImageSegmentationMode && (
+            <ImageMask
+              imagePosition={imagePosition}
+              regionClsList={regionClsList}
+              imageSrc={imageSrc}
+              classPoints={classPoints}
+            />
+          )}
           <canvas className={classes.canvas} ref={canvasEl} />
           <VideoOrImageCanvasBackground
             videoPlaying={videoPlaying}

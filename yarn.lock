@@ -10820,10 +10820,10 @@ mkdirp@0.5.1, mkdirp@0.5.x, mkdirp@^0.5.0, mkdirp@^0.5.1, mkdirp@~0.5.0, mkdirp@
   dependencies:
     minimist "0.0.8"
 
-mmgc1-cpp@^1.0.24:
-  version "1.0.24"
-  resolved "https://registry.yarnpkg.com/mmgc1-cpp/-/mmgc1-cpp-1.0.24.tgz#37354150355486a10f304aa72dc9716ad4032d0a"
-  integrity sha512-vj19i2gpa9rT+byptCX6Qqb2h8BpQqAAOXhVJXM527KKiU1YDG6fv83DQ9RSRPJTX7RGPYKtb0mwJkPm8pomIA==
+mmgc1-cpp@^1.0.25:
+  version "1.0.25"
+  resolved "https://registry.yarnpkg.com/mmgc1-cpp/-/mmgc1-cpp-1.0.25.tgz#f5c79f0c4aa45be8496e5d8b6889e3fee207f53b"
+  integrity sha512-IepiEIBW8MCc2WJsj1i68gdbZKdEcPeyE7iLtJComPQDHNOCJ3xKZk7gPsw5meSbqKhMOfa2B81jXuLEqwtiRA==
 
 moment@^2.23.0:
   version "2.24.0"

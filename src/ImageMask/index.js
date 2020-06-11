@@ -1,6 +1,7 @@
 // @flow
 
 import React, { useState, useEffect, useMemo, useRef } from "react"
+import { colorInts } from "../colors"
 
 import MMGC_INIT from "mmgc1-cpp"
 
@@ -60,20 +61,27 @@ export default ({
       const imageAddress = mmgc.getImageAddr()
       mmgc.HEAPU8.set(sampleImageData.data, imageAddress)
       mmgc.computeSuperPixels()
+      for (let i = 0; i < colorInts.length; i++) {
+        mmgc.setClassColor(i, colorInts[i])
+      }
       superPixelsGenerated.current = "done"
     }
     if (superPixelsGenerated.current !== "done") return
 
-    mmgc.setClassColor(0, 0xff0000ff)
-    mmgc.setClassColor(1, 0xffff00ff)
-    mmgc.setClassColor(2, 0xff00ffff)
     // mmgc.setVerboseMode(true)
     mmgc.clearClassPoints()
     for (const classPoint of classPoints) {
       if (!classPoint.cls) continue
-      if (classPoint.x < 0) continue
+      if (classPoint.x < 0 || classPoint.x >= 1) continue
+      if (classPoint.y < 0 || classPoint.y >= 1) continue
+      const clsIndex = regionClsList.indexOf(classPoint.cls)
+      if (clsIndex > colorInts.length) {
+        console.log("Too many classes to draw on mask!")
+        continue
+      }
+
       mmgc.addClassPoint(
-        regionClsList.indexOf(classPoint.cls),
+        clsIndex,
         Math.floor(classPoint.y * sampleImageData.height),
         Math.floor(classPoint.x * sampleImageData.width)
       )
