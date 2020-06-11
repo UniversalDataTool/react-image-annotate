@@ -27,10 +27,11 @@ export default ({
     const ctx = canvas.getContext("2d")
 
     const image = new Image()
+    image.crossOrigin = "anonymous"
     image.src = imageSrc
     image.onload = () => {
-      ctx.width = image.naturalWidth
-      ctx.height = image.naturalHeight
+      canvas.width = image.naturalWidth
+      canvas.height = image.naturalHeight
       ctx.drawImage(image, 0, 0)
       const imageData = ctx.getImageData(
         0,
@@ -47,47 +48,36 @@ export default ({
     if (!canvasRef) return
     if (!sampleImageData) return
     if (classPoints.filter((cp) => cp.cls).length < 3) return
-    if (!mmgc.setImage) return
+    if (!mmgc.setImageSize) return
     // NEEDS DEBOUNCE
     if (Date.now() < lastTimeMMGCRun.current + 500) return
     lastTimeMMGCRun.current = Date.now()
     const context = canvasRef.getContext("2d")
 
-    console.log("got the sample image data and ready to mmgc!")
-
     if (!superPixelsGenerated.current) {
-      console.log("generating super pixels...")
-      mmgc.setImage(
-        sampleImageData.data,
-        sampleImageData.width,
-        sampleImageData.height
-      )
+      superPixelsGenerated.current = "processing"
+      mmgc.setImageSize(sampleImageData.width, sampleImageData.height)
+      const imageAddress = mmgc.getImageAddr()
+      mmgc.HEAPU8.set(sampleImageData.data, imageAddress)
       mmgc.computeSuperPixels()
-      superPixelsGenerated.current = true
+      superPixelsGenerated.current = "done"
     }
+    if (superPixelsGenerated.current !== "done") return
 
-    // mmgc.setClassColor(0, 0xffffffff)
-    // mmgc.setClassColor(1, 0x00000000)
-    console.log("generating mask...")
+    mmgc.setClassColor(0, 0xff0000ff)
+    mmgc.setClassColor(1, 0xffff00ff)
+    mmgc.setClassColor(2, 0xff00ffff)
+    // mmgc.setVerboseMode(true)
     mmgc.clearClassPoints()
     for (const classPoint of classPoints) {
       if (!classPoint.cls) continue
       if (classPoint.x < 0) continue
-      ///etc...
-      console.log(
-        regionClsList.indexOf(classPoint.cls),
-        Math.floor(classPoint.y * sampleImageData.height),
-        Math.floor(classPoint.x * sampleImageData.width)
-      )
       mmgc.addClassPoint(
         regionClsList.indexOf(classPoint.cls),
         Math.floor(classPoint.y * sampleImageData.height),
         Math.floor(classPoint.x * sampleImageData.width)
       )
     }
-    // mmgc.addClassPoint(0, 100, 125)
-    // mmgc.addClassPoint(1, 10, 10)
-    // mmgc.addClassPoint(1, 240, 300)
     mmgc.computeMasks()
     const maskAddress = mmgc.getColoredMask()
     const cppImDataUint8 = new Uint8ClampedArray(
@@ -102,9 +92,6 @@ export default ({
       sampleImageData.height
     )
 
-    // for (const i = 0; i < cppImDataUint8.length;i++){
-    //   sampleImageData.data[i] = cppImDataUint8[i]
-    // }
     context.clearRect(0, 0, sampleImageData.width, sampleImageData.height)
     context.putImageData(maskImageData, 0, 0)
   }, [
@@ -117,7 +104,7 @@ export default ({
     let width = imagePosition.bottomRight.x - imagePosition.topLeft.x
     let height = imagePosition.bottomRight.y - imagePosition.topLeft.y
     return {
-      // imageRendering: "pixelated",
+      imageRendering: "pixelated",
       left: imagePosition.topLeft.x,
       top: imagePosition.topLeft.y,
       width: isNaN(width) ? 0 : width,
