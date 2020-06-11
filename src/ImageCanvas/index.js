@@ -353,6 +353,8 @@ export const ImageCanvas = ({
           context.restore()
           break
         }
+        default:
+          break
       }
     }
     context.restore()
@@ -386,7 +388,6 @@ export const ImageCanvas = ({
   }
 
   const classPoints = useMemo(() => {
-    // This shouldn't be called on mouse moves
     return regions.filter((region) => region.type === "point")
   }, [regions])
 

@@ -4,7 +4,6 @@ import React, { Fragment, memo } from "react"
 import HighlightBox from "../HighlightBox"
 import { styled } from "@material-ui/core/styles"
 import PreventScrollToParents from "../PreventScrollToParents"
-import { shallowEqualObjects } from "shallow-equal"
 
 const TransformGrabber = styled("div")({
   width: 8,
@@ -22,7 +21,7 @@ const boxCursorMap = [
 
 const arePropsEqual = (prev, next) => {
   return (
-    shallowEqualObjects(prev.region, next.region) &&
+    prev.region === next.region &&
     prev.dragWithPrimary === next.dragWithPrimary &&
     prev.createWithPrimary === next.createWithPrimary &&
     prev.zoomWithPrimary === next.zoomWithPrimary &&

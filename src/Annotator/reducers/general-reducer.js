@@ -103,6 +103,10 @@ export default (state: MainLayoutState, action: Action) => {
       const oldRegion = activeImage.regions[regionIndex]
       if (oldRegion.cls !== action.region.cls) {
         state = saveToHistory(state, "Change Region Classification")
+        const clsIndex = state.regionClsList.indexOf(action.region.cls)
+        if (clsIndex !== -1) {
+          action.region.color = colors[clsIndex % colors.length]
+        }
       }
       if (!isEqual(oldRegion.tags, action.region.tags)) {
         state = saveToHistory(state, "Change Region Tags")
@@ -296,7 +300,7 @@ export default (state: MainLayoutState, action: Action) => {
       }
 
       let defaultRegionCls = undefined,
-        defaultRegionColor = "#333333"
+        defaultRegionColor = "#ff0000"
       if (activeImage && (activeImage.regions || []).length > 0) {
         defaultRegionCls = activeImage.regions.slice(-1)[0].cls
         const clsIndex = (state.regionClsList || []).indexOf(defaultRegionCls)
@@ -334,7 +338,6 @@ export default (state: MainLayoutState, action: Action) => {
             cls: defaultRegionCls,
             id: getRandomId(),
           }
-          state = unselectRegions(state)
           state = setIn(state, ["mode"], {
             mode: "RESIZE_BOX",
             editLabelEditorAfter: true,
@@ -382,16 +385,14 @@ export default (state: MainLayoutState, action: Action) => {
             )
           }
           default:
-            return state
+            break
         }
       }
 
-      const regions = [...(activeImage.regions || [])]
-        .map((r) => ({
-          ...r,
-          editingLabels: false,
-          highlighted: false,
-        }))
+      const regions = [...(getIn(state, pathToActiveImage).regions || [])]
+        .map((r) =>
+          setIn(r, ["editingLabels"], false).setIn(["highlighted"], false)
+        )
         .concat(newRegion ? [newRegion] : [])
 
       return setIn(state, [...pathToActiveImage, "regions"], regions)
