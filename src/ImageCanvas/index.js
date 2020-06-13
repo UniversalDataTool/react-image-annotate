@@ -19,6 +19,7 @@ import ImageMask from "../ImageMask"
 import RegionSelectAndTransformBoxes from "../RegionSelectAndTransformBoxes"
 import VideoOrImageCanvasBackground from "../VideoOrImageCanvasBackground"
 import useEventCallback from "use-event-callback"
+import RegionShapes from "../RegionShapes"
 
 const useStyles = makeStyles(styles)
 
@@ -490,7 +491,16 @@ export const ImageCanvas = ({
               classPoints={classPoints}
             />
           )}
-          <canvas className={classes.canvas} ref={canvasEl} />
+          <canvas
+            style={{ opacity: 0.25 }}
+            className={classes.canvas}
+            ref={canvasEl}
+          />
+          <RegionShapes
+            mat={mat}
+            imagePosition={imagePosition}
+            regions={regions}
+          />
           <VideoOrImageCanvasBackground
             videoPlaying={videoPlaying}
             imagePosition={imagePosition}

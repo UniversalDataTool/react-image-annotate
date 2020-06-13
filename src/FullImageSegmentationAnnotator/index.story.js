@@ -11,7 +11,7 @@ import hard3 from "./hard3.story.jpg"
 
 import FullImageSegmentationAnnotator from "./"
 
-storiesOf("FullImageSegmentationAnnotator", module)
+storiesOf("FullImageSegmentationAnnotator.Basic", module)
   .add("Orange 2 Class", () => (
     <div style={{ width: "100vw", height: "100vh" }}>
       <FullImageSegmentationAnnotator

@@ -6,6 +6,7 @@ import {
   faArrowsAlt,
   faMousePointer,
   faExpandArrowsAlt,
+  faGripLines,
   faTag,
   faPaintBrush,
   faCrosshairs,
@@ -37,7 +38,13 @@ type Props = {
   onClickTool: (string) => any,
 }
 
-const defaultTools = ["select", "create-point", "create-box", "create-polygon"]
+const defaultTools = [
+  "select",
+  "create-point",
+  "create-box",
+  "create-polygon",
+  "create-expanding-line",
+]
 
 export const IconTools = ({
   showTags,
@@ -102,6 +109,11 @@ export const IconTools = ({
           id="create-polygon"
           name="Add Polygon"
           icon={<FontAwesomeIcon size="xs" fixedWidth icon={faDrawPolygon} />}
+        />
+        <SmallToolButton
+          id="create-expanding-line"
+          name="Add Expanding Line"
+          icon={<FontAwesomeIcon size="xs" fixedWidth icon={faGripLines} />}
         />
         {/* <SmallToolButton
           id="create-pixel"

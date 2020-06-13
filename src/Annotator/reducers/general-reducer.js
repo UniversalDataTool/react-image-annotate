@@ -291,14 +291,37 @@ export default (state: MainLayoutState, action: Action) => {
       if (!activeImage) return state
       const { x, y } = action
 
-      let newRegion
       if (state.allowedArea) {
+        // TODO clamp x/y instead of giving up
+        // TODO or image bounds
         const aa = state.allowedArea
         if (x < aa.x || x > aa.x + aa.w || y < aa.y || y > aa.y + aa.h) {
           return state
         }
       }
 
+      if (state.mode) {
+        switch (state.mode.mode) {
+          case "DRAW_POLYGON": {
+            const [polygon, regionIndex] = getRegion(state.mode.regionId)
+            if (!polygon) break
+            return setIn(
+              state,
+              [...pathToActiveImage, "regions", regionIndex],
+              { ...polygon, points: polygon.points.concat([[x, y]]) }
+            )
+          }
+          case "DRAW_EXPANDING_LINE": {
+            const [expandingLine, regionIndex] = getRegion(state.mode.regionId)
+            if (!expandingLine) break
+            return state
+          }
+          default:
+            break
+        }
+      }
+
+      let newRegion
       let defaultRegionCls = undefined,
         defaultRegionColor = "#ff0000"
       if (activeImage && (activeImage.regions || []).length > 0) {
@@ -369,24 +392,26 @@ export default (state: MainLayoutState, action: Action) => {
           })
           break
         }
+        case "create-expanding-line": {
+          state = saveToHistory(state, "Create Expanding Line")
+          newRegion = {
+            type: "expanding-line",
+            unfinished: true,
+            points: [{ x, y, angle: null, width: null }],
+            open: true,
+            highlighted: true,
+            color: defaultRegionColor,
+            defaultRegionCls: defaultRegionCls,
+            id: getRandomId(),
+          }
+          state = setIn(state, ["mode"], {
+            mode: "DRAW_EXPANDING_LINE",
+            regionId: newRegion.id,
+          })
+          break
+        }
         default:
           break
-      }
-
-      if (state.mode) {
-        switch (state.mode.mode) {
-          case "DRAW_POLYGON": {
-            const [polygon, regionIndex] = getRegion(state.mode.regionId)
-            if (!polygon) break
-            return setIn(
-              state,
-              [...pathToActiveImage, "regions", regionIndex],
-              { ...polygon, points: polygon.points.concat([[x, y]]) }
-            )
-          }
-          default:
-            break
-        }
       }
 
       const regions = [...(getIn(state, pathToActiveImage).regions || [])]

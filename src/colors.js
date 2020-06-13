@@ -17,8 +17,10 @@ export const colors = [
   muiColors.blueGrey[500],
 ]
 
+const transparency = 0x88000000
+
 export const colorInts: Array<number> = colors.map(
-  (c) => (parseInt(c.substr(1), 16) | 0xff000000) >>> 0
+  (c) => (parseInt(c.substr(1), 16) | transparency) >>> 0
 )
 
 export default colors
