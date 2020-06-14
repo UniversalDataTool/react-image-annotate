@@ -6,7 +6,7 @@ import { useDebounce } from "react-use"
 
 import MMGC_INIT from "mmgc1-cpp"
 
-export default ({
+export const ImageMask = ({
   classPoints,
   regionClsList,
   imageSrc,
@@ -51,23 +51,34 @@ export default ({
       if (!sampleImageData) return
       if (classPoints.filter((cp) => cp.cls).length < 3) return
       if (!mmgc.setImageSize) return
-      // NEEDS DEBOUNCE
       const context = canvasRef.getContext("2d")
 
       if (!superPixelsGenerated.current) {
         superPixelsGenerated.current = "processing"
+        mmgc.setMaxClusters(10000)
         mmgc.setImageSize(sampleImageData.width, sampleImageData.height)
+        mmgc.setClassColor(0, 0)
+        for (let i = 0; i < colorInts.length; i++) {
+          mmgc.setClassColor(i + 1, colorInts[i])
+        }
         const imageAddress = mmgc.getImageAddr()
         mmgc.HEAPU8.set(sampleImageData.data, imageAddress)
         mmgc.computeSuperPixels()
-        for (let i = 0; i < colorInts.length; i++) {
-          mmgc.setClassColor(i, colorInts[i])
-        }
         superPixelsGenerated.current = "done"
       }
       if (superPixelsGenerated.current !== "done") return
 
       // mmgc.setVerboseMode(true)
+      if (
+        !["bg", "background", "nothing"].includes(
+          regionClsList[0].toLowerCase()
+        )
+      ) {
+        console.log(
+          `first region cls must be "bg" or "background" or "nothing"`
+        )
+        return
+      }
       mmgc.clearClassPoints()
       for (const classPoint of classPoints) {
         if (!classPoint.cls) continue
@@ -100,17 +111,10 @@ export default ({
       )
 
       context.clearRect(0, 0, sampleImageData.width, sampleImageData.height)
-      context.globalAlpha = 0.25
       context.putImageData(maskImageData, 0, 0)
-      context.globalAlpha = 1
     },
     1000,
-    [
-      canvasRef,
-      sampleImageData,
-      JSON.stringify(classPoints.map((c) => [c.x, c.y, c.cls])),
-      hide,
-    ]
+    [canvasRef, sampleImageData, classPoints, hide]
   )
 
   const style = useMemo(() => {
@@ -146,3 +150,5 @@ export default ({
     />
   )
 }
+
+export default ImageMask

@@ -107,64 +107,23 @@ const RegionComponents = {
         />
       </>
     )
-    return (
-      <polyline
-        points={points
-          .map(({ x, y }) => [x * iw, y * ih])
-          .map((a) => a.join(" "))
-          .join(" ")}
-        strokeWidth={2}
-        stroke={colorAlpha(region.color, 0.75)}
-        fill={colorAlpha(region.color, 0.25)}
-      />
-    )
   }),
   pixel: () => null,
 }
 
-export const RegionShapes = ({ mat, imagePosition, regions = [] }) => {
-  // for (const region of regions.filter(
-  //   (r) => r.visible || r.visible === undefined
-  // )) {
-  //   switch (region.type) {
-  //     case "box": {
-  //       context.save()
-  //
-  //       context.shadowColor = "black"
-  //       context.shadowBlur = 4
-  //       context.strokeStyle = region.color
-  //       context.strokeRect(
-  //         region.x * iw,
-  //         region.y * ih,
-  //         region.w * iw,
-  //         region.h * ih
-  //       )
-  //
-  //       context.restore()
-  //       break
-  //     }
-  //     case "polygon": {
-  //       context.save()
-  //
-  //       context.shadowColor = "black"
-  //       context.shadowBlur = 4
-  //       context.strokeStyle = region.color
-  //
-  //       context.beginPath()
-  //       context.moveTo(region.points[0][0] * iw, region.points[0][1] * ih)
-  //       for (const point of region.points) {
-  //         context.lineTo(point[0] * iw, point[1] * ih)
-  //       }
-  //       if (!region.open) context.closePath()
-  //       context.stroke()
-  //       context.restore()
-  //       break
-  //     }
-  //     default:
-  //       break
-  //   }
-  // }
+export const WrappedRegionList = memo(
+  ({ regions, iw, ih }) => {
+    return regions
+      .filter((r) => r.visible !== false)
+      .map((r) => {
+        const Component = RegionComponents[r.type]
+        return <Component key={r.regionId} region={r} iw={iw} ih={ih} />
+      })
+  },
+  (n, p) => n.regions === p.regions && n.iw === p.iw && n.ih === p.ih
+)
 
+export const RegionShapes = ({ mat, imagePosition, regions = [] }) => {
   const iw = imagePosition.bottomRight.x - imagePosition.topLeft.x
   const ih = imagePosition.bottomRight.y - imagePosition.topLeft.y
   return (
@@ -181,12 +140,7 @@ export const RegionShapes = ({ mat, imagePosition, regions = [] }) => {
         height: ih,
       }}
     >
-      {regions
-        .filter((r) => r.visible !== false)
-        .map((r) => {
-          const Component = RegionComponents[r.type]
-          return <Component key={r.regionId} region={r} iw={iw} ih={ih} />
-        })}
+      <WrappedRegionList regions={regions} iw={iw} ih={ih} />
     </svg>
   )
 }

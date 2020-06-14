@@ -169,13 +169,16 @@ export const RegionSelectAndTransformBox = memo(
   arePropsEqual
 )
 
-export const RegionSelectAndTransformBoxes = (props) => {
-  return props.regions
-    .filter((r) => r.visible || r.visible === undefined)
-    .filter((r) => !r.locked)
-    .map((r, i) => {
-      return <RegionSelectAndTransformBox key={r.id} {...props} region={r} />
-    })
-}
+export const RegionSelectAndTransformBoxes = memo(
+  (props) => {
+    return props.regions
+      .filter((r) => r.visible || r.visible === undefined)
+      .filter((r) => !r.locked)
+      .map((r, i) => {
+        return <RegionSelectAndTransformBox key={r.id} {...props} region={r} />
+      })
+  },
+  (n, p) => n.regions === p.regions
+)
 
 export default RegionSelectAndTransformBoxes

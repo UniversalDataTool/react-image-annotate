@@ -5,7 +5,6 @@ function clamp(num, min, max) {
 }
 
 export default (expandingLine) => {
-  console.log({ expandingLine })
   const expandingWidth = expandingLine.expandingWidth || 0.005
   const pointPairs = expandingLine.points.map(({ x, y, angle, width }, i) => {
     if (!angle) {

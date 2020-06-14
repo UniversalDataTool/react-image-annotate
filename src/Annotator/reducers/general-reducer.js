@@ -480,7 +480,7 @@ export default (state: MainLayoutState, action: Action) => {
             open: true,
             highlighted: true,
             color: defaultRegionColor,
-            defaultRegionCls: defaultRegionCls,
+            cls: defaultRegionCls,
             id: getRandomId(),
           }
           state = setIn(state, ["mode"], {
@@ -498,7 +498,7 @@ export default (state: MainLayoutState, action: Action) => {
             open: true,
             highlighted: true,
             color: defaultRegionColor,
-            defaultRegionCls: defaultRegionCls,
+            cls: defaultRegionCls,
             id: getRandomId(),
           }
           state = setIn(state, ["mode"], {
@@ -693,6 +693,8 @@ export default (state: MainLayoutState, action: Action) => {
       const { mode } = state
       if (mode) {
         switch (mode.mode) {
+          case "DRAW_EXPANDING_LINE":
+          case "SET_EXPANDING_LINE_WIDTH":
           case "DRAW_POLYGON": {
             const { regionId } = mode
             return modifyRegion(regionId, null)
