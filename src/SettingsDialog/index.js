@@ -33,6 +33,11 @@ export const SettingsDialog = ({ open, onClose }) => {
                 name: "showHighlightBox",
               },
               {
+                type: "boolean",
+                title: "WASD Mode",
+                name: "wasdMode",
+              },
+              {
                 type: "dropdown",
                 title: "Video Playback Speed",
                 name: "videoPlaybackSpeed",

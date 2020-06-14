@@ -135,17 +135,19 @@ export const RegionLabel = ({
               />
             </div>
           )}
-          <div style={{ marginTop: 4, display: "flex" }}>
-            <div style={{ flexGrow: 1 }} />
-            <Button
-              onClick={() => onClose(region)}
-              size="small"
-              variant="contained"
-              color="primary"
-            >
-              <CheckIcon />
-            </Button>
-          </div>
+          {onClose && (
+            <div style={{ marginTop: 4, display: "flex" }}>
+              <div style={{ flexGrow: 1 }} />
+              <Button
+                onClick={() => onClose(region)}
+                size="small"
+                variant="contained"
+                color="primary"
+              >
+                <CheckIcon />
+              </Button>
+            </div>
+          )}
         </div>
       )}
     </Paper>

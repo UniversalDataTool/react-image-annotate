@@ -119,6 +119,7 @@ export const RegionSelectAndTransformBox = memo(
                   }}
                   style={{
                     cursor: !r.open ? "move" : i === 0 ? "pointer" : undefined,
+                    zIndex: 10,
                     pointerEvents:
                       r.open && i === r.points.length - 1 ? "none" : undefined,
                     left: proj.x - 4,
@@ -152,6 +153,7 @@ export const RegionSelectAndTransformBox = memo(
                     }}
                     style={{
                       cursor: "copy",
+                      zIndex: 10,
                       left: proj.x - 4,
                       top: proj.y - 4,
                       border: "2px dotted #fff",

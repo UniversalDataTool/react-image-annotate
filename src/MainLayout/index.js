@@ -41,8 +41,6 @@ export const MainLayout = ({
   dispatch,
   alwaysShowNextButton = false,
   alwaysShowPrevButton = false,
-  mask,
-  fullImageSegmentationMode,
   RegionEditLabel,
 }: Props) => {
   const classes = useStyles()
@@ -144,6 +142,7 @@ export const MainLayout = ({
             <IconTools
               enabledTools={state.enabledTools}
               showTags={state.showTags}
+              showMask={state.showMask}
               selectedTool={state.selectedTool}
               onClickTool={action("SELECT_TOOL", "selectedTool")}
             />
@@ -156,8 +155,8 @@ export const MainLayout = ({
                 <ImageCanvas
                   {...settings}
                   key={state.selectedImage}
-                  mask={mask}
-                  fullImageSegmentationMode={fullImageSegmentationMode}
+                  showMask={state.showMask}
+                  fullImageSegmentationMode={state.fullImageSegmentationMode}
                   showTags={state.showTags}
                   allowedArea={state.allowedArea}
                   regionClsList={state.regionClsList}

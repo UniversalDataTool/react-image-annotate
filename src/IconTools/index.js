@@ -14,6 +14,7 @@ import {
   faVectorSquare,
   faHandPaper,
   faSearch,
+  faMask,
 } from "@fortawesome/free-solid-svg-icons"
 import SmallToolButton, { SelectedTool } from "../SmallToolButton"
 import { makeStyles } from "@material-ui/core/styles"
@@ -29,10 +30,12 @@ const useStyles = makeStyles({
     borderRight: `1px solid ${grey[300]}`,
     backgroundColor: grey[100],
   },
+  grow: { flexGrow: 1 },
 })
 
 type Props = {
   showTags?: boolean,
+  showMask?: boolean,
   enabledTools?: Array<string>,
   selectedTool: string,
   onClickTool: (string) => any,
@@ -48,6 +51,7 @@ const defaultTools = [
 
 export const IconTools = ({
   showTags,
+  showMask,
   selectedTool,
   onClickTool,
   enabledTools = defaultTools,
@@ -115,11 +119,13 @@ export const IconTools = ({
           name="Add Expanding Line"
           icon={<FontAwesomeIcon size="xs" fixedWidth icon={faGripLines} />}
         />
-        {/* <SmallToolButton
-          id="create-pixel"
-          name="Add Pixel Region"
-          icon={<FontAwesomeIcon size="xs" fixedWidth icon={faPaintBrush} />}
-        /> */}
+        <SmallToolButton
+          togglable
+          selected={showMask}
+          id="show-mask"
+          name="Show / Hide Mask"
+          icon={<FontAwesomeIcon size="xs" fixedWidth icon={faMask} />}
+        />
       </SelectedTool.Provider>
     </div>
   )

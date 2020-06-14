@@ -11,9 +11,8 @@ export default ({
   regionClsList,
   imageSrc,
   imagePosition,
-  opacity = 0.5,
-  zIndex = 2,
-  position = "absolute",
+  zIndex = 1,
+  hide = false,
 }) => {
   if (!window.mmgc) window.mmgc = MMGC_INIT()
   const mmgc = window.mmgc
@@ -47,6 +46,7 @@ export default ({
 
   useDebounce(
     () => {
+      if (hide) return
       if (!canvasRef) return
       if (!sampleImageData) return
       if (classPoints.filter((cp) => cp.cls).length < 3) return
@@ -109,6 +109,7 @@ export default ({
       canvasRef,
       sampleImageData,
       JSON.stringify(classPoints.map((c) => [c.x, c.y, c.cls])),
+      hide,
     ]
   )
 
@@ -116,6 +117,7 @@ export default ({
     let width = imagePosition.bottomRight.x - imagePosition.topLeft.x
     let height = imagePosition.bottomRight.y - imagePosition.topLeft.y
     return {
+      display: hide ? "none" : undefined,
       imageRendering: "pixelated",
       transform: "translateZ(0px)",
       left: imagePosition.topLeft.x,
@@ -123,8 +125,7 @@ export default ({
       width: isNaN(width) ? 0 : width,
       height: isNaN(height) ? 0 : height,
       zIndex,
-      position,
-      opacity: 1,
+      position: "absolute",
       pointerEvents: "none",
     }
   }, [
@@ -133,8 +134,7 @@ export default ({
     imagePosition.bottomRight.x,
     imagePosition.bottomRight.y,
     zIndex,
-    position,
-    opacity,
+    hide,
   ])
 
   return (

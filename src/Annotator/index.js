@@ -57,6 +57,7 @@ export const Annotator = ({
     "create-box",
     "create-polygon",
     "create-expanding-line",
+    "show-mask",
   ],
   selectedTool = "select",
   regionTagList = [],
@@ -71,7 +72,6 @@ export const Annotator = ({
   videoTime = 0,
   videoName,
   onExit,
-  mask,
   onNextImage,
   onPrevImage,
 }: Props) => {
@@ -92,8 +92,10 @@ export const Annotator = ({
       showPointDistances,
       pointDistancePrecision,
       selectedTool,
+      fullImageSegmentationMode: fullImageSegmentationMode,
       mode: null,
       taskDescription,
+      showMask: true,
       labelImages: imageClsList.length > 0 || imageTagList.length > 0,
       regionClsList,
       regionTagList,
@@ -144,9 +146,6 @@ export const Annotator = ({
         RegionEditLabel={RegionEditLabel}
         alwaysShowNextButton={Boolean(onNextImage)}
         alwaysShowPrevButton={Boolean(onPrevImage)}
-        mask={mask}
-        fullImageSegmentationMode={fullImageSegmentationMode}
-        // maskVersion={maskVersion}
         state={state}
         dispatch={dispatch}
       />

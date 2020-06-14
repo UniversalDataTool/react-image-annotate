@@ -47,8 +47,13 @@ export type Polygon = {|
   open?: boolean,
   points: Array<[number, number]>,
 |}
+export type ExpandingLine = {|
+  ...$Exact<BaseRegion>,
+  type: "expanding-line",
+  points: Array<{ x: number, y: number, angle: number, width: number }>,
+|}
 
-export type Region = Point | PixelRegion | Box | Polygon
+export type Region = Point | PixelRegion | Box | Polygon | ExpandingLine
 
 export const getEnclosingBox = (region: Region) => {
   switch (region.type) {
@@ -63,32 +68,25 @@ export const getEnclosingBox = (region: Region) => {
       box.h = Math.max(...region.points.map(([x, y]) => y)) - box.y
       return box
     }
+    case "expanding-line": {
+      const box = {
+        x: Math.min(...region.points.map(({ x, y }) => x)),
+        y: Math.min(...region.points.map(({ x, y }) => y)),
+        w: 0,
+        h: 0,
+      }
+      box.w = Math.max(...region.points.map(({ x, y }) => x)) - box.x
+      box.h = Math.max(...region.points.map(({ x, y }) => y)) - box.y
+      return box
+    }
     case "box": {
       return { x: region.x, y: region.y, w: region.w, h: region.h }
     }
     case "point": {
       return { x: region.x, y: region.y, w: 0, h: 0 }
     }
-    case "pixel": {
-      if (
-        region.sx !== undefined &&
-        region.sy !== undefined &&
-        region.w &&
-        region.h
-      ) {
-        return { x: region.sx, y: region.sy, w: region.w, h: region.h }
-      }
-      if (region.points) {
-        const box = {
-          x: Math.min(...region.points.map(([x, y]) => x)),
-          y: Math.min(...region.points.map(([x, y]) => y)),
-          w: 0,
-          h: 0,
-        }
-        box.w = Math.max(...region.points.map(([x, y]) => x)) - box.x
-        box.h = Math.max(...region.points.map(([x, y]) => y)) - box.y
-        return box
-      }
+    default: {
+      return
     }
   }
   throw new Error("unknown region")

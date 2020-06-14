@@ -56,6 +56,9 @@ export const HighlightBox = ({
   pbox: { x: number, y: number, w: number, h: number },
 }) => {
   const classes = useStyles()
+  if (!pbox.w || pbox.w === Infinity) return null
+  if (!pbox.h || pbox.h === Infinity) return null
+  if (r.unfinished) return null
 
   const styleCoords =
     r.type === "point"
