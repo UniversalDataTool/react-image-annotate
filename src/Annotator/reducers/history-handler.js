@@ -26,6 +26,15 @@ export default (reducer) => {
     const prevState = state
     const nextState = reducer(state, action)
 
+    if (action.type === "ON_CLS_ADDED" && action.cls && action.cls !== "") {
+      const oldRegionClsList = state.regionClsList
+      const newState = {
+        ...state,
+        regionClsList: oldRegionClsList.concat(action.cls),
+      }
+      return newState
+    }
+
     if (action.type === "RESTORE_HISTORY") {
       if (state.history.length > 0) {
         return setIn(
