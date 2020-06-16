@@ -26,7 +26,7 @@ export const RegionTags = ({
   layoutParams,
   imageSrc,
   RegionEditLabel,
-  onRegionLabelAdded,
+  onRegionClassAdded,
 }) => {
   const RegionLabel =
     RegionEditLabel != null ? RegionEditLabel : DefaultRegionLabel
@@ -116,7 +116,7 @@ export const RegionTags = ({
               region={region}
               regions={regions}
               imageSrc={imageSrc}
-              onRegionLabelAdded={onRegionLabelAdded}
+              onRegionClassAdded={onRegionClassAdded}
             />
           </div>
         </div>

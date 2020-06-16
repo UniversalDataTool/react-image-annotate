@@ -22,6 +22,15 @@ const getRandomColor = () => {
 }
 
 export default (state: MainLayoutState, action: Action) => {
+  if (action.type === "ON_CLS_ADDED" && action.cls && action.cls !== "") {
+    const oldRegionClsList = state.regionClsList
+    const newState = {
+      ...state,
+      regionClsList: oldRegionClsList.concat(action.cls),
+    }
+    return newState
+  }
+
   // Throttle certain actions
   if (action.type === "MOUSE_MOVE") {
     if (Date.now() - ((state: any).lastMouseMoveCall || 0) < 16) return state

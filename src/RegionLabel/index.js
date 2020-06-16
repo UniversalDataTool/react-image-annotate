@@ -29,7 +29,7 @@ type Props = {
   onChange: (Region) => null,
   onClose: (Region) => null,
   onOpen: (Region) => null,
-  onRegionLabelAdded: () => {},
+  onRegionClassAdded: () => {},
 }
 
 export const RegionLabel = ({
@@ -41,7 +41,7 @@ export const RegionLabel = ({
   onChange,
   onClose,
   onOpen,
-  onRegionLabelAdded,
+  onRegionClassAdded,
 }: Props) => {
   const classes = useStyles()
 
@@ -108,7 +108,7 @@ export const RegionLabel = ({
                 placeholder="Classification"
                 onChange={(o, actionMeta) => {
                   if (actionMeta.action == "create-option") {
-                    onRegionLabelAdded(o.value)
+                    onRegionClassAdded(o.value)
                   }
                   return onChange({
                     ...(region: any),

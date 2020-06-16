@@ -79,7 +79,7 @@ type Props = {
     duration?: number,
   }) => any,
   onChangeVideoTime: (number) => any,
-  onRegionLabelAdded: () => {},
+  onRegionClassAdded: () => {},
 }
 
 const getDefaultMat = () => Matrix.from(1, 0, 0, 1, -10, -10)
@@ -119,7 +119,7 @@ export default ({
   onDeleteRegion,
   onChangeVideoTime,
   onChangeVideoPlaying,
-  onRegionLabelAdded,
+  onRegionClassAdded,
 }: Props) => {
   const classes = useStyles()
 
@@ -443,7 +443,7 @@ export default ({
             layoutParams={layoutParams}
             imageSrc={imageSrc}
             RegionEditLabel={RegionEditLabel}
-            onRegionLabelAdded={onRegionLabelAdded}
+            onRegionClassAdded={onRegionClassAdded}
           />
         </PreventScrollToParents>
       )}
