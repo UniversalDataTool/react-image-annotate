@@ -41,6 +41,7 @@ type Props = {
   videoSrc?: string,
   keyframes?: Object,
   videoName?: string,
+  fullImageSegmentationMode?: boolean,
 }
 
 export const Annotator = ({
@@ -50,7 +51,14 @@ export const Annotator = ({
   showPointDistances,
   pointDistancePrecision,
   showTags = true,
-  enabledTools = ["select", "create-point", "create-box", "create-polygon"],
+  enabledTools = [
+    "select",
+    "create-point",
+    "create-box",
+    "create-polygon",
+    "create-expanding-line",
+    "show-mask",
+  ],
   selectedTool = "select",
   regionTagList = [],
   regionClsList = [],
@@ -58,6 +66,7 @@ export const Annotator = ({
   imageClsList = [],
   keyframes = {},
   taskDescription,
+  fullImageSegmentationMode = false,
   RegionEditLabel,
   videoSrc,
   videoTime = 0,
@@ -83,8 +92,10 @@ export const Annotator = ({
       showPointDistances,
       pointDistancePrecision,
       selectedTool,
+      fullImageSegmentationMode: fullImageSegmentationMode,
       mode: null,
       taskDescription,
+      showMask: true,
       labelImages: imageClsList.length > 0 || imageTagList.length > 0,
       regionClsList,
       regionTagList,

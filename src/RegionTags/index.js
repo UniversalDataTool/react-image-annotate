@@ -98,6 +98,7 @@ export const RegionTags = ({
           <div
             style={{
               position: "absolute",
+              zIndex: 20,
               left: 0,
               ...(displayOnTop ? { bottom: 0 } : { top: 0 }),
             }}

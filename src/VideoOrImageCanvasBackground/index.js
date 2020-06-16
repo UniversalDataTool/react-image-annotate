@@ -97,6 +97,7 @@ export default ({
     let width = imagePosition.bottomRight.x - imagePosition.topLeft.x
     let height = imagePosition.bottomRight.y - imagePosition.topLeft.y
     return {
+      imageRendering: "pixelated",
       left: imagePosition.topLeft.x,
       top: imagePosition.topLeft.y,
       width: isNaN(width) ? 0 : width,
