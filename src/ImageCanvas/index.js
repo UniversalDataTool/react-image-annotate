@@ -202,7 +202,7 @@ export const ImageCanvas = ({
       // Pattern to indicate the NOT allowed areas
       const { x, y, w, h } = allowedArea
       context.save()
-      context.globalAlpha = 0.25
+      context.globalAlpha = 1
       const outer = [
         [0, 0],
         [iw, 0],
@@ -326,7 +326,7 @@ export const ImageCanvas = ({
         </PreventScrollToParents>
       )}
       {!showTags && highlightedRegion && (
-        <div className={classes.fixedRegionLabel}>
+        <div key="topLeftTag" className={classes.fixedRegionLabel}>
           <RegionLabel
             disableClose
             allowedClasses={regionClsList}
@@ -387,6 +387,7 @@ export const ImageCanvas = ({
             mat={mat}
             imagePosition={imagePosition}
             regions={regions}
+            fullSegmentationMode={fullImageSegmentationMode}
           />
           <VideoOrImageCanvasBackground
             videoPlaying={videoPlaying}

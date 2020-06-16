@@ -31,9 +31,9 @@ const RegionComponents = {
       />
     </g>
   )),
-  polygon: memo(({ region, iw, ih, fullImageSegmentationMode }) => {
+  polygon: memo(({ region, iw, ih, fullSegmentationMode }) => {
     const Component = region.open ? "polyline" : "polygon"
-    const alphaBase = fullImageSegmentationMode ? 0.5 : 1
+    const alphaBase = fullSegmentationMode ? 0.5 : 1
     return (
       <Component
         points={region.points
@@ -113,7 +113,7 @@ const RegionComponents = {
 }
 
 export const WrappedRegionList = memo(
-  ({ regions, iw, ih, fullImageSegmentationMode }) => {
+  ({ regions, iw, ih, fullSegmentationMode }) => {
     return regions
       .filter((r) => r.visible !== false)
       .map((r) => {
@@ -124,7 +124,7 @@ export const WrappedRegionList = memo(
             region={r}
             iw={iw}
             ih={ih}
-            fullImageSegmentationMode={fullSegmentationMode}
+            fullgeSegmentationMode={fullSegmentationMode}
           />
         )
       })
@@ -132,7 +132,12 @@ export const WrappedRegionList = memo(
   (n, p) => n.regions === p.regions && n.iw === p.iw && n.ih === p.ih
 )
 
-export const RegionShapes = ({ mat, imagePosition, regions = [] }) => {
+export const RegionShapes = ({
+  mat,
+  imagePosition,
+  regions = [],
+  fullSegmentationMode,
+}) => {
   const iw = imagePosition.bottomRight.x - imagePosition.topLeft.x
   const ih = imagePosition.bottomRight.y - imagePosition.topLeft.y
   if (isNaN(iw) || isNaN(ih)) return null
@@ -150,7 +155,12 @@ export const RegionShapes = ({ mat, imagePosition, regions = [] }) => {
         height: ih,
       }}
     >
-      <WrappedRegionList regions={regions} iw={iw} ih={ih} />
+      <WrappedRegionList
+        regions={regions}
+        iw={iw}
+        ih={ih}
+        fullSegmentationMode={fullSegmentationMode}
+      />
     </svg>
   )
 }

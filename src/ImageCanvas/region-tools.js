@@ -86,7 +86,7 @@ export const getEnclosingBox = (region: Region) => {
       return { x: region.x, y: region.y, w: 0, h: 0 }
     }
     default: {
-      return
+      return { x: 0, y: 0, w: 0, h: 0 }
     }
   }
   throw new Error("unknown region")
