@@ -7,7 +7,7 @@ export default {
     fontSize: 12,
     cursor: "default",
     transition: "opacity 200ms",
-    opacity: 0.7,
+    opacity: 0.5,
     "&:hover": {
       opacity: 0.9,
       cursor: "pointer",

@@ -7,7 +7,7 @@ import { useDebounce } from "react-use"
 import MMGC_INIT from "mmgc1-cpp"
 
 export const ImageMask = ({
-  classPoints,
+  regions,
   regionClsList,
   imageSrc,
   imagePosition,
@@ -49,7 +49,7 @@ export const ImageMask = ({
       if (hide) return
       if (!canvasRef) return
       if (!sampleImageData) return
-      if (classPoints.filter((cp) => cp.cls).length < 3) return
+      if (regions.filter((cp) => cp.cls).length < 3) return
       if (!mmgc.setImageSize) return
       const context = canvasRef.getContext("2d")
 
@@ -79,9 +79,11 @@ export const ImageMask = ({
         )
         return
       }
-      mmgc.clearClassPoints()
+      mmgc.clearClassElements()
+      const classPoints = regions
+        .filter((r) => r.type === "point")
+        .filter((r) => r.cls)
       for (const classPoint of classPoints) {
-        if (!classPoint.cls) continue
         if (classPoint.x < 0 || classPoint.x >= 1) continue
         if (classPoint.y < 0 || classPoint.y >= 1) continue
         const clsIndex = regionClsList.indexOf(classPoint.cls)
@@ -96,13 +98,32 @@ export const ImageMask = ({
           Math.floor(classPoint.x * sampleImageData.width)
         )
       }
+      const classPolygons = regions
+        .filter((r) => r.type === "polygon")
+        .filter((r) => r.cls)
+      for (const polygon of classPolygons) {
+        const { points } = polygon
+        const clsIndex = regionClsList.indexOf(polygon.cls)
+        const pi = mmgc.addPolygon(clsIndex)
+        const pointPairs = points.map((p, i) => [
+          p,
+          points[(i + 1) % points.length],
+        ])
+        for (const [p1, p2] of pointPairs) {
+          const ri1 = Math.round(p1[1] * sampleImageData.height)
+          const ci1 = Math.round(p1[0] * sampleImageData.width)
+          const ri2 = Math.round(p2[1] * sampleImageData.height)
+          const ci2 = Math.round(p2[0] * sampleImageData.width)
+          mmgc.addLineToPolygon(pi, ri1, ci1, ri2, ci2)
+        }
+      }
+
       mmgc.computeMasks()
       const maskAddress = mmgc.getColoredMask()
       const cppImDataUint8 = new Uint8ClampedArray(
         mmgc.HEAPU8.buffer,
         maskAddress,
         sampleImageData.data.length
-        // sampleImageData.width * sampleImageData.height * 4
       )
       const maskImageData = new ImageData(
         cppImDataUint8,
@@ -114,7 +135,7 @@ export const ImageMask = ({
       context.putImageData(maskImageData, 0, 0)
     },
     1000,
-    [canvasRef, sampleImageData, classPoints, hide]
+    [canvasRef, sampleImageData, regions, hide]
   )
 
   const style = useMemo(() => {

@@ -31,8 +31,9 @@ const RegionComponents = {
       />
     </g>
   )),
-  polygon: memo(({ region, iw, ih }) => {
+  polygon: memo(({ region, iw, ih, fullImageSegmentationMode }) => {
     const Component = region.open ? "polyline" : "polygon"
+    const alphaBase = fullImageSegmentationMode ? 0.5 : 1
     return (
       <Component
         points={region.points
@@ -112,12 +113,20 @@ const RegionComponents = {
 }
 
 export const WrappedRegionList = memo(
-  ({ regions, iw, ih }) => {
+  ({ regions, iw, ih, fullImageSegmentationMode }) => {
     return regions
       .filter((r) => r.visible !== false)
       .map((r) => {
         const Component = RegionComponents[r.type]
-        return <Component key={r.regionId} region={r} iw={iw} ih={ih} />
+        return (
+          <Component
+            key={r.regionId}
+            region={r}
+            iw={iw}
+            ih={ih}
+            fullImageSegmentationMode={fullSegmentationMode}
+          />
+        )
       })
   },
   (n, p) => n.regions === p.regions && n.iw === p.iw && n.ih === p.ih
@@ -126,6 +135,7 @@ export const WrappedRegionList = memo(
 export const RegionShapes = ({ mat, imagePosition, regions = [] }) => {
   const iw = imagePosition.bottomRight.x - imagePosition.topLeft.x
   const ih = imagePosition.bottomRight.y - imagePosition.topLeft.y
+  if (isNaN(iw) || isNaN(ih)) return null
   return (
     <svg
       width={iw}

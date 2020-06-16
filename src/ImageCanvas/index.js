@@ -260,10 +260,6 @@ export const ImageCanvas = ({
     bottomRight: mat.clone().inverse().applyToPoint(iw, ih),
   }
 
-  const classPoints = useMemo(() => {
-    return regions.filter((region) => region.type === "point")
-  }, [regions])
-
   const highlightedRegion = useMemo(() => regions.find((r) => r.highlighted), [
     regions,
   ])
@@ -379,7 +375,7 @@ export const ImageCanvas = ({
               imagePosition={imagePosition}
               regionClsList={regionClsList}
               imageSrc={imageSrc}
-              classPoints={classPoints}
+              regions={regions}
             />
           )}
           <canvas

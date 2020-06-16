@@ -25,8 +25,6 @@ const arePropsEqual = (prev, next) => {
     prev.dragWithPrimary === next.dragWithPrimary &&
     prev.createWithPrimary === next.createWithPrimary &&
     prev.zoomWithPrimary === next.zoomWithPrimary &&
-    prev.layoutParams.current.iw === next.layoutParams.current.iw &&
-    prev.layoutParams.current.ih === next.layoutParams.current.ih &&
     prev.mat === next.mat
   )
 }
@@ -42,6 +40,7 @@ export const RegionSelectAndTransformBox = memo(
     onBeginMovePoint,
     onSelectRegion,
     layoutParams,
+    fullImageSegmentationMode = false,
     mat,
     onBeginBoxTransform,
     onBeginMovePolygonPoint,
@@ -53,7 +52,7 @@ export const RegionSelectAndTransformBox = memo(
     return (
       <Fragment>
         <PreventScrollToParents>
-          {showHighlightBox && (
+          {showHighlightBox && r.type !== "polygon" && (
             <HighlightBox
               region={r}
               mouseEvents={mouseEvents}
@@ -178,7 +177,7 @@ export const RegionSelectAndTransformBoxes = memo(
         return <RegionSelectAndTransformBox key={r.id} {...props} region={r} />
       })
   },
-  (n, p) => n.regions === p.regions
+  (n, p) => n.regions === p.regions && n.mat === p.mat
 )
 
 export default RegionSelectAndTransformBoxes
