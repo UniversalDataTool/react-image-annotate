@@ -36,7 +36,7 @@ type Props = {
   alwaysShowPrevButton?: boolean,
 }
 
-export default ({
+export const MainLayout = ({
   state,
   dispatch,
   alwaysShowNextButton = false,
@@ -142,6 +142,7 @@ export default ({
             <IconTools
               enabledTools={state.enabledTools}
               showTags={state.showTags}
+              showMask={state.showMask}
               selectedTool={state.selectedTool}
               onClickTool={action("SELECT_TOOL", "selectedTool")}
             />
@@ -154,6 +155,8 @@ export default ({
                 <ImageCanvas
                   {...settings}
                   key={state.selectedImage}
+                  showMask={state.showMask}
+                  fullImageSegmentationMode={state.fullImageSegmentationMode}
                   showTags={state.showTags}
                   allowedArea={state.allowedArea}
                   regionClsList={state.regionClsList}
@@ -262,3 +265,5 @@ export default ({
     </Fullscreen>
   )
 }
+
+export default MainLayout

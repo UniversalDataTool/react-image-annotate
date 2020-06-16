@@ -1,43 +1,27 @@
 // @flow weak
 
-import React, {
-  Fragment,
-  useRef,
-  useState,
-  useLayoutEffect,
-  useEffect,
-} from "react"
+import React, { useRef, useState, useLayoutEffect, useMemo } from "react"
 import type { Node } from "react"
 import { Matrix } from "transformation-matrix-js"
-import getImageData from "get-image-data"
 import Crosshairs from "../Crosshairs"
-import type {
-  Region,
-  PixelRegion,
-  Point,
-  Polygon,
-  Box,
-} from "./region-tools.js"
-import { getEnclosingBox } from "./region-tools.js"
+import type { Region, Point, Polygon, Box } from "./region-tools.js"
 import { makeStyles } from "@material-ui/core/styles"
 import styles from "./styles"
-import classnames from "classnames"
-import RegionLabel from "../RegionLabel"
-import LockIcon from "@material-ui/icons/Lock"
-import Paper from "@material-ui/core/Paper"
-import HighlightBox from "../HighlightBox"
 import PreventScrollToParents from "../PreventScrollToParents"
 import useWindowSize from "../hooks/use-window-size.js"
 import useMouse from "./use-mouse"
 import useProjectRegionBox from "./use-project-box"
-import useLoadImage from "../hooks/use-load-image"
 import useExcludePattern from "../hooks/use-exclude-pattern"
 import { useRafState } from "react-use"
 import PointDistances from "../PointDistances"
 import RegionTags from "../RegionTags"
+import RegionLabel from "../RegionLabel"
+import ImageMask from "../ImageMask"
 import RegionSelectAndTransformBoxes from "../RegionSelectAndTransformBoxes"
 import VideoOrImageCanvasBackground from "../VideoOrImageCanvasBackground"
 import useEventCallback from "use-event-callback"
+import RegionShapes from "../RegionShapes"
+import useWasdMode from "./use-wasd-mode"
 
 const useStyles = makeStyles(styles)
 
@@ -55,6 +39,7 @@ type Props = {
   showTags?: boolean,
   realSize?: { width: number, height: number, unitName: string },
   showCrosshairs?: boolean,
+  showMask?: boolean,
   showHighlightBox?: boolean,
   showPointDistances?: boolean,
   pointDistancePrecision?: number,
@@ -63,6 +48,7 @@ type Props = {
   allowedArea?: { x: number, y: number, w: number, h: number },
   RegionEditLabel?: Node,
   videoPlaying?: boolean,
+  fullImageSegmentationMode?: boolean,
 
   onChangeRegion: (Region) => any,
   onBeginRegionEdit: (Region) => any,
@@ -79,11 +65,12 @@ type Props = {
     duration?: number,
   }) => any,
   onChangeVideoTime: (number) => any,
+  onChangeVideoPlaying?: Function,
 }
 
 const getDefaultMat = () => Matrix.from(1, 0, 0, 1, -10, -10)
 
-export default ({
+export const ImageCanvas = ({
   regions,
   imageSrc,
   videoSrc,
@@ -100,12 +87,13 @@ export default ({
   regionClsList,
   regionTagList,
   showCrosshairs,
-  showHighlightBox,
+  showHighlightBox = true,
   showPointDistances,
   allowedArea,
   RegionEditLabel = null,
   videoPlaying = false,
-
+  showMask = true,
+  fullImageSegmentationMode,
   onImageOrVideoLoaded,
   onChangeRegion,
   onBeginRegionEdit,
@@ -130,6 +118,9 @@ export default ({
   const [mat, changeMat] = useRafState(getDefaultMat())
   const maskImages = useRef({})
   const windowSize = useWindowSize()
+
+  const getLatestMat = useEventCallback(() => mat)
+  useWasdMode({ getLatestMat, changeMat })
 
   const { mouseEvents, mousePosition } = useMouse({
     canvasEl,
@@ -211,7 +202,7 @@ export default ({
       // Pattern to indicate the NOT allowed areas
       const { x, y, w, h } = allowedArea
       context.save()
-      context.globalAlpha = 0.25
+      context.globalAlpha = 1
       const outer = [
         [0, 0],
         [iw, 0],
@@ -240,120 +231,6 @@ export default ({
       context.restore()
     }
 
-    context.save()
-    context.globalAlpha = mat.a * 0.5 + 0.5
-    context.lineWidth = mat.a * 1 + 1
-    if (context.globalAlpha > 0.6) {
-      context.shadowColor = "black"
-      context.shadowBlur = 4
-    }
-    for (const region of regions.filter(
-      (r) => r.visible || r.visible === undefined
-    )) {
-      switch (region.type) {
-        case "point": {
-          context.save()
-
-          context.beginPath()
-          context.strokeStyle = region.color
-          context.moveTo(region.x * iw - 10, region.y * ih)
-          context.lineTo(region.x * iw - 2, region.y * ih)
-          context.moveTo(region.x * iw + 10, region.y * ih)
-          context.lineTo(region.x * iw + 2, region.y * ih)
-          context.moveTo(region.x * iw, region.y * ih - 10)
-          context.lineTo(region.x * iw, region.y * ih - 2)
-          context.moveTo(region.x * iw, region.y * ih + 10)
-          context.lineTo(region.x * iw, region.y * ih + 2)
-          context.moveTo(region.x * iw + 5, region.y * ih)
-          context.arc(region.x * iw, region.y * ih, 5, 0, 2 * Math.PI)
-          context.stroke()
-          context.restore()
-          break
-        }
-        case "box": {
-          context.save()
-
-          context.shadowColor = "black"
-          context.shadowBlur = 4
-          context.strokeStyle = region.color
-          context.strokeRect(
-            region.x * iw,
-            region.y * ih,
-            region.w * iw,
-            region.h * ih
-          )
-
-          context.restore()
-          break
-        }
-        case "polygon": {
-          context.save()
-
-          context.shadowColor = "black"
-          context.shadowBlur = 4
-          context.strokeStyle = region.color
-
-          context.beginPath()
-          context.moveTo(region.points[0][0] * iw, region.points[0][1] * ih)
-          for (const point of region.points) {
-            context.lineTo(point[0] * iw, point[1] * ih)
-          }
-          if (!region.open) context.closePath()
-          context.stroke()
-          context.restore()
-          break
-        }
-        case "pixel": {
-          context.save()
-
-          if (maskImages.current[region.src]) {
-            if (maskImages.current[region.src].nodeName === "CANVAS") {
-              context.globalAlpha = 0.6
-              context.drawImage(
-                maskImages.current[region.src],
-                region.sx * iw,
-                region.sy * ih,
-                region.w * iw,
-                region.h * ih
-              )
-            }
-          } else {
-            maskImages.current[region.src] = new Image()
-            maskImages.current[region.src].onload = () => {
-              const img = maskImages.current[region.src]
-              const newCanvas = document.createElement("canvas")
-              newCanvas.width = img.naturalWidth
-              newCanvas.height = img.naturalHeight
-              const ctx = newCanvas.getContext("2d")
-              ctx.drawImage(img, 0, 0)
-              const imgData = ctx.getImageData(
-                0,
-                0,
-                img.naturalWidth,
-                img.naturalHeight
-              )
-              for (let i = 0; i < imgData.data.length; i += 4) {
-                const [r, g, b, a] = imgData.data.slice(i, i + 4)
-                const black = r < 10 && g < 10 && b < 10
-                imgData.data[i] = 0
-                imgData.data[i + 1] = 0
-                imgData.data[i + 2] = black ? 255 : 0
-                imgData.data[i + 3] = black ? 255 : 0
-              }
-              ctx.clearRect(0, 0, img.naturalWidth, img.naturalHeight)
-              ctx.putImageData(imgData, 0, 0)
-              maskImages.current[region.src] = newCanvas
-              changeMaskImagesLoaded(maskImagesLoaded + 1)
-            }
-            maskImages.current[region.src].src = region.src
-          }
-
-          context.restore()
-          break
-        }
-      }
-    }
-    context.restore()
     context.restore()
   })
 
@@ -383,6 +260,10 @@ export default ({
     bottomRight: mat.clone().inverse().applyToPoint(iw, ih),
   }
 
+  const highlightedRegion = useMemo(() => regions.find((r) => r.highlighted), [
+    regions,
+  ])
+
   return (
     <div
       style={{
@@ -407,7 +288,7 @@ export default ({
       {showCrosshairs && (
         <Crosshairs key="crossHairs" mousePosition={mousePosition} />
       )}
-      {imageLoaded && (
+      {imageLoaded && !dragging && (
         <RegionSelectAndTransformBoxes
           key="regionSelectAndTransformBoxes"
           regions={regions}
@@ -426,7 +307,7 @@ export default ({
           showHighlightBox={showHighlightBox}
         />
       )}
-      {imageLoaded && showTags && (
+      {imageLoaded && showTags && !dragging && (
         <PreventScrollToParents key="regionTags">
           <RegionTags
             regions={regions}
@@ -443,6 +324,20 @@ export default ({
             RegionEditLabel={RegionEditLabel}
           />
         </PreventScrollToParents>
+      )}
+      {!showTags && highlightedRegion && (
+        <div key="topLeftTag" className={classes.fixedRegionLabel}>
+          <RegionLabel
+            disableClose
+            allowedClasses={regionClsList}
+            allowedTags={regionTagList}
+            onChange={onChangeRegion}
+            onDelete={onDeleteRegion}
+            editing
+            region={highlightedRegion}
+            imageSrc={imageSrc}
+          />
+        </div>
       )}
 
       {zoomWithPrimary && zoomBox !== null && (
@@ -474,7 +369,26 @@ export default ({
         {...mouseEvents}
       >
         <>
-          <canvas className={classes.canvas} ref={canvasEl} />
+          {fullImageSegmentationMode && (
+            <ImageMask
+              hide={!showMask}
+              imagePosition={imagePosition}
+              regionClsList={regionClsList}
+              imageSrc={imageSrc}
+              regions={regions}
+            />
+          )}
+          <canvas
+            style={{ opacity: 0.25 }}
+            className={classes.canvas}
+            ref={canvasEl}
+          />
+          <RegionShapes
+            mat={mat}
+            imagePosition={imagePosition}
+            regions={regions}
+            fullSegmentationMode={fullImageSegmentationMode}
+          />
           <VideoOrImageCanvasBackground
             videoPlaying={videoPlaying}
             imagePosition={imagePosition}
@@ -494,3 +408,5 @@ export default ({
     </div>
   )
 }
+
+export default ImageCanvas

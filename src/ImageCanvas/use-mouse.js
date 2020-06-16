@@ -33,7 +33,7 @@ export default ({
     // NOTE: We're mutating mat here
     mat.translate(mx, my).scaleU(scale)
     if (mat.a > 2) mat.scaleU(2 / mat.a)
-    if (mat.a < 0.1) mat.scaleU(0.1 / mat.a)
+    if (mat.a < 0.05) mat.scaleU(0.05 / mat.a)
     mat.translate(-mx, -my)
 
     changeMat(mat.clone())
@@ -127,7 +127,7 @@ export default ({
             (zoomEnd.x - zoomStart.x) / iw,
             (zoomEnd.y - zoomStart.y) / ih
           )
-          if (scale < 0.1) scale = 0.1
+          if (scale < 0.05) scale = 0.05
           if (scale > 10) scale = 10
 
           const newMat = getDefaultMat()

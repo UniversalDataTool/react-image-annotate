@@ -4766,6 +4766,13 @@ collection-visit@^1.0.0:
     map-visit "^1.0.0"
     object-visit "^1.0.0"
 
+color-alpha@^1.0.4:
+  version "1.0.4"
+  resolved "https://registry.yarnpkg.com/color-alpha/-/color-alpha-1.0.4.tgz#c141dc926e95fc3db647d0e14e5bc3651c29e040"
+  integrity sha512-lr8/t5NPozTSqli+duAN+x+no/2WaKTeWvxhHGN+aXT6AJ8vPlzLa7UriyjWak0pSC2jHol9JgjBYnnHsGha9A==
+  dependencies:
+    color-parse "^1.3.8"
+
 color-convert@^1.9.0, color-convert@^1.9.1:
   version "1.9.3"
   resolved "https://registry.yarnpkg.com/color-convert/-/color-convert-1.9.3.tgz#bb71850690e1f136567de629d2d5471deda4c1e8"
@@ -4789,6 +4796,15 @@ color-name@^1.0.0, color-name@~1.1.4:
   version "1.1.4"
   resolved "https://registry.yarnpkg.com/color-name/-/color-name-1.1.4.tgz#c2a09a87acbde69543de6f63fa3995c826c536a2"
   integrity sha512-dOy+3AuW3a2wNbZHIuMZpTcgjGuLU/uBL/ubcZF9OXbDo8ff4O8yVp5Bf0efS8uEoYo5q4Fx7dY9OgQGXgAsQA==
+
+color-parse@^1.3.8:
+  version "1.3.8"
+  resolved "https://registry.yarnpkg.com/color-parse/-/color-parse-1.3.8.tgz#eaf54cd385cb34c0681f18c218aca38478082fa3"
+  integrity sha512-1Y79qFv0n1xair3lNMTNeoFvmc3nirMVBij24zbs1f13+7fPpQClMg5b4AuKXLt3szj7BRlHMCXHplkce6XlmA==
+  dependencies:
+    color-name "^1.0.0"
+    defined "^1.0.0"
+    is-plain-obj "^1.1.0"
 
 color-string@^1.5.2:
   version "1.5.3"
@@ -5648,6 +5664,11 @@ define-property@^2.0.2:
   dependencies:
     is-descriptor "^1.0.2"
     isobject "^3.0.1"
+
+defined@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/defined/-/defined-1.0.0.tgz#c98d9bcef75674188e110969151199e39b1fa693"
+  integrity sha1-yY2bzvdWdBiOEQlpFRGZ45sfppM=
 
 del@^3.0.0:
   version "3.0.0"
@@ -10820,6 +10841,11 @@ mkdirp@0.5.1, mkdirp@0.5.x, mkdirp@^0.5.0, mkdirp@^0.5.1, mkdirp@~0.5.0, mkdirp@
   dependencies:
     minimist "0.0.8"
 
+mmgc1-cpp@^1.0.44:
+  version "1.0.44"
+  resolved "https://registry.yarnpkg.com/mmgc1-cpp/-/mmgc1-cpp-1.0.44.tgz#b3059e9df06d1dba5899b159c454e1d435fec317"
+  integrity sha512-7kJk5zggfAR05id6a6ltXih39y8Va+zir1wevORNXBr/Glc2gtrqyc0HciXrOqyAUZ6Y93aRLW11BODsnDSemQ==
+
 moment@^2.23.0:
   version "2.24.0"
   resolved "https://registry.yarnpkg.com/moment/-/moment-2.24.0.tgz#0d055d53f5052aa653c9f6eb68bb5d12bf5c2b5b"
@@ -12771,15 +12797,15 @@ preserve@^0.2.0:
   resolved "https://registry.yarnpkg.com/preserve/-/preserve-0.2.0.tgz#815ed1f6ebc65926f865b310c0713bcb3315ce4b"
   integrity sha1-gV7R9uvGWSb4ZbMQwHE7yzMVzks=
 
-prettier@2.0.2:
-  version "2.0.2"
-  resolved "https://registry.yarnpkg.com/prettier/-/prettier-2.0.2.tgz#1ba8f3eb92231e769b7fcd7cb73ae1b6b74ade08"
-  integrity sha512-5xJQIPT8BraI7ZnaDwSbu5zLrB6vvi8hVV58yHQ+QK64qrY40dULy0HSRlQ2/2IdzeBpjhDkqdcFBnFeDEMVdg==
-
 prettier@^1.16.4:
   version "1.19.1"
   resolved "https://registry.yarnpkg.com/prettier/-/prettier-1.19.1.tgz#f7d7f5ff8a9cd872a7be4ca142095956a60797cb"
   integrity sha512-s7PoyDv/II1ObgQunCbB9PdLmUcBZcnWOcxDh7O0N/UwDEsHyqkW+Qh28jW+mVuCdx7gLB0BotYI1Y6uI9iyew==
+
+prettier@^2.0.5:
+  version "2.0.5"
+  resolved "https://registry.yarnpkg.com/prettier/-/prettier-2.0.5.tgz#d6d56282455243f2f92cc1716692c08aa31522d4"
+  integrity sha512-7PtVymN48hGcO4fGjybyBSIWDsLU4H4XlvOHfq91pz9kkGlonzwTfYkaIEwiRg/dAJF9YlbsduBAgtYLi+8cFg==
 
 pretty-bytes@^4.0.2:
   version "4.0.2"
@@ -13324,7 +13350,7 @@ react-helmet-async@^1.0.2:
     react-fast-compare "2.0.4"
     shallowequal "1.1.0"
 
-react-hotkeys@2.0.0:
+react-hotkeys@2.0.0, react-hotkeys@^2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/react-hotkeys/-/react-hotkeys-2.0.0.tgz#a7719c7340cbba888b0e9184f806a9ec0ac2c53f"
   integrity sha512-3n3OU8vLX/pfcJrR3xJ1zlww6KS1kEJt0Whxc4FiGV+MJrQ1mYSYI3qS/11d2MJDFm8IhOXMTFQirfu6AVOF6Q==
@@ -14546,6 +14572,11 @@ shallow-equal@^1.1.0:
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/shallow-equal/-/shallow-equal-1.2.0.tgz#fd828d2029ff4e19569db7e19e535e94e2d1f5cc"
   integrity sha512-Z21pVxR4cXsfwpMKMhCEIO1PCi5sp7KEp+CmOpBQ+E8GpHwKOw2sEzk7sgblM3d/j4z4gakoWEoPcjK0VJQogA==
+
+shallow-equal@^1.2.1:
+  version "1.2.1"
+  resolved "https://registry.yarnpkg.com/shallow-equal/-/shallow-equal-1.2.1.tgz#4c16abfa56043aa20d050324efa68940b0da79da"
+  integrity sha512-S4vJDjHHMBaiZuT9NPb616CSmLf618jawtv3sufLl6ivK8WocjAo58cXwbRV1cgqxH0Qbv+iUt6m05eqEa2IRA==
 
 shallowequal@1.1.0, shallowequal@^1.1.0:
   version "1.1.0"
