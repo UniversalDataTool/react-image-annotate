@@ -65,6 +65,7 @@ type Props = {
     duration?: number,
   }) => any,
   onChangeVideoTime: (number) => any,
+  onRegionClassAdded: () => {},
   onChangeVideoPlaying?: Function,
 }
 
@@ -106,6 +107,7 @@ export const ImageCanvas = ({
   onDeleteRegion,
   onChangeVideoTime,
   onChangeVideoPlaying,
+  onRegionClassAdded,
 }: Props) => {
   const classes = useStyles()
 
@@ -322,6 +324,7 @@ export const ImageCanvas = ({
             layoutParams={layoutParams}
             imageSrc={imageSrc}
             RegionEditLabel={RegionEditLabel}
+            onRegionClassAdded={onRegionClassAdded}
           />
         </PreventScrollToParents>
       )}

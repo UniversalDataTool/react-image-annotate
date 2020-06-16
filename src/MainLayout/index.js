@@ -34,6 +34,7 @@ type Props = {
   dispatch: (Action) => any,
   alwaysShowNextButton?: boolean,
   alwaysShowPrevButton?: boolean,
+  onRegionClassAdded: () => {},
 }
 
 export const MainLayout = ({
@@ -42,6 +43,7 @@ export const MainLayout = ({
   alwaysShowNextButton = false,
   alwaysShowPrevButton = false,
   RegionEditLabel,
+  onRegionClassAdded,
 }: Props) => {
   const classes = useStyles()
   const settings = useSettings()
@@ -223,6 +225,7 @@ export const MainLayout = ({
                     "CHANGE_VIDEO_PLAYING",
                     "isPlaying"
                   )}
+                  onRegionClassAdded={onRegionClassAdded}
                 />
               </div>
             )}

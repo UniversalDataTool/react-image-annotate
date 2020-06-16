@@ -132,6 +132,13 @@ export const Annotator = ({
     dispatchToReducer(action)
   })
 
+  const onRegionClassAdded = useEventCallback((cls) => {
+    dispatchToReducer({
+      type: "ON_CLS_ADDED",
+      cls: cls,
+    })
+  })
+
   useEffect(() => {
     if (!selectedImage) return
     dispatchToReducer({
@@ -148,6 +155,7 @@ export const Annotator = ({
         alwaysShowPrevButton={Boolean(onPrevImage)}
         state={state}
         dispatch={dispatch}
+        onRegionClassAdded={onRegionClassAdded}
       />
     </SettingsProvider>
   )
