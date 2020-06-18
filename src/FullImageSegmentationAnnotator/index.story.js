@@ -75,6 +75,21 @@ storiesOf("FullImageSegmentationAnnotator.Basic", module)
       />
     </div>
   ))
+  .add("Hard 1, 8 Class, Simple Mode", () => (
+    <div style={{ width: "100vw", height: "100vh" }}>
+      <FullImageSegmentationAnnotator
+        images={[
+          {
+            name: "Hard",
+            src: hard1,
+          },
+        ]}
+        regionClsList={["bg", "1", "2", "3", "4", "5", "6", "7", "8"]}
+        onExit={action("onExit")}
+        autoSegmentationOptions={{ type: "simple" }}
+      />
+    </div>
+  ))
   .add("Hard 1, 8 Class", () => (
     <div style={{ width: "100vw", height: "100vh" }}>
       <FullImageSegmentationAnnotator

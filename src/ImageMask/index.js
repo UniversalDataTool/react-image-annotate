@@ -13,6 +13,7 @@ export const ImageMask = ({
   imagePosition,
   zIndex = 1,
   hide = false,
+  autoSegmentationOptions = {},
 }) => {
   if (!window.mmgc) window.mmgc = MMGC_INIT()
   const mmgc = window.mmgc
@@ -55,6 +56,7 @@ export const ImageMask = ({
 
       if (!superPixelsGenerated.current) {
         superPixelsGenerated.current = "processing"
+        mmgc.setSimpleMode(autoSegmentationOptions.type === "simple")
         mmgc.setMaxClusters(10000)
         mmgc.setImageSize(sampleImageData.width, sampleImageData.height)
         mmgc.setClassColor(0, 0)
