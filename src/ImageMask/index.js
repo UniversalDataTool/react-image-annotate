@@ -57,7 +57,7 @@ export const ImageMask = ({
       if (!superPixelsGenerated.current) {
         superPixelsGenerated.current = "processing"
         mmgc.setSimpleMode(autoSegmentationOptions.type === "simple")
-        mmgc.setMaxClusters(10000)
+        mmgc.setMaxClusters(1000)
         mmgc.setImageSize(sampleImageData.width, sampleImageData.height)
         mmgc.setClassColor(0, 0)
         for (let i = 0; i < colorInts.length; i++) {
