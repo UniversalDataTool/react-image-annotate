@@ -42,6 +42,9 @@ type Props = {
   keyframes?: Object,
   videoName?: string,
   fullImageSegmentationMode?: boolean,
+  autoSegmentationOptions?:
+    | {| type: "simple" |}
+    | {| type: "autoseg", maxClusters?: number, slicWeightFactor?: number |},
 }
 
 export const Annotator = ({
@@ -74,6 +77,7 @@ export const Annotator = ({
   onExit,
   onNextImage,
   onPrevImage,
+  autoSegmentationOptions = { type: "autoseg" },
 }: Props) => {
   if (!images && !videoSrc)
     return 'Missing required prop "images" or "videoSrc"'
@@ -93,6 +97,7 @@ export const Annotator = ({
       pointDistancePrecision,
       selectedTool,
       fullImageSegmentationMode: fullImageSegmentationMode,
+      autoSegmentationOptions,
       mode: null,
       taskDescription,
       showMask: true,

@@ -49,6 +49,7 @@ type Props = {
   RegionEditLabel?: Node,
   videoPlaying?: boolean,
   fullImageSegmentationMode?: boolean,
+  autoSegmentationOptions?: Object,
 
   onChangeRegion: (Region) => any,
   onBeginRegionEdit: (Region) => any,
@@ -95,6 +96,7 @@ export const ImageCanvas = ({
   videoPlaying = false,
   showMask = true,
   fullImageSegmentationMode,
+  autoSegmentationOptions,
   onImageOrVideoLoaded,
   onChangeRegion,
   onBeginRegionEdit,
@@ -375,6 +377,7 @@ export const ImageCanvas = ({
           {fullImageSegmentationMode && (
             <ImageMask
               hide={!showMask}
+              autoSegmentationOptions={autoSegmentationOptions}
               imagePosition={imagePosition}
               regionClsList={regionClsList}
               imageSrc={imageSrc}
