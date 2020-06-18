@@ -264,9 +264,11 @@ export const ImageCanvas = ({
     bottomRight: mat.clone().inverse().applyToPoint(iw, ih),
   }
 
-  const highlightedRegion = useMemo(() => regions.find((r) => r.highlighted), [
-    regions,
-  ])
+  const highlightedRegion = useMemo(() => {
+    const highlightedRegions = regions.filter((r) => r.highlighted)
+    if (highlightedRegions.length !== 1) return null
+    return highlightedRegions[0]
+  }, [regions])
 
   return (
     <div

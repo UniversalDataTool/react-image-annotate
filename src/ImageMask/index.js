@@ -13,7 +13,7 @@ export const ImageMask = ({
   imagePosition,
   zIndex = 1,
   hide = false,
-  autoSegmentationOptions = {},
+  autoSegmentationOptions = { type: "simple" },
 }) => {
   if (!window.mmgc) window.mmgc = MMGC_INIT()
   const mmgc = window.mmgc

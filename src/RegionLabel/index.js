@@ -165,10 +165,5 @@ export default memo(
   RegionLabel,
   (prevProps, nextProps) =>
     prevProps.editing === nextProps.editing &&
-    prevProps.region.x === nextProps.region.x &&
-    prevProps.region.y === nextProps.region.y &&
-    prevProps.region.tags === nextProps.region.tags &&
-    prevProps.region.cls === nextProps.region.cls &&
-    prevProps.region.color === nextProps.region.color &&
-    prevProps.region.highlighted === nextProps.region.highlighted
+    prevProps.region === nextProps.region
 )
