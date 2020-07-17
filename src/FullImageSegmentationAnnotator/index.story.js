@@ -40,7 +40,7 @@ storiesOf("FullImageSegmentationAnnotator.Basic", module)
             })),
           },
         ]}
-        regionClsList={["fg", "bg"]}
+        regionClsList={["bg", "fg"]}
         onExit={action("onExit")}
       />
     </div>
@@ -70,7 +70,7 @@ storiesOf("FullImageSegmentationAnnotator.Basic", module)
             })),
           },
         ]}
-        regionClsList={["orange", "bg", "hand"]}
+        regionClsList={["bg", "orange" , "hand"]}
         onExit={action("onExit")}
       />
     </div>
