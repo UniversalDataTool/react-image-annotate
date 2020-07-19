@@ -82,6 +82,26 @@ export const ImageMask = ({
         return
       }
       mmgc.clearClassElements()
+      const classBoxes = regions
+        .filter((r) => r.type === "box")
+        .filter((r) => r.cls)
+      for (const classBox of classBoxes) {
+        if (classBox.x < 0 || classBox.x >= 1) continue
+        if (classBox.y < 0 || classBox.y >= 1) continue
+        const boxIndex = regionClsList.indexOf(classBox.cls) * 2
+        mmgc.addClassPoint(
+          boxIndex,
+          Math.floor(classBox.y * sampleImageData.height),
+          Math.floor(classBox.x * sampleImageData.width)
+        )
+        if (classBox.h < 0 || classBox.h >= 1) continue
+        if (classBox.w < 0 || classBox.w >= 1) continue
+        mmgc.addClassPoint(
+          boxIndex + 1,
+          Math.floor(classBox.w * sampleImageData.width),
+          Math.floor(classBox.h * sampleImageData.height)
+        )
+      }
       const classPoints = regions
         .filter((r) => r.type === "point")
         .filter((r) => r.cls)

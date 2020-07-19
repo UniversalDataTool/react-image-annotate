@@ -29,7 +29,7 @@ storiesOf("FullImageSegmentationAnnotator.Basic", module)
               [1, 10, 10],
               [1, 240, 300],
             ].map(([cls, y, x], i) => ({
-              cls: ["fg", "bg"][cls],
+              cls: ["bg", "fg"][cls],
               color: "hsl(162,100%,50%)",
               editingLabels: false,
               highlighted: false,
@@ -41,6 +41,45 @@ storiesOf("FullImageSegmentationAnnotator.Basic", module)
           },
         ]}
         regionClsList={["bg", "fg"]}
+        onExit={action("onExit")}
+      />
+    </div>
+  ))
+  .add("Orange with Bounding Box", () => (
+    <div style={{ width: "100vw", height: "100vh" }}>
+      <FullImageSegmentationAnnotator
+        images={[
+          {
+            name: "Precious Orange",
+            src: orange,
+            regions: [
+              [0, 125, 45, 50, 15],
+              [0, 125, 25, 50, 275],
+              [1, 35, 45, 100, 125],
+              [1, 15, 55, 50, 125],
+              [2, 25, 55, 220, 125],
+              [2, 25, 55, 220, 55],
+              // [1, 125, 25, 50, 275]
+            ].map(([cls, h, w, y, x], i) => ({
+              cls: ["bg", "orange", "hand"][cls],
+              color:
+                cls === 0
+                  ? "hsl(162,100%,50%)"
+                  : cls === 1
+                  ? "hsl(62,100%,50%)"
+                  : "hsl(112,100%,20%)",
+              editingLabels: false,
+              highlighted: false,
+              id: "a" + i,
+              type: "box",
+              w: w / 320,
+              h: h / 249,
+              x: x / 320,
+              y: y / 249,
+            })),
+          },
+        ]}
+        regionClsList={["bg", "orange", "hand"]}
         onExit={action("onExit")}
       />
     </div>
@@ -70,7 +109,7 @@ storiesOf("FullImageSegmentationAnnotator.Basic", module)
             })),
           },
         ]}
-        regionClsList={["bg", "orange" , "hand"]}
+        regionClsList={["orange", "bg", "hand"]}
         onExit={action("onExit")}
       />
     </div>
