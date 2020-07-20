@@ -98,7 +98,7 @@ storiesOf("FullImageSegmentationAnnotator.Basic", module)
               [1, 10, 10],
               [1, 240, 300],
             ].map(([cls, y, x], i) => ({
-              cls: ["orange", "bg", "hand"][cls],
+              cls: ["bg", "orange", "hand"][cls],
               color: "hsl(162,100%,50%)",
               editingLabels: false,
               highlighted: false,
