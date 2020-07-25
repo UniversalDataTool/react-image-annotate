@@ -37,7 +37,7 @@ export const ImageMask = ({
       if (hide) return
       if (!canvasRef) return
       if (!sampleImageData) return
-      if (regions.filter((cp) => cp.cls).length < 3) return
+      if (regions.filter((cp) => cp.cls).length < 2) return
       if (!mmgc.setImageSize) return
       const context = canvasRef.getContext("2d")
 
@@ -88,6 +88,19 @@ export const ImageMask = ({
         )
       }
       const classPolygons = regions
+        .map((r) => {
+          if (r.type !== "box") return r
+          return {
+            ...r,
+            type: "polygon",
+            points: [
+              [r.x, r.y],
+              [r.x + r.w, r.y],
+              [r.x + r.w, r.y + r.h],
+              [r.x, r.y + r.h],
+            ],
+          }
+        })
         .filter((r) => r.type === "polygon")
         .filter((r) => r.cls)
       for (const polygon of classPolygons) {
