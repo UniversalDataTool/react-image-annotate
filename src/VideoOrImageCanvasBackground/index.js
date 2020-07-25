@@ -119,6 +119,7 @@ export default ({
       ref={imageRef}
       style={stylePosition}
       onLoad={onImageLoaded}
+      crossOrigin="anonymous"
     />
   ) : (
     <Video
