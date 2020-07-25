@@ -45,6 +45,37 @@ storiesOf("FullImageSegmentationAnnotator.Basic", module)
       />
     </div>
   ))
+  .add("S3 CORS domain", () => (
+    <div style={{ width: "100vw", height: "100vh" }}>
+      <FullImageSegmentationAnnotator
+        images={[
+          {
+            name: "Seve's Desk",
+            src:
+              "https://s3.amazonaws.com/datasets.workaround.online/faces/010041.jpg",
+            regions: [
+              [0, 100, 125],
+              [0, 100, 150],
+              [1, 40, 280],
+              [1, 10, 10],
+              [1, 240, 300],
+            ].map(([cls, y, x], i) => ({
+              cls: ["fg", "bg"][cls],
+              color: "hsl(162,100%,50%)",
+              editingLabels: false,
+              highlighted: false,
+              id: "a" + i,
+              type: "point",
+              x: x / 320,
+              y: y / 249,
+            })),
+          },
+        ]}
+        regionClsList={["bg", "fg"]}
+        onExit={action("onExit")}
+      />
+    </div>
+  ))
   .add("Orange 3 Class", () => (
     <div style={{ width: "100vw", height: "100vh" }}>
       <FullImageSegmentationAnnotator
@@ -70,7 +101,7 @@ storiesOf("FullImageSegmentationAnnotator.Basic", module)
             })),
           },
         ]}
-        regionClsList={["bg", "orange" , "hand"]}
+        regionClsList={["bg", "orange", "hand"]}
         onExit={action("onExit")}
       />
     </div>

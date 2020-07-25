@@ -3,6 +3,7 @@
 import React, { useState, useEffect, useMemo, useRef } from "react"
 import { colorInts } from "../colors"
 import { useDebounce } from "react-use"
+import loadImage from "./load-image"
 
 import MMGC_INIT from "mmgc1-cpp"
 
@@ -24,25 +25,11 @@ export const ImageMask = ({
 
   useEffect(() => {
     if (!imageSrc) return
-    const canvas = document.createElement("canvas")
-    const ctx = canvas.getContext("2d")
 
-    const image = new Image()
-    image.crossOrigin = "anonymous"
-    image.src = imageSrc
-    image.onload = () => {
-      canvas.width = image.naturalWidth
-      canvas.height = image.naturalHeight
-      ctx.drawImage(image, 0, 0)
-      const imageData = ctx.getImageData(
-        0,
-        0,
-        image.naturalWidth,
-        image.naturalHeight
-      )
+    loadImage(imageSrc).then((imageData) => {
       superPixelsGenerated.current = false
       setSampleImageData(imageData)
-    }
+    })
   }, [imageSrc])
 
   useDebounce(
