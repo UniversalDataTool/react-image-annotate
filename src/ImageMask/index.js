@@ -64,6 +64,7 @@ export const ImageMask = ({
     loadImage(imageSrc).then((imageData) => {
       autoseg.setConfig({
         classNames: regionClsList,
+        ...autoSegmentationOptions,
       })
       autoseg.loadImage(imageData)
       setSampleImageData(imageData)
