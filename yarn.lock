@@ -3270,6 +3270,11 @@ autoprefixer@^9.7.2:
     postcss "^7.0.27"
     postcss-value-parser "^4.0.3"
 
+autoseg@^0.0.8:
+  version "0.0.8"
+  resolved "https://registry.yarnpkg.com/autoseg/-/autoseg-0.0.8.tgz#30e900afd41db964c5cdaf93f322211548444620"
+  integrity sha512-Kf6qQXiaxe+J1DrNP4dfWH92tRZ9MMwaO06TtzfKxBR/wtlC745aTP3YmKAP/a2ikpIfPKz9Hf6yR2Y7SeVagg==
+
 aws-sign2@~0.7.0:
   version "0.7.0"
   resolved "https://registry.yarnpkg.com/aws-sign2/-/aws-sign2-0.7.0.tgz#b46e890934a9591f2d2f6f86d7e6a9f1b3fe76a8"
