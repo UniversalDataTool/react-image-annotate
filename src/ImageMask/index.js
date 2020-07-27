@@ -4,8 +4,44 @@ import React, { useState, useEffect, useMemo, useRef } from "react"
 import { colorInts } from "../colors"
 import { useDebounce } from "react-use"
 import loadImage from "./load-image"
+import autoseg from "autoseg/webworker"
 
-import MMGC_INIT from "mmgc1-cpp"
+function convertToUDTRegions(regions) {
+  return regions
+    .map((r) => {
+      switch (r.type) {
+        case "point": {
+          return {
+            regionType: "point",
+            classification: r.cls,
+            x: r.x,
+            y: r.y,
+          }
+        }
+        case "polygon": {
+          return {
+            regionType: "polygon",
+            classification: r.cls,
+            points: r.points.map(([x, y]) => ({ x, y })),
+          }
+        }
+        case "box": {
+          return {
+            regionType: "bounding-box",
+            classification: r.cls,
+            centerX: r.x + r.w / 2,
+            centerY: r.y + r.h / 2,
+            width: r.w,
+            height: r.h,
+          }
+        }
+        default: {
+          return null
+        }
+      }
+    })
+    .filter(Boolean)
+}
 
 export const ImageMask = ({
   regions,
@@ -16,18 +52,20 @@ export const ImageMask = ({
   hide = false,
   autoSegmentationOptions = { type: "simple" },
 }) => {
-  if (!window.mmgc) window.mmgc = MMGC_INIT()
-  const mmgc = window.mmgc
+  // if (!window.mmgc) window.mmgc = MMGC_INIT()
+  // const mmgc = window.mmgc
   const [canvasRef, setCanvasRef] = useState(null)
 
-  const superPixelsGenerated = useRef(false)
   const [sampleImageData, setSampleImageData] = useState()
 
   useEffect(() => {
     if (!imageSrc) return
 
     loadImage(imageSrc).then((imageData) => {
-      superPixelsGenerated.current = false
+      autoseg.setConfig({
+        classNames: regionClsList,
+      })
+      autoseg.loadImage(imageData)
       setSampleImageData(imageData)
     })
   }, [imageSrc])
@@ -38,103 +76,14 @@ export const ImageMask = ({
       if (!canvasRef) return
       if (!sampleImageData) return
       if (regions.filter((cp) => cp.cls).length < 2) return
-      if (!mmgc.setImageSize) return
-      const context = canvasRef.getContext("2d")
 
-      if (!superPixelsGenerated.current) {
-        superPixelsGenerated.current = "processing"
-        mmgc.setSimpleMode(autoSegmentationOptions.type === "simple")
-        mmgc.setMaxClusters(1000)
-        mmgc.setImageSize(sampleImageData.width, sampleImageData.height)
-        mmgc.setClassColor(0, 0)
-        for (let i = 0; i < colorInts.length; i++) {
-          mmgc.setClassColor(i + 1, colorInts[i])
-        }
-        const imageAddress = mmgc.getImageAddr()
-        mmgc.HEAPU8.set(sampleImageData.data, imageAddress)
-        mmgc.computeSuperPixels()
-        superPixelsGenerated.current = "done"
-      }
-      if (superPixelsGenerated.current !== "done") return
+      const udtRegions = convertToUDTRegions(regions)
 
-      // mmgc.setVerboseMode(true)
-      if (
-        !["bg", "background", "nothing"].includes(
-          regionClsList[0].toLowerCase()
-        )
-      ) {
-        console.log(
-          `first region cls must be "bg" or "background" or "nothing"`
-        )
-        return
-      }
-      mmgc.clearClassElements()
-      const classPoints = regions
-        .filter((r) => r.type === "point")
-        .filter((r) => r.cls)
-      for (const classPoint of classPoints) {
-        if (classPoint.x < 0 || classPoint.x >= 1) continue
-        if (classPoint.y < 0 || classPoint.y >= 1) continue
-        const clsIndex = regionClsList.indexOf(classPoint.cls)
-        if (clsIndex > colorInts.length) {
-          console.log("Too many classes to draw on mask!")
-          continue
-        }
-
-        mmgc.addClassPoint(
-          clsIndex,
-          Math.floor(classPoint.y * sampleImageData.height),
-          Math.floor(classPoint.x * sampleImageData.width)
-        )
-      }
-      const classPolygons = regions
-        .map((r) => {
-          if (r.type !== "box") return r
-          return {
-            ...r,
-            type: "polygon",
-            points: [
-              [r.x, r.y],
-              [r.x + r.w, r.y],
-              [r.x + r.w, r.y + r.h],
-              [r.x, r.y + r.h],
-            ],
-          }
-        })
-        .filter((r) => r.type === "polygon")
-        .filter((r) => r.cls)
-      for (const polygon of classPolygons) {
-        const { points } = polygon
-        const clsIndex = regionClsList.indexOf(polygon.cls)
-        const pi = mmgc.addPolygon(clsIndex)
-        const pointPairs = points.map((p, i) => [
-          p,
-          points[(i + 1) % points.length],
-        ])
-        for (const [p1, p2] of pointPairs) {
-          const ri1 = Math.round(p1[1] * sampleImageData.height)
-          const ci1 = Math.round(p1[0] * sampleImageData.width)
-          const ri2 = Math.round(p2[1] * sampleImageData.height)
-          const ci2 = Math.round(p2[0] * sampleImageData.width)
-          mmgc.addLineToPolygon(pi, ri1, ci1, ri2, ci2)
-        }
-      }
-
-      mmgc.computeMasks()
-      const maskAddress = mmgc.getColoredMask()
-      const cppImDataUint8 = new Uint8ClampedArray(
-        mmgc.HEAPU8.buffer,
-        maskAddress,
-        sampleImageData.data.length
-      )
-      const maskImageData = new ImageData(
-        cppImDataUint8,
-        sampleImageData.width,
-        sampleImageData.height
-      )
-
-      context.clearRect(0, 0, sampleImageData.width, sampleImageData.height)
-      context.putImageData(maskImageData, 0, 0)
+      autoseg.getMask(udtRegions).then((maskImageData) => {
+        const context = canvasRef.getContext("2d")
+        context.clearRect(0, 0, maskImageData.width, maskImageData.height)
+        context.putImageData(maskImageData, 0, 0)
+      })
     },
     1000,
     [canvasRef, sampleImageData, regions, hide]
