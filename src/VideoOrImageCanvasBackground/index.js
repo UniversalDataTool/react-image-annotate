@@ -22,6 +22,7 @@ export default ({
   videoSrc,
   imageSrc,
   onLoad,
+  useCrossOrigin = false,
   videoPlaying,
   onChangeVideoTime,
   onChangeVideoPlaying,
@@ -119,7 +120,7 @@ export default ({
       ref={imageRef}
       style={stylePosition}
       onLoad={onImageLoaded}
-      crossOrigin="anonymous"
+      crossOrigin={useCrossOrigin ? "anonymous" : undefined}
     />
   ) : (
     <Video

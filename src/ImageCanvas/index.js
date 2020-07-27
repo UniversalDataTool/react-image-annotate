@@ -405,6 +405,7 @@ export const ImageCanvas = ({
             videoTime={videoTime}
             videoSrc={videoSrc}
             imageSrc={imageSrc}
+            useCrossOrigin={fullImageSegmentationMode}
             onChangeVideoTime={onChangeVideoTime}
             onChangeVideoPlaying={onChangeVideoPlaying}
           />
