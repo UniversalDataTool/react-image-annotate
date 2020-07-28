@@ -1,6 +1,6 @@
 // @flow weak
 
-import React, { useRef, useEffect, useMemo } from "react"
+import React, { useRef, useEffect, useMemo, useState } from "react"
 import { styled } from "@material-ui/core/styles"
 import useEventCallback from "use-event-callback"
 import { useSettings } from "../SettingsProvider"
@@ -13,6 +13,20 @@ const Video = styled("video")({
 const StyledImage = styled("img")({
   zIndex: 0,
   position: "absolute",
+})
+
+const Error = styled("div")({
+  zIndex: 0,
+  position: "absolute",
+  left: 0,
+  right: 0,
+  bottom: 0,
+  top: 0,
+  backgroundColor: "rgba(255,0,0,0.2)",
+  color: "#ff0000",
+  fontWeight: "bold",
+  whiteSpace: "pre-wrap",
+  padding: 50,
 })
 
 export default ({
@@ -30,6 +44,7 @@ export default ({
   const settings = useSettings()
   const videoRef = useRef()
   const imageRef = useRef()
+  const [error, setError] = useState()
 
   useEffect(() => {
     if (!videoPlaying && videoRef.current) {
@@ -93,6 +108,17 @@ export default ({
         imageElm,
       })
   })
+  const onImageError = useEventCallback((event) => {
+    setError(
+      `Could not load image\n\nMake sure your image works by visiting ${
+        imageSrc || videoSrc
+      } in a web browser. If that URL works, the server hosting the URL may be not allowing you to access the image from your current domain. Adjust server settings to enable the image to be viewed.${
+        !useCrossOrigin
+          ? ""
+          : `\n\nYour image may be blocked because it's not being sent with CORs headers. To do pixel segmentation, browser web security requires CORs headers in order for the algorithm to read the pixel data from the image. CORs headers are easy to add if you're using an S3 bucket or own the server hosting your images.`
+      }\n\n If you need a hand, reach out to the community at universaldatatool.slack.com`
+    )
+  })
 
   const stylePosition = useMemo(() => {
     let width = imagePosition.bottomRight.x - imagePosition.topLeft.x
@@ -111,7 +137,10 @@ export default ({
     imagePosition.bottomRight.y,
   ])
 
-  if (!videoSrc && !imageSrc) return "No imageSrc or videoSrc provided"
+  if (!videoSrc && !imageSrc)
+    return <Error>No imageSrc or videoSrc provided</Error>
+
+  if (error) return <Error>{error}</Error>
 
   return imageSrc && videoTime === undefined ? (
     <StyledImage
@@ -120,6 +149,7 @@ export default ({
       ref={imageRef}
       style={stylePosition}
       onLoad={onImageLoaded}
+      onError={onImageError}
       crossOrigin={useCrossOrigin ? "anonymous" : undefined}
     />
   ) : (
