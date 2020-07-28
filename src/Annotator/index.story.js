@@ -647,3 +647,23 @@ storiesOf("Annotator", module)
       </HotKeys>
     )
   })
+  .add("CORs Error (Pixel Segmentation)", () => (
+    <Annotator
+      onExit={actionAddon("onExit")}
+      middlewares={[
+        (store) => (next) => (action) => {
+          actionAddon(action.type)(action)
+          return next(action)
+        },
+      ]}
+      labelImages
+      fullImageSegmentationMode
+      regionClsList={["Alpha", "Beta", "Charlie", "Delta"]}
+      images={[
+        {
+          src: "https://placebear.com/200/300",
+          name: "Frame 0036",
+        },
+      ]}
+    />
+  ))
