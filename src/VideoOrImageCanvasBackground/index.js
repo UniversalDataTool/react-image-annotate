@@ -109,7 +109,6 @@ export default ({
       })
   })
   const onImageError = useEventCallback((event) => {
-    console.log(event.toString(), event, event.stack)
     setError(
       `Could not load image\n\nMake sure your image works by visiting ${
         imageSrc || videoSrc
