@@ -10,7 +10,6 @@ import DebugBox from "../DebugSidebarBox"
 import TagsSidebarBox from "../TagsSidebarBox"
 import KeyframesSelector from "../KeyframesSelectorSidebarBox"
 import type { Region } from "../ImageCanvas/region-tools.js"
-import Shortcuts from "../Shortcuts"
 
 const useStyles = makeStyles({})
 

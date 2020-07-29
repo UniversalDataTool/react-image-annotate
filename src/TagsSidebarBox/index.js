@@ -20,15 +20,15 @@ type Props = {
 }
 
 const emptyArr = []
+const noop = () => null
 
 export const TagsSidebarBox = ({
   currentImage,
   imageClsList = emptyArr,
   imageTagList = emptyArr,
-  onChangeImage,
+  onChangeImage = noop,
 }: Props) => {
-  if (!currentImage) return null
-  const { tags = [], cls = null } = currentImage
+  const { tags = [], cls = null } = currentImage || {}
   const onChangeClassification = useEventCallback((o) =>
     onChangeImage({ cls: o.value })
   )
@@ -50,6 +50,8 @@ export const TagsSidebarBox = ({
     () => tags.map((r) => ({ value: r, label: r })),
     [tags]
   )
+
+  if (!currentImage) return null
 
   return (
     <SidebarBoxContainer
