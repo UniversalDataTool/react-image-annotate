@@ -17,24 +17,51 @@ import {
   faMask,
 } from "@fortawesome/free-solid-svg-icons"
 
+const faStyle = { marginTop: 4, width: 16, height: 16, marginBottom: 4 }
+
 export const iconDictionary = {
-  select: () => <FontAwesomeIcon size="xs" fixedWidth icon={faMousePointer} />,
-  pan: () => <FontAwesomeIcon size="xs" fixedWidth icon={faHandPaper} />,
-  zoom: () => <FontAwesomeIcon size="xs" fixedWidth icon={faSearch} />,
-  "show-tags": () => <FontAwesomeIcon size="xs" fixedWidth icon={faTag} />,
+  select: () => (
+    <FontAwesomeIcon
+      style={faStyle}
+      size="xs"
+      fixedWidth
+      icon={faMousePointer}
+    />
+  ),
+  pan: () => (
+    <FontAwesomeIcon style={faStyle} size="xs" fixedWidth icon={faHandPaper} />
+  ),
+  zoom: () => (
+    <FontAwesomeIcon style={faStyle} size="xs" fixedWidth icon={faSearch} />
+  ),
+  "show-tags": () => (
+    <FontAwesomeIcon style={faStyle} size="xs" fixedWidth icon={faTag} />
+  ),
   "create-point": () => (
-    <FontAwesomeIcon size="xs" fixedWidth icon={faCrosshairs} />
+    <FontAwesomeIcon style={faStyle} size="xs" fixedWidth icon={faCrosshairs} />
   ),
   "create-box": () => (
-    <FontAwesomeIcon size="xs" fixedWidth icon={faVectorSquare} />
+    <FontAwesomeIcon
+      style={faStyle}
+      size="xs"
+      fixedWidth
+      icon={faVectorSquare}
+    />
   ),
   "create-polygon": () => (
-    <FontAwesomeIcon size="xs" fixedWidth icon={faDrawPolygon} />
+    <FontAwesomeIcon
+      style={faStyle}
+      size="xs"
+      fixedWidth
+      icon={faDrawPolygon}
+    />
   ),
   "create-expanding-line": () => (
-    <FontAwesomeIcon size="xs" fixedWidth icon={faGripLines} />
+    <FontAwesomeIcon style={faStyle} size="xs" fixedWidth icon={faGripLines} />
   ),
-  "show-mask": () => <FontAwesomeIcon size="xs" fixedWidth icon={faMask} />,
+  "show-mask": () => (
+    <FontAwesomeIcon style={faStyle} size="xs" fixedWidth icon={faMask} />
+  ),
 }
 
 export default iconDictionary
