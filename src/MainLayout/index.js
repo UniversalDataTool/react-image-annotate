@@ -30,6 +30,7 @@ import RegionSelector from "../RegionSelectorSidebarBox"
 import ImageSelector from "../ImageSelectorSidebarBox"
 import HistorySidebarBox from "../HistorySidebarBox"
 
+const emptyArr = []
 const useStyles = makeStyles(styles)
 
 const HotkeyDiv = withHotKeys(({ hotKeys, children, divRef, ...props }) => (
@@ -196,39 +197,40 @@ export const MainLayout = ({
       iconSidebarItems={[
         {
           name: "select",
-          toolTip: "Select",
+          helperText: "Select",
+          selected: true,
         },
         {
           name: "pan",
-          toolTip: "Drag/Pan",
+          helperText: "Drag/Pan",
         },
         {
           name: "zoom",
-          toolTip: "Zoom In/Out",
+          helperText: "Zoom In/Out",
         },
         {
           name: "show-tags",
-          toolTip: "Show / Hide Tags",
+          helperText: "Show / Hide Tags",
         },
         {
           name: "create-point",
-          toolTip: "Add Point",
+          helperText: "Add Point",
         },
         {
           name: "create-box",
-          toolTip: "Add Bounding Box",
+          helperText: "Add Bounding Box",
         },
         {
           name: "create-polygon",
-          toolTip: "Add Polygon",
+          helperText: "Add Polygon",
         },
         {
           name: "create-expanding-line",
-          toolTip: "Add Expanding Line",
+          helperText: "Add Expanding Line",
         },
         {
           name: "show-mask",
-          toolTip: "Show / Hide Mask",
+          helperText: "Show / Hide Mask",
         },
       ]}
       rightSidebarItems={[

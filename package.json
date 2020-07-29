@@ -18,7 +18,7 @@
     "react-hotkeys": "^2.0.0",
     "react-json-view": "^1.19.1",
     "react-markdown": "^4.0.6",
-    "react-material-workspace-layout": "^0.1.6",
+    "react-material-workspace-layout": "^0.1.8",
     "react-monaco-editor": "^0.25.1",
     "react-remove-scroll": "^2.0.4",
     "react-select": "^3.0.8",

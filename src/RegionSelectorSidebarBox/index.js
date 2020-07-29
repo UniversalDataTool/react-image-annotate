@@ -160,8 +160,10 @@ const MemoRow = memo(
     prevProps.color === nextProps.color
 )
 
+const emptyArr = []
+
 export const RegionSelectorSidebarBox = ({
-  regions,
+  regions = emptyArr,
   onDeleteRegion,
   onChangeRegion,
   onSelectRegion,
@@ -203,7 +205,7 @@ const mapUsedRegionProperties = (r) => [
 
 export default memo(RegionSelectorSidebarBox, (prevProps, nextProps) =>
   isEqual(
-    prevProps.regions.map(mapUsedRegionProperties),
-    nextProps.regions.map(mapUsedRegionProperties)
+    (prevProps.regions || emptyArr).map(mapUsedRegionProperties),
+    (nextProps.regions || emptyArr).map(mapUsedRegionProperties)
   )
 )
