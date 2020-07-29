@@ -29,6 +29,7 @@ import TaskDescription from "../TaskDescriptionSidebarBox"
 import RegionSelector from "../RegionSelectorSidebarBox"
 import ImageSelector from "../ImageSelectorSidebarBox"
 import HistorySidebarBox from "../HistorySidebarBox"
+import useEventCallback from "use-event-callback"
 
 const emptyArr = []
 const useStyles = makeStyles(styles)
@@ -164,6 +165,14 @@ export const MainLayout = ({
     />
   )
 
+  const onClickIconSidebarItem = useEventCallback((item) => {
+    dispatch({ type: "SELECT_TOOL", selectedTool: item.name })
+  })
+
+  const onClickHeaderItem = useEventCallback((item) => {
+    dispatch({ type: "HEADER_BUTTON_CLICKED", buttonName: item.name })
+  })
+
   const debugModeOn = Boolean(window.localStorage.$ANNOTATE_DEBUG_MODE && state)
 
   return (
@@ -192,13 +201,18 @@ export const MainLayout = ({
         { name: "Fullscreen" },
         { name: "Save" },
       ].filter(Boolean)}
-      onClickHeaderItem={console.log}
-      onClickIconSidebarItem={console.log}
+      onClickHeaderItem={onClickHeaderItem}
+      onClickIconSidebarItem={onClickIconSidebarItem}
+      selectedTools={[
+        state.selectedTool,
+        state.showTags && "show-tags",
+        state.showMask && "show-mask",
+      ].filter(Boolean)}
       iconSidebarItems={[
         {
           name: "select",
           helperText: "Select",
-          selected: true,
+          selected: state.selectedTool,
         },
         {
           name: "pan",
@@ -256,7 +270,7 @@ export const MainLayout = ({
           />
         ),
         <RegionSelector
-          regions={activeImage ? activeImage.regions : null}
+          regions={activeImage ? activeImage.regions : emptyArr}
           onSelectRegion={action("SELECT_REGION", "region")}
           onDeleteRegion={action("DELETE_REGION", "region")}
           onChangeRegion={action("CHANGE_REGION", "region")}
