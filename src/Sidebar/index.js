@@ -1,7 +1,7 @@
 // @flow
 
 import React from "react"
-import { makeStyles } from "@material-ui/core/styles"
+import { styled, makeStyles } from "@material-ui/core/styles"
 import TaskDescription from "../TaskDescriptionSidebarBox"
 import ImageSelector from "../ImageSelectorSidebarBox"
 import RegionSelector from "../RegionSelectorSidebarBox"
@@ -11,7 +11,7 @@ import TagsSidebarBox from "../TagsSidebarBox"
 import KeyframesSelector from "../KeyframesSelectorSidebarBox"
 import type { Region } from "../ImageCanvas/region-tools.js"
 
-const useStyles = makeStyles({})
+const Container = styled("div")({})
 
 type Image = {
   name: string,
@@ -67,12 +67,10 @@ export const Sidebar = ({
   onDeleteKeyframe,
   onShortcutActionDispatched,
 }: Props) => {
-  const classes = useStyles()
-
   if (!regions) regions = emptyArr
 
   return (
-    <div>
+    <Container>
       {debug && <DebugBox state={debug} lastAction={debug.lastAction} />}
       {taskDescription && (taskDescription || "").length > 1 && (
         <TaskDescription description={taskDescription} />
@@ -105,7 +103,7 @@ export const Sidebar = ({
       )}
       <History history={history} onRestoreHistory={() => onRestoreHistory()} />
       {/* <Shortcuts onShortcutActionDispatched={onShortcutActionDispatched} /> */}
-    </div>
+    </Container>
   )
 }
 
