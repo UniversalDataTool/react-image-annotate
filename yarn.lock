@@ -14522,10 +14522,10 @@ react-markdown@^4.0.6:
     unist-util-visit "^1.3.0"
     xtend "^4.0.1"
 
-react-material-workspace-layout@^0.1.14:
-  version "0.1.14"
-  resolved "https://registry.yarnpkg.com/react-material-workspace-layout/-/react-material-workspace-layout-0.1.14.tgz#7a50fb18c89c14fd23353d5ad2c23d8e61fbfd70"
-  integrity sha512-muYUkTr27dSvSQ+NU0DmPjxYkI+DrDBWz0xwC189SN4+ANCE1V4Ul3wMkbeXSqxEk/9oRFkMae0+4ygHBkGi8A==
+react-material-workspace-layout@^0.1.16:
+  version "0.1.16"
+  resolved "https://registry.yarnpkg.com/react-material-workspace-layout/-/react-material-workspace-layout-0.1.16.tgz#fa51c8a52e19cc3f8cc1627d69f761851447621e"
+  integrity sha512-knxP+1dYMueWdpp/LZoTt23P5LJjtoexZsKBTgRZFMZwvc1uXSK3u2Lwxf6jw5AMI55mrTrWNhB7aqOpzROtjA==
   dependencies:
     "@material-ui/core" "^4.10.0"
     "@material-ui/icons" "^4.9.1"

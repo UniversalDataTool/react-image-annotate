@@ -202,14 +202,16 @@ export const MainLayout = ({
           allowFullscreen
           iconDictionary={iconDictionary}
           headerLeftSide={[
-            state.annotationType === "video" && (
+            state.annotationType === "video" ? (
               <KeyframeTimeline
                 currentTime={state.currentVideoTime}
                 duration={state.videoDuration}
                 onChangeCurrentTime={action("CHANGE_VIDEO_TIME", "newTime")}
                 keyframes={state.keyframes}
               />
-            ),
+            ) : activeImage ? (
+              <div className={classes.headerTitle}>{activeImage.name}</div>
+            ) : null,
           ].filter(Boolean)}
           headerItems={[
             { name: "Prev" },

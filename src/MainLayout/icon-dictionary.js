@@ -16,6 +16,7 @@ import {
   faSearch,
   faMask,
 } from "@fortawesome/free-solid-svg-icons"
+import FullscreenIcon from "@material-ui/icons/Fullscreen"
 
 const faStyle = { marginTop: 4, width: 16, height: 16, marginBottom: 4 }
 
@@ -62,6 +63,7 @@ export const iconDictionary = {
   "show-mask": () => (
     <FontAwesomeIcon style={faStyle} size="xs" fixedWidth icon={faMask} />
   ),
+  window: FullscreenIcon,
 }
 
 export default iconDictionary
