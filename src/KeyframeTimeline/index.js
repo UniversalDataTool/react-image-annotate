@@ -14,6 +14,7 @@ const Container = styled("div")({
   display: "flex",
   flexGrow: 1,
   minWidth: 240,
+  height: 64,
   marginLeft: 16,
   marginRight: 16,
 })
