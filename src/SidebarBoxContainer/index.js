@@ -9,6 +9,7 @@ import Collapse from "@material-ui/core/Collapse"
 import { grey } from "@material-ui/core/colors"
 import classnames from "classnames"
 import useEventCallback from "use-event-callback"
+import SidebarBox from "react-material-workspace-layout/SidebarBox"
 
 const useStyles = makeStyles({
   container: { margin: 8 },
@@ -74,6 +75,13 @@ export const SidebarBoxContainer = ({
 
   const [expanded, changeExpanded] = useState(expandedByDefault)
   const toggleExpanded = useEventCallback(() => changeExpanded(!expanded))
+
+  return (
+    <SidebarBox icon={icon} title={title}>
+      {children}
+    </SidebarBox>
+  )
+
   return (
     <Paper className={classes.container}>
       <div className={classes.header}>

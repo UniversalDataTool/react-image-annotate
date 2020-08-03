@@ -13,7 +13,7 @@ import FullImageSegmentationAnnotator from "./"
 
 storiesOf("FullImageSegmentationAnnotator.Basic", module)
   .add("Orange 2 Class", () => (
-    <div style={{ width: "100vw", height: "100vh" }}>
+    <div style={{ width: "95vw", height: "95vh" }}>
       <FullImageSegmentationAnnotator
         images={[
           {
@@ -59,7 +59,7 @@ storiesOf("FullImageSegmentationAnnotator.Basic", module)
     </div>
   ))
   .add("S3 CORS domain", () => (
-    <div style={{ width: "100vw", height: "100vh" }}>
+    <div style={{ width: "95vw", height: "95vh" }}>
       <FullImageSegmentationAnnotator
         images={[
           {
@@ -90,7 +90,7 @@ storiesOf("FullImageSegmentationAnnotator.Basic", module)
     </div>
   ))
   .add("Orange 3 Class", () => (
-    <div style={{ width: "100vw", height: "100vh" }}>
+    <div style={{ width: "95vw", height: "95vh" }}>
       <FullImageSegmentationAnnotator
         images={[
           {
@@ -120,7 +120,7 @@ storiesOf("FullImageSegmentationAnnotator.Basic", module)
     </div>
   ))
   .add("Hard 1, 8 Class, Simple Mode", () => (
-    <div style={{ width: "100vw", height: "100vh" }}>
+    <div style={{ width: "95vw", height: "95vh" }}>
       <FullImageSegmentationAnnotator
         images={[
           {
@@ -135,7 +135,7 @@ storiesOf("FullImageSegmentationAnnotator.Basic", module)
     </div>
   ))
   .add("Hard 1, 8 Class", () => (
-    <div style={{ width: "100vw", height: "100vh" }}>
+    <div style={{ width: "95vw", height: "95vh" }}>
       <FullImageSegmentationAnnotator
         images={[
           {
@@ -149,7 +149,7 @@ storiesOf("FullImageSegmentationAnnotator.Basic", module)
     </div>
   ))
   .add("Hard 2, 8 Class", () => (
-    <div style={{ width: "100vw", height: "100vh" }}>
+    <div style={{ width: "95vw", height: "95vh" }}>
       <FullImageSegmentationAnnotator
         images={[
           {
@@ -163,7 +163,7 @@ storiesOf("FullImageSegmentationAnnotator.Basic", module)
     </div>
   ))
   .add("Hard 3, 8 Class", () => (
-    <div style={{ width: "100vw", height: "100vh" }}>
+    <div style={{ width: "95vw", height: "95vh" }}>
       <FullImageSegmentationAnnotator
         images={[
           {

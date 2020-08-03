@@ -79,8 +79,6 @@ export const Annotator = ({
   onPrevImage,
   autoSegmentationOptions = { type: "autoseg" },
 }: Props) => {
-  if (!images && !videoSrc)
-    return 'Missing required prop "images" or "videoSrc"'
   const annotationType = images ? "image" : "video"
   const [state, dispatchToReducer] = useReducer(
     historyHandler(
@@ -151,6 +149,9 @@ export const Annotator = ({
       image: state.images.find((img) => img.src === selectedImage),
     })
   }, [selectedImage])
+
+  if (!images && !videoSrc)
+    return 'Missing required prop "images" or "videoSrc"'
 
   return (
     <SettingsProvider>
