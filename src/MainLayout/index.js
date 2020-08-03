@@ -1,13 +1,9 @@
 // @flow
 
-import React, { useState, useRef, useCallback } from "react"
+import React, { useRef, useCallback } from "react"
 import type { Node } from "react"
-import Grid from "@material-ui/core/Grid"
 import { makeStyles } from "@material-ui/core/styles"
-import Sidebar from "../Sidebar"
 import ImageCanvas from "../ImageCanvas"
-import Header from "../Header"
-import IconTools from "../IconTools"
 import styles from "./styles"
 import type { MainLayoutState, Action } from "./types"
 import useKey from "use-key-hook"
@@ -129,7 +125,6 @@ export const MainLayout = ({
       dragWithPrimary={state.selectedTool === "pan"}
       zoomWithPrimary={state.selectedTool === "zoom"}
       showPointDistances={state.showPointDistances}
-      pointDistancePrecision={state.pointDistancePrecision}
       videoTime={
         state.annotationType === "image"
           ? state.selectedImageFrameTime
