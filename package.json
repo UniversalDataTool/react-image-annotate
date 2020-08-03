@@ -67,7 +67,7 @@
   "devDependencies": {
     "@babel/cli": "^7.2.3",
     "@babel/core": "^7.2.2",
-    "@babel/plugin-proposal-optional-chaining": "^7.10.4",
+    "@babel/plugin-proposal-optional-chaining": "^7.11.0",
     "@storybook/addon-actions": "^5.3.14",
     "@storybook/addon-links": "^5.3.14",
     "@storybook/addons": "^5.3.14",
