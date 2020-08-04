@@ -138,3 +138,13 @@ storiesOf("ImageCanvas", module)
       {...events}
     />
   ))
+  .add("Allowed Area (2)", () => (
+    <ImageCanvas
+      showTags
+      regions={[]}
+      imageSrc={exampleImage}
+      zoomWithPrimary
+      allowedArea={{ x: 0.6, y: 0.6, w: 0.2, h: 0.2 }}
+      {...events}
+    />
+  ))

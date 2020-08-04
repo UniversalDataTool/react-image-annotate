@@ -105,6 +105,10 @@ export const MainLayout = ({
   const canvas = (
     <ImageCanvas
       {...settings}
+      showCrosshairs={
+        settings.showCrosshairs &&
+        !["select", "pan", "zoom"].includes(state.selectedTool)
+      }
       key={state.selectedImage}
       showMask={state.showMask}
       fullImageSegmentationMode={state.fullImageSegmentationMode}
