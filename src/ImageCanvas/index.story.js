@@ -96,7 +96,6 @@ const events = {
 
   onChangeRegion: action("onChangeRegion"),
   onBeginRegionEdit: action("onBeginRegionEdit"),
-  onChangeRegion: action("onChangeRegion"),
   onCloseRegionEdit: action("onCloseRegionEdit"),
 
   onSelectRegion: action("onSelectRegion"),
