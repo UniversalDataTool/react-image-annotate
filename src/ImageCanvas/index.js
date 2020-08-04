@@ -1,6 +1,12 @@
 // @flow weak
 
-import React, { useRef, useState, useLayoutEffect, useMemo } from "react"
+import React, {
+  useRef,
+  useState,
+  useLayoutEffect,
+  useEffect,
+  useMemo,
+} from "react"
 import type { Node } from "react"
 import { Matrix } from "transformation-matrix-js"
 import Crosshairs from "../Crosshairs"
@@ -48,6 +54,7 @@ type Props = {
   allowedArea?: { x: number, y: number, w: number, h: number },
   RegionEditLabel?: Node,
   videoPlaying?: boolean,
+  zoomOnAllowedArea?: boolean,
   fullImageSegmentationMode?: boolean,
   autoSegmentationOptions?: Object,
 
@@ -70,7 +77,15 @@ type Props = {
   onChangeVideoPlaying?: Function,
 }
 
-const getDefaultMat = () => Matrix.from(1, 0, 0, 1, -10, -10)
+const getDefaultMat = (allowedArea = null, { iw, ih } = {}) => {
+  let mat = Matrix.from(1, 0, 0, 1, -10, -10)
+  if (allowedArea && iw) {
+    mat = mat
+      .translate(allowedArea.x * iw, allowedArea.y * ih)
+      .scaleU(allowedArea.w + 0.05)
+  }
+  return mat
+}
 
 export const ImageCanvas = ({
   regions,
@@ -110,6 +125,7 @@ export const ImageCanvas = ({
   onChangeVideoTime,
   onChangeVideoPlaying,
   onRegionClassAdded,
+  zoomOnAllowedArea = true,
 }: Props) => {
   const classes = useStyles()
 
@@ -155,6 +171,7 @@ export const ImageCanvas = ({
 
   const [imageDimensions, changeImageDimensions] = useState()
   const imageLoaded = Boolean(imageDimensions && imageDimensions.naturalWidth)
+
   const onVideoOrImageLoaded = useEventCallback(
     ({ naturalWidth, naturalHeight, duration }) => {
       const dims = { naturalWidth, naturalHeight, duration }
@@ -189,6 +206,17 @@ export const ImageCanvas = ({
       canvasHeight: clientHeight,
     }
   }
+
+  useEffect(() => {
+    if (!imageLoaded) return
+    changeMat(
+      getDefaultMat(
+        zoomOnAllowedArea ? allowedArea : null,
+        layoutParams.current
+      )
+    )
+    // eslint-disable-next-line
+  }, [imageLoaded])
 
   useLayoutEffect(() => {
     if (!imageDimensions) return

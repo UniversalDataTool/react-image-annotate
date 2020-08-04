@@ -96,7 +96,6 @@ const events = {
 
   onChangeRegion: action("onChangeRegion"),
   onBeginRegionEdit: action("onBeginRegionEdit"),
-  onChangeRegion: action("onChangeRegion"),
   onCloseRegionEdit: action("onCloseRegionEdit"),
 
   onSelectRegion: action("onSelectRegion"),
@@ -136,6 +135,16 @@ storiesOf("ImageCanvas", module)
       imageSrc={exampleImage}
       zoomWithPrimary
       allowedArea={{ x: 0.25, y: 0.25, w: 0.5, h: 0.5 }}
+      {...events}
+    />
+  ))
+  .add("Allowed Area (2)", () => (
+    <ImageCanvas
+      showTags
+      regions={[]}
+      imageSrc={exampleImage}
+      zoomWithPrimary
+      allowedArea={{ x: 0.6, y: 0.6, w: 0.2, h: 0.2 }}
       {...events}
     />
   ))

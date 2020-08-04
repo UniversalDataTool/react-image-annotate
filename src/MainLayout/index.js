@@ -10,7 +10,8 @@ import useKey from "use-key-hook"
 import classnames from "classnames"
 import { useSettings } from "../SettingsProvider"
 import SettingsDialog from "../SettingsDialog"
-import Fullscreen from "../Fullscreen"
+// import Fullscreen from "../Fullscreen"
+import { FullScreen, useFullScreenHandle } from "react-full-screen"
 import getActiveImage from "../Annotator/reducers/get-active-image"
 import useImpliedVideoRegions from "./use-implied-video-regions"
 import { useDispatchHotkeyHandlers } from "../ShortcutsManager"
@@ -55,6 +56,7 @@ export const MainLayout = ({
 }: Props) => {
   const classes = useStyles()
   const settings = useSettings()
+  const fullScreenHandle = useFullScreenHandle()
 
   const memoizedActionFns = useRef({})
   const action = (type: string, ...params: Array<string>) => {
@@ -103,6 +105,10 @@ export const MainLayout = ({
   const canvas = (
     <ImageCanvas
       {...settings}
+      showCrosshairs={
+        settings.showCrosshairs &&
+        !["select", "pan", "zoom"].includes(state.selectedTool)
+      }
       key={state.selectedImage}
       showMask={state.showMask}
       fullImageSegmentationMode={state.fullImageSegmentationMode}
@@ -165,6 +171,11 @@ export const MainLayout = ({
   })
 
   const onClickHeaderItem = useEventCallback((item) => {
+    if (item.name === "Fullscreen") {
+      fullScreenHandle.enter()
+    } else if (item.name === "Window") {
+      fullScreenHandle.exit()
+    }
     dispatch({ type: "HEADER_BUTTON_CLICKED", buttonName: item.name })
   })
 
@@ -173,11 +184,12 @@ export const MainLayout = ({
     !nextImage || (nextImage.regions && nextImage.regions.length > 0)
 
   return (
-    <Fullscreen
-      enabled={state.fullScreen}
+    <FullScreen
+      handle={fullScreenHandle}
       onChange={(open) => {
         if (!open) {
-          action("HEADER_BUTTON_CLICKED", "buttonName")("Exit Fullscreen")
+          fullScreenHandle.exit()
+          action("HEADER_BUTTON_CLICKED", "buttonName")("Window")
         }
       }}
     >
@@ -323,7 +335,7 @@ export const MainLayout = ({
           }
         />
       </HotkeyDiv>
-    </Fullscreen>
+    </FullScreen>
   )
 }
 

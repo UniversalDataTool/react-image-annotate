@@ -24,8 +24,8 @@ const RegionComponents = {
         strokeWidth={2}
         x={0}
         y={0}
-        width={region.w * iw}
-        height={region.h * ih}
+        width={Math.max(region.w * iw, 0)}
+        height={Math.max(region.h * ih, 0)}
         stroke={colorAlpha(region.color, 0.75)}
         fill={colorAlpha(region.color, 0.25)}
       />
@@ -80,6 +80,7 @@ const RegionComponents = {
         />
         {points.map(({ x, y, angle }, i) => (
           <g
+            key={i}
             transform={`translate(${x * iw} ${y * ih}) rotate(${
               (-(angle || 0) * 180) / Math.PI
             })`}
@@ -156,6 +157,7 @@ export const RegionShapes = ({
       }}
     >
       <WrappedRegionList
+        key="wrapped-region-list"
         regions={regions}
         iw={iw}
         ih={ih}
