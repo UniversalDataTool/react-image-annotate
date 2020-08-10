@@ -43,13 +43,14 @@ const KeyframeRow = styled("div")({
   },
 })
 
-const KeyframesSelector = ({
+const KeyframesSelectorSidebarBox = ({
   currentVideoTime,
   keyframes,
   onChangeVideoTime,
   onDeleteKeyframe,
 }) => {
   const keyframeTimes = Object.keys(keyframes).map((t) => parseInt(t))
+
   return (
     <SidebarBoxContainer
       title="Keyframes"
@@ -67,7 +68,7 @@ const KeyframesSelector = ({
           <div className="time">
             {getTimeString(t, 2)}
             <span className="regionCount">
-              ({(keyframes[t].regions || []).length})
+              ({(keyframes[t]?.regions || []).length})
             </span>
           </div>
           <div className="trash">
@@ -85,4 +86,4 @@ const KeyframesSelector = ({
   )
 }
 
-export default KeyframesSelector
+export default KeyframesSelectorSidebarBox

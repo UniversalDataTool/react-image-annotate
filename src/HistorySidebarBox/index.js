@@ -13,6 +13,7 @@ import UndoIcon from "@material-ui/icons/Undo"
 import moment from "moment"
 import { grey } from "@material-ui/core/colors"
 import isEqual from "lodash/isEqual"
+import Box from "@material-ui/core/Box"
 
 const useStyles = makeStyles({
   emptyText: {
@@ -23,6 +24,8 @@ const useStyles = makeStyles({
     padding: 20,
   },
 })
+
+const listItemTextStyle = { paddingLeft: 16 }
 
 export const HistorySidebarBox = ({
   history,
@@ -45,6 +48,7 @@ export const HistorySidebarBox = ({
         {history.map(({ name, time }, i) => (
           <ListItem button dense key={i}>
             <ListItemText
+              style={listItemTextStyle}
               primary={name}
               secondary={moment(time).format("LT")}
             />
