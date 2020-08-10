@@ -12,7 +12,7 @@ export default (state: MainLayoutVideoAnnotationState, action: Action) => {
   const copyImpliedRegions = () => {
     return setIn(
       saveToHistory(state, "Add Keyframe"),
-      ["keyframes", state.currentVideoTime],
+      ["keyframes", state.currentVideoTime || 0],
       {
         regions: getImpliedVideoRegions(
           state.keyframes,
@@ -46,6 +46,8 @@ export default (state: MainLayoutVideoAnnotationState, action: Action) => {
     case "DELETE_KEYFRAME": {
       return setIn(state, ["keyframes"], without(state.keyframes, action.time))
     }
+    default:
+      break
   }
 
   // Before the user modifies regions, copy the interpolated regions over to a
@@ -54,8 +56,6 @@ export default (state: MainLayoutVideoAnnotationState, action: Action) => {
     switch (action.type) {
       case "BEGIN_BOX_TRANSFORM":
       case "BEGIN_MOVE_POINT":
-      case "BEGIN_MOVE_POLYGON_POINT":
-      case "BEGIN_BOX_TRANSFORM":
       case "BEGIN_MOVE_POLYGON_POINT":
       case "ADD_POLYGON_POINT":
       case "SELECT_REGION":
@@ -69,8 +69,13 @@ export default (state: MainLayoutVideoAnnotationState, action: Action) => {
           case "create-polygon":
           case "create-box":
             return copyImpliedRegions()
+          default:
+            break
         }
+        break
       }
+      default:
+        break
     }
   }
 
