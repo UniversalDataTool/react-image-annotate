@@ -84,9 +84,9 @@ export const Sidebar = ({
           expandedByDefault
         />
       )}
-      {images && images.length > 1 && (
+      {/* {images && images.length > 1 && (
         <ImageSelector onSelect={onSelectImage} images={images} />
-      )}
+      )} */}
       <RegionSelector
         regions={regions}
         onSelectRegion={onSelectRegion}
