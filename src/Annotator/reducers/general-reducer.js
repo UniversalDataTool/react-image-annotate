@@ -9,6 +9,7 @@ import { saveToHistory } from "./history-handler.js"
 import colors from "../../colors"
 import fixTwisted from "./fix-twisted"
 import convertExpandingLineToPolygon from "./convert-expanding-line-to-polygon"
+import clamp from "clamp"
 
 const getRandomId = () => Math.random().toString().split(".")[1]
 
@@ -207,7 +208,13 @@ export default (state: MainLayoutState, action: Action) => {
       })
     }
     case "MOUSE_MOVE": {
-      const { x, y } = action
+      let { x, y } = action
+      if (state.allowedArea) {
+        const aa = state.allowedArea
+        x = clamp(x, aa.x, aa.x + aa.w)
+        y = clamp(y, aa.x, aa.x + aa.w)
+      }
+
       if (!state.mode) return state
       if (!activeImage) return state
       const { mouseDownAt } = state
@@ -352,17 +359,15 @@ export default (state: MainLayoutState, action: Action) => {
     }
     case "MOUSE_DOWN": {
       if (!activeImage) return state
-      const { x, y } = action
-      state = setIn(state, ["mouseDownAt"], { x, y })
+      let { x, y } = action
 
       if (state.allowedArea) {
-        // TODO clamp x/y instead of giving up
-        // TODO or image bounds
         const aa = state.allowedArea
-        if (x < aa.x || x > aa.x + aa.w || y < aa.y || y > aa.y + aa.h) {
-          return state
-        }
+        x = clamp(x, aa.x, aa.x + aa.w)
+        y = clamp(y, aa.x, aa.x + aa.w)
       }
+
+      state = setIn(state, ["mouseDownAt"], { x, y })
 
       if (state.mode) {
         switch (state.mode.mode) {
@@ -529,7 +534,13 @@ export default (state: MainLayoutState, action: Action) => {
       return setIn(state, [...pathToActiveImage, "regions"], regions)
     }
     case "MOUSE_UP": {
-      const { x, y } = action
+      let { x, y } = action
+      if (state.allowedArea) {
+        const aa = state.allowedArea
+        x = clamp(x, aa.x, aa.x + aa.w)
+        y = clamp(y, aa.x, aa.x + aa.w)
+      }
+
       const { mouseDownAt = { x, y } } = state
       if (!state.mode) return state
       state = setIn(state, ["mouseDownAt"], null)
