@@ -295,12 +295,12 @@ export const MainLayout = ({
                 expandedByDefault
               />
             ),
-            (state.images?.length || 0) > 1 && (
-              <ImageSelector
-                onSelect={action("SELECT_REGION", "region")}
-                images={state.images}
-              />
-            ),
+            // (state.images?.length || 0) > 1 && (
+            //   <ImageSelector
+            //     onSelect={action("SELECT_REGION", "region")}
+            //     images={state.images}
+            //   />
+            // ),
             <RegionSelector
               regions={activeImage ? activeImage.regions : emptyArr}
               onSelectRegion={action("SELECT_REGION", "region")}
