@@ -181,7 +181,7 @@ storiesOf("Annotator", module)
       regionClsList={["Hand", "Face"]}
       regionTagList={["Open Pinch", "Closed Pinch", "In Frame"]}
       showTags={false}
-      allowedArea={{ x: 0.25, y: 0.25, w: 0.5, h: 0.5 }}
+      allowedArea={{ x: 0, y: 0.6, w: 0.3, h: 0.3 }}
       images={[
         {
           src:

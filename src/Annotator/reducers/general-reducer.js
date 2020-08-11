@@ -14,6 +14,15 @@ import clamp from "clamp"
 const getRandomId = () => Math.random().toString().split(".")[1]
 
 export default (state: MainLayoutState, action: Action) => {
+  if (
+    state.allowedArea &&
+    ["MOUSE_DOWN", "MOUSE_UP", "MOUSE_MOVE"].includes(action.type)
+  ) {
+    const aa = state.allowedArea
+    action.x = clamp(action.x, aa.x, aa.x + aa.w)
+    action.y = clamp(action.y, aa.y, aa.y + aa.h)
+  }
+
   if (action.type === "ON_CLS_ADDED" && action.cls && action.cls !== "") {
     const oldRegionClsList = state.regionClsList
     const newState = {
@@ -208,12 +217,7 @@ export default (state: MainLayoutState, action: Action) => {
       })
     }
     case "MOUSE_MOVE": {
-      let { x, y } = action
-      if (state.allowedArea) {
-        const aa = state.allowedArea
-        x = clamp(x, aa.x, aa.x + aa.w)
-        y = clamp(y, aa.x, aa.x + aa.w)
-      }
+      const { x, y } = action
 
       if (!state.mode) return state
       if (!activeImage) return state
@@ -359,13 +363,7 @@ export default (state: MainLayoutState, action: Action) => {
     }
     case "MOUSE_DOWN": {
       if (!activeImage) return state
-      let { x, y } = action
-
-      if (state.allowedArea) {
-        const aa = state.allowedArea
-        x = clamp(x, aa.x, aa.x + aa.w)
-        y = clamp(y, aa.x, aa.x + aa.w)
-      }
+      const { x, y } = action
 
       state = setIn(state, ["mouseDownAt"], { x, y })
 
@@ -534,12 +532,7 @@ export default (state: MainLayoutState, action: Action) => {
       return setIn(state, [...pathToActiveImage, "regions"], regions)
     }
     case "MOUSE_UP": {
-      let { x, y } = action
-      if (state.allowedArea) {
-        const aa = state.allowedArea
-        x = clamp(x, aa.x, aa.x + aa.w)
-        y = clamp(y, aa.x, aa.x + aa.w)
-      }
+      const { x, y } = action
 
       const { mouseDownAt = { x, y } } = state
       if (!state.mode) return state
