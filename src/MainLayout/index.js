@@ -115,6 +115,7 @@ export const MainLayout = ({
       autoSegmentationOptions={state.autoSegmentationOptions}
       showTags={state.showTags}
       allowedArea={state.allowedArea}
+      modifyingAllowedArea={state.selectedTool === "modify-allowed-area"}
       regionClsList={state.regionClsList}
       regionTagList={state.regionTagList}
       regions={
@@ -245,7 +246,6 @@ export const MainLayout = ({
               name: "select",
               helperText: "Select",
               alwaysShowing: true,
-              selected: state.selectedTool,
             },
             {
               name: "pan",

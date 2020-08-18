@@ -16,6 +16,7 @@ const getRandomId = () => Math.random().toString().split(".")[1]
 export default (state: MainLayoutState, action: Action) => {
   if (
     state.allowedArea &&
+    state.selectedTool !== "modify-allowed-area" &&
     ["MOUSE_DOWN", "MOUSE_UP", "MOUSE_MOVE"].includes(action.type)
   ) {
     const aa = state.allowedArea
@@ -241,6 +242,17 @@ export default (state: MainLayoutState, action: Action) => {
         }
         case "MOVE_REGION": {
           const { regionId } = state.mode
+          if (regionId === "$$allowed_area") {
+            const {
+              allowedArea: { w, h },
+            } = state
+            return setIn(state, ["allowedArea"], {
+              x: x - w / 2,
+              y: y - h / 2,
+              w,
+              h,
+            })
+          }
           const regionIndex = getRegionIndex(regionId)
           if (regionIndex === null) return state
           return setIn(
@@ -255,9 +267,6 @@ export default (state: MainLayoutState, action: Action) => {
             freedom: [xFree, yFree],
             original: { x: ox, y: oy, w: ow, h: oh },
           } = state.mode
-          const regionIndex = getRegionIndex(regionId)
-          if (regionIndex === null) return state
-          const box = activeImage.regions[regionIndex]
 
           const dx = xFree === 0 ? ox : xFree === -1 ? Math.min(ox + ow, x) : ox
           const dw =
@@ -281,6 +290,19 @@ export default (state: MainLayoutState, action: Action) => {
           if (dh <= 0.001) {
             state = setIn(state, ["mode", "freedom"], [xFree, yFree * -1])
           }
+
+          if (regionId === "$$allowed_area") {
+            return setIn(state, ["allowedArea"], {
+              x: dx,
+              w: dw,
+              y: dy,
+              h: dh,
+            })
+          }
+
+          const regionIndex = getRegionIndex(regionId)
+          if (regionIndex === null) return state
+          const box = activeImage.regions[regionIndex]
 
           return setIn(state, [...pathToActiveImage, "regions", regionIndex], {
             ...box,
@@ -698,6 +720,9 @@ export default (state: MainLayoutState, action: Action) => {
         return setIn(state, ["showTags"], !state.showTags)
       } else if (action.selectedTool === "show-mask") {
         return setIn(state, ["showMask"], !state.showMask)
+      }
+      if (action.selectedTool === "modify-allowed-area" && !state.allowedArea) {
+        state = setIn(state, ["allowedArea"], { x: 0, y: 0, w: 1, h: 1 })
       }
       state = setIn(state, ["mode"], null)
       return setIn(state, ["selectedTool"], action.selectedTool)
