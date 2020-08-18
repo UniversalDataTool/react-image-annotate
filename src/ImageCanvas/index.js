@@ -57,6 +57,7 @@ type Props = {
   zoomOnAllowedArea?: boolean,
   fullImageSegmentationMode?: boolean,
   autoSegmentationOptions?: Object,
+  modifyingAllowedArea?: boolean,
 
   onChangeRegion: (Region) => any,
   onBeginRegionEdit: (Region) => any,
@@ -126,6 +127,7 @@ export const ImageCanvas = ({
   onChangeVideoPlaying,
   onRegionClassAdded,
   zoomOnAllowedArea = true,
+  modifyingAllowedArea = false,
 }: Props) => {
   const classes = useStyles()
 
@@ -325,7 +327,24 @@ export const ImageCanvas = ({
       {imageLoaded && !dragging && (
         <RegionSelectAndTransformBoxes
           key="regionSelectAndTransformBoxes"
-          regions={regions}
+          regions={
+            !modifyingAllowedArea || !allowedArea
+              ? regions
+              : [
+                  {
+                    type: "box",
+                    id: "$$allowed_area",
+                    cls: "allowed_area",
+                    highlighted: true,
+                    x: allowedArea.x,
+                    y: allowedArea.y,
+                    w: allowedArea.w,
+                    h: allowedArea.h,
+                    visible: true,
+                    color: "#ff0",
+                  },
+                ]
+          }
           mouseEvents={mouseEvents}
           projectRegionBox={projectRegionBox}
           dragWithPrimary={dragWithPrimary}

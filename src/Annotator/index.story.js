@@ -14,16 +14,18 @@ import Annotator from "./"
 
 import { testRegions } from "../ImageCanvas/index.story"
 
+const middlewares = [
+  (store) => (next) => (action) => {
+    actionAddon(action.type)(action)
+    return next(action)
+  },
+]
+
 storiesOf("Annotator", module)
   .add("Basic", () => (
     <Annotator
       onExit={actionAddon("onExit")}
-      middlewares={[
-        (store) => (next) => (action) => {
-          actionAddon(action.type)(action)
-          return next(action)
-        },
-      ]}
+      middlewares={middlewares}
       labelImages
       regionClsList={["Alpha", "Beta", "Charlie", "Delta"]}
       regionTagList={["tag1", "tag2", "tag3"]}
@@ -112,12 +114,7 @@ storiesOf("Annotator", module)
   .add("Annotator w/o No Region Labels or Image Labels", () => (
     <Annotator
       onExit={actionAddon("onExit")}
-      middlewares={[
-        (store) => (next) => (action) => {
-          actionAddon(action.type)(action)
-          return next(action)
-        },
-      ]}
+      middlewares={middlewares}
       images={[
         {
           src: exampleImage,
@@ -132,12 +129,7 @@ storiesOf("Annotator", module)
       onExit={actionAddon("onExit")}
       enabledTools={[]}
       showTags={false}
-      middlewares={[
-        (store) => (next) => (action) => {
-          actionAddon(action.type)(action)
-          return next(action)
-        },
-      ]}
+      middlewares={middlewares}
       images={[
         {
           src: exampleImage,
@@ -195,12 +187,7 @@ storiesOf("Annotator", module)
   .add("Car Annotation", () => (
     <Annotator
       onExit={actionAddon("onExit")}
-      middlewares={[
-        (store) => (next) => (action) => {
-          actionAddon(action.type)(action)
-          return next(action)
-        },
-      ]}
+      middlewares={middlewares}
       labelImages
       regionClsList={["Car", "Sign", "Construction Barrier"]}
       regionTagList={["Moving", "Stopped", "Obstacle"]}
@@ -650,18 +637,30 @@ storiesOf("Annotator", module)
   .add("CORs Error (Pixel Segmentation)", () => (
     <Annotator
       onExit={actionAddon("onExit")}
-      middlewares={[
-        (store) => (next) => (action) => {
-          actionAddon(action.type)(action)
-          return next(action)
-        },
-      ]}
+      middlewares={middlewares}
       labelImages
       fullImageSegmentationMode
       regionClsList={["Alpha", "Beta", "Charlie", "Delta"]}
       images={[
         {
           src: "https://placebear.com/200/300",
+          name: "Frame 0036",
+        },
+      ]}
+    />
+  ))
+  .add("Modify Allowed Area", () => (
+    <Annotator
+      onExit={actionAddon("onExit")}
+      middlewares={middlewares}
+      labelImages
+      fullImageSegmentationMode
+      allowedArea={{ x: 0, y: 0.6, w: 0.3, h: 0.3 }}
+      enabledTools={["modify-allowed-area"]}
+      regionClsList={["Alpha", "Beta", "Charlie", "Delta"]}
+      images={[
+        {
+          src: exampleImage,
           name: "Frame 0036",
         },
       ]}

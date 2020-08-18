@@ -22,7 +22,7 @@ import useEventCallback from "use-event-callback"
 import makeImmutable, { without } from "seamless-immutable"
 
 type Props = {
-  taskDescription: string,
+  taskDescription?: string,
   allowedArea?: { x: number, y: number, w: number, h: number },
   regionTagList?: Array<string>,
   regionClsList?: Array<string>,
@@ -68,7 +68,7 @@ export const Annotator = ({
   imageTagList = [],
   imageClsList = [],
   keyframes = {},
-  taskDescription,
+  taskDescription = "",
   fullImageSegmentationMode = false,
   RegionEditLabel,
   videoSrc,
