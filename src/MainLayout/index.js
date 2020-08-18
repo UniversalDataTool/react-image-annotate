@@ -244,19 +244,23 @@ export const MainLayout = ({
             {
               name: "select",
               helperText: "Select",
+              alwaysShowing: true,
               selected: state.selectedTool,
             },
             {
               name: "pan",
               helperText: "Drag/Pan",
+              alwaysShowing: true,
             },
             {
               name: "zoom",
               helperText: "Zoom In/Out",
+              alwaysShowing: true,
             },
             {
               name: "show-tags",
               helperText: "Show / Hide Tags",
+              alwaysShowing: true,
             },
             {
               name: "create-point",
@@ -274,11 +278,20 @@ export const MainLayout = ({
               name: "create-expanding-line",
               helperText: "Add Expanding Line",
             },
-            {
+            state.fullImageSegmentationMode && {
               name: "show-mask",
+              alwaysShowing: true,
               helperText: "Show / Hide Mask",
             },
-          ]}
+            {
+              name: "modify-allowed-area",
+              helperText: "Modify Allowed Area",
+            },
+          ]
+            .filter(Boolean)
+            .filter(
+              (a) => a.alwaysShowing || state.enabledTools.includes(a.name)
+            )}
           rightSidebarItems={[
             debugModeOn && (
               <DebugBox state={debugModeOn} lastAction={state.lastAction} />

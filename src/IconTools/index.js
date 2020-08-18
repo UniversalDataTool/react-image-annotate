@@ -52,6 +52,7 @@ const defaultTools = [
 export const IconTools = ({
   showTags,
   showMask,
+  modifyAllowedArea,
   selectedTool,
   onClickTool,
   enabledTools = defaultTools,
@@ -124,6 +125,13 @@ export const IconTools = ({
           selected={showMask}
           id="show-mask"
           name="Show / Hide Mask"
+          icon={<FontAwesomeIcon size="xs" fixedWidth icon={faMask} />}
+        />
+        <SmallToolButton
+          togglable
+          selected={modifyAllowedArea}
+          id="modify-allowed-area"
+          name="Modify Allowed Area"
           icon={<FontAwesomeIcon size="xs" fixedWidth icon={faMask} />}
         />
       </SelectedTool.Provider>

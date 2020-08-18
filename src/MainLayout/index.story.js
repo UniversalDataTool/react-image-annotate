@@ -44,7 +44,7 @@ storiesOf("MainLayout", module)
           },
         ],
         mode: null,
-        enabledTools: [],
+        enabledTools: ["create-point", "create-polygon", "modify-allowed-area"],
         history: [{ name: "Reset Stuff", state: null, time: moment() }],
       }}
       dispatch={(a) => action(a.type)(a)}
