@@ -103,10 +103,10 @@ export default (state: MainLayoutState, action: Action) => {
     )
   }
 
-  const setNewImage = (img: string | Object) => {
+  const setNewImage = (img: string | Object, index: number) => {
     let { src, frameTime } = typeof img === "object" ? img : { src: img }
     return setIn(
-      setIn(state, ["selectedImage"], src),
+      setIn(state, ["selectedImage"], index),
       ["selectedImageFrameTime"],
       frameTime
     )
@@ -117,7 +117,7 @@ export default (state: MainLayoutState, action: Action) => {
       return state
     }
     case "SELECT_IMAGE": {
-      return setNewImage(action.image)
+      return setNewImage(action.image, action.imageIndex)
     }
     case "CHANGE_REGION": {
       const regionIndex = getRegionIndex(action.region)
@@ -675,18 +675,27 @@ export default (state: MainLayoutState, action: Action) => {
         case "prev": {
           if (currentImageIndex === null) return state
           if (currentImageIndex === 0) return state
-          return setNewImage(state.images[currentImageIndex - 1])
+          return setNewImage(
+            state.images[currentImageIndex - 1],
+            currentImageIndex - 1
+          )
         }
         case "next": {
           if (currentImageIndex === null) return state
           if (currentImageIndex === state.images.length - 1) return state
-          return setNewImage(state.images[currentImageIndex + 1])
+          return setNewImage(
+            state.images[currentImageIndex + 1],
+            currentImageIndex + 1
+          )
         }
         case "clone": {
           if (currentImageIndex === null) return state
           if (currentImageIndex === state.images.length - 1) return state
           return setIn(
-            setNewImage(state.images[currentImageIndex + 1]),
+            setNewImage(
+              state.images[currentImageIndex + 1],
+              currentImageIndex + 1
+            ),
             ["images", currentImageIndex + 1, "regions"],
             activeImage.regions
           )

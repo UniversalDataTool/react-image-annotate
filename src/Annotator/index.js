@@ -31,7 +31,7 @@ type Props = {
   enabledTools?: Array<string>,
   selectedTool?: String,
   showTags?: boolean,
-  selectedImage?: string,
+  selectedImage?: string | number,
   images?: Array<Image>,
   showPointDistances?: boolean,
   pointDistancePrecision?: number,
@@ -50,7 +50,7 @@ type Props = {
 export const Annotator = ({
   images,
   allowedArea,
-  selectedImage = images && images.length > 0 ? images[0].src : undefined,
+  selectedImage = images && images.length > 0 ? 0 : undefined,
   showPointDistances,
   pointDistancePrecision,
   showTags = true,
@@ -79,6 +79,10 @@ export const Annotator = ({
   onPrevImage,
   autoSegmentationOptions = { type: "autoseg" },
 }: Props) => {
+  if (typeof selectedImage === "string") {
+    selectedImage = (images || []).findIndex((img) => img.src === selectedImage)
+    if (selectedImage === -1) selectedImage = undefined
+  }
   const annotationType = images ? "image" : "video"
   const [state, dispatchToReducer] = useReducer(
     historyHandler(
@@ -143,10 +147,11 @@ export const Annotator = ({
   })
 
   useEffect(() => {
-    if (!selectedImage) return
+    if (selectedImage === undefined) return
     dispatchToReducer({
       type: "SELECT_IMAGE",
-      image: state.images.find((img) => img.src === selectedImage),
+      imageIndex: selectedImage,
+      image: state.images[selectedImage],
     })
   }, [selectedImage])
 

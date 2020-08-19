@@ -5,12 +5,7 @@ export default (state) => {
     pathToActiveImage,
     activeImage
   if (state.annotationType === "image") {
-    currentImageIndex = state.images.findIndex(
-      (img) =>
-        img.src === state.selectedImage &&
-        (state.selectedImageFrameTime === undefined ||
-          img.frameTime === state.selectedImageFrameTime)
-    )
+    currentImageIndex = state.selectedImage
     if (currentImageIndex === -1) {
       currentImageIndex = null
       activeImage = null
