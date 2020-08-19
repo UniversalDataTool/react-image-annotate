@@ -125,7 +125,7 @@ export const MainLayout = ({
       }
       realSize={activeImage ? activeImage.realSize : undefined}
       videoPlaying={state.videoPlaying}
-      imageSrc={state.annotationType === "image" ? state.selectedImage : null}
+      imageSrc={state.annotationType === "image" ? activeImage.src : null}
       videoSrc={state.annotationType === "video" ? state.videoSrc : null}
       pointDistancePrecision={state.pointDistancePrecision}
       createWithPrimary={state.selectedTool.includes("create")}
