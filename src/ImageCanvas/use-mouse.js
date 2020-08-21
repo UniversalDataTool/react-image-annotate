@@ -72,7 +72,11 @@ export default ({
     onMouseDown: (e, specialEvent = {}) => {
       e.preventDefault()
 
-      if (e.button === 1 || (e.button === 0 && dragWithPrimary))
+      if (
+        e.button === 1 ||
+        e.button === 2 ||
+        (e.button === 0 && dragWithPrimary)
+      )
         return changeDragging(true)
 
       const projMouse = mat.applyToPoint(
@@ -140,7 +144,11 @@ export default ({
         changeZoomStart(null)
         changeZoomEnd(null)
       }
-      if (e.button === 1 || (e.button === 0 && dragWithPrimary))
+      if (
+        e.button === 1 ||
+        e.button === 2 ||
+        (e.button === 0 && dragWithPrimary)
+      )
         return changeDragging(false)
       if (e.button === 0) {
         const { iw, ih } = layoutParams.current
@@ -151,6 +159,9 @@ export default ({
       const direction = e.deltaY > 0 ? 1 : e.deltaY < 0 ? -1 : 0
       zoomIn(direction, mousePosition.current)
       // e.preventDefault()
+    },
+    onContextMenu: (e) => {
+      e.preventDefault()
     },
   }
   return { mouseEvents, mousePosition }
