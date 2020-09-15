@@ -46,6 +46,55 @@ const RegionComponents = {
       />
     )
   }),
+  keypoints: ({ region, iw, ih, keypointDefinitions }) => {
+    const { points, keypointDefinitionId } = region
+    if (!keypointDefinitions[keypointDefinitionId]) {
+      throw new Error(
+        `No definition for keypoint configuration "${keypointDefinitionId}"`
+      )
+    }
+    const { landmarks, connections } = keypointDefinitions[keypointDefinitionId]
+    return (
+      <g>
+        {Object.entries(points).map(([keypointId, [x, y]], i) => (
+          <g key={i} transform={`translate(${x * iw} ${y * ih})`}>
+            <path
+              d={"M0 8L8 0L0 -8L-8 0Z"}
+              strokeWidth={2}
+              stroke={landmarks[keypointId].color}
+              fill="transparent"
+            />
+          </g>
+        ))}
+        {connections.map(([kp1Id, kp2Id]) => {
+          const kp1 = points[kp1Id]
+          const kp2 = points[kp2Id]
+          const midPoint = [(kp1[0] + kp2[0]) / 2, (kp1[1] + kp2[1]) / 2]
+
+          return (
+            <g key={`${kp1}.${kp2}`}>
+              <line
+                x1={kp1[0] * iw}
+                y1={kp1[1] * ih}
+                x2={midPoint[0] * iw}
+                y2={midPoint[1] * ih}
+                strokeWidth={2}
+                stroke={landmarks[kp1Id].color}
+              />
+              <line
+                x1={kp2[0] * iw}
+                y1={kp2[1] * ih}
+                x2={midPoint[0] * iw}
+                y2={midPoint[1] * ih}
+                strokeWidth={2}
+                stroke={landmarks[kp2Id].color}
+              />
+            </g>
+          )
+        })}
+      </g>
+    )
+  },
   "expanding-line": memo(({ region, iw, ih }) => {
     let { expandingWidth = 0.005, points } = region
     expandingWidth = points.slice(-1)[0].width || expandingWidth
@@ -114,7 +163,7 @@ const RegionComponents = {
 }
 
 export const WrappedRegionList = memo(
-  ({ regions, iw, ih, fullSegmentationMode }) => {
+  ({ regions, keypointDefinitions, iw, ih, fullSegmentationMode }) => {
     return regions
       .filter((r) => r.visible !== false)
       .map((r) => {
@@ -125,7 +174,8 @@ export const WrappedRegionList = memo(
             region={r}
             iw={iw}
             ih={ih}
-            fullgeSegmentationMode={fullSegmentationMode}
+            keypointDefinitions={keypointDefinitions}
+            fullSegmentationMode={fullSegmentationMode}
           />
         )
       })
@@ -137,6 +187,7 @@ export const RegionShapes = ({
   mat,
   imagePosition,
   regions = [],
+  keypointDefinitions,
   fullSegmentationMode,
 }) => {
   const iw = imagePosition.bottomRight.x - imagePosition.topLeft.x
@@ -161,6 +212,7 @@ export const RegionShapes = ({
         regions={regions}
         iw={iw}
         ih={ih}
+        keypointDefinitions={keypointDefinitions}
         fullSegmentationMode={fullSegmentationMode}
       />
     </svg>

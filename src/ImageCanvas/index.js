@@ -10,7 +10,13 @@ import React, {
 import type { Node } from "react"
 import { Matrix } from "transformation-matrix-js"
 import Crosshairs from "../Crosshairs"
-import type { Region, Point, Polygon, Box } from "./region-tools.js"
+import type {
+  Region,
+  Point,
+  Polygon,
+  Box,
+  KeypointsDefinition,
+} from "./region-tools.js"
 import { makeStyles } from "@material-ui/core/styles"
 import styles from "./styles"
 import PreventScrollToParents from "../PreventScrollToParents"
@@ -36,6 +42,7 @@ type Props = {
   imageSrc?: string,
   videoSrc?: string,
   videoTime?: number,
+  keypointDefinitions?: KeypointDefinitions,
   onMouseMove?: ({ x: number, y: number }) => any,
   onMouseDown?: ({ x: number, y: number }) => any,
   onMouseUp?: ({ x: number, y: number }) => any,
@@ -128,6 +135,7 @@ export const ImageCanvas = ({
   onRegionClassAdded,
   zoomOnAllowedArea = true,
   modifyingAllowedArea = false,
+  keypointDefinitions,
 }: Props) => {
   const classes = useStyles()
 
@@ -440,6 +448,7 @@ export const ImageCanvas = ({
           />
           <RegionShapes
             mat={mat}
+            keypointDefinitions={keypointDefinitions}
             imagePosition={imagePosition}
             regions={regions}
             fullSegmentationMode={fullImageSegmentationMode}

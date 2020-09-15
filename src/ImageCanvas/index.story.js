@@ -1,5 +1,3 @@
-// @flow
-
 import React from "react"
 
 import { storiesOf } from "@storybook/react"
@@ -8,6 +6,7 @@ import { action } from "@storybook/addon-actions"
 import ImageCanvas from "./"
 import exampleMask from "./mouse_mask.story.png"
 import exampleImage from "./seves_desk.story.jpg"
+import dancingManImage from "./dancing-man.story.jpg"
 
 export const testRegions = [
   {
@@ -155,6 +154,59 @@ storiesOf("ImageCanvas", module)
       imageSrc={exampleImage}
       modifyingAllowedArea
       allowedArea={{ x: 0.6, y: 0.6, w: 0.2, h: 0.2 }}
+      {...events}
+    />
+  ))
+  .add("Poses", () => (
+    <ImageCanvas
+      keypointDefinitions={{
+        human: {
+          connections: [
+            ["head", "torso"],
+            ["torso", "leftElbow"],
+            ["torso", "rightElbow"],
+          ],
+          landmarks: {
+            head: {
+              label: "Head",
+              color: "#f00",
+              defaultPosition: [0, -0.05],
+            },
+            torso: {
+              label: "Torso",
+              color: "#0f0",
+              defaultPosition: [0, 0],
+            },
+            leftElbow: {
+              label: "Left Elbow",
+              color: "#00f",
+              defaultPosition: [-0.05, 0],
+            },
+            rightElbow: {
+              label: "Right Elbow",
+              color: "#00f",
+              defaultPosition: [0.05, 0],
+            },
+          },
+        },
+      }}
+      regions={[
+        {
+          type: "keypoints",
+          id: "keypoints1",
+          keypointDefinitionId: "human",
+          highlighted: true,
+          points: {
+            head: [0.5, 0.4],
+            torso: [0.5, 0.5],
+            leftElbow: [0.4, 0.5],
+            rightElbow: [0.6, 0.5],
+          },
+          visible: true,
+        },
+      ]}
+      imageSrc={dancingManImage}
+      showTags
       {...events}
     />
   ))

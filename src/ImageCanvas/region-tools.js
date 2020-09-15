@@ -41,6 +41,7 @@ export type Box = {|
   w: number,
   h: number,
 |}
+
 export type Polygon = {|
   ...$Exact<BaseRegion>,
   type: "polygon",
@@ -53,7 +54,38 @@ export type ExpandingLine = {|
   points: Array<{ x: number, y: number, angle: number, width: number }>,
 |}
 
-export type Region = Point | PixelRegion | Box | Polygon | ExpandingLine
+export type Keypoint = {|
+  label: string,
+  defaultPosition: [number, number],
+|}
+
+export type KeypointId = string
+
+export type KeypointsDefinition = {|
+  [id: string]: {
+    connections: Array<[KeypointId, KeypointId]>,
+    landmarks: {
+      [KeypointId]: Keypoint,
+    },
+  },
+|}
+
+export type Keypoints = {|
+  ...$Exact<BaseRegion>,
+  type: "keypoints",
+  keypointsDefinitionId: string,
+  points: {
+    [string]: [number, number],
+  },
+|}
+
+export type Region =
+  | Point
+  | PixelRegion
+  | Box
+  | Polygon
+  | ExpandingLine
+  | Keypoints
 
 export const getEnclosingBox = (region: Region) => {
   switch (region.type) {
