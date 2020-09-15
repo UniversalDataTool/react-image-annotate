@@ -79,7 +79,7 @@ export const RegionLabel = ({
             <div
               style={{
                 display: "flex",
-                backgroundColor: region.color,
+                backgroundColor: region.color || "#888",
                 color: "#fff",
                 padding: 4,
                 paddingLeft: 8,

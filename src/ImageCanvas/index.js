@@ -10,7 +10,14 @@ import React, {
 import type { Node } from "react"
 import { Matrix } from "transformation-matrix-js"
 import Crosshairs from "../Crosshairs"
-import type { Region, Point, Polygon, Box } from "./region-tools.js"
+import type {
+  Region,
+  Point,
+  Polygon,
+  Box,
+  Keypoints,
+  KeypointsDefinition,
+} from "./region-tools.js"
 import { makeStyles } from "@material-ui/core/styles"
 import styles from "./styles"
 import PreventScrollToParents from "../PreventScrollToParents"
@@ -36,6 +43,7 @@ type Props = {
   imageSrc?: string,
   videoSrc?: string,
   videoTime?: number,
+  keypointDefinitions?: KeypointDefinitions,
   onMouseMove?: ({ x: number, y: number }) => any,
   onMouseDown?: ({ x: number, y: number }) => any,
   onMouseUp?: ({ x: number, y: number }) => any,
@@ -65,6 +73,7 @@ type Props = {
   onDeleteRegion: (Region) => any,
   onBeginBoxTransform: (Box, [number, number]) => any,
   onBeginMovePolygonPoint: (Polygon, index: number) => any,
+  onBeginMoveKeypoint: (Keypoints, index: number) => any,
   onAddPolygonPoint: (Polygon, point: [number, number], index: number) => any,
   onSelectRegion: (Region) => any,
   onBeginMovePoint: (Point) => any,
@@ -120,6 +129,7 @@ export const ImageCanvas = ({
   onBeginBoxTransform,
   onBeginMovePolygonPoint,
   onAddPolygonPoint,
+  onBeginMoveKeypoint,
   onSelectRegion,
   onBeginMovePoint,
   onDeleteRegion,
@@ -128,6 +138,7 @@ export const ImageCanvas = ({
   onRegionClassAdded,
   zoomOnAllowedArea = true,
   modifyingAllowedArea = false,
+  keypointDefinitions,
 }: Props) => {
   const classes = useStyles()
 
@@ -356,6 +367,7 @@ export const ImageCanvas = ({
           mat={mat}
           onBeginBoxTransform={onBeginBoxTransform}
           onBeginMovePolygonPoint={onBeginMovePolygonPoint}
+          onBeginMoveKeypoint={onBeginMoveKeypoint}
           onAddPolygonPoint={onAddPolygonPoint}
           showHighlightBox={showHighlightBox}
         />
@@ -440,6 +452,7 @@ export const ImageCanvas = ({
           />
           <RegionShapes
             mat={mat}
+            keypointDefinitions={keypointDefinitions}
             imagePosition={imagePosition}
             regions={regions}
             fullSegmentationMode={fullImageSegmentationMode}

@@ -10,6 +10,7 @@ import type {
   MainLayoutState,
   Action,
 } from "../MainLayout/types"
+import type { KeypointsDefinition } from "../ImageCanvas/region-tools"
 import SettingsProvider from "../SettingsProvider"
 
 import combineReducers from "./reducers/combine-reducers.js"
@@ -41,6 +42,7 @@ type Props = {
   videoSrc?: string,
   keyframes?: Object,
   videoName?: string,
+  keypointDefinitions: KeypointsDefinition,
   fullImageSegmentationMode?: boolean,
   autoSegmentationOptions?:
     | {| type: "simple" |}
@@ -77,6 +79,7 @@ export const Annotator = ({
   onExit,
   onNextImage,
   onPrevImage,
+  keypointDefinitions,
   autoSegmentationOptions = { type: "autoseg" },
 }: Props) => {
   if (typeof selectedImage === "string") {
@@ -112,6 +115,7 @@ export const Annotator = ({
       enabledTools,
       history: [],
       videoName,
+      keypointDefinitions,
       ...(annotationType === "image"
         ? {
             selectedImage,

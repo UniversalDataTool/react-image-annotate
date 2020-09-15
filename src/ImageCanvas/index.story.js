@@ -1,5 +1,3 @@
-// @flow
-
 import React from "react"
 
 import { storiesOf } from "@storybook/react"
@@ -8,6 +6,7 @@ import { action } from "@storybook/addon-actions"
 import ImageCanvas from "./"
 import exampleMask from "./mouse_mask.story.png"
 import exampleImage from "./seves_desk.story.jpg"
+import dancingManImage from "./dancing-man.story.jpg"
 
 export const testRegions = [
   {
@@ -106,6 +105,8 @@ const events = {
   onAddPolygonPoint: action("onAddPolygonPoint"),
   onClosePolygon: action("onClosePolygon"),
 
+  onBeginMoveKeypoint: action("onBeginMoveKeypoint"),
+
   onBeginMovePoint: action("onBeginMovePoint"),
   onDeleteRegion: action("onDeleteRegion"),
 }
@@ -155,6 +156,59 @@ storiesOf("ImageCanvas", module)
       imageSrc={exampleImage}
       modifyingAllowedArea
       allowedArea={{ x: 0.6, y: 0.6, w: 0.2, h: 0.2 }}
+      {...events}
+    />
+  ))
+  .add("Poses", () => (
+    <ImageCanvas
+      keypointDefinitions={{
+        human: {
+          connections: [
+            ["head", "sternum"],
+            ["sternum", "leftElbow"],
+            ["sternum", "rightElbow"],
+          ],
+          landmarks: {
+            head: {
+              label: "Head",
+              color: "#f00",
+              defaultPosition: [0, -0.05],
+            },
+            sternum: {
+              label: "Torso",
+              color: "#0f0",
+              defaultPosition: [0, 0],
+            },
+            leftElbow: {
+              label: "Left Elbow",
+              color: "#00f",
+              defaultPosition: [-0.05, 0],
+            },
+            rightElbow: {
+              label: "Right Elbow",
+              color: "#00f",
+              defaultPosition: [0.05, 0],
+            },
+          },
+        },
+      }}
+      regions={[
+        {
+          type: "keypoints",
+          id: "keypoints1",
+          keypointsDefinitionId: "human",
+          highlighted: true,
+          points: {
+            head: { x: 0.54, y: 0.2 },
+            sternum: { x: 0.57, y: 0.3 },
+            leftElbow: { x: 0.4, y: 0.39 },
+            rightElbow: { x: 0.7, y: 0.32 },
+          },
+          visible: true,
+        },
+      ]}
+      imageSrc={dancingManImage}
+      showTags
       {...events}
     />
   ))
