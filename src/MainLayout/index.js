@@ -146,6 +146,7 @@ export const MainLayout = ({
           ? state.selectedImageFrameTime
           : state.currentVideoTime
       }
+      keypointDefinitions={state.keypointDefinitions}
       onMouseMove={action("MOUSE_MOVE")}
       onMouseDown={action("MOUSE_DOWN")}
       onMouseUp={action("MOUSE_UP")}
@@ -158,6 +159,11 @@ export const MainLayout = ({
         "BEGIN_MOVE_POLYGON_POINT",
         "polygon",
         "pointIndex"
+      )}
+      onBeginMoveKeypoint={action(
+        "BEGIN_MOVE_KEYPOINT",
+        "region",
+        "keypointId"
       )}
       onAddPolygonPoint={action(
         "ADD_POLYGON_POINT",
@@ -287,6 +293,10 @@ export const MainLayout = ({
               {
                 name: "create-expanding-line",
                 helperText: "Add Expanding Line",
+              },
+              {
+                name: "create-keypoints",
+                helperText: "Add Keypoints (Pose)",
               },
               state.fullImageSegmentationMode && {
                 name: "show-mask",

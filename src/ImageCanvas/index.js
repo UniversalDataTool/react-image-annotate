@@ -15,6 +15,7 @@ import type {
   Point,
   Polygon,
   Box,
+  Keypoints,
   KeypointsDefinition,
 } from "./region-tools.js"
 import { makeStyles } from "@material-ui/core/styles"
@@ -72,6 +73,7 @@ type Props = {
   onDeleteRegion: (Region) => any,
   onBeginBoxTransform: (Box, [number, number]) => any,
   onBeginMovePolygonPoint: (Polygon, index: number) => any,
+  onBeginMoveKeypoint: (Keypoints, index: number) => any,
   onAddPolygonPoint: (Polygon, point: [number, number], index: number) => any,
   onSelectRegion: (Region) => any,
   onBeginMovePoint: (Point) => any,
@@ -127,6 +129,7 @@ export const ImageCanvas = ({
   onBeginBoxTransform,
   onBeginMovePolygonPoint,
   onAddPolygonPoint,
+  onBeginMoveKeypoint,
   onSelectRegion,
   onBeginMovePoint,
   onDeleteRegion,
@@ -364,6 +367,7 @@ export const ImageCanvas = ({
           mat={mat}
           onBeginBoxTransform={onBeginBoxTransform}
           onBeginMovePolygonPoint={onBeginMovePolygonPoint}
+          onBeginMoveKeypoint={onBeginMoveKeypoint}
           onAddPolygonPoint={onAddPolygonPoint}
           showHighlightBox={showHighlightBox}
         />

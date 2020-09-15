@@ -47,16 +47,18 @@ const RegionComponents = {
     )
   }),
   keypoints: ({ region, iw, ih, keypointDefinitions }) => {
-    const { points, keypointDefinitionId } = region
-    if (!keypointDefinitions[keypointDefinitionId]) {
+    const { points, keypointsDefinitionId } = region
+    if (!keypointDefinitions[keypointsDefinitionId]) {
       throw new Error(
-        `No definition for keypoint configuration "${keypointDefinitionId}"`
+        `No definition for keypoint configuration "${keypointsDefinitionId}"`
       )
     }
-    const { landmarks, connections } = keypointDefinitions[keypointDefinitionId]
+    const { landmarks, connections } = keypointDefinitions[
+      keypointsDefinitionId
+    ]
     return (
       <g>
-        {Object.entries(points).map(([keypointId, [x, y]], i) => (
+        {Object.entries(points).map(([keypointId, { x, y }], i) => (
           <g key={i} transform={`translate(${x * iw} ${y * ih})`}>
             <path
               d={"M0 8L8 0L0 -8L-8 0Z"}
@@ -69,23 +71,23 @@ const RegionComponents = {
         {connections.map(([kp1Id, kp2Id]) => {
           const kp1 = points[kp1Id]
           const kp2 = points[kp2Id]
-          const midPoint = [(kp1[0] + kp2[0]) / 2, (kp1[1] + kp2[1]) / 2]
+          const midPoint = { x: (kp1.x + kp2.x) / 2, y: (kp1.y + kp2.y) / 2 }
 
           return (
             <g key={`${kp1}.${kp2}`}>
               <line
-                x1={kp1[0] * iw}
-                y1={kp1[1] * ih}
-                x2={midPoint[0] * iw}
-                y2={midPoint[1] * ih}
+                x1={kp1.x * iw}
+                y1={kp1.y * ih}
+                x2={midPoint.x * iw}
+                y2={midPoint.y * ih}
                 strokeWidth={2}
                 stroke={landmarks[kp1Id].color}
               />
               <line
-                x1={kp2[0] * iw}
-                y1={kp2[1] * ih}
-                x2={midPoint[0] * iw}
-                y2={midPoint[1] * ih}
+                x1={kp2.x * iw}
+                y1={kp2.y * ih}
+                x2={midPoint.x * iw}
+                y2={midPoint.y * ih}
                 strokeWidth={2}
                 stroke={landmarks[kp2Id].color}
               />

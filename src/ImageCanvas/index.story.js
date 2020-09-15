@@ -105,6 +105,8 @@ const events = {
   onAddPolygonPoint: action("onAddPolygonPoint"),
   onClosePolygon: action("onClosePolygon"),
 
+  onBeginMoveKeypoint: action("onBeginMoveKeypoint"),
+
   onBeginMovePoint: action("onBeginMovePoint"),
   onDeleteRegion: action("onDeleteRegion"),
 }
@@ -162,9 +164,9 @@ storiesOf("ImageCanvas", module)
       keypointDefinitions={{
         human: {
           connections: [
-            ["head", "torso"],
-            ["torso", "leftElbow"],
-            ["torso", "rightElbow"],
+            ["head", "sternum"],
+            ["sternum", "leftElbow"],
+            ["sternum", "rightElbow"],
           ],
           landmarks: {
             head: {
@@ -172,7 +174,7 @@ storiesOf("ImageCanvas", module)
               color: "#f00",
               defaultPosition: [0, -0.05],
             },
-            torso: {
+            sternum: {
               label: "Torso",
               color: "#0f0",
               defaultPosition: [0, 0],
@@ -194,13 +196,13 @@ storiesOf("ImageCanvas", module)
         {
           type: "keypoints",
           id: "keypoints1",
-          keypointDefinitionId: "human",
+          keypointsDefinitionId: "human",
           highlighted: true,
           points: {
-            head: [0.5, 0.4],
-            torso: [0.5, 0.5],
-            leftElbow: [0.4, 0.5],
-            rightElbow: [0.6, 0.5],
+            head: { x: 0.54, y: 0.2 },
+            sternum: { x: 0.57, y: 0.3 },
+            leftElbow: { x: 0.4, y: 0.39 },
+            rightElbow: { x: 0.7, y: 0.32 },
           },
           visible: true,
         },

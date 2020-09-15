@@ -54,8 +54,9 @@ export type ExpandingLine = {|
   points: Array<{ x: number, y: number, angle: number, width: number }>,
 |}
 
-export type Keypoint = {|
+export type KeypointDefinition = {|
   label: string,
+  color: string,
   defaultPosition: [number, number],
 |}
 
@@ -65,7 +66,7 @@ export type KeypointsDefinition = {|
   [id: string]: {
     connections: Array<[KeypointId, KeypointId]>,
     landmarks: {
-      [KeypointId]: Keypoint,
+      [KeypointId]: KeypointDefinition,
     },
   },
 |}
@@ -75,7 +76,7 @@ export type Keypoints = {|
   type: "keypoints",
   keypointsDefinitionId: string,
   points: {
-    [string]: [number, number],
+    [string]: { x: number, y: number },
   },
 |}
 
@@ -99,6 +100,26 @@ export const getEnclosingBox = (region: Region) => {
       box.w = Math.max(...region.points.map(([x, y]) => x)) - box.x
       box.h = Math.max(...region.points.map(([x, y]) => y)) - box.y
       return box
+    }
+    case "keypoints": {
+      const minX = Math.min(
+        ...Object.values(region.points).map(({ x, y }) => x)
+      )
+      const minY = Math.min(
+        ...Object.values(region.points).map(({ x, y }) => y)
+      )
+      const maxX = Math.max(
+        ...Object.values(region.points).map(({ x, y }) => x)
+      )
+      const maxY = Math.max(
+        ...Object.values(region.points).map(({ x, y }) => y)
+      )
+      return {
+        x: minX,
+        y: minY,
+        w: maxX - minX,
+        h: maxY - minY,
+      }
     }
     case "expanding-line": {
       const box = {

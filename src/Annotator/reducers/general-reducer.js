@@ -10,6 +10,7 @@ import colors from "../../colors"
 import fixTwisted from "./fix-twisted"
 import convertExpandingLineToPolygon from "./convert-expanding-line-to-polygon"
 import clamp from "clamp"
+import getLandmarksWithTransform from "../../utils/get-landmarks-with-transform"
 
 const getRandomId = () => Math.random().toString().split(".")[1]
 
@@ -206,6 +207,16 @@ export default (state: MainLayoutState, action: Action) => {
         pointIndex,
       })
     }
+    case "BEGIN_MOVE_KEYPOINT": {
+      const { region, keypointId } = action
+      state = closeEditors(state)
+      state = saveToHistory(state, "Move Keypoint")
+      return setIn(state, ["mode"], {
+        mode: "MOVE_KEYPOINT",
+        regionId: region.id,
+        keypointId,
+      })
+    }
     case "ADD_POLYGON_POINT": {
       const { polygon, point, pointIndex } = action
       const regionIndex = getRegionIndex(polygon)
@@ -238,6 +249,22 @@ export default (state: MainLayoutState, action: Action) => {
               pointIndex,
             ],
             [x, y]
+          )
+        }
+        case "MOVE_KEYPOINT": {
+          const { keypointId, regionId } = state.mode
+          const [region, regionIndex] = getRegion(regionId)
+          if (regionIndex === null) return state
+          return setIn(
+            state,
+            [
+              ...pathToActiveImage,
+              "regions",
+              regionIndex,
+              "points",
+              keypointId,
+            ],
+            { ...(region: any).points[keypointId], x, y }
           )
         }
         case "MOVE_REGION": {
@@ -310,6 +337,20 @@ export default (state: MainLayoutState, action: Action) => {
             w: dw,
             y: dy,
             h: dh,
+          })
+        }
+        case "RESIZE_KEYPOINTS": {
+          const { regionId, landmarks, centerX, centerY } = state.mode
+          const distFromCenter = Math.sqrt(
+            (centerX - x) ** 2 + (centerY - y) ** 2
+          )
+          const scale = distFromCenter / 0.15
+          return modifyRegion(regionId, {
+            points: getLandmarksWithTransform({
+              landmarks,
+              center: { x: centerX, y: centerY },
+              scale,
+            }),
           })
         }
         case "DRAW_POLYGON": {
@@ -541,6 +582,34 @@ export default (state: MainLayoutState, action: Action) => {
           })
           break
         }
+        case "create-keypoints": {
+          state = saveToHistory(state, "Create Keypoints")
+          const [
+            [keypointsDefinitionId, { landmarks, connections }],
+          ] = (Object.entries(state.keypointDefinitions): any)
+
+          newRegion = {
+            type: "keypoints",
+            keypointsDefinitionId,
+            points: getLandmarksWithTransform({
+              landmarks,
+              center: { x, y },
+              scale: 1,
+            }),
+            highlighted: true,
+            editingLabels: false,
+            id: getRandomId(),
+          }
+          state = setIn(state, ["mode"], {
+            mode: "RESIZE_KEYPOINTS",
+            landmarks,
+            centerX: x,
+            centerY: y,
+            regionId: newRegion.id,
+            isNew: true,
+          })
+          break
+        }
         default:
           break
       }
@@ -581,7 +650,11 @@ export default (state: MainLayoutState, action: Action) => {
           }
         }
         case "MOVE_REGION":
+        case "RESIZE_KEYPOINTS":
         case "MOVE_POLYGON_POINT": {
+          return { ...state, mode: null }
+        }
+        case "MOVE_KEYPOINT": {
           return { ...state, mode: null }
         }
         case "CREATE_POINT_LINE": {

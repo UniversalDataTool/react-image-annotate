@@ -5,6 +5,9 @@ import type {
   Polygon,
   Box,
   Point,
+  KeypointsDefinition,
+  Keypoints,
+  KeypointDefinition,
 } from "../ImageCanvas/region-tools.js"
 
 import type { Node } from "react"
@@ -17,6 +20,8 @@ export type ToolEnum =
   | "create-box"
   | "create-polygon"
   | "create-pixel"
+  | "create-expanding-line"
+  | "create-keypoints"
 
 export type Image = {
   src: string,
@@ -41,6 +46,17 @@ export type Mode =
       isNew?: boolean,
     |}
   | {| mode: "MOVE_REGION" |}
+  | {| mode: "MOVE_KEYPOINT", regionId: string, keypointId: string |}
+  | {|
+      mode: "RESIZE_KEYPOINTS",
+      landmarks: {
+        [string]: KeypointDefinition,
+      },
+      centerX: number,
+      centerY: number,
+      regionId: string,
+      isNew: boolean,
+    |}
 
 export type MainLayoutStateBase = {|
   annotationType: "video" | "image",
@@ -62,6 +78,7 @@ export type MainLayoutStateBase = {|
   imageTagList?: Array<string>,
   enabledTools: Array<string>,
   history: Array<{ time: Date, state: MainLayoutState, name: string }>,
+  keypointDefinitions: KeypointsDefinition,
 |}
 
 export type MainLayoutImageAnnotationState = {|
@@ -117,6 +134,7 @@ export type Action =
   | {| type: "BEGIN_MOVE_POINT", point: Point |}
   | {| type: "BEGIN_BOX_TRANSFORM", box: Box, directions: [number, number] |}
   | {| type: "BEGIN_MOVE_POLYGON_POINT", polygon: Polygon, pointIndex: number |}
+  | {| type: "BEGIN_MOVE_KEYPOINT", region: Keypoints, keypointId: string |}
   | {|
       type: "ADD_POLYGON_POINT",
       polygon: Polygon,

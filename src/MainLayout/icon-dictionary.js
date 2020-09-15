@@ -18,6 +18,7 @@ import {
   faEdit,
 } from "@fortawesome/free-solid-svg-icons"
 import FullscreenIcon from "@material-ui/icons/Fullscreen"
+import AccessibilityNewIcon from "@material-ui/icons/AccessibilityNew"
 
 const faStyle = { marginTop: 4, width: 16, height: 16, marginBottom: 4 }
 
@@ -67,6 +68,7 @@ export const iconDictionary = {
   "modify-allowed-area": () => (
     <FontAwesomeIcon style={faStyle} size="xs" fixedWidth icon={faEdit} />
   ),
+  "create-keypoints": AccessibilityNewIcon,
   window: FullscreenIcon,
 }
 

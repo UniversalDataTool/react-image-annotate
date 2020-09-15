@@ -1,5 +1,3 @@
-// @flow weak
-
 import React, { Fragment, memo } from "react"
 import HighlightBox from "../HighlightBox"
 import { styled } from "@material-ui/core/styles"
@@ -44,6 +42,7 @@ export const RegionSelectAndTransformBox = memo(
     mat,
     onBeginBoxTransform,
     onBeginMovePolygonPoint,
+    onBeginMoveKeypoint,
     onAddPolygonPoint,
     showHighlightBox,
   }) => {
@@ -161,6 +160,44 @@ export const RegionSelectAndTransformBox = memo(
                   />
                 )
               })}
+          {r.type === "keypoints" &&
+            !dragWithPrimary &&
+            !zoomWithPrimary &&
+            !r.locked &&
+            r.highlighted &&
+            Object.entries(r.points).map(
+              ([keypointId, { x: px, y: py }], i) => {
+                const proj = mat
+                  .clone()
+                  .inverse()
+                  .applyToPoint(px * iw, py * ih)
+                return (
+                  <TransformGrabber
+                    key={i}
+                    {...mouseEvents}
+                    onMouseDown={(e) => {
+                      if (e.button === 0 && (!r.open || i === 0))
+                        return onBeginMoveKeypoint(r, keypointId)
+                      mouseEvents.onMouseDown(e)
+                    }}
+                    style={{
+                      cursor: !r.open
+                        ? "move"
+                        : i === 0
+                        ? "pointer"
+                        : undefined,
+                      zIndex: 10,
+                      pointerEvents:
+                        r.open && i === r.points.length - 1
+                          ? "none"
+                          : undefined,
+                      left: proj.x - 4,
+                      top: proj.y - 4,
+                    }}
+                  />
+                )
+              }
+            )}
         </PreventScrollToParents>
       </Fragment>
     )
