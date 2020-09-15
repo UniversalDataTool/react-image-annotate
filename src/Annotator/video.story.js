@@ -11,7 +11,7 @@ storiesOf("Annotator(video)", module).add("Video Annotator", () => {
     regionClsList: ["valid", "invalid"],
     enabledTools: ["select", "create-box", "create-polygon", "create-point"],
     keyframes: {
-      "0": {
+      0: {
         regions: [
           {
             id: "910517662556203",
@@ -25,7 +25,7 @@ storiesOf("Annotator(video)", module).add("Video Annotator", () => {
           },
         ],
       },
-      "2656": {
+      2656: {
         regions: [
           {
             id: "910517662556203",

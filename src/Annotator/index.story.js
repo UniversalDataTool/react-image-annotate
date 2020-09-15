@@ -441,7 +441,7 @@ storiesOf("Annotator", module)
         videoSrc="https://s3.amazonaws.com/asset.workaround.online/SampleVideo_1280x720_1mb.mp4"
         videoTime={1000}
         keyframes={{
-          "0": {
+          0: {
             regions: [
               {
                 type: "point",
@@ -465,7 +465,7 @@ storiesOf("Annotator", module)
               },
             ],
           },
-          "3333": {
+          3333: {
             regions: [
               {
                 type: "point",

@@ -76,7 +76,7 @@
     "babel-loader": "^8.0.5",
     "babel-preset-react-app": "^7.0.0",
     "gh-pages": "^2.0.1",
-    "prettier": "^2.0.5",
+    "prettier": "^2.1.1",
     "raw.macro": "^0.3.0",
     "react-github-btn": "^1.1.1",
     "react-scripts": "^3.4.1"
