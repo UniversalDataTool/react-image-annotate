@@ -2,6 +2,7 @@ import React, { Fragment, memo } from "react"
 import HighlightBox from "../HighlightBox"
 import { styled } from "@material-ui/core/styles"
 import PreventScrollToParents from "../PreventScrollToParents"
+import { Tooltip } from "@material-ui/core"
 
 const TransformGrabber = styled("div")({
   width: 8,
@@ -172,29 +173,31 @@ export const RegionSelectAndTransformBox = memo(
                   .inverse()
                   .applyToPoint(px * iw, py * ih)
                 return (
-                  <TransformGrabber
-                    key={i}
-                    {...mouseEvents}
-                    onMouseDown={(e) => {
-                      if (e.button === 0 && (!r.open || i === 0))
-                        return onBeginMoveKeypoint(r, keypointId)
-                      mouseEvents.onMouseDown(e)
-                    }}
-                    style={{
-                      cursor: !r.open
-                        ? "move"
-                        : i === 0
-                        ? "pointer"
-                        : undefined,
-                      zIndex: 10,
-                      pointerEvents:
-                        r.open && i === r.points.length - 1
-                          ? "none"
+                  <Tooltip title={keypointId} key={i}>
+                    <TransformGrabber
+                      key={i}
+                      {...mouseEvents}
+                      onMouseDown={(e) => {
+                        if (e.button === 0 && (!r.open || i === 0))
+                          return onBeginMoveKeypoint(r, keypointId)
+                        mouseEvents.onMouseDown(e)
+                      }}
+                      style={{
+                        cursor: !r.open
+                          ? "move"
+                          : i === 0
+                          ? "pointer"
                           : undefined,
-                      left: proj.x - 4,
-                      top: proj.y - 4,
-                    }}
-                  />
+                        zIndex: 10,
+                        pointerEvents:
+                          r.open && i === r.points.length - 1
+                            ? "none"
+                            : undefined,
+                        left: proj.x - 4,
+                        top: proj.y - 4,
+                      }}
+                    />
+                  </Tooltip>
                 )
               }
             )}
