@@ -173,7 +173,7 @@ export const RegionSelectAndTransformBox = memo(
                   .inverse()
                   .applyToPoint(px * iw, py * ih)
                 return (
-                  <Tooltip title={keypointId}>
+                  <Tooltip title={keypointId} key={i}>
                     <TransformGrabber
                       key={i}
                       {...mouseEvents}
