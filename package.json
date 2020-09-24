@@ -40,7 +40,7 @@
   "homepage": "/react-image-annotate",
   "repository": {
     "type": "git",
-    "url": "https://github.com/waoai/react-image-annotate.git"
+    "url": "https://github.com/UniversalDataTool/react-image-annotate.git"
   },
   "scripts": {
     "start": "react-scripts start",
