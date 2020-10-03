@@ -2,7 +2,7 @@
 
 [![npm version](https://badge.fury.io/js/react-image-annotate.svg)](https://badge.fury.io/js/react-image-annotate)
 
-The best image/video annotation tool ever. [Check out the demo here](https://universaldatatool.github.io/react-image-annotate/).
+The best image/video annotation tool ever. [Check out the demo here](https://universaldatatool.github.io/react-image-annotate/). Or the [code sandbox here](https://codesandbox.io/s/react-image-annotate-example-38tsc?file=/src/App.js:0-403).
 
 ## Sponsors
 
@@ -23,16 +23,26 @@ The best image/video annotation tool ever. [Check out the demo here](https://uni
 `npm install react-image-annotate`
 
 ```javascript
-import ReactImageAnnotate from "react-image-annotate"
+import React from "react";
+import ReactImageAnnotate from "react-image-annotate";
 
 const App = () => (
   <ReactImageAnnotate
-    selectedImage="https://example.com/image1.png"
-    taskDescription="# Draw region around each face\n\nInclude chin and hair."
-    images={[{ src: "https://example.com/image1.png", name: "Image 1" }]}
-    regionClsList={["Man Face", "Woman Face"]}
+    labelImages
+    regionClsList={["Alpha", "Beta", "Charlie", "Delta"]}
+    regionTagList={["tag1", "tag2", "tag3"]}
+    images={[
+      {
+        src: "https://placekitten.com/408/287",
+        name: "Image 1",
+        regions: []
+      }
+    ]}
   />
-)
+);
+
+export default App;
+
 ```
 
 To get the proper fonts, make sure to import the Inter UI or Roboto font, the
