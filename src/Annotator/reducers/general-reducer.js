@@ -525,8 +525,8 @@ export default (state: MainLayoutState, action: Action) => {
             type: "box",
             x: x,
             y: y,
-            w: 0.01,
-            h: 0.01,
+            w: 0,
+            h: 0,
             highlighted: true,
             editingLabels: false,
             color: defaultRegionColor,
@@ -632,7 +632,7 @@ export default (state: MainLayoutState, action: Action) => {
         case "RESIZE_BOX": {
           if (state.mode.isNew) {
             if (
-              Math.abs(state.mode.original.x - x) < 0.002 &&
+              Math.abs(state.mode.original.x - x) < 0.002 ||
               Math.abs(state.mode.original.y - y) < 0.002
             ) {
               return setIn(
