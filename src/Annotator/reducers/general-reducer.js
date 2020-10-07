@@ -48,7 +48,10 @@ export default (state: MainLayoutState, action: Action) => {
   )
 
   const getRegionIndex = (region) => {
-    const regionId = typeof region === "string" ? region : region.id
+    const regionId =
+      typeof region === "string" || typeof region === "number"
+        ? region
+        : region.id
     if (!activeImage) return null
     const regionIndex = (activeImage.regions || []).findIndex(
       (r) => r.id === regionId
