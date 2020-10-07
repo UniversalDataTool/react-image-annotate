@@ -53,6 +53,11 @@ export const defaultHotkeys = [
     id: "exit_sample",
     description: "Exit sample without saving",
   },
+  {
+    id: "delete_region",
+    description: "Delete selected region",
+    binding: "Delete",
+  },
 ]
 export const defaultKeyMap = {}
 for (const { id, binding } of defaultHotkeys) defaultKeyMap[id] = binding
@@ -118,6 +123,11 @@ export const useDispatchHotkeyHandlers = ({ dispatch }) => {
         dispatch({
           type: "HEADER_BUTTON_CLICKED",
           buttonName: "Save",
+        })
+      },
+      delete_region: () => {
+        dispatch({
+          type: "DELETE_SELECTED_REGION",
         })
       },
       // TODO
