@@ -1,0 +1,24 @@
+{
+  "files": [
+    "README.md"
+  ],
+  "imageSize": 100,
+  "commit": false,
+  "contributors": [
+    {
+      "login": "Hummer12007",
+      "name": "Hummer12007",
+      "avatar_url": "https://avatars3.githubusercontent.com/u/4984813?v=4",
+      "profile": "https://github.com/Hummer12007",
+      "contributions": [
+        "code"
+      ]
+    }
+  ],
+  "contributorsPerLine": 7,
+  "projectName": "react-image-annotate",
+  "projectOwner": "UniversalDataTool",
+  "repoType": "github",
+  "repoHost": "https://github.com",
+  "skipCi": true
+}
