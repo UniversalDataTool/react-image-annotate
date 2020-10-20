@@ -745,6 +745,13 @@ export default (state: MainLayoutState, action: Action) => {
         (activeImage.regions || []).filter((r) => r.id !== action.region.id)
       )
     }
+    case "DELETE_SELECTED_REGION": {
+      return setIn(
+        state,
+        [...pathToActiveImage, "regions"],
+        (activeImage.regions || []).filter((r) => !r.highlighted)
+      )
+    }
     case "HEADER_BUTTON_CLICKED": {
       const buttonName = action.buttonName.toLowerCase()
       switch (buttonName) {
