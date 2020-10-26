@@ -171,7 +171,7 @@ export const MainLayout = ({
         "point",
         "pointIndex"
       )}
-      onSelectRegion={action("SELECT_REGION", "region")}
+      onSelectRegion={action("SELECT_REGION", "region", "extend")}
       onBeginMovePoint={action("BEGIN_MOVE_POINT", "point")}
       onImageLoaded={action("IMAGE_LOADED", "image")}
       RegionEditLabel={RegionEditLabel}
@@ -330,13 +330,13 @@ export const MainLayout = ({
               ),
               // (state.images?.length || 0) > 1 && (
               //   <ImageSelector
-              //     onSelect={action("SELECT_REGION", "region")}
+              //     onSelect={action("SELECT_REGION", "region", "extend")}
               //     images={state.images}
               //   />
               // ),
               <RegionSelector
                 regions={activeImage ? activeImage.regions : emptyArr}
-                onSelectRegion={action("SELECT_REGION", "region")}
+                onSelectRegion={action("SELECT_REGION", "region", "extend")}
                 onDeleteRegion={action("DELETE_REGION", "region")}
                 onChangeRegion={action("CHANGE_REGION", "region")}
               />,

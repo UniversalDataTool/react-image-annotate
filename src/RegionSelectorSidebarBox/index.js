@@ -113,7 +113,7 @@ const Row = ({
     <RowLayout
       header={false}
       highlighted={highlighted}
-      onClick={() => onSelectRegion(r)}
+      onClick={() => onSelectRegion(r, false)}
       order={`#${index + 1}`}
       classification={<Chip text={cls || ""} color={color || "#ddd"} />}
       area=""

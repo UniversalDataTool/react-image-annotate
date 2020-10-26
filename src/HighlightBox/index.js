@@ -100,7 +100,8 @@ export const HighlightBox = ({
               ) {
                 return onBeginMovePoint(r)
               }
-              if (e.button === 0 && !createWithPrimary) return onSelectRegion(r)
+              if (e.button === 0 && !createWithPrimary)
+                return onSelectRegion(r, e.ctrlKey)
               mouseEvents.onMouseDown(e)
             },
           }

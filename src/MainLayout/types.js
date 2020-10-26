@@ -130,7 +130,7 @@ export type Action =
   | {| type: "CHANGE_REGION", region: Region |}
   | {| type: "RESTORE_HISTORY" |}
   | {| type: "CLOSE_POLYGON", polygon: Polygon |}
-  | {| type: "SELECT_REGION", region: Region |}
+  | {| type: "SELECT_REGION", region: Region, extend: boolean |}
   | {| type: "BEGIN_MOVE_POINT", point: Point |}
   | {| type: "BEGIN_BOX_TRANSFORM", box: Box, directions: [number, number] |}
   | {| type: "BEGIN_MOVE_POLYGON_POINT", polygon: Polygon, pointIndex: number |}

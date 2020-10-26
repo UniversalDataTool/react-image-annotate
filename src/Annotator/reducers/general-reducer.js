@@ -154,13 +154,13 @@ export default (state: MainLayoutState, action: Action) => {
       return state
     }
     case "SELECT_REGION": {
-      const { region } = action
+      const { region, extend } = action
       const regionIndex = getRegionIndex(action.region)
       if (regionIndex === null) return state
       const regions = [...(activeImage.regions || [])].map((r) => ({
         ...r,
-        highlighted: r.id === region.id,
-        editingLabels: r.id === region.id,
+        highlighted: (extend && r.highlighted) || r.id === region.id,
+        editingLabels: r.id === region.id, // TODO: ensure it's ok
       }))
       return setIn(state, [...pathToActiveImage, "regions"], regions)
     }
