@@ -58,6 +58,11 @@ export const defaultHotkeys = [
     description: "Delete selected region",
     binding: "Delete",
   },
+  {
+    id: "undo",
+    description: "Undo latest change",
+    binding: "Ctrl+z",
+  },
 ]
 export const defaultKeyMap = {}
 for (const { id, binding } of defaultHotkeys) defaultKeyMap[id] = binding
@@ -128,6 +133,11 @@ export const useDispatchHotkeyHandlers = ({ dispatch }) => {
       delete_region: () => {
         dispatch({
           type: "DELETE_SELECTED_REGION",
+        })
+      },
+      undo: () => {
+        dispatch({
+          type: "RESTORE_HISTORY",
         })
       },
       // TODO
