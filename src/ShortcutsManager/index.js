@@ -56,7 +56,7 @@ export const defaultHotkeys = [
   {
     id: "delete_region",
     description: "Delete selected region",
-    binding: "Delete",
+    binding: "d",
   },
   {
     id: "undo",
