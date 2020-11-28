@@ -8,7 +8,7 @@
     "@material-ui/core": "^4.6.0",
     "@material-ui/icons": "^4.9.1",
     "@semantic-release/git": "^9.0.0",
-    "autoseg": "^0.0.8",
+    "autoseg": "^0.0.12",
     "clamp": "^1.0.1",
     "color-alpha": "^1.0.4",
     "get-image-data": "^3.0.1",
