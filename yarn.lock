@@ -4427,10 +4427,10 @@ autoprefixer@^9.7.2:
     postcss "^7.0.27"
     postcss-value-parser "^4.0.3"
 
-autoseg@^0.0.8:
-  version "0.0.8"
-  resolved "https://registry.yarnpkg.com/autoseg/-/autoseg-0.0.8.tgz#30e900afd41db964c5cdaf93f322211548444620"
-  integrity sha512-Kf6qQXiaxe+J1DrNP4dfWH92tRZ9MMwaO06TtzfKxBR/wtlC745aTP3YmKAP/a2ikpIfPKz9Hf6yR2Y7SeVagg==
+autoseg@^0.0.12:
+  version "0.0.12"
+  resolved "https://registry.yarnpkg.com/autoseg/-/autoseg-0.0.12.tgz#631182cf6d40af92b4382450c21bc38f1ccde065"
+  integrity sha512-MTCBZdgPCMgjGM3W2lRU7gMSSETUUvTnXcoKDde6A2piPdMePRCuMoeIld5amLZQ+0S7vcqVQj3YfVCx2kALUA==
 
 aws-sign2@~0.7.0:
   version "0.7.0"
