@@ -5,6 +5,7 @@ import React, { useState } from "react"
 import { storiesOf } from "@storybook/react"
 import { action as actionAddon } from "@storybook/addon-actions"
 import dancingManImage from "../ImageCanvas/dancing-man.story.jpg"
+import dabKeyframes from "./dab-keyframes.story.json"
 import Annotator from "./"
 
 const dancingManVideo =
@@ -13,6 +14,7 @@ const dancingManVideo =
 const middlewares = [
   (store) => (next) => (action) => {
     actionAddon(action.type)(action)
+    console.log(action)
     return next(action)
   },
 ]
@@ -80,8 +82,11 @@ storiesOf("Annotator (Poses)", module)
   ))
   .add("Video", () => (
     <Annotator
-      onExit={actionAddon("onExit")}
-      middlewares={middlewares}
+      onExit={(...props) => {
+        actionAddon("onExit")(...props)
+        window.testPropsSavePlease = props
+        console.log(...props)
+      }}
       labelImages
       enabledTools={["create-box", "create-keypoints"]}
       videoSrc={dancingManVideo}
@@ -89,8 +94,12 @@ storiesOf("Annotator (Poses)", module)
         human: {
           connections: [
             ["head", "sternum"],
-            ["sternum", "leftElbow"],
-            ["sternum", "rightElbow"],
+            ["sternum", "leftShoulder"],
+            ["leftShoulder", "leftElbow"],
+            ["leftElbow", "leftHand"],
+            ["sternum", "rightShoulder"],
+            ["rightShoulder", "rightElbow"],
+            ["rightElbow", "rightHand"],
           ],
           landmarks: {
             head: {
@@ -103,18 +112,39 @@ storiesOf("Annotator (Poses)", module)
               color: "#0f0",
               defaultPosition: [0, 0],
             },
+            leftShoulder: {
+              label: "Left Shoulder",
+              color: "#00f",
+              defaultPosition: [-0.05, 0],
+            },
+            leftHand: {
+              label: "Left Hand",
+              color: "#00f",
+              defaultPosition: [-0.05, 0.05],
+            },
+            rightShoulder: {
+              label: "Right Shoulder",
+              color: "#00f",
+              defaultPosition: [0.05, 0],
+            },
             leftElbow: {
               label: "Left Elbow",
               color: "#00f",
-              defaultPosition: [-0.05, 0],
+              defaultPosition: [-0.08, 0.02],
             },
             rightElbow: {
               label: "Right Elbow",
               color: "#00f",
-              defaultPosition: [0.05, 0],
+              defaultPosition: [0.08, 0.02],
+            },
+            rightHand: {
+              label: "Right Hand",
+              color: "#00f",
+              defaultPosition: [0.05, 0.05],
             },
           },
         },
       }}
+      keyframes={dabKeyframes}
     />
   ))
