@@ -74,7 +74,7 @@ const RegionComponents = {
           const midPoint = { x: (kp1.x + kp2.x) / 2, y: (kp1.y + kp2.y) / 2 }
 
           return (
-            <g key={`${kp1}.${kp2}`}>
+            <g key={`${kp1.x},${kp1.y}.${kp2.x},${kp2.y}`}>
               <line
                 x1={kp1.x * iw}
                 y1={kp1.y * ih}
