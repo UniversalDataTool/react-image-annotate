@@ -90,6 +90,22 @@ export default (
         }
         break
       }
+      case "keypoints": {
+        const newPoints = {}
+        for (const [pointId, prevPoint] of Object.entries(prev.points)) {
+          newPoints[pointId] = {
+            x: prevPoint.x * w1 + next.points[pointId].x * w2,
+            y: prevPoint.y * w1 + next.points[pointId].y * w2,
+          }
+        }
+        impliedRegions.push({
+          ...prev,
+          highlighted: false,
+          editingLabels: false,
+          points: newPoints,
+        })
+        break
+      }
       default:
         break
     }

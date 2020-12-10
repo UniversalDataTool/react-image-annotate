@@ -56,6 +56,7 @@ export default (state: MainLayoutVideoAnnotationState, action: Action) => {
     switch (action.type) {
       case "BEGIN_BOX_TRANSFORM":
       case "BEGIN_MOVE_POINT":
+      case "BEGIN_MOVE_KEYPOINT":
       case "BEGIN_MOVE_POLYGON_POINT":
       case "ADD_POLYGON_POINT":
       case "SELECT_REGION":
@@ -68,6 +69,7 @@ export default (state: MainLayoutVideoAnnotationState, action: Action) => {
           case "create-point":
           case "create-polygon":
           case "create-box":
+          case "create-keypoints":
             return copyImpliedRegions()
           default:
             break
