@@ -81,27 +81,6 @@ export const SidebarBoxContainer = ({
       {children}
     </SidebarBox>
   )
-
-  return (
-    <Paper className={classes.container}>
-      <div className={classes.header}>
-        {icon}
-        <div className={classes.title}>
-          {title} <span>{subTitle}</span>
-        </div>
-        <IconButton onClick={toggleExpanded} className={classes.expandButton}>
-          <ExpandIcon className={classnames("icon", expanded && "expanded")} />
-        </IconButton>
-      </div>
-      {noScroll ? (
-        expanded ? (
-          content
-        ) : null
-      ) : (
-        <Collapse in={expanded}>{content}</Collapse>
-      )}
-    </Paper>
-  )
 }
 
 export default memo(

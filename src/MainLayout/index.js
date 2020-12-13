@@ -27,6 +27,7 @@ import RegionSelector from "../RegionSelectorSidebarBox"
 import ImageSelector from "../ImageSelectorSidebarBox"
 import HistorySidebarBox from "../HistorySidebarBox"
 import useEventCallback from "use-event-callback"
+import getHotkeyHelpText from "../utils/get-hotkey-help-text"
 
 const emptyArr = []
 const useStyles = makeStyles(styles)
@@ -260,17 +261,20 @@ export const MainLayout = ({
             iconSidebarItems={[
               {
                 name: "select",
-                helperText: "Select",
+                helperText: "Select" + getHotkeyHelpText("select_tool"),
                 alwaysShowing: true,
               },
               {
                 name: "pan",
-                helperText: "Drag/Pan",
+                helperText:
+                  "Drag/Pan (right or middle click)" +
+                  getHotkeyHelpText("pan_tool"),
                 alwaysShowing: true,
               },
               {
                 name: "zoom",
-                helperText: "Zoom In/Out",
+                helperText:
+                  "Zoom In/Out (scroll)" + getHotkeyHelpText("zoom_tool"),
                 alwaysShowing: true,
               },
               {
@@ -280,15 +284,16 @@ export const MainLayout = ({
               },
               {
                 name: "create-point",
-                helperText: "Add Point",
+                helperText: "Add Point" + getHotkeyHelpText("create_point"),
               },
               {
                 name: "create-box",
-                helperText: "Add Bounding Box",
+                helperText:
+                  "Add Bounding Box" + getHotkeyHelpText("create_bounding_box"),
               },
               {
                 name: "create-polygon",
-                helperText: "Add Polygon",
+                helperText: "Add Polygon" + getHotkeyHelpText("create_polygon"),
               },
               {
                 name: "create-expanding-line",
