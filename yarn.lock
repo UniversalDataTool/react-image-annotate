@@ -5597,6 +5597,11 @@ caseless@~0.12.0:
   resolved "https://registry.yarnpkg.com/caseless/-/caseless-0.12.0.tgz#1b681c21ff84033c826543090689420d187151dc"
   integrity sha1-G2gcIf+EAzyCZUMJBolCDRhxUdw=
 
+cash-dom@^4.1.5:
+  version "4.1.5"
+  resolved "https://registry.yarnpkg.com/cash-dom/-/cash-dom-4.1.5.tgz#0ef0cf205bc7603aa4e2dfada5808442a7a0e6ca"
+  integrity sha512-E6MO0A6ms5iZPtexznQXWRkFEvqdPqCmdx/SiJr2PnhOQNhZNfALkLG5t83Hk3J5JELzED7PJuzhMoS2tT64XA==
+
 ccount@^1.0.3:
   version "1.0.5"
   resolved "https://registry.yarnpkg.com/ccount/-/ccount-1.0.5.tgz#ac82a944905a65ce204eb03023157edf29425c17"
@@ -14551,15 +14556,16 @@ react-markdown@^4.0.6:
     unist-util-visit "^1.3.0"
     xtend "^4.0.1"
 
-react-material-workspace-layout@^0.1.17:
-  version "0.1.17"
-  resolved "https://registry.yarnpkg.com/react-material-workspace-layout/-/react-material-workspace-layout-0.1.17.tgz#98a997e7d8671444fafe53caa4298b6643d1b9cb"
-  integrity sha512-GY+jFZ14IYKyzIW/KI8/R0Mttb5dTRdYDKdj++YAU/Z3HSQ7kZJ678mv5Nl7X0o081IpMFg5CRiBvvdozUmBtQ==
+react-material-workspace-layout@^1.0.4:
+  version "1.0.4"
+  resolved "https://registry.yarnpkg.com/react-material-workspace-layout/-/react-material-workspace-layout-1.0.4.tgz#ff1ade3b322bdc99d62eb2f1da3080555f07b4e6"
+  integrity sha512-EJjmun16OxRcbNnYX+49LZBTcYhLAlHRa38wC1S5BZi0TKQkh+d4FN/Xs60pnLLQeoJ7nEyEjQgNCLQu9ESVbw==
   dependencies:
     "@material-ui/core" "^4.10.0"
     "@material-ui/icons" "^4.9.1"
     classnames "^2.2.6"
     react "^16.13.1"
+    react-resize-panel "^0.3.5"
     react-use-dimensions "^1.2.1"
     use-event-callback "^0.1.0"
 
@@ -14609,6 +14615,16 @@ react-remove-scroll@^2.0.4:
     react-style-singleton "^2.0.0"
     tslib "^1.0.0"
     use-sidecar "^1.0.1"
+
+react-resize-panel@^0.3.5:
+  version "0.3.5"
+  resolved "https://registry.yarnpkg.com/react-resize-panel/-/react-resize-panel-0.3.5.tgz#43aa3450bf5b5a2566b40c4201445ced96c2a905"
+  integrity sha512-iyHOFTrSt+WV4Ilzi81x6KH3FU7VsGP736rmxepwGrgAEATmCvXzZdluTm3NpsptP7aC3hLODmXwnxusyA393A==
+  dependencies:
+    cash-dom "^4.1.5"
+    classnames "^2.2.6"
+    lodash.debounce "^4.0.8"
+    react-draggable "^4.0.3"
 
 react-scripts@^3.4.1:
   version "3.4.1"
