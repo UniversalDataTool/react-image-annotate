@@ -21,6 +21,7 @@ import historyHandler from "./reducers/history-handler.js"
 
 import useEventCallback from "use-event-callback"
 import makeImmutable, { without } from "seamless-immutable"
+import getFromLocalStorage from "../utils/get-from-local-storage"
 
 type Props = {
   taskDescription?: string,
@@ -55,7 +56,7 @@ export const Annotator = ({
   selectedImage = images && images.length > 0 ? 0 : undefined,
   showPointDistances,
   pointDistancePrecision,
-  showTags = true,
+  showTags = getFromLocalStorage("showTags", true),
   enabledTools = [
     "select",
     "create-point",
