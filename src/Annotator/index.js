@@ -48,6 +48,10 @@ type Props = {
   autoSegmentationOptions?:
     | {| type: "simple" |}
     | {| type: "autoseg", maxClusters?: number, slicWeightFactor?: number |},
+  hideHeader?: boolean,
+  hideHeaderText?: boolean,
+  hideNext?: boolean,
+  hidePrev?: boolean,
 }
 
 export const Annotator = ({
@@ -82,6 +86,10 @@ export const Annotator = ({
   onPrevImage,
   keypointDefinitions,
   autoSegmentationOptions = { type: "autoseg" },
+  hideHeader,
+  hideHeaderText,
+  hideNext,
+  hidePrev,
 }: Props) => {
   if (typeof selectedImage === "string") {
     selectedImage = (images || []).findIndex((img) => img.src === selectedImage)
@@ -172,6 +180,10 @@ export const Annotator = ({
         state={state}
         dispatch={dispatch}
         onRegionClassAdded={onRegionClassAdded}
+        hideHeader={hideHeader}
+        hideHeaderText={hideHeaderText}
+        hideNext={hideNext}
+        hidePrev={hidePrev}
       />
     </SettingsProvider>
   )

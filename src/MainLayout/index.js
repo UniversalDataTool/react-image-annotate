@@ -54,6 +54,8 @@ type Props = {
   alwaysShowNextButton?: boolean,
   alwaysShowPrevButton?: boolean,
   onRegionClassAdded: () => {},
+  hideHeader?: boolean,
+  hideHeaderText?: boolean,
 }
 
 export const MainLayout = ({
@@ -63,6 +65,10 @@ export const MainLayout = ({
   alwaysShowPrevButton = false,
   RegionEditLabel,
   onRegionClassAdded,
+  hideHeader,
+  hideHeaderText,
+  hideNext = false,
+  hidePrev = false,
 }: Props) => {
   const classes = useStyles()
   const settings = useSettings()
@@ -226,6 +232,8 @@ export const MainLayout = ({
           <Workspace
             allowFullscreen
             iconDictionary={iconDictionary}
+            hideHeader={hideHeader}
+            hideHeaderText={hideHeaderText}
             headerLeftSide={[
               state.annotationType === "video" ? (
                 <KeyframeTimeline
@@ -239,8 +247,8 @@ export const MainLayout = ({
               ) : null,
             ].filter(Boolean)}
             headerItems={[
-              { name: "Prev" },
-              { name: "Next" },
+              !hidePrev && { name: "Prev" },
+              !hideNext && { name: "Next" },
               state.annotationType !== "video"
                 ? null
                 : !state.videoPlaying

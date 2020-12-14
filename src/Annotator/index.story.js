@@ -666,3 +666,36 @@ storiesOf("Annotator", module)
       ]}
     />
   ))
+  .add("Hide Next, Hide Header Text", () => (
+    <Annotator
+      onExit={actionAddon("onExit")}
+      labelImages
+      hideNext
+      hideHeaderText
+      fullImageSegmentationMode
+      enabledTools={["modify-allowed-area"]}
+      regionClsList={["Alpha", "Beta", "Charlie", "Delta"]}
+      images={[
+        {
+          src: exampleImage,
+          name: "Frame 0036",
+        },
+      ]}
+    />
+  ))
+  .add("Hide Header", () => (
+    <Annotator
+      onExit={actionAddon("onExit")}
+      labelImages
+      hideHeader
+      fullImageSegmentationMode
+      enabledTools={["modify-allowed-area"]}
+      regionClsList={["Alpha", "Beta", "Charlie", "Delta"]}
+      images={[
+        {
+          src: exampleImage,
+          name: "Frame 0036",
+        },
+      ]}
+    />
+  ))
