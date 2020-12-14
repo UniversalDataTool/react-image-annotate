@@ -6,19 +6,19 @@
     "runtime-main.js": "/react-image-annotate/static/js/runtime-main.eb4e92bc.js",
     "runtime-main.js.map": "/react-image-annotate/static/js/runtime-main.eb4e92bc.js.map",
     "static/css/2.64229bb5.chunk.css": "/react-image-annotate/static/css/2.64229bb5.chunk.css",
-    "static/js/2.98a42019.chunk.js": "/react-image-annotate/static/js/2.98a42019.chunk.js",
-    "static/js/2.98a42019.chunk.js.map": "/react-image-annotate/static/js/2.98a42019.chunk.js.map",
+    "static/js/2.a0528d22.chunk.js": "/react-image-annotate/static/js/2.a0528d22.chunk.js",
+    "static/js/2.a0528d22.chunk.js.map": "/react-image-annotate/static/js/2.a0528d22.chunk.js.map",
     "index.html": "/react-image-annotate/index.html",
-    "precache-manifest.e9fc9c393056f74d4388e1e702c00ba1.js": "/react-image-annotate/precache-manifest.e9fc9c393056f74d4388e1e702c00ba1.js",
+    "precache-manifest.177c7527c93b24e44d56a7b6b42f7cd2.js": "/react-image-annotate/precache-manifest.177c7527c93b24e44d56a7b6b42f7cd2.js",
     "service-worker.js": "/react-image-annotate/service-worker.js",
     "static/css/2.64229bb5.chunk.css.map": "/react-image-annotate/static/css/2.64229bb5.chunk.css.map",
     "static/css/main.a682b2e1.chunk.css.map": "/react-image-annotate/static/css/main.a682b2e1.chunk.css.map",
-    "static/js/2.98a42019.chunk.js.LICENSE.txt": "/react-image-annotate/static/js/2.98a42019.chunk.js.LICENSE.txt"
+    "static/js/2.a0528d22.chunk.js.LICENSE.txt": "/react-image-annotate/static/js/2.a0528d22.chunk.js.LICENSE.txt"
   },
   "entrypoints": [
     "static/js/runtime-main.eb4e92bc.js",
     "static/css/2.64229bb5.chunk.css",
-    "static/js/2.98a42019.chunk.js",
+    "static/js/2.a0528d22.chunk.js",
     "static/css/main.a682b2e1.chunk.css",
     "static/js/main.4b3a9ebd.chunk.js"
   ]
