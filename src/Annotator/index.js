@@ -166,7 +166,7 @@ export const Annotator = ({
       imageIndex: selectedImage,
       image: state.images[selectedImage],
     })
-  }, [selectedImage])
+  }, [selectedImage, state.images])
 
   if (!images && !videoSrc)
     return 'Missing required prop "images" or "videoSrc"'
