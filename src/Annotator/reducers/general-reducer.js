@@ -124,6 +124,9 @@ export default (state: MainLayoutState, action: Action) => {
     case "SELECT_IMAGE": {
       return setNewImage(action.image, action.imageIndex)
     }
+    case "SELECT_CLASSIFICATION": {
+      return setIn(state, ["selectedCls"], action.cls)
+    }
     case "CHANGE_REGION": {
       const regionIndex = getRegionIndex(action.region)
       if (regionIndex === null) return state
@@ -132,6 +135,7 @@ export default (state: MainLayoutState, action: Action) => {
         state = saveToHistory(state, "Change Region Classification")
         const clsIndex = state.regionClsList.indexOf(action.region.cls)
         if (clsIndex !== -1) {
+          state = setIn(state, ["selectedCls"], action.region.cls)
           action.region.color = colors[clsIndex % colors.length]
         }
       }
@@ -498,14 +502,12 @@ export default (state: MainLayoutState, action: Action) => {
       }
 
       let newRegion
-      let defaultRegionCls = undefined,
+      let defaultRegionCls = state.selectedCls,
         defaultRegionColor = "#ff0000"
-      if (activeImage && (activeImage.regions || []).length > 0) {
-        defaultRegionCls = activeImage.regions.slice(-1)[0].cls
-        const clsIndex = (state.regionClsList || []).indexOf(defaultRegionCls)
-        if (clsIndex !== -1) {
-          defaultRegionColor = colors[clsIndex % colors.length]
-        }
+
+      const clsIndex = (state.regionClsList || []).indexOf(defaultRegionCls)
+      if (clsIndex !== -1) {
+        defaultRegionColor = colors[clsIndex % colors.length]
       }
 
       switch (state.selectedTool) {

@@ -28,6 +28,7 @@ import ImageSelector from "../ImageSelectorSidebarBox"
 import HistorySidebarBox from "../HistorySidebarBox"
 import useEventCallback from "use-event-callback"
 import getHotkeyHelpText from "../utils/get-hotkey-help-text"
+import ClassSelectionMenu from "../ClassSelectionMenu"
 
 const emptyArr = []
 const useStyles = makeStyles(styles)
@@ -331,6 +332,13 @@ export const MainLayout = ({
               ),
               state.taskDescription && (
                 <TaskDescription description={state.taskDescription} />
+              ),
+              state.regionClsList && (
+                <ClassSelectionMenu
+                  selectedCls={state.selectedCls}
+                  regionClsList={state.regionClsList}
+                  onSelectCls={action("SELECT_CLASSIFICATION", "cls")}
+                />
               ),
               state.labelImages && (
                 <TagsSidebarBox
