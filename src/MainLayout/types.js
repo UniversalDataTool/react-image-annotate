@@ -69,6 +69,7 @@ export type MainLayoutStateBase = {|
   showPointDistances?: boolean,
   pointDistancePrecision?: number,
   selectedTool: ToolEnum,
+  selectedCls?: string,
   mode: Mode,
   taskDescription: string,
   allowedArea?: { x: number, y: number, w: number, h: number },
@@ -152,3 +153,4 @@ export type Action =
   | {| type: "HEADER_BUTTON_CLICKED", buttonName: string |}
   | {| type: "SELECT_TOOL", selectedTool: ToolEnum |}
   | {| type: "CANCEL" |}
+  | {| type: "SELECT_CLASSIFICATION", cls: string |}
