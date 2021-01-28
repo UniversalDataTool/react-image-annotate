@@ -138,6 +138,9 @@ export default (state: MainLayoutState, action: Action) => {
       if (!isEqual(oldRegion.tags, action.region.tags)) {
         state = saveToHistory(state, "Change Region Tags")
       }
+      if (!isEqual(oldRegion.comment, action.region.comment)) {
+        state = saveToHistory(state, "Change Region Comment")
+      }
       return setIn(
         state,
         [...pathToActiveImage, "regions", regionIndex],

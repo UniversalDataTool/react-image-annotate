@@ -52,6 +52,37 @@ storiesOf("Annotator", module)
       ]}
     />
   ))
+  .add("Basic - Allow Comments", () => (
+    <Annotator
+      onExit={actionAddon('onExit')}
+      middlewares={middlewares}
+      labelImages
+      regionClsList={["Alpha", "Beta", "Charlie", "Delta"]}
+      regionTagList={["tag1", "tag2", "tag3"]}
+      imageClsList={["Alpha", "Beta", "Charlie", "Delta"]}
+      imageTagList={["tag1", "tag2", "tag3"]}
+      images={[
+        {
+          src: exampleImage,
+          name: "Seve's Desk",
+          regions: testRegions,
+        },
+        {
+          src: "https://loremflickr.com/100/100/cars?lock=1",
+          name: "Frame 0036",
+        },
+        {
+          src: "https://loremflickr.com/100/100/cars?lock=2",
+          name: "Frame 0037",
+        },
+        {
+          src: "https://loremflickr.com/100/100/cars?lock=3",
+          name: "Frame 0038",
+        }
+      ]}
+      allowComments
+    />
+  ))
   .add("Fixed Size Container", () => (
     <div style={{ width: 500, height: 500 }}>
       <Annotator

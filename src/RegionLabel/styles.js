@@ -44,4 +44,8 @@ export default {
       },
     },
   },
+  commentBox: {
+    fontWeight: 400,
+    fontSize: 13
+  },
 }

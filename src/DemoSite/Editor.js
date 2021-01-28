@@ -59,6 +59,7 @@ export const examples = {
         name: "bianchi-oltre-xr4",
       },
     ],
+    allowComments: true
   }),
   "Simple Segmentation": () => ({
     taskDescription:
