@@ -54,7 +54,7 @@ storiesOf("Annotator", module)
   ))
   .add("Basic - Allow Comments", () => (
     <Annotator
-      onExit={actionAddon('onExit')}
+      onExit={actionAddon("onExit")}
       middlewares={middlewares}
       labelImages
       regionClsList={["Alpha", "Beta", "Charlie", "Delta"]}
@@ -78,7 +78,7 @@ storiesOf("Annotator", module)
         {
           src: "https://loremflickr.com/100/100/cars?lock=3",
           name: "Frame 0038",
-        }
+        },
       ]}
       allowComments
     />

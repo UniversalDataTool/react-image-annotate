@@ -47,8 +47,8 @@ export const RegionLabel = ({
 }: Props) => {
   const classes = useStyles()
   const commentInputRef = useRef(null)
-  const onCommentInputClick = _ => {
-    // The TextField wraps the <input> tag with two divs 
+  const onCommentInputClick = (_) => {
+    // The TextField wraps the <input> tag with two divs
     const commentInput = commentInputRef.current.children[0].children[0]
 
     if (commentInput) return commentInput.focus()
@@ -151,18 +151,22 @@ export const RegionLabel = ({
               />
             </div>
           )}
-          {allowComments && <TextField
-            InputProps={{
-              className: classes.commentBox,
-            }}
-            fullWidth
-            multiline
-            rows={3}
-            ref={commentInputRef}
-            onClick={onCommentInputClick}
-            value={region.comment || ''}
-            onChange={event => onChange({ ...(region: any), comment: event.target.value })}
-          />}
+          {allowComments && (
+            <TextField
+              InputProps={{
+                className: classes.commentBox,
+              }}
+              fullWidth
+              multiline
+              rows={3}
+              ref={commentInputRef}
+              onClick={onCommentInputClick}
+              value={region.comment || ""}
+              onChange={(event) =>
+                onChange({ ...(region: any), comment: event.target.value })
+              }
+            />
+          )}
           {onClose && (
             <div style={{ marginTop: 4, display: "flex" }}>
               <div style={{ flexGrow: 1 }} />
