@@ -48,6 +48,16 @@ export type Polygon = {|
   open?: boolean,
   points: Array<[number, number]>,
 |}
+
+export type Line = {|
+  ...$Exact<BaseRegion>,
+  type: "line",
+   x1: number, 
+   y1: number, 
+   x2: number, 
+   y2: number ,
+|}
+
 export type ExpandingLine = {|
   ...$Exact<BaseRegion>,
   type: "expanding-line",
@@ -131,6 +141,9 @@ export const getEnclosingBox = (region: Region) => {
       box.w = Math.max(...region.points.map(({ x, y }) => x)) - box.x
       box.h = Math.max(...region.points.map(({ x, y }) => y)) - box.y
       return box
+    }
+    case "line": {
+      return { x: region.x1, y: region.y1, w: 0, h: 0 }
     }
     case "box": {
       return { x: region.x, y: region.y, w: region.w, h: region.h }

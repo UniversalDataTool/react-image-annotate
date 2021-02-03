@@ -66,6 +66,7 @@ export const Annotator = ({
     "create-point",
     "create-box",
     "create-polygon",
+    "create-line",
     "create-expanding-line",
     "show-mask",
   ],
