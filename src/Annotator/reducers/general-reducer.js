@@ -381,19 +381,11 @@ export default (state: MainLayoutState, action: Action) => {
           const { regionId } = state.mode
           const [region, regionIndex] = getRegion(regionId)
           if (!region) return setIn(state, ["mode"], null)
-          return setIn(
-            state,
-            [
-              ...pathToActiveImage,
-              "regions",
-              regionIndex,
-            ],
-            {
-              ...region,
-              x2:x,
-              y2:y,
-            }
-          )
+          return setIn(state, [...pathToActiveImage, "regions", regionIndex], {
+            ...region,
+            x2: x,
+            y2: y,
+          })
         }
         case "DRAW_EXPANDING_LINE": {
           const { regionId } = state.mode
@@ -470,11 +462,11 @@ export default (state: MainLayoutState, action: Action) => {
           case "DRAW_LINE": {
             const [line, regionIndex] = getRegion(state.mode.regionId)
             if (!line) break
-             setIn(
-              state,
-              [...pathToActiveImage, "regions", regionIndex],
-              { ...line, x2:x, y2:y }
-            )
+            setIn(state, [...pathToActiveImage, "regions", regionIndex], {
+              ...line,
+              x2: x,
+              y2: y,
+            })
             return setIn(state, ["mode"], null)
           }
           case "DRAW_EXPANDING_LINE": {

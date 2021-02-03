@@ -16,7 +16,7 @@ import {
   faSearch,
   faMask,
   faEdit,
-  faChartLine
+  faChartLine,
 } from "@fortawesome/free-solid-svg-icons"
 import FullscreenIcon from "@material-ui/icons/Fullscreen"
 import AccessibilityNewIcon from "@material-ui/icons/AccessibilityNew"
@@ -64,12 +64,7 @@ export const iconDictionary = {
     <FontAwesomeIcon style={faStyle} size="xs" fixedWidth icon={faGripLines} />
   ),
   "create-line": () => (
-    <FontAwesomeIcon
-      style={faStyle}
-      size="xs"
-      fixedWidth
-      icon={faChartLine}
-    />
+    <FontAwesomeIcon style={faStyle} size="xs" fixedWidth icon={faChartLine} />
   ),
   "show-mask": () => (
     <FontAwesomeIcon style={faStyle} size="xs" fixedWidth icon={faMask} />
