@@ -1,6 +1,6 @@
 {
   "name": "react-image-annotate",
-  "version": "1.7.12",
+  "version": "1.8.0",
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^1.2.12",
     "@fortawesome/free-solid-svg-icons": "^5.6.3",
@@ -29,6 +29,7 @@
     "seamless-immutable": "^7.1.4",
     "shallow-equal": "^1.2.1",
     "storybook": "^6.1.17",
+    "styled-components": "^5.2.1",
     "transformation-matrix-js": "^2.7.6",
     "use-event-callback": "^0.1.0",
     "use-key-hook": "^1.3.0"

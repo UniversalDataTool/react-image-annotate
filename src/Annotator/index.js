@@ -66,6 +66,7 @@ export const Annotator = ({
     "create-point",
     "create-box",
     "create-polygon",
+    "create-line",
     "create-expanding-line",
     "show-mask",
   ],
@@ -90,6 +91,7 @@ export const Annotator = ({
   hideHeaderText,
   hideNext,
   hidePrev,
+  allowComments,
 }: Props) => {
   if (typeof selectedImage === "string") {
     selectedImage = (images || []).findIndex((img) => img.src === selectedImage)
@@ -125,6 +127,7 @@ export const Annotator = ({
       history: [],
       videoName,
       keypointDefinitions,
+      allowComments,
       ...(annotationType === "image"
         ? {
             selectedImage,

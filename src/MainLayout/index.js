@@ -187,6 +187,7 @@ export const MainLayout = ({
       onChangeVideoTime={action("CHANGE_VIDEO_TIME", "newTime")}
       onChangeVideoPlaying={action("CHANGE_VIDEO_PLAYING", "isPlaying")}
       onRegionClassAdded={onRegionClassAdded}
+      allowComments={state.allowComments}
     />
   )
 
@@ -303,6 +304,10 @@ export const MainLayout = ({
               {
                 name: "create-polygon",
                 helperText: "Add Polygon" + getHotkeyHelpText("create_polygon"),
+              },
+              {
+                name: "create-line",
+                helperText: "Add Line",
               },
               {
                 name: "create-expanding-line",
