@@ -66,7 +66,7 @@ type Props = {
   fullImageSegmentationMode?: boolean,
   autoSegmentationOptions?: Object,
   modifyingAllowedArea?: boolean,
-
+  allowComments?: Boolean,
   onChangeRegion: (Region) => any,
   onBeginRegionEdit: (Region) => any,
   onCloseRegionEdit: (Region) => any,
@@ -139,6 +139,7 @@ export const ImageCanvas = ({
   zoomOnAllowedArea = true,
   modifyingAllowedArea = false,
   keypointDefinitions,
+  allowComments,
 }: Props) => {
   const classes = useStyles()
 
@@ -388,6 +389,7 @@ export const ImageCanvas = ({
             imageSrc={imageSrc}
             RegionEditLabel={RegionEditLabel}
             onRegionClassAdded={onRegionClassAdded}
+            allowComments={allowComments}
           />
         </PreventScrollToParents>
       )}
@@ -402,6 +404,7 @@ export const ImageCanvas = ({
             editing
             region={highlightedRegion}
             imageSrc={imageSrc}
+            allowComments={allowComments}
           />
         </div>
       )}

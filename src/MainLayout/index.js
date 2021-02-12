@@ -187,6 +187,7 @@ export const MainLayout = ({
       onChangeVideoTime={action("CHANGE_VIDEO_TIME", "newTime")}
       onChangeVideoPlaying={action("CHANGE_VIDEO_PLAYING", "isPlaying")}
       onRegionClassAdded={onRegionClassAdded}
+      allowComments={state.allowComments}
     />
   )
 

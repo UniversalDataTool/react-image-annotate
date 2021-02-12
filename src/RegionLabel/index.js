@@ -1,6 +1,6 @@
 // @flow
 
-import React, { useState, memo } from "react"
+import React, { useRef, memo } from "react"
 import Paper from "@material-ui/core/Paper"
 import { makeStyles } from "@material-ui/core/styles"
 import styles from "./styles"
@@ -10,7 +10,7 @@ import IconButton from "@material-ui/core/IconButton"
 import Button from "@material-ui/core/Button"
 import TrashIcon from "@material-ui/icons/Delete"
 import CheckIcon from "@material-ui/icons/Check"
-import UndoIcon from "@material-ui/icons/Undo"
+import TextField from "@material-ui/core/TextField"
 import Select from "react-select"
 import CreatableSelect from "react-select/creatable"
 
@@ -30,6 +30,7 @@ type Props = {
   onClose: (Region) => null,
   onOpen: (Region) => null,
   onRegionClassAdded: () => {},
+  allowComments?: boolean,
 }
 
 export const RegionLabel = ({
@@ -42,8 +43,16 @@ export const RegionLabel = ({
   onClose,
   onOpen,
   onRegionClassAdded,
+  allowComments,
 }: Props) => {
   const classes = useStyles()
+  const commentInputRef = useRef(null)
+  const onCommentInputClick = (_) => {
+    // The TextField wraps the <input> tag with two divs
+    const commentInput = commentInputRef.current.children[0].children[0]
+
+    if (commentInput) return commentInput.focus()
+  }
 
   return (
     <Paper
@@ -141,6 +150,22 @@ export const RegionLabel = ({
                 )}
               />
             </div>
+          )}
+          {allowComments && (
+            <TextField
+              InputProps={{
+                className: classes.commentBox,
+              }}
+              fullWidth
+              multiline
+              rows={3}
+              ref={commentInputRef}
+              onClick={onCommentInputClick}
+              value={region.comment || ""}
+              onChange={(event) =>
+                onChange({ ...(region: any), comment: event.target.value })
+              }
+            />
           )}
           {onClose && (
             <div style={{ marginTop: 4, display: "flex" }}>
