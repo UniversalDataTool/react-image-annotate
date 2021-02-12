@@ -380,6 +380,16 @@ export default (state: MainLayoutState, action: Action) => {
             [x, y]
           )
         }
+        case "DRAW_LINE": {
+          const { regionId } = state.mode
+          const [region, regionIndex] = getRegion(regionId)
+          if (!region) return setIn(state, ["mode"], null)
+          return setIn(state, [...pathToActiveImage, "regions", regionIndex], {
+            ...region,
+            x2: x,
+            y2: y,
+          })
+        }
         case "DRAW_EXPANDING_LINE": {
           const { regionId } = state.mode
           const [expandingLine, regionIndex] = getRegion(regionId)
@@ -451,6 +461,16 @@ export default (state: MainLayoutState, action: Action) => {
               [...pathToActiveImage, "regions", regionIndex],
               { ...polygon, points: polygon.points.concat([[x, y]]) }
             )
+          }
+          case "DRAW_LINE": {
+            const [line, regionIndex] = getRegion(state.mode.regionId)
+            if (!line) break
+            setIn(state, [...pathToActiveImage, "regions", regionIndex], {
+              ...line,
+              x2: x,
+              y2: y,
+            })
+            return setIn(state, ["mode"], null)
           }
           case "DRAW_EXPANDING_LINE": {
             const [expandingLine, regionIndex] = getRegion(state.mode.regionId)
@@ -587,6 +607,27 @@ export default (state: MainLayoutState, action: Action) => {
           }
           state = setIn(state, ["mode"], {
             mode: "DRAW_EXPANDING_LINE",
+            regionId: newRegion.id,
+          })
+          break
+        }
+        case "create-line": {
+          if (state.mode && state.mode.mode === "DRAW_LINE") break
+          state = saveToHistory(state, "Create Line")
+          newRegion = {
+            type: "line",
+            x1: x,
+            y1: y,
+            x2: x,
+            y2: y,
+            highlighted: true,
+            editingLabels: false,
+            color: defaultRegionColor,
+            cls: defaultRegionCls,
+            id: getRandomId(),
+          }
+          state = setIn(state, ["mode"], {
+            mode: "DRAW_LINE",
             regionId: newRegion.id,
           })
           break

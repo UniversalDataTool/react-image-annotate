@@ -180,7 +180,7 @@ const Editor = ({ onOpenAnnotator, lastOutput }: any) => {
   imageTagList?: Array<string>,
   imageClsList?: Array<string>,
   // all tools are enabled by default
-  enabledTools?: Array< "select" | "create-point" | "create-box" | "create-polygon">,
+  enabledTools?: Array< "select" | "create-point" | "create-box" | "create-polygon" | "create-line">,
   selectedImage?: string, // initial selected image
   images: Array<{
     src: string,

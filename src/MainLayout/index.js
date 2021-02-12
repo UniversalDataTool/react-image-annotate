@@ -306,6 +306,10 @@ export const MainLayout = ({
                 helperText: "Add Polygon" + getHotkeyHelpText("create_polygon"),
               },
               {
+                name: "create-line",
+                helperText: "Add Line",
+              },
+              {
                 name: "create-expanding-line",
                 helperText: "Add Expanding Line",
               },
