@@ -72,7 +72,7 @@ All of the following properties can be defined on the Annotator...
 | `pointDistancePrecision` | `number`                                         | Precision on displayed points (e.g. 3 => 0.123)                                         |               |
 | `onExit`                 | `MainLayoutState => any`                         | Called when "Save" is called.                                                           |               |
 | `RegionEditLabel`        | `Node`                                           | React Node overriding the form to update the region (see [`RegionLabel`](https://github.com/waoai/react-image-annotate/blob/master/src/RegionLabel/index.js))                                                          |               |
-| `allowComments`          | `boolean`                                        | Show a textarea to add comments on each annotation.                                     |               |
+| `allowComments`          | `boolean`                                        | Show a textarea to add comments on each annotation.                                     | `false`       |
 
 ## Developers
 
