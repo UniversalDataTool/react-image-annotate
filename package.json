@@ -50,7 +50,7 @@
     "storybook": "start-storybook -p 9090 -s public",
     "build": "npm run build:babel && cp ./package.json ./dist/package.json && cp ./README.md ./dist/README.md",
     "dist": "npm run build && cd dist && npm publish",
-    "build:babel": "NODE_ENV=production babel ./src --ignore \"src/**/*.story.js\" --out-dir=./dist && rm dist/index.js && cp dist/lib.js dist/index.js",
+    "build:babel": "react-scripts build ./src --ignore \"src/**/*.story.js\" --out-dir=./dist && rm dist/index.js && cp dist/lib.js dist/index.js",
     "build-storybook": "build-storybook",
     "build:gh-pages": "CI=false react-scripts build && mkdir build/demo && cp build/index.html build/demo/index.html",
     "gh-pages": "npm run build:gh-pages && gh-pages -d build",
@@ -69,18 +69,15 @@
   "devDependencies": {
     "@babel/cli": "^7.2.3",
     "@babel/core": "^7.2.2",
-    "@babel/plugin-proposal-optional-chaining": "^7.11.0",
     "@storybook/addon-actions": "^5.3.14",
     "@storybook/addon-links": "^5.3.14",
     "@storybook/addons": "^5.3.14",
     "@storybook/react": "^5.3.14",
-    "babel-loader": "^8.0.5",
-    "babel-preset-react-app": "^7.0.0",
     "gh-pages": "^2.0.1",
     "prettier": "^2.1.1",
     "raw.macro": "^0.3.0",
     "react-github-btn": "^1.1.1",
-    "react-scripts": "^3.4.1"
+    "react-scripts": "^4.0.3"
   },
   "prettier": {
     "semi": false
