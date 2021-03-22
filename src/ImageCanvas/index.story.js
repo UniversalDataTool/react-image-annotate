@@ -4,9 +4,9 @@ import { storiesOf } from "@storybook/react"
 import { action } from "@storybook/addon-actions"
 
 import ImageCanvas from "./"
-import exampleMask from "./mouse_mask.story.png"
-import exampleImage from "./seves_desk.story.jpg"
-import dancingManImage from "./dancing-man.story.jpg"
+import exampleMask from "../img/mouse_mask.story.png"
+import exampleImage from "../img/seves_desk.story.jpg"
+import dancingManImage from "../img/dancing-man.story.jpg"
 
 export const testRegions = [
   {

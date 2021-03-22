@@ -4,7 +4,7 @@ import React, { useState } from "react"
 
 import { storiesOf } from "@storybook/react"
 import { action as actionAddon } from "@storybook/addon-actions"
-import dancingManImage from "../ImageCanvas/dancing-man.story.jpg"
+import dancingManImage from "../img/dancing-man.story.jpg"
 import dabKeyframes from "./dab-keyframes.story.json"
 import Annotator from "./"
 

@@ -4,9 +4,9 @@ import React, { useState } from "react"
 
 import { storiesOf } from "@storybook/react"
 import { action as actionAddon } from "@storybook/addon-actions"
-import exampleImage from "../ImageCanvas/seves_desk.story.jpg"
-import bikeImg1 from "./bike-pic.png"
-import bikeImg2 from "./bike-pic2.png"
+import exampleImage from "../img/seves_desk.story.jpg"
+import bikeImg1 from "../img/bike-pic.png"
+import bikeImg2 from "../img/bike-pic2.png"
 import { HotKeys } from "react-hotkeys"
 import { defaultKeyMap } from "../ShortcutsManager"
 

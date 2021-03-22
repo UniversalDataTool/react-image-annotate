@@ -4,10 +4,10 @@ import React from "react"
 
 import { storiesOf } from "@storybook/react"
 import { action } from "@storybook/addon-actions"
-import orange from "./orange.story.png"
-import hard1 from "./hard1.story.jpg"
-import hard2 from "./hard2.story.jpg"
-import hard3 from "./hard3.story.jpg"
+import orange from "../img/orange.story.png"
+import hard1 from "../img/hard1.story.jpg"
+import hard2 from "../img/hard2.story.jpg"
+import hard3 from "../img/hard3.story.jpg"
 
 import FullImageSegmentationAnnotator from "./"
 
