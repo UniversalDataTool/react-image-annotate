@@ -69,9 +69,9 @@ export default ({
       }
       e.preventDefault()
     },
+
     onMouseDown: (e, specialEvent = {}) => {
       e.preventDefault()
-
       if (
         e.button === 1 ||
         e.button === 2 ||
@@ -99,6 +99,7 @@ export default ({
         onMouseDown({ x: projMouse.x / iw, y: projMouse.y / ih })
       }
     },
+
     onMouseUp: (e) => {
       e.preventDefault()
       const projMouse = mat.applyToPoint(
@@ -155,6 +156,7 @@ export default ({
         onMouseUp({ x: projMouse.x / iw, y: projMouse.y / ih })
       }
     },
+
     onWheel: (e) => {
       const direction = e.deltaY > 0 ? 1 : e.deltaY < 0 ? -1 : 0
       zoomIn(direction, mousePosition.current)

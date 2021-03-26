@@ -393,21 +393,6 @@ export const ImageCanvas = ({
           />
         </PreventScrollToParents>
       )}
-      {!showTags && highlightedRegion && (
-        <div key="topLeftTag" className={classes.fixedRegionLabel}>
-          <RegionLabel
-            disableClose
-            allowedClasses={regionClsList}
-            allowedTags={regionTagList}
-            onChange={onChangeRegion}
-            onDelete={onDeleteRegion}
-            editing
-            region={highlightedRegion}
-            imageSrc={imageSrc}
-            allowComments={allowComments}
-          />
-        </div>
-      )}
 
       {zoomWithPrimary && zoomBox !== null && (
         <div
