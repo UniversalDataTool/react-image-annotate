@@ -32,24 +32,6 @@ import { withHotKeys } from "react-hotkeys"
 
 // import Fullscreen from "../Fullscreen"
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 const emptyArr = []
 const useStyles = makeStyles(styles)
 
