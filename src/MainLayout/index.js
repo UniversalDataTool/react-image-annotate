@@ -1,34 +1,36 @@
 // @flow
 
-import React, { useRef, useCallback } from "react"
-import type { Node } from "react"
-import { makeStyles, styled } from "@material-ui/core/styles"
-import ImageCanvas from "../ImageCanvas"
-import styles from "./styles"
-import type { MainLayoutState, Action } from "./types"
-import useKey from "use-key-hook"
-import classnames from "classnames"
-import { useSettings } from "../SettingsProvider"
-import SettingsDialog from "../SettingsDialog"
-// import Fullscreen from "../Fullscreen"
+import type { Action, MainLayoutState } from "./types"
 import { FullScreen, useFullScreenHandle } from "react-full-screen"
-import getActiveImage from "../Annotator/reducers/get-active-image"
-import useImpliedVideoRegions from "./use-implied-video-regions"
-import { useDispatchHotkeyHandlers } from "../ShortcutsManager"
-import { withHotKeys } from "react-hotkeys"
-import iconDictionary from "./icon-dictionary"
-import KeyframeTimeline from "../KeyframeTimeline"
-import Workspace from "react-material-workspace-layout/Workspace"
-import DebugBox from "../DebugSidebarBox"
-import TagsSidebarBox from "../TagsSidebarBox"
-import KeyframesSelector from "../KeyframesSelectorSidebarBox"
-import TaskDescription from "../TaskDescriptionSidebarBox"
-import RegionSelector from "../RegionSelectorSidebarBox"
-import ImageSelector from "../ImageSelectorSidebarBox"
-import HistorySidebarBox from "../HistorySidebarBox"
-import useEventCallback from "use-event-callback"
-import getHotkeyHelpText from "../utils/get-hotkey-help-text"
+import React, { useCallback, useRef } from "react"
+import { makeStyles, styled } from "@material-ui/core/styles"
+
 import ClassSelectionMenu from "../ClassSelectionMenu"
+import DebugBox from "../DebugSidebarBox"
+import HistorySidebarBox from "../HistorySidebarBox"
+import ImageCanvas from "../ImageCanvas"
+import ImageSelector from "../ImageSelectorSidebarBox"
+import KeyframeTimeline from "../KeyframeTimeline"
+import KeyframesSelector from "../KeyframesSelectorSidebarBox"
+import type { Node } from "react"
+import RegionSelector from "../RegionSelectorSidebarBox"
+import SettingsDialog from "../SettingsDialog"
+import TagsSidebarBox from "../TagsSidebarBox"
+import TaskDescription from "../TaskDescriptionSidebarBox"
+import Workspace from "react-material-workspace-layout/Workspace"
+import classnames from "classnames"
+import getActiveImage from "../Annotator/reducers/get-active-image"
+import getHotkeyHelpText from "../utils/get-hotkey-help-text"
+import iconDictionary from "./icon-dictionary"
+import styles from "./styles"
+import { useDispatchHotkeyHandlers } from "../ShortcutsManager"
+import useEventCallback from "use-event-callback"
+import useImpliedVideoRegions from "./use-implied-video-regions"
+import useKey from "use-key-hook"
+import { useSettings } from "../SettingsProvider"
+import { withHotKeys } from "react-hotkeys"
+
+// import Fullscreen from "../Fullscreen"
 
 const emptyArr = []
 const useStyles = makeStyles(styles)
@@ -70,6 +72,10 @@ export const MainLayout = ({
   hideHeaderText,
   hideNext = false,
   hidePrev = false,
+  hideClone = false,
+  hideSettings = false,
+  hideFullScreen = false,
+  hideSave = false
 }: Props) => {
   const classes = useStyles()
   const settings = useSettings()
@@ -256,10 +262,10 @@ export const MainLayout = ({
                 : !state.videoPlaying
                 ? { name: "Play" }
                 : { name: "Pause" },
-              !nextImageHasRegions && activeImage.regions && { name: "Clone" },
-              { name: "Settings" },
-              state.fullScreen ? { name: "Window" } : { name: "Fullscreen" },
-              { name: "Save" },
+              !hideClone && !nextImageHasRegions && activeImage.regions && { name: "Clone" },
+              !hideSettings && { name: "Settings" },
+              !hideFullScreen && (state.fullScreen ? { name: "Window" } : { name: "Fullscreen" }),
+              !hideSave && { name: "Save" },
             ].filter(Boolean)}
             onClickHeaderItem={onClickHeaderItem}
             onClickIconSidebarItem={onClickIconSidebarItem}

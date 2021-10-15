@@ -1,27 +1,26 @@
 // @flow
 
-import React, { useReducer, useEffect } from "react"
-import type { Node } from "react"
-import MainLayout from "../MainLayout"
 import type {
-  ToolEnum,
-  Image,
-  Mode,
-  MainLayoutState,
   Action,
+  Image,
+  MainLayoutState,
+  Mode,
+  ToolEnum,
 } from "../MainLayout/types"
-import type { KeypointsDefinition } from "../ImageCanvas/region-tools"
-import SettingsProvider from "../SettingsProvider"
+import React, { useEffect, useReducer } from "react"
+import makeImmutable, { without } from "seamless-immutable"
 
+import type { KeypointsDefinition } from "../ImageCanvas/region-tools"
+import MainLayout from "../MainLayout"
+import type { Node } from "react"
+import SettingsProvider from "../SettingsProvider"
 import combineReducers from "./reducers/combine-reducers.js"
 import generalReducer from "./reducers/general-reducer.js"
-import imageReducer from "./reducers/image-reducer.js"
-import videoReducer from "./reducers/video-reducer.js"
-import historyHandler from "./reducers/history-handler.js"
-
-import useEventCallback from "use-event-callback"
-import makeImmutable, { without } from "seamless-immutable"
 import getFromLocalStorage from "../utils/get-from-local-storage"
+import historyHandler from "./reducers/history-handler.js"
+import imageReducer from "./reducers/image-reducer.js"
+import useEventCallback from "use-event-callback"
+import videoReducer from "./reducers/video-reducer.js"
 
 type Props = {
   taskDescription?: string,
@@ -52,6 +51,10 @@ type Props = {
   hideHeaderText?: boolean,
   hideNext?: boolean,
   hidePrev?: boolean,
+  hideClone?: boolean,
+  hideSettings?: boolean,
+  hideFullScreen?: boolean,
+  hideSave?: boolean
 }
 
 export const Annotator = ({
@@ -91,6 +94,10 @@ export const Annotator = ({
   hideHeaderText,
   hideNext,
   hidePrev,
+  hideClone,
+  hideSettings,
+  hideFullScreen,
+  hideSave,
   allowComments,
 }: Props) => {
   if (typeof selectedImage === "string") {
@@ -187,6 +194,10 @@ export const Annotator = ({
         hideHeaderText={hideHeaderText}
         hideNext={hideNext}
         hidePrev={hidePrev}
+        hideClone={hideClone}
+        hideSettings={hideSettings}
+        hideFullScreen={hideFullScreen}
+        hideSave={hideSave}
       />
     </SettingsProvider>
   )

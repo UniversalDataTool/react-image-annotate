@@ -73,6 +73,12 @@ All of the following properties can be defined on the Annotator...
 | `onExit`                 | `MainLayoutState => any`                         | Called when "Save" is called.                                                           |               |
 | `RegionEditLabel`        | `Node`                                           | React Node overriding the form to update the region (see [`RegionLabel`](https://github.com/waoai/react-image-annotate/blob/master/src/RegionLabel/index.js))                                                          |               |
 | `allowComments`          | `boolean`                                        | Show a textarea to add comments on each annotation.                                     | `false`       |
+| `hidePrev`               | `boolean`                                        | Hide `Previous Image` button from the header bar.                                       | `false`       |
+| `hideNext`               | `boolean`                                        | Hide `Next Image` button from the header bar.                                           | `false`       |
+| `hideClone`              | `boolean`                                        | Hide `Clone` button from the header bar.                                                | `false`       |
+| `hideSettings`           | `boolean`                                        | Hide `Settings` button from the header bar.                                             | `false`       |
+| `hideFullScreen`         | `boolean`                                        | Hide `FullScreen/Window` button from the header bar.                                    | `false`       |
+| `hideSave`               | `boolean`                                        | Hide `Save` button from the header bar.                                                 | `false`       |
 
 ## Developers
 
