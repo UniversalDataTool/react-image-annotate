@@ -18,7 +18,7 @@ import type {
   Keypoints,
   KeypointsDefinition,
 } from "./region-tools.js"
-import { makeStyles } from "@material-ui/core/styles"
+import { makeStyles } from '@mui/styles';
 import styles from "./styles"
 import PreventScrollToParents from "../PreventScrollToParents"
 import useWindowSize from "../hooks/use-window-size.js"

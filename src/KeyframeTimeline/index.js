@@ -1,9 +1,9 @@
 // @flow weak
 
 import React, { useMemo, useState, useEffect } from "react"
-import { styled } from "@material-ui/core/styles"
+import { styled } from "@mui/material/styles"
 import range from "lodash/range"
-import * as colors from "@material-ui/core/colors"
+import * as colors from "@mui/material/colors"
 import useMeasure from "react-use-measure"
 import useEventCallback from "use-event-callback"
 import { useRafState } from "react-use"

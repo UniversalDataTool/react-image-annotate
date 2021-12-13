@@ -2,9 +2,9 @@
 
 import React, { memo } from "react"
 import SidebarBoxContainer from "../SidebarBoxContainer"
-import DescriptionIcon from "@material-ui/icons/Description"
-import { styled } from "@material-ui/core/styles"
-import { grey } from "@material-ui/core/colors"
+import DescriptionIcon from "@mui/icons-material/Description"
+import { styled } from "@mui/material/styles"
+import { grey } from "@mui/material/colors"
 import Markdown from "react-markdown"
 
 const MarkdownContainer = styled("div")({

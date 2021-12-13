@@ -2,9 +2,9 @@
 
 import React, { useMemo, memo } from "react"
 import SidebarBoxContainer from "../SidebarBoxContainer"
-import { makeStyles } from "@material-ui/core/styles"
-import StyleIcon from "@material-ui/icons/Style"
-import { grey } from "@material-ui/core/colors"
+import { makeStyles } from '@mui/styles';
+import StyleIcon from "@mui/icons-material/Style"
+import { grey } from "@mui/material/colors"
 import Select from "react-select"
 import useEventCallback from "use-event-callback"
 import { asMutable } from "seamless-immutable"

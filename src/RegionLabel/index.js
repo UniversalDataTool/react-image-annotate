@@ -1,16 +1,16 @@
 // @flow
 
 import React, { useRef, memo } from "react"
-import Paper from "@material-ui/core/Paper"
-import { makeStyles } from "@material-ui/core/styles"
+import Paper from "@mui/material/Paper"
+import { makeStyles } from '@mui/styles';
 import styles from "./styles"
 import classnames from "classnames"
 import type { Region } from "../ImageCanvas/region-tools.js"
-import IconButton from "@material-ui/core/IconButton"
-import Button from "@material-ui/core/Button"
-import TrashIcon from "@material-ui/icons/Delete"
-import CheckIcon from "@material-ui/icons/Check"
-import TextField from "@material-ui/core/TextField"
+import IconButton from "@mui/material/IconButton"
+import Button from "@mui/material/Button"
+import TrashIcon from "@mui/icons-material/Delete"
+import CheckIcon from "@mui/icons-material/Check"
+import TextField from "@mui/material/TextField"
 import Select from "react-select"
 import CreatableSelect from "react-select/creatable"
 

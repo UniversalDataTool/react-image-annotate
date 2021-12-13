@@ -1,12 +1,12 @@
 // @flow weak
 
 import React from "react"
-import AddLocationIcon from "@material-ui/icons/AddLocation"
+import AddLocationIcon from "@mui/icons-material/AddLocation"
 import SidebarBoxContainer from "../SidebarBoxContainer"
-import * as colors from "@material-ui/core/colors"
+import * as colors from "@mui/material/colors"
 import getTimeString from "../KeyframeTimeline/get-time-string.js"
-import TrashIcon from "@material-ui/icons/Delete"
-import { styled } from "@material-ui/core/styles"
+import TrashIcon from "@mui/icons-material/Delete"
+import { styled } from "@mui/material/styles"
 
 const KeyframeRow = styled("div")({
   cursor: "pointer",

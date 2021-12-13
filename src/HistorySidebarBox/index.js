@@ -1,19 +1,19 @@
 // @flow
 
 import React, { setState, memo } from "react"
-import { makeStyles } from "@material-ui/core/styles"
+import { makeStyles } from '@mui/styles';
 import SidebarBoxContainer from "../SidebarBoxContainer"
-import HistoryIcon from "@material-ui/icons/History"
-import List from "@material-ui/core/List"
-import ListItem from "@material-ui/core/ListItem"
-import ListItemText from "@material-ui/core/ListItemText"
-import IconButton from "@material-ui/core/IconButton"
-import ListItemSecondaryAction from "@material-ui/core/ListItemSecondaryAction"
-import UndoIcon from "@material-ui/icons/Undo"
+import HistoryIcon from "@mui/icons-material/History"
+import List from "@mui/material/List"
+import ListItem from "@mui/material/ListItem"
+import ListItemText from "@mui/material/ListItemText"
+import IconButton from "@mui/material/IconButton"
+import ListItemSecondaryAction from "@mui/material/ListItemSecondaryAction"
+import UndoIcon from "@mui/icons-material/Undo"
 import moment from "moment"
-import { grey } from "@material-ui/core/colors"
+import { grey } from "@mui/material/colors"
 import isEqual from "lodash/isEqual"
-import Box from "@material-ui/core/Box"
+import Box from "@mui/material/Box"
 
 const useStyles = makeStyles({
   emptyText: {

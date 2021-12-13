@@ -2,7 +2,7 @@
 
 import React, { useState } from "react"
 import { RemoveScroll } from "react-remove-scroll"
-import { styled } from "@material-ui/core/styles"
+import { styled } from "@mui/material/styles"
 import useEventCallback from "use-event-callback"
 
 const Container = styled("div")({

@@ -1,7 +1,7 @@
 // @flow weak
 
 import React, { useRef, useEffect, useMemo, useState } from "react"
-import { styled } from "@material-ui/core/styles"
+import { styled } from "@mui/material/styles"
 import useEventCallback from "use-event-callback"
 import { useSettings } from "../SettingsProvider"
 

@@ -3,9 +3,9 @@
 import React from "react"
 import {
   ThemeProvider,
-  createMuiTheme,
-  makeStyles,
-} from "@material-ui/core/styles"
+  createTheme,
+} from "@mui/material/styles"
+import { makeStyles } from '@mui/styles';
 
 const useStyles = makeStyles({
   container: {
@@ -13,7 +13,7 @@ const useStyles = makeStyles({
   },
 })
 
-const theme = createMuiTheme({
+const theme = createTheme({
   typography: {
     fontFamily: '"Inter", "Roboto", sans-serif',
   },

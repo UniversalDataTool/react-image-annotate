@@ -1,10 +1,10 @@
 // @flow
 
 import React from "react"
-import Button from "@material-ui/core/Button"
-import { styled } from "@material-ui/core/styles"
-import * as colors from "@material-ui/core/colors"
-import Grid from "@material-ui/core/Grid"
+import Button from "@mui/material/Button"
+import { styled } from "@mui/material/styles"
+import * as colors from "@mui/material/colors"
+import Grid from "@mui/material/Grid"
 import Markdown from "react-markdown"
 import GitHubButton from "react-github-btn"
 import "./github-markdown.css"

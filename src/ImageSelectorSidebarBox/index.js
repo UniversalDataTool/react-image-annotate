@@ -1,14 +1,14 @@
 // @flow
 
 import React, { memo } from "react"
-import { makeStyles } from "@material-ui/core/styles"
+import { makeStyles } from '@mui/styles';
 import SidebarBoxContainer from "../SidebarBoxContainer"
-import CollectionsIcon from "@material-ui/icons/Collections"
-import { grey } from "@material-ui/core/colors"
-import List from "@material-ui/core/List"
-import ListItem from "@material-ui/core/ListItem"
-import ListItemText from "@material-ui/core/ListItemText"
-import Avatar from "@material-ui/core/Avatar"
+import CollectionsIcon from "@mui/icons-material/Collections"
+import { grey } from "@mui/material/colors"
+import List from "@mui/material/List"
+import ListItem from "@mui/material/ListItem"
+import ListItemText from "@mui/material/ListItemText"
+import Avatar from "@mui/material/Avatar"
 import isEqual from "lodash/isEqual"
 
 const useStyles = makeStyles({

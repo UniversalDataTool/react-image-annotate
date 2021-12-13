@@ -18,8 +18,8 @@ import {
   faEdit,
   faChartLine,
 } from "@fortawesome/free-solid-svg-icons"
-import FullscreenIcon from "@material-ui/icons/Fullscreen"
-import AccessibilityNewIcon from "@material-ui/icons/AccessibilityNew"
+import FullscreenIcon from "@mui/icons-material/Fullscreen"
+import AccessibilityNewIcon from "@mui/icons-material/AccessibilityNew"
 
 const faStyle = { marginTop: 4, width: 16, height: 16, marginBottom: 4 }
 

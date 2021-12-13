@@ -3,7 +3,8 @@
 import type { Action, MainLayoutState } from "./types"
 import { FullScreen, useFullScreenHandle } from "react-full-screen"
 import React, { useCallback, useRef } from "react"
-import { makeStyles, styled } from "@material-ui/core/styles"
+import { makeStyles } from '@mui/styles';
+import { styled } from "@mui/material/styles"
 
 import ClassSelectionMenu from "../ClassSelectionMenu"
 import DebugBox from "../DebugSidebarBox"

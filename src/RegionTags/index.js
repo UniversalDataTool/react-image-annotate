@@ -1,9 +1,9 @@
 // @flow weak
 
 import React from "react"
-import Paper from "@material-ui/core/Paper"
+import Paper from "@mui/material/Paper"
 import DefaultRegionLabel from "../RegionLabel"
-import LockIcon from "@material-ui/icons/Lock"
+import LockIcon from "@mui/icons-material/Lock"
 
 const copyWithout = (obj, ...args) => {
   const newObj = { ...obj }

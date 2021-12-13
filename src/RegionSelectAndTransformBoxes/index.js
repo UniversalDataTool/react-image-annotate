@@ -1,8 +1,8 @@
 import React, { Fragment, memo } from "react"
 import HighlightBox from "../HighlightBox"
-import { styled } from "@material-ui/core/styles"
+import { styled } from "@mui/material/styles"
 import PreventScrollToParents from "../PreventScrollToParents"
-import { Tooltip } from "@material-ui/core"
+import Tooltip from "@mui/material/Tooltip"
 
 const TransformGrabber = styled("div")({
   width: 8,
