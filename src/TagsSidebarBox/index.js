@@ -2,14 +2,12 @@
 
 import React, { useMemo, memo } from "react"
 import SidebarBoxContainer from "../SidebarBoxContainer"
-import { makeStyles } from '@mui/styles';
 import StyleIcon from "@mui/icons-material/Style"
 import { grey } from "@mui/material/colors"
 import Select from "react-select"
 import useEventCallback from "use-event-callback"
 import { asMutable } from "seamless-immutable"
 
-const useStyles = makeStyles({})
 
 type Props = {
   tags: Array<string>,

@@ -2,7 +2,8 @@
 
 import React, { useState } from "react"
 import Button from "@mui/material/Button"
-import { makeStyles } from '@mui/styles';
+import { makeStyles } from "@mui/styles"
+import { createTheme, ThemeProvider } from "@mui/material/styles"
 import Select from "react-select"
 import Code from "react-syntax-highlighter"
 import Dialog from "@mui/material/Dialog"
@@ -11,7 +12,8 @@ import DialogContent from "@mui/material/DialogContent"
 import DialogActions from "@mui/material/DialogActions"
 import MonacoEditor from "react-monaco-editor"
 
-const useStyles = makeStyles({
+const theme = createTheme();
+const useStyles = makeStyles((theme) => ({
   editBar: {
     padding: 10,
     borderBottom: "1px solid #ccc",
@@ -27,7 +29,7 @@ const useStyles = makeStyles({
   specificationArea: {
     padding: 10,
   },
-})
+}))
 
 const loadSavedInput = () => {
   try {
@@ -90,89 +92,90 @@ const Editor = ({ onOpenAnnotator, lastOutput }: any) => {
     JSON.stringify(examples[selectedExample](), null, "  ")
   )
   return (
-    <div>
-      <div className={c.editBar}>
-        <h3>React Image Annotate</h3>
-        <div style={{ flexGrow: 1 }} />
-        <div>
-          <div style={{ display: "inline-flex" }}>
-            <Select
-              className={c.select}
-              value={{ label: selectedExample, value: selectedExample }}
-              options={Object.keys(examples).map((s) => ({
-                label: s,
-                value: s,
-              }))}
-              onChange={(selectedOption) => {
-                changeSelectedExample(selectedOption.value)
+    <ThemeProvider theme={theme}>
+      <div>
+        <div className={c.editBar}>
+          <h3>React Image Annotate</h3>
+          <div style={{ flexGrow: 1 }} />
+          <div>
+            <div style={{ display: "inline-flex" }}>
+              <Select
+                className={c.select}
+                value={{ label: selectedExample, value: selectedExample }}
+                options={Object.keys(examples).map((s) => ({
+                  label: s,
+                  value: s,
+                }))}
+                onChange={(selectedOption) => {
+                  changeSelectedExample(selectedOption.value)
 
-                changeCurrentJSONValue(
-                  JSON.stringify(
-                    selectedOption.value === "Custom"
-                      ? loadSavedInput()
-                      : examples[selectedOption.value](),
-                    null,
-                    "  "
+                  changeCurrentJSONValue(
+                    JSON.stringify(
+                      selectedOption.value === "Custom"
+                        ? loadSavedInput()
+                        : examples[selectedOption.value](),
+                      null,
+                      "  "
+                    )
                   )
+                }}
+              />
+            </div>
+            <Button
+              className="button"
+              disabled={!lastOutput}
+              onClick={() => changeOutputOpen(true)}
+            >
+              View Output
+            </Button>
+            <Button
+              className="button"
+              variant="outlined"
+              disabled={Boolean(currentError)}
+              onClick={() => {
+                onOpenAnnotator(
+                  selectedExample === "Custom"
+                    ? loadSavedInput()
+                    : examples[selectedExample]
                 )
               }}
+            >
+              Open Annotator
+            </Button>
+          </div>
+        </div>
+        <div
+          className={c.contentArea}
+          style={
+            currentError
+              ? { border: "2px solid #f00" }
+              : { border: "2px solid #fff" }
+          }
+        >
+          <div>
+            <MonacoEditor
+              value={currentJSONValue}
+              language="javascript"
+              onChange={(code) => {
+                try {
+                  window.localStorage.setItem(
+                    "customInput",
+                    JSON.stringify(JSON.parse(code))
+                  )
+                  changeCurrentError(null)
+                } catch (e) {
+                  changeCurrentError(e.toString())
+                }
+                changeCurrentJSONValue(code)
+              }}
+              width="100%"
+              height="550px"
             />
           </div>
-          <Button
-            className="button"
-            disabled={!lastOutput}
-            onClick={() => changeOutputOpen(true)}
-          >
-            View Output
-          </Button>
-          <Button
-            className="button"
-            variant="outlined"
-            disabled={Boolean(currentError)}
-            onClick={() => {
-              onOpenAnnotator(
-                selectedExample === "Custom"
-                  ? loadSavedInput()
-                  : examples[selectedExample]
-              )
-            }}
-          >
-            Open Annotator
-          </Button>
         </div>
-      </div>
-      <div
-        className={c.contentArea}
-        style={
-          currentError
-            ? { border: "2px solid #f00" }
-            : { border: "2px solid #fff" }
-        }
-      >
-        <div>
-          <MonacoEditor
-            value={currentJSONValue}
-            language="javascript"
-            onChange={(code) => {
-              try {
-                window.localStorage.setItem(
-                  "customInput",
-                  JSON.stringify(JSON.parse(code))
-                )
-                changeCurrentError(null)
-              } catch (e) {
-                changeCurrentError(e.toString())
-              }
-              changeCurrentJSONValue(code)
-            }}
-            width="100%"
-            height="550px"
-          />
-        </div>
-      </div>
-      <div className={c.specificationArea}>
-        <h2>React Image Annotate Format</h2>
-        <Code language="javascript">{`
+        <div className={c.specificationArea}>
+          <h2>React Image Annotate Format</h2>
+          <Code language="javascript">{`
 {
   taskDescription?: string, // markdown
   regionTagList?: Array<string>,
@@ -212,22 +215,23 @@ const Editor = ({ onOpenAnnotator, lastOutput }: any) => {
   }>,
 }
 `}</Code>
+        </div>
+        <Dialog fullScreen open={outputDialogOpen}>
+          <DialogTitle>React Image Annotate Output</DialogTitle>
+          <DialogContent style={{ minWidth: 400 }}>
+            <MonacoEditor
+              value={JSON.stringify(lastOutput, null, "  ")}
+              language="javascript"
+              width="100%"
+              height="550px"
+            />
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={() => changeOutputOpen(false)}>Close</Button>
+          </DialogActions>
+        </Dialog>
       </div>
-      <Dialog fullScreen open={outputDialogOpen}>
-        <DialogTitle>React Image Annotate Output</DialogTitle>
-        <DialogContent style={{ minWidth: 400 }}>
-          <MonacoEditor
-            value={JSON.stringify(lastOutput, null, "  ")}
-            language="javascript"
-            width="100%"
-            height="550px"
-          />
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={() => changeOutputOpen(false)}>Close</Button>
-        </DialogActions>
-      </Dialog>
-    </div>
+    </ThemeProvider>
   )
 }
 

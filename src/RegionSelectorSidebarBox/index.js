@@ -2,7 +2,8 @@
 
 import React, { Fragment, useState, memo } from "react"
 import SidebarBoxContainer from "../SidebarBoxContainer"
-import { makeStyles } from '@mui/styles';
+import { makeStyles } from "@mui/styles"
+import { createTheme, ThemeProvider } from "@mui/material/styles"
 import { styled } from "@mui/material/styles"
 import { grey } from "@mui/material/colors"
 import RegionIcon from "@mui/icons-material/PictureInPicture"
@@ -18,13 +19,14 @@ import styles from "./styles"
 import classnames from "classnames"
 import isEqual from "lodash/isEqual"
 
-const useStyles = makeStyles(styles)
+const theme = createTheme()
+const useStyles = makeStyles((theme) => styles)
 
-const HeaderSep = styled("div")({
+const HeaderSep = styled("div")(({ theme }) => ({
   borderTop: `1px solid ${grey[200]}`,
   marginTop: 2,
   marginBottom: 2,
-})
+}))
 
 const Chip = ({ color, text }) => {
   const classes = useStyles()
@@ -171,28 +173,30 @@ export const RegionSelectorSidebarBox = ({
 }) => {
   const classes = useStyles()
   return (
-    <SidebarBoxContainer
-      title="Regions"
-      subTitle=""
-      icon={<RegionIcon style={{ color: grey[700] }} />}
-      expandedByDefault
-    >
-      <div className={classes.container}>
-        <MemoRowHeader />
-        <HeaderSep />
-        {regions.map((r, i) => (
-          <MemoRow
-            key={r.id}
-            {...r}
-            region={r}
-            index={i}
-            onSelectRegion={onSelectRegion}
-            onDeleteRegion={onDeleteRegion}
-            onChangeRegion={onChangeRegion}
-          />
-        ))}
-      </div>
-    </SidebarBoxContainer>
+    <ThemeProvider theme={theme}>
+      <SidebarBoxContainer
+        title="Regions"
+        subTitle=""
+        icon={<RegionIcon style={{ color: grey[700] }} />}
+        expandedByDefault
+      >
+        <div className={classes.container}>
+          <MemoRowHeader />
+          <HeaderSep />
+          {regions.map((r, i) => (
+            <MemoRow
+              key={r.id}
+              {...r}
+              region={r}
+              index={i}
+              onSelectRegion={onSelectRegion}
+              onDeleteRegion={onDeleteRegion}
+              onChangeRegion={onChangeRegion}
+            />
+          ))}
+        </div>
+      </SidebarBoxContainer>
+    </ThemeProvider>
   )
 }
 

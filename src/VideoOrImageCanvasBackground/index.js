@@ -2,20 +2,22 @@
 
 import React, { useRef, useEffect, useMemo, useState } from "react"
 import { styled } from "@mui/material/styles"
+import { createTheme, ThemeProvider } from "@mui/material/styles"
 import useEventCallback from "use-event-callback"
 import { useSettings } from "../SettingsProvider"
 
-const Video = styled("video")({
+const theme = createTheme()
+const Video = styled("video")(({ theme }) => ({
   zIndex: 0,
   position: "absolute",
-})
+}))
 
-const StyledImage = styled("img")({
+const StyledImage = styled("img")(({ theme }) => ({
   zIndex: 0,
   position: "absolute",
-})
+}))
 
-const Error = styled("div")({
+const Error = styled("div")(({ theme }) => ({
   zIndex: 0,
   position: "absolute",
   left: 0,
@@ -27,7 +29,7 @@ const Error = styled("div")({
   fontWeight: "bold",
   whiteSpace: "pre-wrap",
   padding: 50,
-})
+}))
 
 export default ({
   imagePosition,
@@ -142,23 +144,27 @@ export default ({
 
   if (error) return <Error>{error}</Error>
 
-  return imageSrc && videoTime === undefined ? (
-    <StyledImage
-      {...mouseEvents}
-      src={imageSrc}
-      ref={imageRef}
-      style={stylePosition}
-      onLoad={onImageLoaded}
-      onError={onImageError}
-      crossOrigin={useCrossOrigin ? "anonymous" : undefined}
-    />
-  ) : (
-    <Video
-      {...mouseEvents}
-      ref={videoRef}
-      style={stylePosition}
-      onLoadedMetadata={onLoadedVideoMetadata}
-      src={videoSrc || imageSrc}
-    />
+  return (
+    <ThemeProvider theme={theme}>
+      {imageSrc && videoTime === undefined ? (
+        <StyledImage
+          {...mouseEvents}
+          src={imageSrc}
+          ref={imageRef}
+          style={stylePosition}
+          onLoad={onImageLoaded}
+          onError={onImageError}
+          crossOrigin={useCrossOrigin ? "anonymous" : undefined}
+        />
+      ) : (
+        <Video
+          {...mouseEvents}
+          ref={videoRef}
+          style={stylePosition}
+          onLoadedMetadata={onLoadedVideoMetadata}
+          src={videoSrc || imageSrc}
+        />
+      )}
+    </ThemeProvider>
   )
 }

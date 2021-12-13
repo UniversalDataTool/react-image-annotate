@@ -1,7 +1,8 @@
 // @flow
 
 import React, { setState, memo } from "react"
-import { makeStyles } from '@mui/styles';
+import { makeStyles } from "@mui/styles"
+import { createTheme, ThemeProvider } from "@mui/material/styles"
 import SidebarBoxContainer from "../SidebarBoxContainer"
 import HistoryIcon from "@mui/icons-material/History"
 import List from "@mui/material/List"
@@ -15,7 +16,8 @@ import { grey } from "@mui/material/colors"
 import isEqual from "lodash/isEqual"
 import Box from "@mui/material/Box"
 
-const useStyles = makeStyles({
+const theme = createTheme()
+const useStyles = makeStyles((theme) => ({
   emptyText: {
     fontSize: 14,
     fontWeight: "bold",
@@ -23,7 +25,7 @@ const useStyles = makeStyles({
     textAlign: "center",
     padding: 20,
   },
-})
+}))
 
 const listItemTextStyle = { paddingLeft: 16 }
 
@@ -36,33 +38,35 @@ export const HistorySidebarBox = ({
   const classes = useStyles()
 
   return (
-    <SidebarBoxContainer
-      title="History"
-      icon={<HistoryIcon style={{ color: grey[700] }} />}
-      expandedByDefault
-    >
-      <List>
-        {history.length === 0 && (
-          <div className={classes.emptyText}>No History Yet</div>
-        )}
-        {history.map(({ name, time }, i) => (
-          <ListItem button dense key={i}>
-            <ListItemText
-              style={listItemTextStyle}
-              primary={name}
-              secondary={moment(time).format("LT")}
-            />
-            {i === 0 && (
-              <ListItemSecondaryAction onClick={() => onRestoreHistory()}>
-                <IconButton>
-                  <UndoIcon />
-                </IconButton>
-              </ListItemSecondaryAction>
-            )}
-          </ListItem>
-        ))}
-      </List>
-    </SidebarBoxContainer>
+    <ThemeProvider theme={theme}>
+      <SidebarBoxContainer
+        title="History"
+        icon={<HistoryIcon style={{ color: grey[700] }} />}
+        expandedByDefault
+      >
+        <List>
+          {history.length === 0 && (
+            <div className={classes.emptyText}>No History Yet</div>
+          )}
+          {history.map(({ name, time }, i) => (
+            <ListItem button dense key={i}>
+              <ListItemText
+                style={listItemTextStyle}
+                primary={name}
+                secondary={moment(time).format("LT")}
+              />
+              {i === 0 && (
+                <ListItemSecondaryAction onClick={() => onRestoreHistory()}>
+                  <IconButton>
+                    <UndoIcon />
+                  </IconButton>
+                </ListItemSecondaryAction>
+              )}
+            </ListItem>
+          ))}
+        </List>
+      </SidebarBoxContainer>
+    </ThemeProvider>
   )
 }
 
