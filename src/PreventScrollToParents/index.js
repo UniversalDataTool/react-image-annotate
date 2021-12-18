@@ -6,7 +6,7 @@ import { styled } from "@mui/material/styles"
 import { createTheme, ThemeProvider } from "@mui/material/styles"
 import useEventCallback from "use-event-callback"
 
-const theme = createTheme();
+const theme = createTheme()
 const Container = styled("div")(({ theme }) => ({
   "& > div": {
     width: "100%",

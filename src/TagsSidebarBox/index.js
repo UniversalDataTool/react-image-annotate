@@ -8,7 +8,6 @@ import Select from "react-select"
 import useEventCallback from "use-event-callback"
 import { asMutable } from "seamless-immutable"
 
-
 type Props = {
   tags: Array<string>,
   currentImage: { cls?: string, tags?: Array<string> },

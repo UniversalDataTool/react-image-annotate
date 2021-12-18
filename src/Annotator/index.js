@@ -54,7 +54,7 @@ type Props = {
   hideClone?: boolean,
   hideSettings?: boolean,
   hideFullScreen?: boolean,
-  hideSave?: boolean
+  hideSave?: boolean,
 }
 
 export const Annotator = ({

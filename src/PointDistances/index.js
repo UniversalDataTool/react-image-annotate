@@ -4,8 +4,7 @@ import React, { Fragment } from "react"
 import { styled } from "@mui/material/styles"
 import { createTheme, ThemeProvider } from "@mui/material/styles"
 
-
-const theme = createTheme();
+const theme = createTheme()
 const Svg = styled("svg")(({ theme }) => ({
   pointerEvents: "none",
   position: "absolute",

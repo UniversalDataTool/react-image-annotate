@@ -12,7 +12,7 @@ import DialogContent from "@mui/material/DialogContent"
 import DialogActions from "@mui/material/DialogActions"
 import MonacoEditor from "react-monaco-editor"
 
-const theme = createTheme();
+const theme = createTheme()
 const useStyles = makeStyles((theme) => ({
   editBar: {
     padding: 10,

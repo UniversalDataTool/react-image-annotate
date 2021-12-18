@@ -35,7 +35,7 @@ import { withHotKeys } from "react-hotkeys"
 // import Fullscreen from "../Fullscreen"
 
 const emptyArr = []
-const theme = createTheme();
+const theme = createTheme()
 const useStyles = makeStyles((theme) => styles)
 
 const HotkeyDiv = withHotKeys(({ hotKeys, children, divRef, ...props }) => (

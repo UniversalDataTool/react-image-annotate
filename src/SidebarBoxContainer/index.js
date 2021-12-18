@@ -12,7 +12,7 @@ import classnames from "classnames"
 import useEventCallback from "use-event-callback"
 import SidebarBox from "react-material-workspace-layout/SidebarBox"
 
-const theme = createTheme();
+const theme = createTheme()
 const useStyles = makeStyles((theme) => ({
   container: { margin: 8 },
   header: {

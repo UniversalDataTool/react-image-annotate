@@ -17,8 +17,8 @@ import CreatableSelect from "react-select/creatable"
 
 import { asMutable } from "seamless-immutable"
 
-const theme = createTheme();
-const useStyles = makeStyles((theme) => styles);
+const theme = createTheme()
+const useStyles = makeStyles((theme) => styles)
 
 type Props = {
   region: Region,
