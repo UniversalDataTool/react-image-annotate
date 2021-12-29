@@ -183,14 +183,12 @@ storiesOf("Annotator", module)
       showTags={false}
       images={[
         {
-          src:
-            "https://s3.amazonaws.com/jobstorage.workaround.online/Atheer/video-frames/VID_20190111_161054.mp4_frame017.png",
+          src: "https://s3.amazonaws.com/jobstorage.workaround.online/Atheer/video-frames/VID_20190111_161054.mp4_frame017.png",
           name: "Bounding Box Test",
           regions: [],
         },
         {
-          src:
-            "https://s3.amazonaws.com/jobstorage.workaround.online/Atheer/video-frames/VID_20190111_161054.mp4_frame001.png",
+          src: "https://s3.amazonaws.com/jobstorage.workaround.online/Atheer/video-frames/VID_20190111_161054.mp4_frame001.png",
           name: "Bounding Box Test",
           regions: [],
         },
@@ -207,8 +205,7 @@ storiesOf("Annotator", module)
       allowedArea={{ x: 0, y: 0.6, w: 0.3, h: 0.3 }}
       images={[
         {
-          src:
-            "https://s3.amazonaws.com/jobstorage.workaround.online/Atheer/video-frames/VID_20190111_161054.mp4_frame017.png",
+          src: "https://s3.amazonaws.com/jobstorage.workaround.online/Atheer/video-frames/VID_20190111_161054.mp4_frame017.png",
           name: "Bounding Box Test",
           regions: [],
         },
@@ -440,14 +437,12 @@ storiesOf("Annotator", module)
         ]}
         images={[
           {
-            src:
-              "https://s3.amazonaws.com/asset.workaround.online/SampleVideo_1280x720_1mb.mp4",
+            src: "https://s3.amazonaws.com/asset.workaround.online/SampleVideo_1280x720_1mb.mp4",
             frameTime: 0,
             name: "Frame 1",
           },
           {
-            src:
-              "https://s3.amazonaws.com/asset.workaround.online/SampleVideo_1280x720_1mb.mp4",
+            src: "https://s3.amazonaws.com/asset.workaround.online/SampleVideo_1280x720_1mb.mp4",
             frameTime: 4500,
             name: "Frame 2",
           },

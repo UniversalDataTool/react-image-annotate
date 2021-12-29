@@ -51,13 +51,11 @@ export const examples = {
     // showTags: true,
     images: [
       {
-        src:
-          "https://images.unsplash.com/photo-1496905583330-eb54c7e5915a?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=634&q=80",
+        src: "https://images.unsplash.com/photo-1496905583330-eb54c7e5915a?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=634&q=80",
         name: "hot-dogs-1",
       },
       {
-        src:
-          "https://www.bianchi.com/wp-content/uploads/2019/07/YPB17I555K.jpg",
+        src: "https://www.bianchi.com/wp-content/uploads/2019/07/YPB17I555K.jpg",
         name: "bianchi-oltre-xr4",
       },
     ],
@@ -70,8 +68,7 @@ export const examples = {
     enabledTools: ["select", "create-polygon"],
     images: [
       {
-        src:
-          "https://images.unsplash.com/photo-1561518776-e76a5e48f731?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=750&q=80",
+        src: "https://images.unsplash.com/photo-1561518776-e76a5e48f731?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=750&q=80",
         name: "car-image-1",
       },
     ],

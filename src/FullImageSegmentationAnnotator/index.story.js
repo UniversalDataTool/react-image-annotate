@@ -64,8 +64,7 @@ storiesOf("FullImageSegmentationAnnotator.Basic", module)
         images={[
           {
             name: "Seve's Desk",
-            src:
-              "https://s3.amazonaws.com/datasets.workaround.online/faces/010041.jpg",
+            src: "https://s3.amazonaws.com/datasets.workaround.online/faces/010041.jpg",
             regions: [
               [0, 100, 125],
               [0, 100, 150],
