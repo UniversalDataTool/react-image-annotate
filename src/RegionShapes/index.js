@@ -66,9 +66,8 @@ const RegionComponents = {
         `No definition for keypoint configuration "${keypointsDefinitionId}"`
       )
     }
-    const { landmarks, connections } = keypointDefinitions[
-      keypointsDefinitionId
-    ]
+    const { landmarks, connections } =
+      keypointDefinitions[keypointsDefinitionId]
     return (
       <g>
         {Object.entries(points).map(([keypointId, { x, y }], i) => (

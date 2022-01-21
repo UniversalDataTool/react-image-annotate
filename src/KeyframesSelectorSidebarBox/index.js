@@ -1,14 +1,16 @@
 // @flow weak
 
 import React from "react"
-import AddLocationIcon from "@material-ui/icons/AddLocation"
+import AddLocationIcon from "@mui/icons-material/AddLocation"
 import SidebarBoxContainer from "../SidebarBoxContainer"
-import * as colors from "@material-ui/core/colors"
+import * as colors from "@mui/material/colors"
 import getTimeString from "../KeyframeTimeline/get-time-string.js"
-import TrashIcon from "@material-ui/icons/Delete"
-import { styled } from "@material-ui/core/styles"
+import TrashIcon from "@mui/icons-material/Delete"
+import { styled } from "@mui/material/styles"
+import { createTheme, ThemeProvider } from "@mui/material/styles"
 
-const KeyframeRow = styled("div")({
+const theme = createTheme()
+const KeyframeRow = styled("div")(({ theme }) => ({
   cursor: "pointer",
   display: "flex",
   alignItems: "center",
@@ -41,7 +43,7 @@ const KeyframeRow = styled("div")({
       },
     },
   },
-})
+}))
 
 const KeyframesSelectorSidebarBox = ({
   currentVideoTime,
@@ -52,37 +54,39 @@ const KeyframesSelectorSidebarBox = ({
   const keyframeTimes = Object.keys(keyframes).map((t) => parseInt(t))
 
   return (
-    <SidebarBoxContainer
-      title="Keyframes"
-      subTitle=""
-      icon={<AddLocationIcon style={{ color: colors.grey[700] }} />}
-      expandedByDefault
-    >
-      {keyframeTimes.map((t) => (
-        <KeyframeRow
-          fullWidth
-          key={t}
-          className={currentVideoTime === t ? "current" : ""}
-          onClick={() => onChangeVideoTime(t)}
-        >
-          <div className="time">
-            {getTimeString(t, 2)}
-            <span className="regionCount">
-              ({(keyframes[t]?.regions || []).length})
-            </span>
-          </div>
-          <div className="trash">
-            <TrashIcon
-              onClick={(e) => {
-                onDeleteKeyframe(t)
-                e.stopPropagation()
-              }}
-              className="icon"
-            />
-          </div>
-        </KeyframeRow>
-      ))}
-    </SidebarBoxContainer>
+    <ThemeProvider theme={theme}>
+      <SidebarBoxContainer
+        title="Keyframes"
+        subTitle=""
+        icon={<AddLocationIcon style={{ color: colors.grey[700] }} />}
+        expandedByDefault
+      >
+        {keyframeTimes.map((t) => (
+          <KeyframeRow
+            fullWidth
+            key={t}
+            className={currentVideoTime === t ? "current" : ""}
+            onClick={() => onChangeVideoTime(t)}
+          >
+            <div className="time">
+              {getTimeString(t, 2)}
+              <span className="regionCount">
+                ({(keyframes[t]?.regions || []).length})
+              </span>
+            </div>
+            <div className="trash">
+              <TrashIcon
+                onClick={(e) => {
+                  onDeleteKeyframe(t)
+                  e.stopPropagation()
+                }}
+                className="icon"
+              />
+            </div>
+          </KeyframeRow>
+        ))}
+      </SidebarBoxContainer>
+    </ThemeProvider>
   )
 }
 

@@ -2,12 +2,14 @@
 
 import React, { memo } from "react"
 import SidebarBoxContainer from "../SidebarBoxContainer"
-import DescriptionIcon from "@material-ui/icons/Description"
-import { styled } from "@material-ui/core/styles"
-import { grey } from "@material-ui/core/colors"
+import DescriptionIcon from "@mui/icons-material/Description"
+import { styled } from "@mui/material/styles"
+import { createTheme, ThemeProvider } from "@mui/material/styles"
+import { grey } from "@mui/material/colors"
 import Markdown from "react-markdown"
 
-const MarkdownContainer = styled("div")({
+const theme = createTheme()
+const MarkdownContainer = styled("div")(({ theme }) => ({
   paddingLeft: 16,
   paddingRight: 16,
   fontSize: 12,
@@ -20,19 +22,21 @@ const MarkdownContainer = styled("div")({
   "& p": { fontSize: 12 },
   "& a": {},
   "& img": { width: "100%" },
-})
+}))
 
 export const TaskDescriptionSidebarBox = ({ description }) => {
   return (
-    <SidebarBoxContainer
-      title="Task Description"
-      icon={<DescriptionIcon style={{ color: grey[700] }} />}
-      expandedByDefault={description && description !== "" ? false : true}
-    >
-      <MarkdownContainer>
-        <Markdown source={description} />
-      </MarkdownContainer>
-    </SidebarBoxContainer>
+    <ThemeProvider theme={theme}>
+      <SidebarBoxContainer
+        title="Task Description"
+        icon={<DescriptionIcon style={{ color: grey[700] }} />}
+        expandedByDefault={description && description !== "" ? false : true}
+      >
+        <MarkdownContainer>
+          <Markdown source={description} />
+        </MarkdownContainer>
+      </SidebarBoxContainer>
+    </ThemeProvider>
   )
 }
 

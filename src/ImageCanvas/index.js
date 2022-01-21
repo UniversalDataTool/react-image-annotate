@@ -18,7 +18,8 @@ import type {
   Keypoints,
   KeypointsDefinition,
 } from "./region-tools.js"
-import { makeStyles } from "@material-ui/core/styles"
+import { makeStyles } from "@mui/styles"
+import { createTheme, ThemeProvider } from "@mui/material/styles"
 import styles from "./styles"
 import PreventScrollToParents from "../PreventScrollToParents"
 import useWindowSize from "../hooks/use-window-size.js"
@@ -36,7 +37,8 @@ import useEventCallback from "use-event-callback"
 import RegionShapes from "../RegionShapes"
 import useWasdMode from "./use-wasd-mode"
 
-const useStyles = makeStyles(styles)
+const theme = createTheme()
+const useStyles = makeStyles((theme) => styles)
 
 type Props = {
   regions: Array<Region>,
@@ -313,171 +315,173 @@ export const ImageCanvas = ({
   }, [regions])
 
   return (
-    <div
-      style={{
-        width: "100%",
-        height: "100%",
-        maxHeight: "calc(100vh - 68px)",
-        position: "relative",
-        overflow: "hidden",
-        cursor: createWithPrimary
-          ? "crosshair"
-          : dragging
-          ? "grabbing"
-          : dragWithPrimary
-          ? "grab"
-          : zoomWithPrimary
-          ? mat.a < 1
-            ? "zoom-out"
-            : "zoom-in"
-          : undefined,
-      }}
-    >
-      {showCrosshairs && (
-        <Crosshairs key="crossHairs" mousePosition={mousePosition} />
-      )}
-      {imageLoaded && !dragging && (
-        <RegionSelectAndTransformBoxes
-          key="regionSelectAndTransformBoxes"
-          regions={
-            !modifyingAllowedArea || !allowedArea
-              ? regions
-              : [
-                  {
-                    type: "box",
-                    id: "$$allowed_area",
-                    cls: "allowed_area",
-                    highlighted: true,
-                    x: allowedArea.x,
-                    y: allowedArea.y,
-                    w: allowedArea.w,
-                    h: allowedArea.h,
-                    visible: true,
-                    color: "#ff0",
-                  },
-                ]
-          }
-          mouseEvents={mouseEvents}
-          projectRegionBox={projectRegionBox}
-          dragWithPrimary={dragWithPrimary}
-          createWithPrimary={createWithPrimary}
-          zoomWithPrimary={zoomWithPrimary}
-          onBeginMovePoint={onBeginMovePoint}
-          onSelectRegion={onSelectRegion}
-          layoutParams={layoutParams}
-          mat={mat}
-          onBeginBoxTransform={onBeginBoxTransform}
-          onBeginMovePolygonPoint={onBeginMovePolygonPoint}
-          onBeginMoveKeypoint={onBeginMoveKeypoint}
-          onAddPolygonPoint={onAddPolygonPoint}
-          showHighlightBox={showHighlightBox}
-        />
-      )}
-      {imageLoaded && showTags && !dragging && (
-        <PreventScrollToParents key="regionTags">
-          <RegionTags
-            regions={regions}
-            projectRegionBox={projectRegionBox}
-            mouseEvents={mouseEvents}
-            regionClsList={regionClsList}
-            regionTagList={regionTagList}
-            onBeginRegionEdit={onBeginRegionEdit}
-            onChangeRegion={onChangeRegion}
-            onCloseRegionEdit={onCloseRegionEdit}
-            onDeleteRegion={onDeleteRegion}
-            layoutParams={layoutParams}
-            imageSrc={imageSrc}
-            RegionEditLabel={RegionEditLabel}
-            onRegionClassAdded={onRegionClassAdded}
-            allowComments={allowComments}
-          />
-        </PreventScrollToParents>
-      )}
-      {!showTags && highlightedRegion && (
-        <div key="topLeftTag" className={classes.fixedRegionLabel}>
-          <RegionLabel
-            disableClose
-            allowedClasses={regionClsList}
-            allowedTags={regionTagList}
-            onChange={onChangeRegion}
-            onDelete={onDeleteRegion}
-            editing
-            region={highlightedRegion}
-            imageSrc={imageSrc}
-            allowComments={allowComments}
-          />
-        </div>
-      )}
-
-      {zoomWithPrimary && zoomBox !== null && (
-        <div
-          key="zoomBox"
-          style={{
-            position: "absolute",
-            zIndex: 1,
-            border: "1px solid #fff",
-            pointerEvents: "none",
-            left: zoomBox.x,
-            top: zoomBox.y,
-            width: zoomBox.w,
-            height: zoomBox.h,
-          }}
-        />
-      )}
-      {showPointDistances && (
-        <PointDistances
-          key="pointDistances"
-          regions={regions}
-          realSize={realSize}
-          projectRegionBox={projectRegionBox}
-          pointDistancePrecision={pointDistancePrecision}
-        />
-      )}
-      <PreventScrollToParents
-        style={{ width: "100%", height: "100%" }}
-        {...mouseEvents}
+    <ThemeProvider theme={theme}>
+      <div
+        style={{
+          width: "100%",
+          height: "100%",
+          maxHeight: "calc(100vh - 68px)",
+          position: "relative",
+          overflow: "hidden",
+          cursor: createWithPrimary
+            ? "crosshair"
+            : dragging
+            ? "grabbing"
+            : dragWithPrimary
+            ? "grab"
+            : zoomWithPrimary
+            ? mat.a < 1
+              ? "zoom-out"
+              : "zoom-in"
+            : undefined,
+        }}
       >
-        <>
-          {fullImageSegmentationMode && (
-            <ImageMask
-              hide={!showMask}
-              autoSegmentationOptions={autoSegmentationOptions}
-              imagePosition={imagePosition}
-              regionClsList={regionClsList}
-              imageSrc={imageSrc}
-              regions={regions}
-            />
-          )}
-          <canvas
-            style={{ opacity: 0.25 }}
-            className={classes.canvas}
-            ref={canvasEl}
-          />
-          <RegionShapes
-            mat={mat}
-            keypointDefinitions={keypointDefinitions}
-            imagePosition={imagePosition}
-            regions={regions}
-            fullSegmentationMode={fullImageSegmentationMode}
-          />
-          <VideoOrImageCanvasBackground
-            videoPlaying={videoPlaying}
-            imagePosition={imagePosition}
+        {showCrosshairs && (
+          <Crosshairs key="crossHairs" mousePosition={mousePosition} />
+        )}
+        {imageLoaded && !dragging && (
+          <RegionSelectAndTransformBoxes
+            key="regionSelectAndTransformBoxes"
+            regions={
+              !modifyingAllowedArea || !allowedArea
+                ? regions
+                : [
+                    {
+                      type: "box",
+                      id: "$$allowed_area",
+                      cls: "allowed_area",
+                      highlighted: true,
+                      x: allowedArea.x,
+                      y: allowedArea.y,
+                      w: allowedArea.w,
+                      h: allowedArea.h,
+                      visible: true,
+                      color: "#ff0",
+                    },
+                  ]
+            }
             mouseEvents={mouseEvents}
-            onLoad={onVideoOrImageLoaded}
-            videoTime={videoTime}
-            videoSrc={videoSrc}
-            imageSrc={imageSrc}
-            useCrossOrigin={fullImageSegmentationMode}
-            onChangeVideoTime={onChangeVideoTime}
-            onChangeVideoPlaying={onChangeVideoPlaying}
+            projectRegionBox={projectRegionBox}
+            dragWithPrimary={dragWithPrimary}
+            createWithPrimary={createWithPrimary}
+            zoomWithPrimary={zoomWithPrimary}
+            onBeginMovePoint={onBeginMovePoint}
+            onSelectRegion={onSelectRegion}
+            layoutParams={layoutParams}
+            mat={mat}
+            onBeginBoxTransform={onBeginBoxTransform}
+            onBeginMovePolygonPoint={onBeginMovePolygonPoint}
+            onBeginMoveKeypoint={onBeginMoveKeypoint}
+            onAddPolygonPoint={onAddPolygonPoint}
+            showHighlightBox={showHighlightBox}
           />
-        </>
-      </PreventScrollToParents>
-      <div className={classes.zoomIndicator}>
-        {((1 / mat.a) * 100).toFixed(0)}%
+        )}
+        {imageLoaded && showTags && !dragging && (
+          <PreventScrollToParents key="regionTags">
+            <RegionTags
+              regions={regions}
+              projectRegionBox={projectRegionBox}
+              mouseEvents={mouseEvents}
+              regionClsList={regionClsList}
+              regionTagList={regionTagList}
+              onBeginRegionEdit={onBeginRegionEdit}
+              onChangeRegion={onChangeRegion}
+              onCloseRegionEdit={onCloseRegionEdit}
+              onDeleteRegion={onDeleteRegion}
+              layoutParams={layoutParams}
+              imageSrc={imageSrc}
+              RegionEditLabel={RegionEditLabel}
+              onRegionClassAdded={onRegionClassAdded}
+              allowComments={allowComments}
+            />
+          </PreventScrollToParents>
+        )}
+        {!showTags && highlightedRegion && (
+          <div key="topLeftTag" className={classes.fixedRegionLabel}>
+            <RegionLabel
+              disableClose
+              allowedClasses={regionClsList}
+              allowedTags={regionTagList}
+              onChange={onChangeRegion}
+              onDelete={onDeleteRegion}
+              editing
+              region={highlightedRegion}
+              imageSrc={imageSrc}
+              allowComments={allowComments}
+            />
+          </div>
+        )}
+
+        {zoomWithPrimary && zoomBox !== null && (
+          <div
+            key="zoomBox"
+            style={{
+              position: "absolute",
+              zIndex: 1,
+              border: "1px solid #fff",
+              pointerEvents: "none",
+              left: zoomBox.x,
+              top: zoomBox.y,
+              width: zoomBox.w,
+              height: zoomBox.h,
+            }}
+          />
+        )}
+        {showPointDistances && (
+          <PointDistances
+            key="pointDistances"
+            regions={regions}
+            realSize={realSize}
+            projectRegionBox={projectRegionBox}
+            pointDistancePrecision={pointDistancePrecision}
+          />
+        )}
+        <PreventScrollToParents
+          style={{ width: "100%", height: "100%" }}
+          {...mouseEvents}
+        >
+          <>
+            {fullImageSegmentationMode && (
+              <ImageMask
+                hide={!showMask}
+                autoSegmentationOptions={autoSegmentationOptions}
+                imagePosition={imagePosition}
+                regionClsList={regionClsList}
+                imageSrc={imageSrc}
+                regions={regions}
+              />
+            )}
+            <canvas
+              style={{ opacity: 0.25 }}
+              className={classes.canvas}
+              ref={canvasEl}
+            />
+            <RegionShapes
+              mat={mat}
+              keypointDefinitions={keypointDefinitions}
+              imagePosition={imagePosition}
+              regions={regions}
+              fullSegmentationMode={fullImageSegmentationMode}
+            />
+            <VideoOrImageCanvasBackground
+              videoPlaying={videoPlaying}
+              imagePosition={imagePosition}
+              mouseEvents={mouseEvents}
+              onLoad={onVideoOrImageLoaded}
+              videoTime={videoTime}
+              videoSrc={videoSrc}
+              imageSrc={imageSrc}
+              useCrossOrigin={fullImageSegmentationMode}
+              onChangeVideoTime={onChangeVideoTime}
+              onChangeVideoPlaying={onChangeVideoPlaying}
+            />
+          </>
+        </PreventScrollToParents>
+        <div className={classes.zoomIndicator}>
+          {((1 / mat.a) * 100).toFixed(0)}%
+        </div>
       </div>
-    </div>
+    </ThemeProvider>
   )
 }
 

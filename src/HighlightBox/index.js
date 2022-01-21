@@ -2,9 +2,11 @@
 
 import React from "react"
 import classnames from "classnames"
-import { makeStyles } from "@material-ui/core/styles"
+import { makeStyles } from "@mui/styles"
+import { createTheme, ThemeProvider } from "@mui/material/styles"
 
-const useStyles = makeStyles({
+const theme = createTheme()
+const useStyles = makeStyles((theme) => ({
   "@keyframes borderDance": {
     from: { strokeDashoffset: 0 },
     to: { strokeDashoffset: 100 },
@@ -34,7 +36,7 @@ const useStyles = makeStyles({
       animationPlayState: "running",
     },
   },
-})
+}))
 
 export const HighlightBox = ({
   mouseEvents,
@@ -83,51 +85,58 @@ export const HighlightBox = ({
       : `M5,5 L${pbox.w + 5},5 L${pbox.w + 5},${pbox.h + 5} L5,${pbox.h + 5} Z`
 
   return (
-    <svg
-      key={r.id}
-      className={classnames(classes.highlightBox, {
-        highlighted: r.highlighted,
-      })}
-      {...mouseEvents}
-      {...(!zoomWithPrimary && !dragWithPrimary
-        ? {
-            onMouseDown: (e) => {
-              if (
-                !r.locked &&
-                r.type === "point" &&
-                r.highlighted &&
-                e.button === 0
-              ) {
-                return onBeginMovePoint(r)
-              }
-              if (e.button === 0 && !createWithPrimary) return onSelectRegion(r)
-              mouseEvents.onMouseDown(e)
-            },
-          }
-        : {})}
-      style={{
-        ...(r.highlighted
+    <ThemeProvider theme={theme}>
+      <svg
+        key={r.id}
+        className={classnames(classes.highlightBox, {
+          highlighted: r.highlighted,
+        })}
+        {...mouseEvents}
+        {...(!zoomWithPrimary && !dragWithPrimary
           ? {
-              pointerEvents: r.type !== "point" ? "none" : undefined,
-              cursor: "grab",
+              onMouseDown: (e) => {
+                if (
+                  !r.locked &&
+                  r.type === "point" &&
+                  r.highlighted &&
+                  e.button === 0
+                ) {
+                  return onBeginMovePoint(r)
+                }
+                if (e.button === 0 && !createWithPrimary)
+                  return onSelectRegion(r)
+                mouseEvents.onMouseDown(e)
+              },
             }
-          : {
-              cursor: !(zoomWithPrimary || dragWithPrimary || createWithPrimary)
-                ? "pointer"
-                : undefined,
-              pointerEvents:
-                zoomWithPrimary ||
-                dragWithPrimary ||
-                (createWithPrimary && !r.highlighted)
-                  ? "none"
+          : {})}
+        style={{
+          ...(r.highlighted
+            ? {
+                pointerEvents: r.type !== "point" ? "none" : undefined,
+                cursor: "grab",
+              }
+            : {
+                cursor: !(
+                  zoomWithPrimary ||
+                  dragWithPrimary ||
+                  createWithPrimary
+                )
+                  ? "pointer"
                   : undefined,
-            }),
-        position: "absolute",
-        ...styleCoords,
-      }}
-    >
-      <path d={pathD} />
-    </svg>
+                pointerEvents:
+                  zoomWithPrimary ||
+                  dragWithPrimary ||
+                  (createWithPrimary && !r.highlighted)
+                    ? "none"
+                    : undefined,
+              }),
+          position: "absolute",
+          ...styleCoords,
+        }}
+      >
+        <path d={pathD} />
+      </svg>
+    </ThemeProvider>
   )
 }
 

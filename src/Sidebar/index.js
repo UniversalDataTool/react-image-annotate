@@ -1,7 +1,8 @@
 // @flow
 
 import React from "react"
-import { styled, makeStyles } from "@material-ui/core/styles"
+import { styled } from "@mui/styles"
+import { createTheme, ThemeProvider } from "@mui/material/styles"
 import TaskDescription from "../TaskDescriptionSidebarBox"
 import ImageSelector from "../ImageSelectorSidebarBox"
 import RegionSelector from "../RegionSelectorSidebarBox"
@@ -11,7 +12,8 @@ import TagsSidebarBox from "../TagsSidebarBox"
 import KeyframesSelector from "../KeyframesSelectorSidebarBox"
 import type { Region } from "../ImageCanvas/region-tools.js"
 
-const Container = styled("div")({})
+const theme = createTheme()
+const Container = styled("div")(({ theme }) => ({}))
 
 type Image = {
   name: string,
@@ -70,40 +72,45 @@ export const Sidebar = ({
   if (!regions) regions = emptyArr
 
   return (
-    <Container>
-      {debug && <DebugBox state={debug} lastAction={debug.lastAction} />}
-      {taskDescription && (taskDescription || "").length > 1 && (
-        <TaskDescription description={taskDescription} />
-      )}
-      {labelImages && (
-        <TagsSidebarBox
-          currentImage={currentImage}
-          imageClsList={imageClsList}
-          imageTagList={imageTagList}
-          onChangeImage={onChangeImage}
-          expandedByDefault
-        />
-      )}
-      {/* {images && images.length > 1 && (
+    <ThemeProvider theme={theme}>
+      <Container>
+        {debug && <DebugBox state={debug} lastAction={debug.lastAction} />}
+        {taskDescription && (taskDescription || "").length > 1 && (
+          <TaskDescription description={taskDescription} />
+        )}
+        {labelImages && (
+          <TagsSidebarBox
+            currentImage={currentImage}
+            imageClsList={imageClsList}
+            imageTagList={imageTagList}
+            onChangeImage={onChangeImage}
+            expandedByDefault
+          />
+        )}
+        {/* {images && images.length > 1 && (
         <ImageSelector onSelect={onSelectImage} images={images} />
       )} */}
-      <RegionSelector
-        regions={regions}
-        onSelectRegion={onSelectRegion}
-        onChangeRegion={onChangeRegion}
-        onDeleteRegion={onDeleteRegion}
-      />
-      {keyframes && (
-        <KeyframesSelector
-          currentVideoTime={currentVideoTime}
-          keyframes={keyframes}
-          onChangeVideoTime={onChangeVideoTime}
-          onDeleteKeyframe={onDeleteKeyframe}
+        <RegionSelector
+          regions={regions}
+          onSelectRegion={onSelectRegion}
+          onChangeRegion={onChangeRegion}
+          onDeleteRegion={onDeleteRegion}
         />
-      )}
-      <History history={history} onRestoreHistory={() => onRestoreHistory()} />
-      {/* <Shortcuts onShortcutActionDispatched={onShortcutActionDispatched} /> */}
-    </Container>
+        {keyframes && (
+          <KeyframesSelector
+            currentVideoTime={currentVideoTime}
+            keyframes={keyframes}
+            onChangeVideoTime={onChangeVideoTime}
+            onDeleteKeyframe={onDeleteKeyframe}
+          />
+        )}
+        <History
+          history={history}
+          onRestoreHistory={() => onRestoreHistory()}
+        />
+        {/* <Shortcuts onShortcutActionDispatched={onShortcutActionDispatched} /> */}
+      </Container>
+    </ThemeProvider>
   )
 }
 

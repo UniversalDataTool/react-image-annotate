@@ -2,14 +2,11 @@
 
 import React, { useMemo, memo } from "react"
 import SidebarBoxContainer from "../SidebarBoxContainer"
-import { makeStyles } from "@material-ui/core/styles"
-import StyleIcon from "@material-ui/icons/Style"
-import { grey } from "@material-ui/core/colors"
+import StyleIcon from "@mui/icons-material/Style"
+import { grey } from "@mui/material/colors"
 import Select from "react-select"
 import useEventCallback from "use-event-callback"
 import { asMutable } from "seamless-immutable"
-
-const useStyles = makeStyles({})
 
 type Props = {
   tags: Array<string>,
@@ -35,9 +32,10 @@ export const TagsSidebarBox = ({
   const onChangeTags = useEventCallback((o) =>
     onChangeImage({ tags: o.map((a) => a.value) })
   )
-  const selectValue = useMemo(() => (cls ? { value: cls, label: cls } : null), [
-    cls,
-  ])
+  const selectValue = useMemo(
+    () => (cls ? { value: cls, label: cls } : null),
+    [cls]
+  )
   const memoImgClsList = useMemo(
     () => asMutable(imageClsList.map((c) => ({ value: c, label: c }))),
     [imageClsList]

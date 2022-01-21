@@ -2,28 +2,31 @@
 
 import React, { Fragment, useState, memo } from "react"
 import SidebarBoxContainer from "../SidebarBoxContainer"
-import { makeStyles, styled } from "@material-ui/core/styles"
-import { grey } from "@material-ui/core/colors"
-import RegionIcon from "@material-ui/icons/PictureInPicture"
-import Grid from "@material-ui/core/Grid"
-import ReorderIcon from "@material-ui/icons/SwapVert"
-import PieChartIcon from "@material-ui/icons/PieChart"
-import TrashIcon from "@material-ui/icons/Delete"
-import LockIcon from "@material-ui/icons/Lock"
-import UnlockIcon from "@material-ui/icons/LockOpen"
-import VisibleIcon from "@material-ui/icons/Visibility"
-import VisibleOffIcon from "@material-ui/icons/VisibilityOff"
+import { makeStyles } from "@mui/styles"
+import { createTheme, ThemeProvider } from "@mui/material/styles"
+import { styled } from "@mui/material/styles"
+import { grey } from "@mui/material/colors"
+import RegionIcon from "@mui/icons-material/PictureInPicture"
+import Grid from "@mui/material/Grid"
+import ReorderIcon from "@mui/icons-material/SwapVert"
+import PieChartIcon from "@mui/icons-material/PieChart"
+import TrashIcon from "@mui/icons-material/Delete"
+import LockIcon from "@mui/icons-material/Lock"
+import UnlockIcon from "@mui/icons-material/LockOpen"
+import VisibleIcon from "@mui/icons-material/Visibility"
+import VisibleOffIcon from "@mui/icons-material/VisibilityOff"
 import styles from "./styles"
 import classnames from "classnames"
 import isEqual from "lodash/isEqual"
 
-const useStyles = makeStyles(styles)
+const theme = createTheme()
+const useStyles = makeStyles((theme) => styles)
 
-const HeaderSep = styled("div")({
+const HeaderSep = styled("div")(({ theme }) => ({
   borderTop: `1px solid ${grey[200]}`,
   marginTop: 2,
   marginBottom: 2,
-})
+}))
 
 const Chip = ({ color, text }) => {
   const classes = useStyles()
@@ -170,28 +173,30 @@ export const RegionSelectorSidebarBox = ({
 }) => {
   const classes = useStyles()
   return (
-    <SidebarBoxContainer
-      title="Regions"
-      subTitle=""
-      icon={<RegionIcon style={{ color: grey[700] }} />}
-      expandedByDefault
-    >
-      <div className={classes.container}>
-        <MemoRowHeader />
-        <HeaderSep />
-        {regions.map((r, i) => (
-          <MemoRow
-            key={r.id}
-            {...r}
-            region={r}
-            index={i}
-            onSelectRegion={onSelectRegion}
-            onDeleteRegion={onDeleteRegion}
-            onChangeRegion={onChangeRegion}
-          />
-        ))}
-      </div>
-    </SidebarBoxContainer>
+    <ThemeProvider theme={theme}>
+      <SidebarBoxContainer
+        title="Regions"
+        subTitle=""
+        icon={<RegionIcon style={{ color: grey[700] }} />}
+        expandedByDefault
+      >
+        <div className={classes.container}>
+          <MemoRowHeader />
+          <HeaderSep />
+          {regions.map((r, i) => (
+            <MemoRow
+              key={r.id}
+              {...r}
+              region={r}
+              index={i}
+              onSelectRegion={onSelectRegion}
+              onDeleteRegion={onDeleteRegion}
+              onChangeRegion={onChangeRegion}
+            />
+          ))}
+        </div>
+      </SidebarBoxContainer>
+    </ThemeProvider>
   )
 }
 

@@ -1,17 +1,19 @@
 // @flow
 
 import React, { useState, memo } from "react"
-import Paper from "@material-ui/core/Paper"
-import { makeStyles } from "@material-ui/core/styles"
-import ExpandIcon from "@material-ui/icons/ExpandMore"
-import IconButton from "@material-ui/core/IconButton"
-import Collapse from "@material-ui/core/Collapse"
-import { grey } from "@material-ui/core/colors"
+import Paper from "@mui/material/Paper"
+import { makeStyles } from "@mui/styles"
+import { createTheme, ThemeProvider } from "@mui/material/styles"
+import ExpandIcon from "@mui/icons-material/ExpandMore"
+import IconButton from "@mui/material/IconButton"
+import Collapse from "@mui/material/Collapse"
+import { grey } from "@mui/material/colors"
 import classnames from "classnames"
 import useEventCallback from "use-event-callback"
 import SidebarBox from "react-material-workspace-layout/SidebarBox"
 
-const useStyles = makeStyles({
+const theme = createTheme()
+const useStyles = makeStyles((theme) => ({
   container: { margin: 8 },
   header: {
     display: "flex",
@@ -54,7 +56,7 @@ const useStyles = makeStyles({
       overflow: "visible",
     },
   },
-})
+}))
 
 export const SidebarBoxContainer = ({
   icon,
@@ -77,9 +79,11 @@ export const SidebarBoxContainer = ({
   const toggleExpanded = useEventCallback(() => changeExpanded(!expanded))
 
   return (
-    <SidebarBox icon={icon} title={title}>
-      {children}
-    </SidebarBox>
+    <ThemeProvider theme={theme}>
+      <SidebarBox icon={icon} title={title}>
+        {children}
+      </SidebarBox>
+    </ThemeProvider>
   )
 }
 

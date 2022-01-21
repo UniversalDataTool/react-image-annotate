@@ -1,15 +1,18 @@
 // @flow weak
 
 import React, { useMemo, useState, useEffect } from "react"
-import { styled } from "@material-ui/core/styles"
+import { styled } from "@mui/material/styles"
+import { createTheme, ThemeProvider } from "@mui/material/styles"
 import range from "lodash/range"
-import * as colors from "@material-ui/core/colors"
+import * as colors from "@mui/material/colors"
 import useMeasure from "react-use-measure"
 import useEventCallback from "use-event-callback"
 import { useRafState } from "react-use"
 import getTimeString from "./get-time-string"
 
-const Container = styled("div")({
+const theme = createTheme()
+
+const Container = styled("div")(({ theme }) => ({
   position: "relative",
   display: "flex",
   flexGrow: 1,
@@ -17,26 +20,26 @@ const Container = styled("div")({
   height: 64,
   marginLeft: 16,
   marginRight: 16,
-})
+}))
 
-const Tick = styled("div")({
+const Tick = styled("div")(({ theme }) => ({
   position: "absolute",
   width: 2,
   marginLeft: -1,
   height: "100%",
   backgroundColor: colors.grey[300],
   bottom: 0,
-})
-const TickText = styled("div")({
+}))
+const TickText = styled("div")(({ theme }) => ({
   position: "absolute",
   userSelect: "none",
   fontSize: 10,
   color: colors.grey[600],
   fontWeight: "bold",
   bottom: 0,
-})
+}))
 
-const PositionCursor = styled("div")({
+const PositionCursor = styled("div")(({ theme }) => ({
   position: "absolute",
   bottom: "calc(50% + 6px)",
   fontSize: 10,
@@ -63,9 +66,9 @@ const PositionCursor = styled("div")({
     borderLeft: "8px solid transparent",
     borderRight: "8px solid transparent",
   },
-})
+}))
 
-const KeyframeMarker = styled("div")({
+const KeyframeMarker = styled("div")(({ theme }) => ({
   position: "absolute",
   bottom: 8,
   cursor: "pointer",
@@ -96,7 +99,7 @@ const KeyframeMarker = styled("div")({
     borderLeft: "8px solid transparent",
     borderRight: "8px solid transparent",
   },
-})
+}))
 
 const min = 60000
 const displayIntervalPairs = [
@@ -169,50 +172,52 @@ export default ({
   if (!duration) return null
 
   return (
-    <Container onMouseMove={onMouseMove} onMouseUp={onMouseUp} ref={ref}>
-      {range(0, duration, majorInterval).map((a) => (
-        <>
-          <Tick
-            key={a}
-            style={{ left: (a / duration) * bounds.width, height: "50%" }}
-          />
-          <TickText
-            style={{
-              left: (a / duration) * bounds.width + 8,
-              bottom: "calc(50% - 12px)",
-            }}
-          >
-            {getTimeString(a)}
-          </TickText>
-        </>
-      ))}
-      {range(0, duration, minorInterval)
-        .filter((a) => !Number.isInteger(a / majorInterval))
-        .map((a) => (
-          <Tick
-            key={a}
-            style={{
-              left: (a / duration) * bounds.width,
-              height: "25%",
-            }}
+    <ThemeProvider theme={theme}>
+      <Container onMouseMove={onMouseMove} onMouseUp={onMouseUp} ref={ref}>
+        {range(0, duration, majorInterval).map((a) => (
+          <>
+            <Tick
+              key={a}
+              style={{ left: (a / duration) * bounds.width, height: "50%" }}
+            />
+            <TickText
+              style={{
+                left: (a / duration) * bounds.width + 8,
+                bottom: "calc(50% - 12px)",
+              }}
+            >
+              {getTimeString(a)}
+            </TickText>
+          </>
+        ))}
+        {range(0, duration, minorInterval)
+          .filter((a) => !Number.isInteger(a / majorInterval))
+          .map((a) => (
+            <Tick
+              key={a}
+              style={{
+                left: (a / duration) * bounds.width,
+                height: "25%",
+              }}
+            />
+          ))}
+        {keyframeTimes.map((kt) => (
+          <KeyframeMarker
+            onClick={() => onChangeCurrentTime(kt)}
+            key={kt}
+            style={{ left: (kt / duration) * bounds.width }}
           />
         ))}
-      {keyframeTimes.map((kt) => (
-        <KeyframeMarker
-          onClick={() => onChangeCurrentTime(kt)}
-          key={kt}
-          style={{ left: (kt / duration) * bounds.width }}
-        />
-      ))}
-      <PositionCursor
-        onMouseDown={(e) => changeDraggingTime(true)}
-        style={{
-          cursor: draggingTime ? "grabbing" : "grab",
-          left: (instantCurrentTime / duration) * bounds.width,
-        }}
-      >
-        {getTimeString(instantCurrentTime)}
-      </PositionCursor>
-    </Container>
+        <PositionCursor
+          onMouseDown={(e) => changeDraggingTime(true)}
+          style={{
+            cursor: draggingTime ? "grabbing" : "grab",
+            left: (instantCurrentTime / duration) * bounds.width,
+          }}
+        >
+          {getTimeString(instantCurrentTime)}
+        </PositionCursor>
+      </Container>
+    </ThemeProvider>
   )
 }

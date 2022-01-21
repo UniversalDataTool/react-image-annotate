@@ -2,15 +2,17 @@
 
 import React, { useState } from "react"
 import { RemoveScroll } from "react-remove-scroll"
-import { styled } from "@material-ui/core/styles"
+import { styled } from "@mui/material/styles"
+import { createTheme, ThemeProvider } from "@mui/material/styles"
 import useEventCallback from "use-event-callback"
 
-const Container = styled("div")({
+const theme = createTheme()
+const Container = styled("div")(({ theme }) => ({
   "& > div": {
     width: "100%",
     height: "100%",
   },
-})
+}))
 
 export const PreventScrollToParents = ({ children, ...otherProps }) => {
   const [mouseOver, changeMouseOver] = useState(false)
@@ -29,15 +31,17 @@ export const PreventScrollToParents = ({ children, ...otherProps }) => {
   })
 
   return (
-    <Container
-      {...otherProps}
-      onMouseMove={onMouseMove}
-      onMouseLeave={onMouseLeave}
-    >
-      <RemoveScroll enabled={mouseOver} removeScrollBar={false}>
-        {children}
-      </RemoveScroll>
-    </Container>
+    <ThemeProvider theme={theme}>
+      <Container
+        {...otherProps}
+        onMouseMove={onMouseMove}
+        onMouseLeave={onMouseLeave}
+      >
+        <RemoveScroll enabled={mouseOver} removeScrollBar={false}>
+          {children}
+        </RemoveScroll>
+      </Container>
+    </ThemeProvider>
   )
 }
 

@@ -8,9 +8,8 @@ import { setIn } from "seamless-immutable"
 import getActiveImage from "./get-active-image"
 
 export default (state: MainLayoutImageAnnotationState, action: Action) => {
-  const { currentImageIndex, pathToActiveImage, activeImage } = getActiveImage(
-    state
-  )
+  const { currentImageIndex, pathToActiveImage, activeImage } =
+    getActiveImage(state)
 
   switch (action.type) {
     case "IMAGE_OR_VIDEO_LOADED": {
