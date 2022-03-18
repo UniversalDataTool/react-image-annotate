@@ -75,7 +75,8 @@ export const MainLayout = ({
   hideClone = false,
   hideSettings = false,
   hideFullScreen = false,
-  hideSave = false
+  hideSave = false,
+  hideExit = false,
 }: Props) => {
   const classes = useStyles()
   const settings = useSettings()
@@ -262,9 +263,15 @@ export const MainLayout = ({
                 : !state.videoPlaying
                 ? { name: "Play" }
                 : { name: "Pause" },
-              !hideClone && !nextImageHasRegions && activeImage.regions && { name: "Clone" },
+              !hideClone &&
+                !nextImageHasRegions &&
+                activeImage.regions && { name: "Clone" },
               !hideSettings && { name: "Settings" },
-              !hideFullScreen && (state.fullScreen ? { name: "Window" } : { name: "Fullscreen" }),
+              !hideFullScreen &&
+                (state.fullScreen
+                  ? { name: "Window" }
+                  : { name: "Fullscreen" }),
+              !hideExit && { name: "Exit" },
               !hideSave && { name: "Save" },
             ].filter(Boolean)}
             onClickHeaderItem={onClickHeaderItem}
@@ -300,12 +307,14 @@ export const MainLayout = ({
               },
               {
                 name: "create-point",
-                helperText: "Add Point" + getHotkeyHelpText("create_point"),
+                helperText:
+                  "Add New Device (Point)" + getHotkeyHelpText("create_point"),
               },
               {
                 name: "create-box",
                 helperText:
-                  "Add Bounding Box" + getHotkeyHelpText("create_bounding_box"),
+                  "Add New Device (Box)" +
+                  getHotkeyHelpText("create_bounding_box"),
               },
               {
                 name: "create-polygon",
@@ -314,6 +323,10 @@ export const MainLayout = ({
               {
                 name: "create-line",
                 helperText: "Add Line",
+              },
+              {
+                name: "create-scale",
+                helperText: "Add Scale",
               },
               {
                 name: "create-expanding-line",
@@ -343,13 +356,6 @@ export const MainLayout = ({
               ),
               state.taskDescription && (
                 <TaskDescription description={state.taskDescription} />
-              ),
-              state.regionClsList && (
-                <ClassSelectionMenu
-                  selectedCls={state.selectedCls}
-                  regionClsList={state.regionClsList}
-                  onSelectCls={action("SELECT_CLASSIFICATION", "cls")}
-                />
               ),
               state.labelImages && (
                 <TagsSidebarBox

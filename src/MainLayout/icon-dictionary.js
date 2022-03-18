@@ -17,6 +17,7 @@ import {
   faMask,
   faEdit,
   faChartLine,
+  faRuler,
 } from "@fortawesome/free-solid-svg-icons"
 import FullscreenIcon from "@material-ui/icons/Fullscreen"
 import AccessibilityNewIcon from "@material-ui/icons/AccessibilityNew"
@@ -65,6 +66,9 @@ export const iconDictionary = {
   ),
   "create-line": () => (
     <FontAwesomeIcon style={faStyle} size="xs" fixedWidth icon={faChartLine} />
+  ),
+  "create-scale": () => (
+    <FontAwesomeIcon style={faStyle} size="xs" fixedWidth icon={faRuler} />
   ),
   "show-mask": () => (
     <FontAwesomeIcon style={faStyle} size="xs" fixedWidth icon={faMask} />

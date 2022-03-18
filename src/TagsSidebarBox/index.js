@@ -35,9 +35,10 @@ export const TagsSidebarBox = ({
   const onChangeTags = useEventCallback((o) =>
     onChangeImage({ tags: o.map((a) => a.value) })
   )
-  const selectValue = useMemo(() => (cls ? { value: cls, label: cls } : null), [
-    cls,
-  ])
+  const selectValue = useMemo(
+    () => (cls ? { value: cls, label: cls } : null),
+    [cls]
+  )
   const memoImgClsList = useMemo(
     () => asMutable(imageClsList.map((c) => ({ value: c, label: c }))),
     [imageClsList]

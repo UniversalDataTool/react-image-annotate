@@ -44,9 +44,8 @@ export default (state: MainLayoutState, action: Action) => {
     state = setIn(state, ["lastAction"], action)
   }
 
-  const { currentImageIndex, pathToActiveImage, activeImage } = getActiveImage(
-    state
-  )
+  const { currentImageIndex, pathToActiveImage, activeImage } =
+    getActiveImage(state)
 
   const getRegionIndex = (region) => {
     const regionId =
@@ -390,6 +389,16 @@ export default (state: MainLayoutState, action: Action) => {
             y2: y,
           })
         }
+        case "ASSIGN_SCALE": {
+          const { regionId } = state.mode
+          const [region, regionIndex] = getRegion(regionId)
+          if (!region) return setIn(state, ["mode"], null)
+          return setIn(state, [...pathToActiveImage, "regions", regionIndex], {
+            ...region,
+            x2: x,
+            y2: y,
+          })
+        }
         case "DRAW_EXPANDING_LINE": {
           const { regionId } = state.mode
           const [expandingLine, regionIndex] = getRegion(regionId)
@@ -463,6 +472,16 @@ export default (state: MainLayoutState, action: Action) => {
             )
           }
           case "DRAW_LINE": {
+            const [line, regionIndex] = getRegion(state.mode.regionId)
+            if (!line) break
+            setIn(state, [...pathToActiveImage, "regions", regionIndex], {
+              ...line,
+              x2: x,
+              y2: y,
+            })
+            return setIn(state, ["mode"], null)
+          }
+          case "ASSIGN_SCALE": {
             const [line, regionIndex] = getRegion(state.mode.regionId)
             if (!line) break
             setIn(state, [...pathToActiveImage, "regions", regionIndex], {
@@ -632,11 +651,33 @@ export default (state: MainLayoutState, action: Action) => {
           })
           break
         }
+        case "create-scale": {
+          if (state.mode && state.mode.mode == "ASSIGN_SCALE") break
+          state = saveToHistory(state, "Create scale")
+          newRegion = {
+            type: "scale",
+            x1: x,
+            y1: y,
+            x2: x,
+            y2: y,
+            unit: "ft",
+            length: 0,
+            highlighted: true,
+            editingLabels: false,
+            color: defaultRegionColor,
+            cls: defaultRegionCls,
+            id: getRandomId(),
+          }
+          state = setIn(state, ["mode"], {
+            mode: "ASSIGN_SCALE",
+            regionId: newRegion.id,
+          })
+          break
+        }
         case "create-keypoints": {
           state = saveToHistory(state, "Create Keypoints")
-          const [
-            [keypointsDefinitionId, { landmarks, connections }],
-          ] = (Object.entries(state.keypointDefinitions): any)
+          const [[keypointsDefinitionId, { landmarks, connections }]] =
+            (Object.entries(state.keypointDefinitions): any)
 
           newRegion = {
             type: "keypoints",
@@ -847,6 +888,9 @@ export default (state: MainLayoutState, action: Action) => {
           return state
         }
         case "exit":
+        case "save": {
+          return state
+        }
         case "done": {
           return state
         }

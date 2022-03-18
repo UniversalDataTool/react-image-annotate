@@ -48,4 +48,11 @@ export default {
     fontWeight: 400,
     fontSize: 13,
   },
+  textfieldClass: {
+    '& .MuiInput-input': {
+      '&::-webkit-outer-spin-button, &::-webkit-inner-spin-button': {
+        '-webkit-appearance': 'none',
+      },
+    }
+  },
 }

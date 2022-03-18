@@ -24,7 +24,7 @@ const useStyles = makeStyles({
     "& path": {
       vectorEffect: "non-scaling-stroke",
       strokeWidth: 2,
-      stroke: "#FFF",
+      stroke: "#696969",
       fill: "none",
       strokeDasharray: 5,
       animationName: "$borderDance",
@@ -59,29 +59,42 @@ export const HighlightBox = ({
   if (!pbox.w || pbox.w === Infinity) return null
   if (!pbox.h || pbox.h === Infinity) return null
   if (r.unfinished) return null
+  let styleCoords
 
-  const styleCoords =
-    r.type === "point"
-      ? {
-          left: pbox.x + pbox.w / 2 - 30,
-          top: pbox.y + pbox.h / 2 - 30,
-          width: 60,
-          height: 60,
-        }
-      : {
-          left: pbox.x - 5,
-          top: pbox.y - 5,
-          width: pbox.w + 10,
-          height: pbox.h + 10,
-        }
+  if (r.type === "point") {
+    styleCoords = {
+      left: pbox.x + pbox.w / 2 - 30,
+      top: pbox.y + pbox.h / 2 - 30,
+      width: 60,
+      height: 60,
+    }
+  } else {
+    styleCoords = {
+      left: pbox.x - 5,
+      top: pbox.y - 5,
+      width: pbox.w + 10,
+      height: pbox.h + 10,
+    }
+  }
 
-  const pathD =
-    r.type === "point"
-      ? `M5,5 L${styleCoords.width - 5} 5L${styleCoords.width - 5} ${
-          styleCoords.height - 5
-        }L5 ${styleCoords.height - 5}Z`
-      : `M5,5 L${pbox.w + 5},5 L${pbox.w + 5},${pbox.h + 5} L5,${pbox.h + 5} Z`
-
+  let pathD
+  if (r.type === "point") {
+    pathD = `M5,5 L${styleCoords.width - 5} 5L${styleCoords.width - 5} ${
+      styleCoords.height - 5
+    }L5 ${styleCoords.height - 5}Z`
+  } else if (r.type === "line") {
+    pathD = `M5,5 L${styleCoords.width - 5} 5L${styleCoords.width - 5} ${
+      styleCoords.height - 5
+    }L5 ${styleCoords.height - 5}Z`
+  } else if (r.type === "scale") {
+    pathD = `M5,5 L${styleCoords.width - 5} 5L${styleCoords.width - 5} ${
+      styleCoords.height - 5
+    }L5 ${styleCoords.height - 5}Z`
+  } else {
+    pathD = `M5,5 L${pbox.w + 5},5 L${pbox.w + 5},${pbox.h + 5} L5,${
+      pbox.h + 5
+    } Z`
+  }
   return (
     <svg
       key={r.id}

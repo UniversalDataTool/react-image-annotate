@@ -31,6 +31,19 @@ const RegionComponents = {
       />
     </g>
   )),
+  scale: memo(({ region, iw, ih }) => (
+    <g transform={`translate(${region.x1 * iw} ${region.y1 * ih})`}>
+      <line
+        strokeWidth={5}
+        x1={0}
+        y1={0}
+        x2={(region.x2 - region.x1) * iw}
+        y2={(region.y2 - region.y1) * ih}
+        stroke={colorAlpha(region.color, 0.75)}
+        fill={colorAlpha(region.color, 0.25)}
+      />
+    </g>
+  )),
   box: memo(({ region, iw, ih }) => (
     <g transform={`translate(${region.x * iw} ${region.y * ih})`}>
       <rect
@@ -66,9 +79,8 @@ const RegionComponents = {
         `No definition for keypoint configuration "${keypointsDefinitionId}"`
       )
     }
-    const { landmarks, connections } = keypointDefinitions[
-      keypointsDefinitionId
-    ]
+    const { landmarks, connections } =
+      keypointDefinitions[keypointsDefinitionId]
     return (
       <g>
         {Object.entries(points).map(([keypointId, { x, y }], i) => (

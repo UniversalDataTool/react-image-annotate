@@ -145,6 +145,9 @@ export const getEnclosingBox = (region: Region) => {
     case "line": {
       return { x: region.x1, y: region.y1, w: 0, h: 0 }
     }
+    case "scale": {
+      return { x: region.x1, y: region.y1, w: 0, h: 0 }
+    }
     case "box": {
       return { x: region.x, y: region.y, w: region.w, h: region.h }
     }

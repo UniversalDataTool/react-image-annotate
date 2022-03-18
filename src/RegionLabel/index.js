@@ -13,8 +13,9 @@ import CheckIcon from "@material-ui/icons/Check"
 import TextField from "@material-ui/core/TextField"
 import Select from "react-select"
 import CreatableSelect from "react-select/creatable"
-
+import { InputAdornment } from "@material-ui/core"
 import { asMutable } from "seamless-immutable"
+import SquareFootIcon from '@mui/icons-material/SquareFoot';
 
 const useStyles = makeStyles(styles)
 
@@ -65,11 +66,16 @@ export const RegionLabel = ({
         <div>
           {region.cls && (
             <div className="name">
-              <div
-                className="circle"
-                style={{ backgroundColor: region.color }}
-              />
-              {region.cls}
+              {region.type === "scale" ?
+                <SquareFootIcon style={{ color: region.color }}/>
+                : <div
+                  className="circle"
+                  style={{ backgroundColor: region.color }}
+                />}
+
+              {region.type === "scale" ?
+                <div>{region.cls} ft</div> :
+                <div>{region.cls}</div>}
             </div>
           )}
           {region.tags && (
@@ -113,24 +119,42 @@ export const RegionLabel = ({
           </div>
           {(allowedClasses || []).length > 0 && (
             <div style={{ marginTop: 6 }}>
-              <CreatableSelect
-                placeholder="Classification"
-                onChange={(o, actionMeta) => {
-                  if (actionMeta.action == "create-option") {
-                    onRegionClassAdded(o.value)
-                  }
-                  return onChange({
-                    ...(region: any),
-                    cls: o.value,
-                  })
-                }}
-                value={
-                  region.cls ? { label: region.cls, value: region.cls } : null
+                {region.type === "scale" ? 
+                  <TextField
+                  inputProps={{style: { textAlign: 'right' }}}
+                    InputProps={{
+                      className: classes.textfieldClass,
+                      endAdornment: <InputAdornment position="end"> ft</InputAdornment>
+                    }}
+                    width="50%"
+                    type="number"
+                    ref={commentInputRef}
+                    onClick={onCommentInputClick}
+                    value={region.cls || ""}
+                    onChange={(event) =>
+                      onChange({ ...(region: any), cls: event.target.value })
+                    }
+                  /> 
+                  :
+                  <CreatableSelect
+                    placeholder="Classification"
+                    onChange={(o, actionMeta) => {
+                      if (actionMeta.action == "create-option") {
+                        onRegionClassAdded(o.value)
+                      }
+                      return onChange({
+                        ...(region: any),
+                        cls: o.value,
+                      })
+                    }}
+                    value={
+                      region.cls ? { label: region.cls, value: region.cls } : null
+                    }
+                    options={asMutable(
+                      allowedClasses.map((c) => ({ value: c, label: c }))
+                    )}
+                  />
                 }
-                options={asMutable(
-                  allowedClasses.map((c) => ({ value: c, label: c }))
-                )}
-              />
             </div>
           )}
           {(allowedTags || []).length > 0 && (

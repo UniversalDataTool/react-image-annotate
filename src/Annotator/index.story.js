@@ -22,6 +22,28 @@ const middlewares = [
 ]
 
 storiesOf("Annotator", module)
+.add("XKEY", () => (
+  <Annotator
+    onExit={actionAddon("onExit")}
+    onSave={(output)=> 
+      {
+        console.log("DBG: XKEY save region");
+        console.log(output);
+      }
+      }
+    middlewares={middlewares}
+    labelImages
+    showTags={false}
+    regionClsList={["Alpha", "Beta", "Charlie", "Delta"]}
+    imageClsList={["Alpha", "Beta", "Charlie", "Delta"]}
+    images={[
+      {
+        src: "https://xkey.blob.core.windows.net/xkey-ai/767632511/188765679/MAY-20-10.png",
+        name: "Image 1",
+      },
+    ]}
+  />
+))
   .add("Basic", () => (
     <Annotator
       onExit={actionAddon("onExit")}
@@ -183,14 +205,12 @@ storiesOf("Annotator", module)
       showTags={false}
       images={[
         {
-          src:
-            "https://s3.amazonaws.com/jobstorage.workaround.online/Atheer/video-frames/VID_20190111_161054.mp4_frame017.png",
+          src: "https://s3.amazonaws.com/jobstorage.workaround.online/Atheer/video-frames/VID_20190111_161054.mp4_frame017.png",
           name: "Bounding Box Test",
           regions: [],
         },
         {
-          src:
-            "https://s3.amazonaws.com/jobstorage.workaround.online/Atheer/video-frames/VID_20190111_161054.mp4_frame001.png",
+          src: "https://s3.amazonaws.com/jobstorage.workaround.online/Atheer/video-frames/VID_20190111_161054.mp4_frame001.png",
           name: "Bounding Box Test",
           regions: [],
         },
@@ -207,8 +227,7 @@ storiesOf("Annotator", module)
       allowedArea={{ x: 0, y: 0.6, w: 0.3, h: 0.3 }}
       images={[
         {
-          src:
-            "https://s3.amazonaws.com/jobstorage.workaround.online/Atheer/video-frames/VID_20190111_161054.mp4_frame017.png",
+          src: "https://s3.amazonaws.com/jobstorage.workaround.online/Atheer/video-frames/VID_20190111_161054.mp4_frame017.png",
           name: "Bounding Box Test",
           regions: [],
         },
@@ -226,7 +245,7 @@ storiesOf("Annotator", module)
       // imageTagList={["tag1", "tag2", "tag3"]}
       images={[
         {
-          src: bikeImg1,
+          src: "https://xkey.blob.core.windows.net/xkey-ai/767632511/401261183/fowler2-14-mar-04.png",
           name: "Frame 03021",
           regions: [
             {
@@ -440,14 +459,12 @@ storiesOf("Annotator", module)
         ]}
         images={[
           {
-            src:
-              "https://s3.amazonaws.com/asset.workaround.online/SampleVideo_1280x720_1mb.mp4",
+            src: "https://s3.amazonaws.com/asset.workaround.online/SampleVideo_1280x720_1mb.mp4",
             frameTime: 0,
             name: "Frame 1",
           },
           {
-            src:
-              "https://s3.amazonaws.com/asset.workaround.online/SampleVideo_1280x720_1mb.mp4",
+            src: "https://s3.amazonaws.com/asset.workaround.online/SampleVideo_1280x720_1mb.mp4",
             frameTime: 4500,
             name: "Frame 2",
           },
@@ -599,6 +616,7 @@ storiesOf("Annotator", module)
     return (
       <Annotator
         onExit={actionAddon("onExit")}
+        onSave={()=> {console.log("storybook DBG: onSave clicked")}}
         labelImages
         selectedImage={images[0]}
         RegionEditLabel={NewRegionEditLabel}

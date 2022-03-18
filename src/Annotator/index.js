@@ -38,6 +38,7 @@ type Props = {
   pointDistancePrecision?: number,
   RegionEditLabel?: Node,
   onExit: (MainLayoutState) => any,
+  onSave: (MainLayoutState) => any,
   videoTime?: number,
   videoSrc?: string,
   keyframes?: Object,
@@ -54,7 +55,7 @@ type Props = {
   hideClone?: boolean,
   hideSettings?: boolean,
   hideFullScreen?: boolean,
-  hideSave?: boolean
+  hideSave?: boolean,
 }
 
 export const Annotator = ({
@@ -72,6 +73,7 @@ export const Annotator = ({
     "create-line",
     "create-expanding-line",
     "show-mask",
+    "create-scale",
   ],
   selectedTool = "select",
   regionTagList = [],
@@ -86,6 +88,7 @@ export const Annotator = ({
   videoTime = 0,
   videoName,
   onExit,
+  onSave,
   onNextImage,
   onPrevImage,
   keypointDefinitions,
@@ -151,8 +154,11 @@ export const Annotator = ({
 
   const dispatch = useEventCallback((action: Action) => {
     if (action.type === "HEADER_BUTTON_CLICKED") {
-      if (["Exit", "Done", "Save", "Complete"].includes(action.buttonName)) {
+      //if (["Exit", "Done", "Save", "Complete"].includes(action.buttonName)) {
+      if (["Exit", "Done", "Complete"].includes(action.buttonName)) {
         return onExit(without(state, "history"))
+      } else if (action.buttonName === "Save") {
+        return onSave(without(state, "history"))
       } else if (action.buttonName === "Next" && onNextImage) {
         return onNextImage(without(state, "history"))
       } else if (action.buttonName === "Prev" && onPrevImage) {
