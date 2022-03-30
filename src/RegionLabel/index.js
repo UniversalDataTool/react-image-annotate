@@ -15,7 +15,8 @@ import Select from "react-select"
 import CreatableSelect from "react-select/creatable"
 import { InputAdornment } from "@material-ui/core"
 import { asMutable } from "seamless-immutable"
-import SquareFootIcon from '@mui/icons-material/SquareFoot';
+import SquareFootIcon from '@mui/icons-material/SquareFoot'
+import DeviceList from "./DeviceList"
 
 const useStyles = makeStyles(styles)
 
@@ -33,6 +34,13 @@ type Props = {
   onRegionClassAdded: () => {},
   allowComments?: boolean,
 }
+
+const all_types = [...new Set(DeviceList.map(pair => pair.category))];
+const all_symbols = [...new Set(DeviceList.map(pair => pair.symbol_name))]
+const allowed_conduit_type = ["FEEDERS", "CABLE", "TRAY", "WIREMOLD", "CONDUIT AND WIRE"];
+const allowed_device_type = all_types.filter(x => !allowed_conduit_type.includes(x));
+const conduit_symbols = DeviceList.filter(i => allowed_conduit_type.includes(i.category)).map(symbol => symbol.symbol_name);
+const device_symbols = DeviceList.filter(i => allowed_device_type.includes(i.category)).map(symbol => symbol.symbol_name);
 
 export const RegionLabel = ({
   region,
@@ -53,6 +61,75 @@ export const RegionLabel = ({
     const commentInput = commentInputRef.current.children[0].children[0]
 
     if (commentInput) return commentInput.focus()
+  }
+
+  const conditionalRegionTextField = (regionType) => {
+    if (regionType === "scale") {
+      // do scale
+      return (
+        <TextField
+          inputProps={{ style: { textAlign: 'right' } }}
+          InputProps={{
+            className: classes.textfieldClass,
+            endAdornment: <InputAdornment position="end"> ft</InputAdornment>
+          }}
+          width="50%"
+          type="number"
+          ref={commentInputRef}
+          onClick={onCommentInputClick}
+          value={region.cls || ""}
+          onChange={(event) =>
+            onChange({ ...(region: any), cls: event.target.value })
+          }
+        />
+      )
+    }
+    else if (regionType === "line") {
+      // do line
+      return (
+        <CreatableSelect
+          placeholder="Conduit"
+          onChange={(o, actionMeta) => {
+            if (actionMeta.action === "create-option") {
+              onRegionClassAdded(o.value)
+            }
+            return onChange({
+              ...(region: any),
+              cls: o.value,
+            })
+          }}
+          value={
+            region.cls ? { label: region.cls, value: region.cls } : null
+          }
+          options={asMutable(
+            allowedClasses.filter(x => !all_symbols.includes(x)).concat(conduit_symbols).map((c) => ({ value: c, label: c }))
+
+          )}
+        />
+      )
+    } else {
+      // do device
+      return (
+        <CreatableSelect
+          placeholder="Device"
+          onChange={(o, actionMeta) => {
+            if (actionMeta.action === "create-option") {
+              onRegionClassAdded(o.value)
+            }
+            return onChange({
+              ...(region: any),
+              cls: o.value,
+            })
+          }}
+          value={
+            region.cls ? { label: region.cls, value: region.cls } : null
+          }
+          options={asMutable(
+            allowedClasses.filter(x => !all_symbols.includes(x)).concat(device_symbols).map((c) => ({ value: c, label: c }))
+          )}
+        />
+      )
+    }
   }
 
   return (
@@ -119,42 +196,7 @@ export const RegionLabel = ({
           </div>
           {(allowedClasses || []).length > 0 && (
             <div style={{ marginTop: 6 }}>
-                {region.type === "scale" ? 
-                  <TextField
-                  inputProps={{style: { textAlign: 'right' }}}
-                    InputProps={{
-                      className: classes.textfieldClass,
-                      endAdornment: <InputAdornment position="end"> ft</InputAdornment>
-                    }}
-                    width="50%"
-                    type="number"
-                    ref={commentInputRef}
-                    onClick={onCommentInputClick}
-                    value={region.cls || ""}
-                    onChange={(event) =>
-                      onChange({ ...(region: any), cls: event.target.value })
-                    }
-                  /> 
-                  :
-                  <CreatableSelect
-                    placeholder="Classification"
-                    onChange={(o, actionMeta) => {
-                      if (actionMeta.action == "create-option") {
-                        onRegionClassAdded(o.value)
-                      }
-                      return onChange({
-                        ...(region: any),
-                        cls: o.value,
-                      })
-                    }}
-                    value={
-                      region.cls ? { label: region.cls, value: region.cls } : null
-                    }
-                    options={asMutable(
-                      allowedClasses.map((c) => ({ value: c, label: c }))
-                    )}
-                  />
-                }
+              {conditionalRegionTextField(region.type)}
             </div>
           )}
           {(allowedTags || []).length > 0 && (

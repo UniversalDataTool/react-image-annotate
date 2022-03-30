@@ -397,6 +397,7 @@ export const ImageCanvas = ({
         <div key="topLeftTag" className={classes.fixedRegionLabel}>
           <RegionLabel
             disableClose
+            // allowedClasses is overriden in RegionLabel class to filter conduits, devices, etc.
             allowedClasses={regionClsList}
             allowedTags={regionTagList}
             onChange={onChangeRegion}
