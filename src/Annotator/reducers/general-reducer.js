@@ -22,12 +22,14 @@ const color_mapping = {
   "MECHANICAL/ELECTRICAL": "#800080",  // purple
   "POWER": "#008000",  // green
   "SECURITY SYSTEMS": "#545454",  // light grey
-  "CONDUIT AND WIRE": "",  // bright colour
+  "CONDUIT AND WIRE": "#00FFFF",  // bright colour
   "FEEDERS": "#C4A484",  // everything below is light brown
   "CABLE": "#C4A484",
   "TRAY": "#C4A484",
   "WIREMOLD": "#C4A484",
   "BREAKERS": "#C4A484",
+  "WARNING": "#FFA500",  // orange
+
 }
 const getColor = (device_name) => {
   let device_type = DeviceList.find(o => o.symbol_name === device_name);
