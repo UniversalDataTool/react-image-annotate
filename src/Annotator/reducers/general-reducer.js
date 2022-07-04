@@ -12,9 +12,31 @@ import convertExpandingLineToPolygon from "./convert-expanding-line-to-polygon"
 import clamp from "clamp"
 import getLandmarksWithTransform from "../../utils/get-landmarks-with-transform"
 import setInLocalStorage from "../../utils/set-in-local-storage"
+import DeviceList from "../../RegionLabel/DeviceList"
 
 const getRandomId = () => Math.random().toString().split(".")[1]
-
+const color_mapping = {
+  "COMMUNICATION SYSTEMS": "#0000FF", // blue
+  "FIRE ALARM": "#FF0000",  // red
+  "LIGHTING": "#FFFF00",  // yellow
+  "MECHANICAL/ELECTRICAL": "#800080",  // purple
+  "POWER": "#008000",  // green
+  "SECURITY SYSTEMS": "#545454",  // light grey
+  "CONDUIT AND WIRE": "",  // bright colour
+  "FEEDERS": "#C4A484",  // everything below is light brown
+  "CABLE": "#C4A484",
+  "TRAY": "#C4A484",
+  "WIREMOLD": "#C4A484",
+  "BREAKERS": "#C4A484",
+}
+const getColor = (device_name) => {
+  let device_type = DeviceList.find(o => o.symbol_name === device_name);
+  if (device_type) {
+    return color_mapping[device_type["category"]];
+  } else {
+    return "#C4A484";
+  }
+}
 export default (state: MainLayoutState, action: Action) => {
   if (
     state.allowedArea &&
@@ -135,9 +157,9 @@ export default (state: MainLayoutState, action: Action) => {
         const clsIndex = state.regionClsList.indexOf(action.region.cls)
         if (clsIndex !== -1) {
           state = setIn(state, ["selectedCls"], action.region.cls)
-          action.region.color = colors[clsIndex % colors.length]
+          action.region.color = getColor(action.region.cls)
         }
-      }
+      } 
       if (!isEqual(oldRegion.tags, action.region.tags)) {
         state = saveToHistory(state, "Change Region Tags")
       }
@@ -545,11 +567,11 @@ export default (state: MainLayoutState, action: Action) => {
 
       let newRegion
       let defaultRegionCls = state.selectedCls,
-        defaultRegionColor = "#ff0000"
+        defaultRegionColor = "#C4A484"
 
       const clsIndex = (state.regionClsList || []).indexOf(defaultRegionCls)
       if (clsIndex !== -1) {
-        defaultRegionColor = colors[clsIndex % colors.length]
+        defaultRegionColor = getColor(state.selectedCls)
       }
 
       switch (state.selectedTool) {
@@ -664,8 +686,8 @@ export default (state: MainLayoutState, action: Action) => {
             length: 0,
             highlighted: true,
             editingLabels: false,
-            color: defaultRegionColor,
-            cls: defaultRegionCls,
+            color: "#C4A484",
+            cls: 1,
             id: getRandomId(),
           }
           state = setIn(state, ["mode"], {
