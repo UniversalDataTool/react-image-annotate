@@ -17,7 +17,7 @@
     "get-image-data": "^3.0.1",
     "material-survey": "^2.1.0",
     "mmgc1-cpp": "^1.0.50",
-    "moment": "^2.23.0",
+    "moment": "^2.29.4",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-full-screen": "^0.3.1",
