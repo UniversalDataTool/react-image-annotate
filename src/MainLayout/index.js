@@ -322,11 +322,11 @@ export const MainLayout = ({
               },
               {
                 name: "create-line",
-                helperText: "Add Line",
+                helperText: "Add Line" + getHotkeyHelpText("create_line"),
               },
               {
                 name: "create-scale",
-                helperText: "Add Scale",
+                helperText: "Add Scale" + getHotkeyHelpText("create_scale"),
               },
               {
                 name: "create-expanding-line",

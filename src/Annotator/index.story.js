@@ -22,28 +22,28 @@ const middlewares = [
 ]
 
 storiesOf("Annotator", module)
-.add("XKEY", () => (
-  <Annotator
-    onExit={actionAddon("onExit")}
-    onSave={(output)=> 
-      {
-        console.log("DBG: XKEY save region");
-        console.log(output);
-      }
-      }
-    middlewares={middlewares}
-    labelImages
-    showTags={false}
-    regionClsList={["Alpha", "Beta", "Charlie", "Delta"]}
-    imageClsList={["Alpha", "Beta", "Charlie", "Delta"]}
-    images={[
-      {
-        src: "https://xkey.blob.core.windows.net/xkey-ai/767632511/188765679/MAY-20-10.png",
-        name: "Image 1",
-      },
-    ]}
-  />
-))
+  .add("XKEY", () => (
+    <HotKeys keyMap={defaultKeyMap}>
+      <Annotator
+        onExit={actionAddon("onExit")}
+        onSave={(output) => {
+          console.log("DBG: XKEY save region");
+          console.log(output);
+        }
+        }
+        labelImages
+        showTags={false}
+        regionClsList={["Alpha", "Beta", "Charlie", "Delta"]}
+        imageClsList={["Alpha", "Beta", "Charlie", "Delta"]}
+        images={[
+          {
+            src: "https://xkey.blob.core.windows.net/xkey-ai/767632511/188765679/MAY-20-10.png",
+            name: "Image 1",
+          },
+        ]}
+      />
+    </HotKeys>
+  ))
   .add("Basic", () => (
     <Annotator
       onExit={actionAddon("onExit")}

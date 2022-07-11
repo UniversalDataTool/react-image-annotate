@@ -22,6 +22,15 @@ export const defaultHotkeys = [
     binding: "b",
   },
   {
+    id: "create_line",
+    description: "Create a line",
+    binding: "l",
+  },  {
+    id: "create_scale",
+    description: "Create a scale",
+    binding: "c",
+  },
+  {
     id: "pan_tool",
     description: "Select the Pan Tool",
     binding: "m",
@@ -92,6 +101,18 @@ export const useDispatchHotkeyHandlers = ({ dispatch }) => {
         dispatch({
           type: "SELECT_TOOL",
           selectedTool: "create-box",
+        })
+      },
+      create_line: () => {
+        dispatch({
+          type: "SELECT_TOOL",
+          selectedTool: "create-line",
+        })
+      },
+      create_scale: () => {
+        dispatch({
+          type: "SELECT_TOOL",
+          selectedTool: "create-scale",
         })
       },
       pan_tool: () => {

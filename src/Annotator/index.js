@@ -21,6 +21,21 @@ import historyHandler from "./reducers/history-handler.js"
 import imageReducer from "./reducers/image-reducer.js"
 import useEventCallback from "use-event-callback"
 import videoReducer from "./reducers/video-reducer.js"
+import { HotKeys } from "react-hotkeys";
+
+
+let defaultKeyMap = {
+  select_tool: "escape",
+  zoom_tool: "z",
+  create_bounding_box: "b",
+  create_point: "p",
+  create_line: "l",
+  create_scale: "s",
+  save_and_previous_sample: "ArrowLeft",
+  save_and_next_sample: "ArrowRight",
+  delete_region: "d",
+  undo: "Ctrl+z"
+};
 
 type Props = {
   taskDescription?: string,
@@ -188,24 +203,26 @@ export const Annotator = ({
     return 'Missing required prop "images" or "videoSrc"'
 
   return (
-    <SettingsProvider>
-      <MainLayout
-        RegionEditLabel={RegionEditLabel}
-        alwaysShowNextButton={Boolean(onNextImage)}
-        alwaysShowPrevButton={Boolean(onPrevImage)}
-        state={state}
-        dispatch={dispatch}
-        onRegionClassAdded={onRegionClassAdded}
-        hideHeader={hideHeader}
-        hideHeaderText={hideHeaderText}
-        hideNext={hideNext}
-        hidePrev={hidePrev}
-        hideClone={hideClone}
-        hideSettings={hideSettings}
-        hideFullScreen={hideFullScreen}
-        hideSave={hideSave}
-      />
-    </SettingsProvider>
+    <HotKeys keyMap={defaultKeyMap}>
+      <SettingsProvider>
+        <MainLayout
+          RegionEditLabel={RegionEditLabel}
+          alwaysShowNextButton={Boolean(onNextImage)}
+          alwaysShowPrevButton={Boolean(onPrevImage)}
+          state={state}
+          dispatch={dispatch}
+          onRegionClassAdded={onRegionClassAdded}
+          hideHeader={hideHeader}
+          hideHeaderText={hideHeaderText}
+          hideNext={hideNext}
+          hidePrev={hidePrev}
+          hideClone={hideClone}
+          hideSettings={hideSettings}
+          hideFullScreen={hideFullScreen}
+          hideSave={hideSave}
+        />
+      </SettingsProvider>
+    </HotKeys>
   )
 }
 
