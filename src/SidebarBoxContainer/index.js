@@ -47,7 +47,7 @@ const useStyles = makeStyles({
     },
   },
   expandedContent: {
-    maxHeight: 300,
+    maxHeight: "auto",
     overflowY: "auto",
     "&.noScroll": {
       overflowY: "visible",

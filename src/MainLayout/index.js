@@ -8,6 +8,7 @@ import { makeStyles, styled } from "@material-ui/core/styles"
 import ClassSelectionMenu from "../ClassSelectionMenu"
 import DebugBox from "../DebugSidebarBox"
 import HistorySidebarBox from "../HistorySidebarBox"
+import ShortcutSidebarBox from "../ShortcutSidebarBox"
 import ImageCanvas from "../ImageCanvas"
 import ImageSelector from "../ImageSelectorSidebarBox"
 import KeyframeTimeline from "../KeyframeTimeline"
@@ -392,6 +393,7 @@ export const MainLayout = ({
                 history={state.history}
                 onRestoreHistory={action("RESTORE_HISTORY")}
               />,
+              <ShortcutSidebarBox />,
             ].filter(Boolean)}
           >
             {canvas}

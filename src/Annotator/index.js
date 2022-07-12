@@ -22,20 +22,7 @@ import imageReducer from "./reducers/image-reducer.js"
 import useEventCallback from "use-event-callback"
 import videoReducer from "./reducers/video-reducer.js"
 import { HotKeys } from "react-hotkeys";
-
-
-let defaultKeyMap = {
-  select_tool: "escape",
-  zoom_tool: "z",
-  create_bounding_box: "b",
-  create_point: "p",
-  create_line: "l",
-  create_scale: "s",
-  save_and_previous_sample: "ArrowLeft",
-  save_and_next_sample: "ArrowRight",
-  delete_region: "d",
-  undo: "Ctrl+z"
-};
+import { defaultKeyMap } from "../ShortcutsManager"
 
 type Props = {
   taskDescription?: string,

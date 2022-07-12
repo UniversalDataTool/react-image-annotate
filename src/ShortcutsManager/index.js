@@ -15,6 +15,7 @@ export const defaultHotkeys = [
   {
     id: "create_point",
     description: "Create a point",
+    binding: "p",
   },
   {
     id: "create_bounding_box",
@@ -25,20 +26,19 @@ export const defaultHotkeys = [
     id: "create_line",
     description: "Create a line",
     binding: "l",
-  },  {
+  }, {
     id: "create_scale",
     description: "Create a scale",
-    binding: "c",
+    binding: "s",
+  },
+  {
+    id: "delete_region",
+    description: "Delete selected region",
+    binding: "d",
   },
   {
     id: "pan_tool",
     description: "Select the Pan Tool",
-    binding: "m",
-  },
-  {
-    id: "create_polygon",
-    description: "Create a Polygon",
-    binding: "p",
   },
   {
     id: "create_pixel",
@@ -58,14 +58,14 @@ export const defaultHotkeys = [
     id: "save_and_exit_sample",
     description: "Save and exit current sample",
   },
+  // {
+  //   id: "save_sample",
+  //   description: "Save current sample",
+  //   binding: "Ctrl+s",
+  // },
   {
     id: "exit_sample",
     description: "Exit sample without saving",
-  },
-  {
-    id: "delete_region",
-    description: "Delete selected region",
-    binding: "d",
   },
   {
     id: "undo",
