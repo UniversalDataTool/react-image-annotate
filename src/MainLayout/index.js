@@ -270,10 +270,10 @@ export const MainLayout = ({
                   !nextImageHasRegions &&
                   activeImage.regions && { name: "Clone" },
                 !hideSettings && { name: "Settings" },
-                !hideFullScreen &&
-                  (state.fullScreen
-                    ? { name: "Window" }
-                    : { name: "Fullscreen" }),
+                // !hideFullScreen &&
+                //   (state.fullScreen
+                //     ? { name: "Window" }
+                //     : { name: "Fullscreen" }),
                 !hideSave && { name: "Save" },
               ].filter(Boolean)}
               onClickHeaderItem={onClickHeaderItem}

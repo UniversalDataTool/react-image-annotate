@@ -288,10 +288,10 @@ export const ImageCanvas = ({
     !zoomStart || !zoomEnd
       ? null
       : {
-          ...mat.clone().inverse().applyToPoint(zoomStart.x, zoomStart.y),
-          w: (zoomEnd.x - zoomStart.x) / mat.a,
-          h: (zoomEnd.y - zoomStart.y) / mat.d,
-        }
+        ...mat.clone().inverse().applyToPoint(zoomStart.x, zoomStart.y),
+        w: (zoomEnd.x - zoomStart.x) / mat.a,
+        h: (zoomEnd.y - zoomStart.y) / mat.d,
+      }
   if (zoomBox) {
     if (zoomBox.w < 0) {
       zoomBox.x += zoomBox.w
@@ -326,14 +326,14 @@ export const ImageCanvas = ({
           cursor: createWithPrimary
             ? "crosshair"
             : dragging
-            ? "grabbing"
-            : dragWithPrimary
-            ? "grab"
-            : zoomWithPrimary
-            ? mat.a < 1
-              ? "zoom-out"
-              : "zoom-in"
-            : undefined,
+              ? "grabbing"
+              : dragWithPrimary
+                ? "grab"
+                : zoomWithPrimary
+                  ? mat.a < 1
+                    ? "zoom-out"
+                    : "zoom-in"
+                  : undefined,
         }}
       >
         {showCrosshairs && (
@@ -346,19 +346,19 @@ export const ImageCanvas = ({
               !modifyingAllowedArea || !allowedArea
                 ? regions
                 : [
-                    {
-                      type: "box",
-                      id: "$$allowed_area",
-                      cls: "allowed_area",
-                      highlighted: true,
-                      x: allowedArea.x,
-                      y: allowedArea.y,
-                      w: allowedArea.w,
-                      h: allowedArea.h,
-                      visible: true,
-                      color: "#ff0",
-                    },
-                  ]
+                  {
+                    type: "box",
+                    id: "$$allowed_area",
+                    cls: "allowed_area",
+                    highlighted: true,
+                    x: allowedArea.x,
+                    y: allowedArea.y,
+                    w: allowedArea.w,
+                    h: allowedArea.h,
+                    visible: true,
+                    color: "#ff0",
+                  },
+                ]
             }
             mouseEvents={mouseEvents}
             projectRegionBox={projectRegionBox}
@@ -376,7 +376,7 @@ export const ImageCanvas = ({
             showHighlightBox={showHighlightBox}
           />
         )}
-        {imageLoaded && showTags && !dragging && (
+        {/* {imageLoaded && showTags && !dragging && (
           <PreventScrollToParents key="regionTags">
             <RegionTags
               regions={regions}
@@ -395,10 +395,10 @@ export const ImageCanvas = ({
               allowComments={allowComments}
             />
           </PreventScrollToParents>
-        )}
-        {!showTags && highlightedRegion && (
+        )} */}
+        {highlightedRegion && (
           <div key="topLeftTag" className={classes.fixedRegionLabel}>
-            <RegionLabel
+            {/* <RegionLabel
               disableClose
               allowedClasses={regionClsList}
               allowedTags={regionTagList}
@@ -407,6 +407,22 @@ export const ImageCanvas = ({
               editing
               region={highlightedRegion}
               imageSrc={imageSrc}
+              allowComments={allowComments}
+            /> */}
+            <RegionTags
+              regions={regions}
+              projectRegionBox={projectRegionBox}
+              mouseEvents={mouseEvents}
+              regionClsList={regionClsList}
+              regionTagList={regionTagList}
+              onBeginRegionEdit={onBeginRegionEdit}
+              onChangeRegion={onChangeRegion}
+              onCloseRegionEdit={onCloseRegionEdit}
+              onDeleteRegion={onDeleteRegion}
+              layoutParams={layoutParams}
+              imageSrc={imageSrc}
+              RegionEditLabel={RegionEditLabel}
+              onRegionClassAdded={onRegionClassAdded}
               allowComments={allowComments}
             />
           </div>
