@@ -23,8 +23,6 @@ yarn-debug.log*
 yarn-error.log*
 storybook-static
 
-dist
-
 secret.*
 secret.story.*
 *.secret.*
