@@ -334,9 +334,8 @@ export var ImageCanvas = function ImageCanvas(_ref2) {
     onBeginMoveKeypoint: onBeginMoveKeypoint,
     onAddPolygonPoint: onAddPolygonPoint,
     showHighlightBox: showHighlightBox
-  }), highlightedRegion && React.createElement("div", {
-    key: "topLeftTag",
-    className: classes.fixedRegionLabel
+  }), imageLoaded && showTags && !dragging && React.createElement(PreventScrollToParents, {
+    key: "regionTags"
   }, React.createElement(RegionTags, {
     regions: regions,
     projectRegionBox: projectRegionBox,
@@ -351,6 +350,19 @@ export var ImageCanvas = function ImageCanvas(_ref2) {
     imageSrc: imageSrc,
     RegionEditLabel: RegionEditLabel,
     onRegionClassAdded: onRegionClassAdded,
+    allowComments: allowComments
+  })), highlightedRegion && React.createElement("div", {
+    key: "topLeftTag",
+    className: classes.fixedRegionLabel
+  }, React.createElement(RegionLabel, {
+    disableClose: true,
+    allowedClasses: regionClsList,
+    allowedTags: regionTagList,
+    onChange: onChangeRegion,
+    onDelete: onDeleteRegion,
+    editing: true,
+    region: highlightedRegion,
+    imageSrc: imageSrc,
     allowComments: allowComments
   })), zoomWithPrimary && zoomBox !== null && React.createElement("div", {
     key: "zoomBox",

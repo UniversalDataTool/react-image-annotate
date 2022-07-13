@@ -376,7 +376,7 @@ export const ImageCanvas = ({
             showHighlightBox={showHighlightBox}
           />
         )}
-        {/* {imageLoaded && showTags && !dragging && (
+        {imageLoaded && showTags && !dragging && (
           <PreventScrollToParents key="regionTags">
             <RegionTags
               regions={regions}
@@ -395,10 +395,10 @@ export const ImageCanvas = ({
               allowComments={allowComments}
             />
           </PreventScrollToParents>
-        )} */}
+        )}
         {highlightedRegion && (
           <div key="topLeftTag" className={classes.fixedRegionLabel}>
-            {/* <RegionLabel
+            <RegionLabel
               disableClose
               allowedClasses={regionClsList}
               allowedTags={regionTagList}
@@ -407,22 +407,6 @@ export const ImageCanvas = ({
               editing
               region={highlightedRegion}
               imageSrc={imageSrc}
-              allowComments={allowComments}
-            /> */}
-            <RegionTags
-              regions={regions}
-              projectRegionBox={projectRegionBox}
-              mouseEvents={mouseEvents}
-              regionClsList={regionClsList}
-              regionTagList={regionTagList}
-              onBeginRegionEdit={onBeginRegionEdit}
-              onChangeRegion={onChangeRegion}
-              onCloseRegionEdit={onCloseRegionEdit}
-              onDeleteRegion={onDeleteRegion}
-              layoutParams={layoutParams}
-              imageSrc={imageSrc}
-              RegionEditLabel={RegionEditLabel}
-              onRegionClassAdded={onRegionClassAdded}
               allowComments={allowComments}
             />
           </div>
