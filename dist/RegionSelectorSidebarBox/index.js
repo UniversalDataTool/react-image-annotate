@@ -150,6 +150,7 @@ var Row = function Row(_ref4) {
       locked = _ref4.locked,
       color = _ref4.color,
       cls = _ref4.cls,
+      comment = _ref4.comment,
       index = _ref4.index;
   return React.createElement(RowLayout, {
     header: false,
@@ -159,7 +160,7 @@ var Row = function Row(_ref4) {
     },
     order: "#".concat(index + 1),
     classification: React.createElement(Chip, {
-      text: cls || "",
+      text: comment || "",
       color: color || "#ddd"
     }),
     area: "",
@@ -216,7 +217,7 @@ export var RegionSelectorSidebarBox = function RegionSelectorSidebarBox(_ref5) {
   return React.createElement(ThemeProvider, {
     theme: theme
   }, React.createElement(SidebarBoxContainer, {
-    title: "Regions",
+    title: "Boxes list",
     subTitle: "",
     icon: React.createElement(RegionIcon, {
       style: {

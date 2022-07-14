@@ -99,7 +99,7 @@ export var ClassSelectionMenu = function ClassSelectionMenu(_ref6) {
   return React.createElement(ThemeProvider, {
     theme: theme
   }, React.createElement(SidebarBoxContainer, {
-    title: "Classifications",
+    title: "Label list",
     subTitle: "",
     icon: React.createElement(BallotIcon, {
       style: {

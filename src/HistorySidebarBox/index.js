@@ -39,7 +39,7 @@ export const HistorySidebarBox = ({
 
   return (
     <ThemeProvider theme={theme}>
-      <SidebarBoxContainer
+      {/* <SidebarBoxContainer
         title="History"
         icon={<HistoryIcon style={{ color: grey[700] }} />}
         expandedByDefault
@@ -65,7 +65,7 @@ export const HistorySidebarBox = ({
             </ListItem>
           ))}
         </List>
-      </SidebarBoxContainer>
+      </SidebarBoxContainer> */}
     </ThemeProvider>
   )
 }

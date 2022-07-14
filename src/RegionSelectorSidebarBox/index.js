@@ -110,6 +110,7 @@ const Row = ({
   locked,
   color,
   cls,
+  comment,
   index,
 }) => {
   return (
@@ -118,7 +119,7 @@ const Row = ({
       highlighted={highlighted}
       onClick={() => onSelectRegion(r)}
       order={`#${index + 1}`}
-      classification={<Chip text={cls || ""} color={color || "#ddd"} />}
+      classification={<Chip text={comment || ""} color={color || "#ddd"} />}
       area=""
       trash={<TrashIcon onClick={() => onDeleteRegion(r)} className="icon2" />}
       lock={
@@ -175,7 +176,7 @@ export const RegionSelectorSidebarBox = ({
   return (
     <ThemeProvider theme={theme}>
       <SidebarBoxContainer
-        title="Regions"
+        title="Boxes list"
         subTitle=""
         icon={<RegionIcon style={{ color: grey[700] }} />}
         expandedByDefault
