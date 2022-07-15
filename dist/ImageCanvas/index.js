@@ -351,7 +351,7 @@ export var ImageCanvas = function ImageCanvas(_ref2) {
     RegionEditLabel: RegionEditLabel,
     onRegionClassAdded: onRegionClassAdded,
     allowComments: allowComments
-  })), highlightedRegion && React.createElement("div", {
+  })), !showTags && highlightedRegion && React.createElement("div", {
     key: "topLeftTag",
     className: classes.fixedRegionLabel
   }, React.createElement(RegionLabel, {

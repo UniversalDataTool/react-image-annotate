@@ -396,7 +396,7 @@ export const ImageCanvas = ({
             />
           </PreventScrollToParents>
         )}
-        {highlightedRegion && (
+        {!showTags && highlightedRegion && (
           <div key="topLeftTag" className={classes.fixedRegionLabel}>
             <RegionLabel
               disableClose
