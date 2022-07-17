@@ -38,6 +38,8 @@ type Props = {
   pointDistancePrecision?: number,
   RegionEditLabel?: Node,
   onExit: (MainLayoutState) => any,
+  onSelectDocumentTypes:(type:string)=>any,
+  documentTypes:any,
   videoTime?: number,
   videoSrc?: string,
   keyframes?: Object,
@@ -86,6 +88,8 @@ export const Annotator = ({
   videoTime = 0,
   videoName,
   onExit,
+  onSelectDocumentTypes,
+  documentTypes,
   onNextImage,
   onPrevImage,
   keypointDefinitions,
@@ -198,6 +202,8 @@ export const Annotator = ({
         hideSettings={hideSettings}
         hideFullScreen={hideFullScreen}
         hideSave={hideSave}
+        documentTypes={documentTypes}
+        onSelectDocumentTypes={onSelectDocumentTypes}
       />
     </SettingsProvider>
   )

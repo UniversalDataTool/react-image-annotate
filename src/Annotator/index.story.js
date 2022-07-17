@@ -80,6 +80,8 @@ storiesOf("Annotator", module)
           name: "Frame 0038",
         },
       ]}
+      documentTypes={['Papa', 'MaMa']}
+      onSelectDocumentTypes={(e) => console.log('Chose type ' + e)}
       allowComments
     />
   ))

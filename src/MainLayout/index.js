@@ -31,6 +31,7 @@ import useImpliedVideoRegions from "./use-implied-video-regions"
 import useKey from "use-key-hook"
 import { useSettings } from "../SettingsProvider"
 import { withHotKeys } from "react-hotkeys"
+import DocumentTypesSideBarBox from "../DocumentTypesSideBarBox"
 
 // import Fullscreen from "../Fullscreen"
 
@@ -71,6 +72,8 @@ export const MainLayout = ({
   alwaysShowPrevButton = false,
   RegionEditLabel,
   onRegionClassAdded,
+  onSelectDocumentTypes,
+  documentTypes,
   hideHeader,
   hideHeaderText,
   hideNext = false,
@@ -397,6 +400,7 @@ export const MainLayout = ({
                   history={state.history}
                   onRestoreHistory={action("RESTORE_HISTORY")}
                 />,
+                <DocumentTypesSideBarBox documentTypes={documentTypes||['Doc type 1','Doc type 2']} onSelectDocumentTypes={onSelectDocumentTypes}/>
               ].filter(Boolean)}
             >
               {canvas}
