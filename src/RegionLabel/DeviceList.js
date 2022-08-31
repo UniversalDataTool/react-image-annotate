@@ -2184,6 +2184,1018 @@ export const DeviceList = [
     symbol_name: "2000-AmpFeeder"
   },
   {
+    category: "FEEDERS",
+    symbol_name: '60A-1P2W-AL-FEEDER-3/4"-EMT'
+  },
+  {
+    category: "FEEDERS",
+    symbol_name: '60A-1P2W-AL-FEEDER-1"-EMT'
+  },
+  {
+    category: "FEEDERS",
+    symbol_name: '100A-1P2W-AL-FEEDER-2"-EMT'
+  },
+  {
+    category: "FEEDERS",
+    symbol_name: '200A-1P2W-AL-FEEDER-1 1/4"-EMT'
+  },
+  {
+    category: "FEEDERS",
+    symbol_name: '200A-1P2W-AL-FEEDER-2"-EMT'
+  },
+  {
+    category: "FEEDERS",
+    symbol_name: '225A-1P2W-AL-FEEDER-2"-EMT'
+  },
+  {
+    category: "FEEDERS",
+    symbol_name: '250A-1P2W-AL-FEEDER-2"-EMT'
+  },
+  {
+    category: "FEEDERS",
+    symbol_name: '300A-1P2W-AL-FEEDER-3"-EMT'
+  },
+  {
+    category: "FEEDERS",
+    symbol_name: '400A-1P2W-AL-FEEDER-3"-EMT'
+  },
+  {
+    category: "FEEDERS",
+    symbol_name: '400A-1P2W-AL-FEEDER-4"-EMT'
+  },
+  {
+    category: "FEEDERS",
+    symbol_name: '15A-1P2W-FEEDER-1/2"-PVC'
+  },
+  {
+    category: "FEEDERS",
+    symbol_name: '15A-1P2W-FEEDER-3/4"-PVC'
+  },
+  {
+    category: "FEEDERS",
+    symbol_name: '15A-1P2W-FEEDER-1"-PVC'
+  },
+  {
+    category: "FEEDERS",
+    symbol_name: '20A-1P2W-FEEDER-1/2"-PVC'
+  },
+  {
+    category: "FEEDERS",
+    symbol_name: '20A-1P2W-FEEDER-3/4"-EMT'
+  },
+  {
+    category: "FEEDERS",
+    symbol_name: '20A-1P2W-FEEDER-1"-PVC'
+  },
+  {
+    category: "FEEDERS",
+    symbol_name: '30A-1P2W-FEEDER-1/2"-PVC'
+  },
+  {
+    category: "FEEDERS",
+    symbol_name: '30A-1P2W-FEEDER-3/4"-PVC'
+  },
+  {
+    category: "FEEDERS",
+    symbol_name: '30A-1P2W-FEEDER-1"-PVC'
+  },
+  {
+    category: "FEEDERS",
+    symbol_name: '40A-1P2W-FEEDER-3/4"-PVC'
+  },
+  {
+    category: "FEEDERS",
+    symbol_name: '40A-1P2W-FEEDER-1"-PVC'
+  },
+  {
+    category: "FEEDERS",
+    symbol_name: '50A-1P2W-FEEDER-3/4"-PVC'
+  },
+  {
+    category: "FEEDERS",
+    symbol_name: '50A-1P2W-FEEDER-1"-PVC'
+  },
+  {
+    category: "FEEDERS",
+    symbol_name: '60A-1P2W-FEEDER-3/4"-PVC'
+  },
+  {
+    category: "FEEDERS",
+    symbol_name: '60A-1P2W-FEEDER-1"-PVC'
+  },
+  {
+    category: "FEEDERS",
+    symbol_name: '100A-1P2W-FEEDER-1"-PVC'
+  },
+  {
+    category: "FEEDERS",
+    symbol_name: '200A-1P2W-FEEDER-1.25"-PVC'
+  },
+  {
+    category: "FEEDERS",
+    symbol_name: '200A-1P2W-120-FEEDER-2"-PVC'
+  },
+  {
+    category: "FEEDERS",
+    symbol_name: '60A-2P3W-AL-FEEDER-3/4"-EMT'
+  },
+  {
+    category: "FEEDERS",
+    symbol_name: '60A-2P3W-AL-FEEDER-1"-EMT'
+  },
+  {
+    category: "FEEDERS",
+    symbol_name: '100A-2P3W-AL-FEEDER-2"-EMT'
+  },
+  {
+    category: "FEEDERS",
+    symbol_name: '200A-2P3W-AL-FEEDER-1 1/4"-EMT'
+  },
+  {
+    category: "FEEDERS",
+    symbol_name: '200A-2P3W-AL-FEEDER-2"-EMT'
+  },
+  {
+    category: "FEEDERS",
+    symbol_name: '225A-2P3W-AL-FEEDER-2"-EMT'
+  },
+  {
+    category: "FEEDERS",
+    symbol_name: '250A-2P3W-AL-FEEDER-2"-EMT'
+  },
+  {
+    category: "FEEDERS",
+    symbol_name: '300A-2P3W-AL-FEEDER-3"-EMT'
+  },
+  {
+    category: "FEEDERS",
+    symbol_name: '400A-2P3W-AL-FEEDER-3"-EMT'
+  },
+  {
+    category: "FEEDERS",
+    symbol_name: '400A-2P3W-AL-FEEDER-4"-EMT'
+  },
+  {
+    category: "FEEDERS",
+    symbol_name: '60A-3P3W-AL-FEEDER-3/4"-EMT'
+  },
+  {
+    category: "FEEDERS",
+    symbol_name: '60A-3P3W-AL-FEEDER-1"-EMT'
+  },
+  {
+    category: "FEEDERS",
+    symbol_name: '100A-3P3W-AL-FEEDER-2"-EMT'
+  },
+  {
+    category: "FEEDERS",
+    symbol_name: '200A-3P3W-AL-FEEDER-1 1/4"-EMT'
+  },
+  {
+    category: "FEEDERS",
+    symbol_name: '200A-3P3W-AL-FEEDER-2"-EMT'
+  },
+  {
+    category: "FEEDERS",
+    symbol_name: '225A-3P3W-AL-FEEDER-2"-EMT'
+  },
+  {
+    category: "FEEDERS",
+    symbol_name: '250A-3P3W-AL-FEEDER-2"-EMT'
+  },
+  {
+    category: "FEEDERS",
+    symbol_name: '300A-3P3W-AL-FEEDER-3"-EMT'
+  },
+  {
+    category: "FEEDERS",
+    symbol_name: '400A-3P3W-AL-FEEDER-3"-EMT'
+  },
+  {
+    category: "FEEDERS",
+    symbol_name: '400A-3P3W-AL-FEEDER-4"-EMT'
+  },
+  {
+    category: "FEEDERS",
+    symbol_name: '15A-3P3W-FEEDER-1/2"-EMT'
+  },
+  {
+    category: "FEEDERS",
+    symbol_name: '15A-3P3W-FEEDER-3/4"-EMT'
+  },
+  {
+    category: "FEEDERS",
+    symbol_name: '15A-3P3W-FEEDER-1"-EMT'
+  },
+  {
+    category: "FEEDERS",
+    symbol_name: '20A-3P3W-FEEDER-1/2"-EMT'
+  },
+  {
+    category: "FEEDERS",
+    symbol_name: '20A-3P3W-FEEDER-3/4"-EMT'
+  },
+  {
+    category: "FEEDERS",
+    symbol_name: '20A-3P3W-FEEDER-1"-EMT'
+  },
+  {
+    category: "FEEDERS",
+    symbol_name: '30A-3P3W-FEEDER-1/2"-EMT'
+  },
+  {
+    category: "FEEDERS",
+    symbol_name: '30A-3P3W-FEEDER-3/4"-EMT'
+  },
+  {
+    category: "FEEDERS",
+    symbol_name: '30A-3P3W-FEEDER-1"-EMT'
+  },
+  {
+    category: "FEEDERS",
+    symbol_name: '40A-3P3W-FEEDER-3/4"-EMT'
+  },
+  {
+    category: "FEEDERS",
+    symbol_name: '40A-3P3W-FEEDER-1"-EMT'
+  },
+  {
+    category: "FEEDERS",
+    symbol_name: '50A-3P3W-FEEDER-3/4"-EMT'
+  },
+  {
+    category: "FEEDERS",
+    symbol_name: '50A-3P3W-FEEDER-1"-EMT'
+  },
+  {
+    category: "FEEDERS",
+    symbol_name: '60A-3P3W-FEEDER-3/4"-EMT'
+  },
+  {
+    category: "FEEDERS",
+    symbol_name: '60A-3P3W-FEEDER-1"-EMT'
+  },
+  {
+    category: "FEEDERS",
+    symbol_name: '100A-3P3W-FEEDER-1"-EMT'
+  },
+  {
+    category: "FEEDERS",
+    symbol_name: '200A-3P3W-FEEDER-1 1/4"-EMT'
+  },
+  {
+    category: "FEEDERS",
+    symbol_name: '200A-3P3W-FEEDER-2"-EMT'
+  },
+  {
+    category: "FEEDERS",
+    symbol_name: '225A-3P3W-FEEDER-2"-EMT'
+  },
+  {
+    category: "FEEDERS",
+    symbol_name: '250A-3P3W-FEEDER-2"-EMT'
+  },
+  {
+    category: "FEEDERS",
+    symbol_name: '300A-3P3W-FEEDER-3"-EMT'
+  },
+  {
+    category: "FEEDERS",
+    symbol_name: '400A-3P3W-FEEDER-3"-EMT'
+  },
+  {
+    category: "FEEDERS",
+    symbol_name: '400A-3P3W-FEEDER-4"-EMT'
+  },
+  {
+    category: "FEEDERS",
+    symbol_name: '60A-3P4W-AL-FEEDER-3/4"-EMT'
+  },
+  {
+    category: "FEEDERS",
+    symbol_name: '60A-3P4W-AL-FEEDER-1"-EMT'
+  },
+  {
+    category: "FEEDERS",
+    symbol_name: '100A-3P4W-AL-FEEDER-2"-EMT'
+  },
+  {
+    category: "FEEDERS",
+    symbol_name: '200A-3P4W-AL-FEEDER-1 1/4"-EMT'
+  },
+  {
+    category: "FEEDERS",
+    symbol_name: '200A-3P4W-AL-FEEDER-2"-EMT'
+  },
+  {
+    category: "FEEDERS",
+    symbol_name: '225A-3P4W-AL-FEEDER-2"-EMT'
+  },
+  {
+    category: "FEEDERS",
+    symbol_name: '250A-3P4W-AL-FEEDER-2"-EMT'
+  },
+  {
+    category: "FEEDERS",
+    symbol_name: '300A-3P4W-AL-FEEDER-3"-EMT'
+  },
+  {
+    category: "FEEDERS",
+    symbol_name: '400A-3P4W-AL-FEEDER-3"-EMT'
+  },
+  {
+    category: "FEEDERS",
+    symbol_name: '400A-3P4W-AL-FEEDER-4"-EMT'
+  },
+  {
+    category: "FEEDERS",
+    symbol_name: '15A-3P4W-FEEDER-1/2"-EMT'
+  },
+  {
+    category: "FEEDERS",
+    symbol_name: '15A-3P4W-FEEDER-3/4"-EMT'
+  },
+  {
+    category: "FEEDERS",
+    symbol_name: '15A-3P4W-FEEDER-1"-EMT'
+  },
+  {
+    category: "FEEDERS",
+    symbol_name: '20A-3P4W-FEEDER-1/2"-EMT'
+  },
+  {
+    category: "FEEDERS",
+    symbol_name: '20A-3P4W-FEEDER-3/4"-EMT'
+  },
+  {
+    category: "FEEDERS",
+    symbol_name: '20A-3P4W-FEEDER-1"-EMT'
+  },
+  {
+    category: "FEEDERS",
+    symbol_name: '30A-3P4W-FEEDER-1/2"-EMT'
+  },
+  {
+    category: "FEEDERS",
+    symbol_name: '30A-3P4W-FEEDER-3/4"-EMT'
+  },
+  {
+    category: "FEEDERS",
+    symbol_name: '30A-3P4W-FEEDER-1"-EMT'
+  },
+  {
+    category: "FEEDERS",
+    symbol_name: '40A-3P4W-FEEDER-3/4"-EMT'
+  },
+  {
+    category: "FEEDERS",
+    symbol_name: '40A-3P4W-FEEDER-1"-EMT'
+  },
+  {
+    category: "FEEDERS",
+    symbol_name: '50A-3P4W-FEEDER-3/4"-EMT'
+  },
+  {
+    category: "FEEDERS",
+    symbol_name: '50A-3P4W-FEEDER-1"-EMT'
+  },
+  {
+    category: "FEEDERS",
+    symbol_name: '60A-3P4W-FEEDER-3/4"-EMT'
+  },
+  {
+    category: "FEEDERS",
+    symbol_name: '60A-3P4W-FEEDER-1"-EMT'
+  },
+  {
+    category: "FEEDERS",
+    symbol_name: '100A-3P4W-FEEDER-1"-EMT'
+  },
+  {
+    category: "FEEDERS",
+    symbol_name: '200A-3P4W-FEEDER-1 1/4"-EMT'
+  },
+  {
+    category: "FEEDERS",
+    symbol_name: '200A-3P4W-FEEDER-2"-EMT'
+  },
+  {
+    category: "FEEDERS",
+    symbol_name: '225A-3P4W-FEEDER-2"-EMT'
+  },
+  {
+    category: "FEEDERS",
+    symbol_name: '250A-3P4W-FEEDER-2"-EMT'
+  },
+  {
+    category: "FEEDERS",
+    symbol_name: '300A-3P4W-FEEDER-3"-EMT'
+  },
+  {
+    category: "FEEDERS",
+    symbol_name: '400A-3P4W-FEEDER-3"-EMT'
+  },
+  {
+    category: "FEEDERS",
+    symbol_name: '15A-2P3W-FEEDER-1/2"-EMT'
+  },
+  {
+    category: "FEEDERS",
+    symbol_name: '15A-2P3W-FEEDER-3/4"-EMT'
+  },
+  {
+    category: "FEEDERS",
+    symbol_name: '15A-2P3W-FEEDER-1"-EMT'
+  },
+  {
+    category: "FEEDERS",
+    symbol_name: '20A-2P3W-FEEDER-1/2"-EMT'
+  },
+  {
+    category: "FEEDERS",
+    symbol_name: '20A-2P3W-FEEDER-3/4"-EMT'
+  },
+  {
+    category: "FEEDERS",
+    symbol_name: '20A-2P3W-FEEDER-1"-EMT'
+  },
+  {
+    category: "FEEDERS",
+    symbol_name: '30A-2P3W-FEEDER-1/2"-EMT'
+  },
+  {
+    category: "FEEDERS",
+    symbol_name: '30A-2P3W-FEEDER-3/4"-EMT'
+  },
+  {
+    category: "FEEDERS",
+    symbol_name: '30A-2P3W-FEEDER-1"-EMT'
+  },
+  {
+    category: "FEEDERS",
+    symbol_name: '40A-2P3W-FEEDER-3/4"-EMT'
+  },
+  {
+    category: "FEEDERS",
+    symbol_name: '40A-2P3W-FEEDER-1"-EMT'
+  },
+  {
+    category: "FEEDERS",
+    symbol_name: '50A-2P3W-FEEDER-3/4"-EMT'
+  },
+  {
+    category: "FEEDERS",
+    symbol_name: '50A-2P3W-FEEDER-1"-EMT'
+  },
+  {
+    category: "FEEDERS",
+    symbol_name: '60A-2P3W-FEEDER-3/4"-EMT'
+  },
+  {
+    category: "FEEDERS",
+    symbol_name: '60A-2P3W-FEEDER-1"-EMT'
+  },
+  {
+    category: "FEEDERS",
+    symbol_name: '100A-2P3W-FEEDER-1"-EMT'
+  },
+  {
+    category: "FEEDERS",
+    symbol_name: '200A-2P3W-FEEDER-1 1/4"-EMT'
+  },
+  {
+    category: "FEEDERS",
+    symbol_name: '200A-2P3W-FEEDER-2"-EMT'
+  },
+  {
+    category: "FEEDERS",
+    symbol_name: '225A-2P3W-FEEDER-2"-EMT'
+  },
+  {
+    category: "FEEDERS",
+    symbol_name: '250A-2P3W-FEEDER-2"-EMT'
+  },
+  {
+    category: "FEEDERS",
+    symbol_name: '300A-2P3W-FEEDER-3"-EMT'
+  },
+  {
+    category: "FEEDERS",
+    symbol_name: '400A-2P3W-FEEDER-3"-EMT'
+  },
+  {
+    category: "FEEDERS",
+    symbol_name: '400A-2P3W-FEEDER-4"-EMT'
+  },
+  {
+    category: "FEEDERS",
+    symbol_name: '60A-1P2W-AL-FEEDER-3/4"-PVC'
+  },
+  {
+    category: "FEEDERS",
+    symbol_name: '60A-1P2W-AL-FEEDER-1"-PVC'
+  },
+  {
+    category: "FEEDERS",
+    symbol_name: '100A-1P2W-AL-FEEDER-2"-PVC'
+  },
+  {
+    category: "FEEDERS",
+    symbol_name: '200A-1P2W-AL-FEEDER-1 1/4"-PVC'
+  },
+  {
+    category: "FEEDERS",
+    symbol_name: '200A-1P2W-AL-FEEDER-2"-PVC'
+  },
+  {
+    category: "FEEDERS",
+    symbol_name: '225A-1P2W-AL-FEEDER-2"-PVC'
+  },
+  {
+    category: "FEEDERS",
+    symbol_name: '250A-1P2W-AL-FEEDER-2"-PVC'
+  },
+  {
+    category: "FEEDERS",
+    symbol_name: '300A-1P2W-AL-FEEDER-3"-PVC'
+  },
+  {
+    category: "FEEDERS",
+    symbol_name: '400A-1P2W-AL-FEEDER-3"-PVC'
+  },
+  {
+    category: "FEEDERS",
+    symbol_name: '400A-1P2W-AL-FEEDER-4"-PVC'
+  },
+  {
+    category: "FEEDERS",
+    symbol_name: '15A-1P2W-FEEDER-1/2"-PVC'
+  },
+  {
+    category: "FEEDERS",
+    symbol_name: '15A-1P2W-FEEDER-3/4"-PVC'
+  },
+  {
+    category: "FEEDERS",
+    symbol_name: '15A-1P2W-FEEDER-1"-PVC'
+  },
+  {
+    category: "FEEDERS",
+    symbol_name: '20A-1P2W-FEEDER-1/2"-PVC'
+  },
+  {
+    category: "FEEDERS",
+    symbol_name: '20A-1P2W-FEEDER-3/4"-PVC'
+  },
+  {
+    category: "FEEDERS",
+    symbol_name: '20A-1P2W-FEEDER-1"-PVC'
+  },
+  {
+    category: "FEEDERS",
+    symbol_name: '30A-1P2W-FEEDER-1/2"-PVC'
+  },
+  {
+    category: "FEEDERS",
+    symbol_name: '30A-1P2W-FEEDER-3/4"-PVC'
+  },
+  {
+    category: "FEEDERS",
+    symbol_name: '30A-1P2W-FEEDER-1"-PVC'
+  },
+  {
+    category: "FEEDERS",
+    symbol_name: '40A-1P2W-FEEDER-3/4"-PVC'
+  },
+  {
+    category: "FEEDERS",
+    symbol_name: '40A-1P2W-FEEDER-1"-PVC'
+  },
+  {
+    category: "FEEDERS",
+    symbol_name: '50A-1P2W-FEEDER-3/4"-PVC'
+  },
+  {
+    category: "FEEDERS",
+    symbol_name: '50A-1P2W-FEEDER-1"-PVC'
+  },
+  {
+    category: "FEEDERS",
+    symbol_name: '60A-1P2W-FEEDER-3/4"-PVC'
+  },
+  {
+    category: "FEEDERS",
+    symbol_name: '60A-1P2W-FEEDER-1"-PVC'
+  },
+  {
+    category: "FEEDERS",
+    symbol_name: '100A-1P2W-FEEDER-1"-PVC'
+  },
+  {
+    category: "FEEDERS",
+    symbol_name: '200A-1P2W-FEEDER-1.25"-PVC'
+  },
+  {
+    category: "FEEDERS",
+    symbol_name: '200A-1P2W-120-FEEDER-2"-PVC'
+  },
+  {
+    category: "FEEDERS",
+    symbol_name: '60A-2P3W-AL-FEEDER-3/4"-PVC'
+  },
+  {
+    category: "FEEDERS",
+    symbol_name: '60A-2P3W-AL-FEEDER-1"-PVC'
+  },
+  {
+    category: "FEEDERS",
+    symbol_name: '100A-2P3W-AL-FEEDER-2"-PVC'
+  },
+  {
+    category: "FEEDERS",
+    symbol_name: '200A-2P3W-AL-FEEDER-1 1/4"-PVC'
+  },
+  {
+    category: "FEEDERS",
+    symbol_name: '200A-2P3W-AL-FEEDER-2"-PVC'
+  },
+  {
+    category: "FEEDERS",
+    symbol_name: '225A-2P3W-AL-FEEDER-2"-PVC'
+  },
+  {
+    category: "FEEDERS",
+    symbol_name: '250A-2P3W-AL-FEEDER-2"-PVC'
+  },
+  {
+    category: "FEEDERS",
+    symbol_name: '300A-2P3W-AL-FEEDER-3"-PVC'
+  },
+  {
+    category: "FEEDERS",
+    symbol_name: '400A-2P3W-AL-FEEDER-3"-PVC'
+  },
+  {
+    category: "FEEDERS",
+    symbol_name: '400A-2P3W-AL-FEEDER-4"-PVC'
+  },
+  {
+    category: "FEEDERS",
+    symbol_name: '60A-3P3W-AL-FEEDER-3/4"-PVC'
+  },
+  {
+    category: "FEEDERS",
+    symbol_name: '60A-3P3W-AL-FEEDER-1"-PVC'
+  },
+  {
+    category: "FEEDERS",
+    symbol_name: '100A-3P3W-AL-FEEDER-2"-PVC'
+  },
+  {
+    category: "FEEDERS",
+    symbol_name: '200A-3P3W-AL-FEEDER-1 1/4"-PVC'
+  },
+  {
+    category: "FEEDERS",
+    symbol_name: '200A-3P3W-AL-FEEDER-2"-PVC'
+  },
+  {
+    category: "FEEDERS",
+    symbol_name: '225A-3P3W-AL-FEEDER-2"-PVC'
+  },
+  {
+    category: "FEEDERS",
+    symbol_name: '250A-3P3W-AL-FEEDER-2"-PVC'
+  },
+  {
+    category: "FEEDERS",
+    symbol_name: '300A-3P3W-AL-FEEDER-3"-PVC'
+  },
+  {
+    category: "FEEDERS",
+    symbol_name: '400A-3P3W-AL-FEEDER-3"-PVC'
+  },
+  {
+    category: "FEEDERS",
+    symbol_name: '400A-3P3W-AL-FEEDER-4"-PVC'
+  },
+  {
+    category: "FEEDERS",
+    symbol_name: '15A-3P3W-FEEDER-1/2"-PVC'
+  },
+  {
+    category: "FEEDERS",
+    symbol_name: '15A-3P3W-FEEDER-3/4"-PVC'
+  },
+  {
+    category: "FEEDERS",
+    symbol_name: '15A-3P3W-FEEDER-1"-PVC'
+  },
+  {
+    category: "FEEDERS",
+    symbol_name: '20A-3P3W-FEEDER-1/2"-PVC'
+  },
+  {
+    category: "FEEDERS",
+    symbol_name: '20A-3P3W-FEEDER-3/4"-PVC'
+  },
+  {
+    category: "FEEDERS",
+    symbol_name: '20A-3P3W-FEEDER-1"-PVC'
+  },
+  {
+    category: "FEEDERS",
+    symbol_name: '30A-3P3W-FEEDER-1/2"-PVC'
+  },
+  {
+    category: "FEEDERS",
+    symbol_name: '30A-3P3W-FEEDER-3/4"-PVC'
+  },
+  {
+    category: "FEEDERS",
+    symbol_name: '30A-3P3W-FEEDER-1"-PVC'
+  },
+  {
+    category: "FEEDERS",
+    symbol_name: '40A-3P3W-FEEDER-3/4"-PVC'
+  },
+  {
+    category: "FEEDERS",
+    symbol_name: '40A-3P3W-FEEDER-1"-PVC'
+  },
+  {
+    category: "FEEDERS",
+    symbol_name: '50A-3P3W-FEEDER-3/4"-PVC'
+  },
+  {
+    category: "FEEDERS",
+    symbol_name: '50A-3P3W-FEEDER-1"-PVC'
+  },
+  {
+    category: "FEEDERS",
+    symbol_name: '60A-3P3W-FEEDER-3/4"-PVC'
+  },
+  {
+    category: "FEEDERS",
+    symbol_name: '60A-3P3W-FEEDER-1"-PVC'
+  },
+  {
+    category: "FEEDERS",
+    symbol_name: '100A-3P3W-FEEDER-1"-PVC'
+  },
+  {
+    category: "FEEDERS",
+    symbol_name: '200A-3P3W-FEEDER-1 1/4"-PVC'
+  },
+  {
+    category: "FEEDERS",
+    symbol_name: '200A-3P3W-FEEDER-2"-PVC'
+  },
+  {
+    category: "FEEDERS",
+    symbol_name: '225A-3P3W-FEEDER-2"-PVC'
+  },
+  {
+    category: "FEEDERS",
+    symbol_name: '250A-3P3W-FEEDER-2"-PVC'
+  },
+  {
+    category: "FEEDERS",
+    symbol_name: '300A-3P3W-FEEDER-3"-PVC'
+  },
+  {
+    category: "FEEDERS",
+    symbol_name: '400A-3P3W-FEEDER-3"-PVC'
+  },
+  {
+    category: "FEEDERS",
+    symbol_name: '400A-3P3W-FEEDER-4"-PVC'
+  },
+  {
+    category: "FEEDERS",
+    symbol_name: '60A-3P4W-AL-FEEDER-3/4"-EMT'
+  },
+  {
+    category: "FEEDERS",
+    symbol_name: '60A-3P4W-AL-FEEDER-1"-EMT'
+  },
+  {
+    category: "FEEDERS",
+    symbol_name: '100A-3P4W-AL-FEEDER-2"-EMT'
+  },
+  {
+    category: "FEEDERS",
+    symbol_name: '200A-3P4W-AL-FEEDER-1 1/4"-EMT'
+  },
+  {
+    category: "FEEDERS",
+    symbol_name: '200A-3P4W-AL-FEEDER-2"-EMT'
+  },
+  {
+    category: "FEEDERS",
+    symbol_name: '225A-3P4W-AL-FEEDER-2"-EMT'
+  },
+  {
+    category: "FEEDERS",
+    symbol_name: '250A-3P4W-AL-FEEDER-2"-EMT'
+  },
+  {
+    category: "FEEDERS",
+    symbol_name: '300A-3P4W-AL-FEEDER-3"-EMT'
+  },
+  {
+    category: "FEEDERS",
+    symbol_name: '400A-3P4W-AL-FEEDER-3"-EMT'
+  },
+  {
+    category: "FEEDERS",
+    symbol_name: '400A-3P4W-AL-FEEDER-4"-EMT'
+  },
+  {
+    category: "FEEDERS",
+    symbol_name: '15A-3P4W-FEEDER-1/2"-PVC'
+  },
+  {
+    category: "FEEDERS",
+    symbol_name: '15A-3P4W-FEEDER-3/4"-PVC'
+  },
+  {
+    category: "FEEDERS",
+    symbol_name: '15A-3P4W-FEEDER-1"-PVC'
+  },
+  {
+    category: "FEEDERS",
+    symbol_name: '20A-3P4W-FEEDER-1/2"-PVC'
+  },
+  {
+    category: "FEEDERS",
+    symbol_name: '20A-3P4W-FEEDER-3/4"-PVC'
+  },
+  {
+    category: "FEEDERS",
+    symbol_name: '20A-3P4W-FEEDER-1"-PVC'
+  },
+  {
+    category: "FEEDERS",
+    symbol_name: '30A-3P4W-FEEDER-1/2"-PVC'
+  },
+  {
+    category: "FEEDERS",
+    symbol_name: '30A-3P4W-FEEDER-3/4"-PVC'
+  },
+  {
+    category: "FEEDERS",
+    symbol_name: '30A-3P4W-FEEDER-1"-PVC'
+  },
+  {
+    category: "FEEDERS",
+    symbol_name: '40A-3P4W-FEEDER-3/4"-PVC'
+  },
+  {
+    category: "FEEDERS",
+    symbol_name: '40A-3P4W-FEEDER-1"-PVC'
+  },
+  {
+    category: "FEEDERS",
+    symbol_name: '50A-3P4W-FEEDER-3/4"-PVC'
+  },
+  {
+    category: "FEEDERS",
+    symbol_name: '50A-3P4W-FEEDER-1"-PVC'
+  },
+  {
+    category: "FEEDERS",
+    symbol_name: '60A-3P4W-FEEDER-3/4"-PVC'
+  },
+  {
+    category: "FEEDERS",
+    symbol_name: '60A-3P4W-FEEDER-1"-PVC'
+  },
+  {
+    category: "FEEDERS",
+    symbol_name: '100A-3P4W-FEEDER-1"-PVC'
+  },
+  {
+    category: "FEEDERS",
+    symbol_name: '200A-3P4W-FEEDER-1 1/4"-PVC'
+  },
+  {
+    category: "FEEDERS",
+    symbol_name: '200A-3P4W-FEEDER-2"-PVC'
+  },
+  {
+    category: "FEEDERS",
+    symbol_name: '225A-3P4W-FEEDER-2"-PVC'
+  },
+  {
+    category: "FEEDERS",
+    symbol_name: '250A-3P4W-FEEDER-2"-PVC'
+  },
+  {
+    category: "FEEDERS",
+    symbol_name: '300A-3P4W-FEEDER-3"-PVC'
+  },
+  {
+    category: "FEEDERS",
+    symbol_name: '400A-3P4W-FEEDER-3"-PVC'
+  },
+  {
+    category: "FEEDERS",
+    symbol_name: '400A-3P4W-FEEDER-4"-PVC'
+  },
+  {
+    category: "FEEDERS",
+    symbol_name: '15A-2P3W-FEEDER-1/2"-PVC'
+  },
+  {
+    category: "FEEDERS",
+    symbol_name: '15A-2P3W-FEEDER-3/4"-PVC'
+  },
+  {
+    category: "FEEDERS",
+    symbol_name: '15A-2P3W-FEEDER-1"-PVC'
+  },
+  {
+    category: "FEEDERS",
+    symbol_name: '20A-2P3W-FEEDER-1/2"-PVC'
+  },
+  {
+    category: "FEEDERS",
+    symbol_name: '20A-2P3W-FEEDER-3/4"-PVC'
+  },
+  {
+    category: "FEEDERS",
+    symbol_name: '20A-2P3W-FEEDER-1"-PVC'
+  },
+  {
+    category: "FEEDERS",
+    symbol_name: '30A-2P3W-FEEDER-1/2"-PVC'
+  },
+  {
+    category: "FEEDERS",
+    symbol_name: '30A-2P3W-FEEDER-3/4"-PVC'
+  },
+  {
+    category: "FEEDERS",
+    symbol_name: '30A-2P3W-FEEDER-1"-PVC'
+  },
+  {
+    category: "FEEDERS",
+    symbol_name: '40A-2P3W-FEEDER-3/4"-PVC'
+  },
+  {
+    category: "FEEDERS",
+    symbol_name: '40A-2P3W-FEEDER-1"-PVC'
+  },
+  {
+    category: "FEEDERS",
+    symbol_name: '50A-2P3W-FEEDER-3/4"-PVC'
+  },
+  {
+    category: "FEEDERS",
+    symbol_name: '50A-2P3W-FEEDER-1"-PVC'
+  },
+  {
+    category: "FEEDERS",
+    symbol_name: '60A-2P3W-FEEDER-3/4"-PVC'
+  },
+  {
+    category: "FEEDERS",
+    symbol_name: '60A-2P3W-FEEDER-1"-PVC'
+  },
+  {
+    category: "FEEDERS",
+    symbol_name: '100A-2P3W-FEEDER-1"-PVC'
+  },
+  {
+    category: "FEEDERS",
+    symbol_name: '200A-2P3W-FEEDER-1 1/4"-PVC'
+  },
+  {
+    category: "FEEDERS",
+    symbol_name: '200A-2P3W-FEEDER-2"-PVC'
+  },
+  {
+    category: "FEEDERS",
+    symbol_name: '225A-2P3W-FEEDER-2"-PVC'
+  },
+  {
+    category: "FEEDERS",
+    symbol_name: '250A-2P3W-FEEDER-2"-PVC'
+  },
+  {
+    category: "FEEDERS",
+    symbol_name: '300A-2P3W-FEEDER-3"-PVC'
+  },
+  {
+    category: "FEEDERS",
+    symbol_name: '400A-2P3W-FEEDER-3"-PVC'
+  },
+  {
+    category: "FEEDERS",
+    symbol_name: '400A-2P3W-FEEDER-4"-PVC'
+  },
+  {
     category: "CABLE",
     symbol_name: "Tech-Cable"
   },
