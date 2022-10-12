@@ -576,6 +576,198 @@ export const DeviceList = [
     symbol_name: "Wall-Washer-Luminaire"
   },
   {
+    category: "LIGHTING",
+    symbol_name: "TYPE 100"
+  },
+  {
+    category: "LIGHTING",
+    symbol_name: "TYPE 101"
+  },
+  {
+    category: "LIGHTING",
+    symbol_name: "TYPE 102"
+  },
+  {
+    category: "LIGHTING",
+    symbol_name: "TYPE 103"
+  },
+  {
+    category: "LIGHTING",
+    symbol_name: "TYPE 104"
+  },
+  {
+    category: "LIGHTING",
+    symbol_name: "TYPE 105"
+  },
+  {
+    category: "LIGHTING",
+    symbol_name: "TYPE 106"
+  },
+  {
+    category: "LIGHTING",
+    symbol_name: "TYPE 107"
+  },
+  {
+    category: "LIGHTING",
+    symbol_name: "TYPE 108"
+  },
+  {
+    category: "LIGHTING",
+    symbol_name: "TYPE 109"
+  },
+  {
+    category: "LIGHTING",
+    symbol_name: "TYPE 110"
+  },
+  {
+    category: "LIGHTING",
+    symbol_name: "TYPE 200"
+  },
+  {
+    category: "LIGHTING",
+    symbol_name: "TYPE 201"
+  },
+  {
+    category: "LIGHTING",
+    symbol_name: "TYPE 202"
+  },
+  {
+    category: "LIGHTING",
+    symbol_name: "TYPE 203"
+  },
+  {
+    category: "LIGHTING",
+    symbol_name: "TYPE 204"
+  },
+  {
+    category: "LIGHTING",
+    symbol_name: "TYPE 205"
+  },
+  {
+    category: "LIGHTING",
+    symbol_name: "TYPE 206"
+  },
+  {
+    category: "LIGHTING",
+    symbol_name: "TYPE 207"
+  },
+  {
+    category: "LIGHTING",
+    symbol_name: "TYPE 208"
+  },
+  {
+    category: "LIGHTING",
+    symbol_name: "TYPE 209"
+  },
+  {
+    category: "LIGHTING",
+    symbol_name: "TYPE 210"
+  },
+  {
+    category: "LIGHTING",
+    symbol_name: "TYPE A"
+  },
+  {
+    category: "LIGHTING",
+    symbol_name: "TYPE B"
+  },
+  {
+    category: "LIGHTING",
+    symbol_name: "TYPE C"
+  },
+  {
+    category: "LIGHTING",
+    symbol_name: "TYPE D"
+  },
+  {
+    category: "LIGHTING",
+    symbol_name: "TYPE E"
+  },
+  {
+    category: "LIGHTING",
+    symbol_name: "TYPE F"
+  },
+  {
+    category: "LIGHTING",
+    symbol_name: "TYPE G"
+  },
+  {
+    category: "LIGHTING",
+    symbol_name: "TYPE H"
+  },
+  {
+    category: "LIGHTING",
+    symbol_name: "TYPE I"
+  },
+  {
+    category: "LIGHTING",
+    symbol_name: "TYPE J"
+  },
+  {
+    category: "LIGHTING",
+    symbol_name: "TYPE K"
+  },
+  {
+    category: "LIGHTING",
+    symbol_name: "TYPE L"
+  },
+  {
+    category: "LIGHTING",
+    symbol_name: "TYPE M"
+  },
+  {
+    category: "LIGHTING",
+    symbol_name: "TYPE N"
+  },
+  {
+    category: "LIGHTING",
+    symbol_name: "TYPE O"
+  },
+  {
+    category: "LIGHTING",
+    symbol_name: "TYPE P"
+  },
+  {
+    category: "LIGHTING",
+    symbol_name: "TYPE Q"
+  },
+  {
+    category: "LIGHTING",
+    symbol_name: "TYPE R"
+  },
+  {
+    category: "LIGHTING",
+    symbol_name: "TYPE S"
+  },
+  {
+    category: "LIGHTING",
+    symbol_name: "TYPE T"
+  },
+  {
+    category: "LIGHTING",
+    symbol_name: "TYPE U"
+  },
+  {
+    category: "LIGHTING",
+    symbol_name: "TYPE V"
+  },
+  {
+    category: "LIGHTING",
+    symbol_name: "TYPE W"
+  },
+  {
+    category: "LIGHTING",
+    symbol_name: "TYPE X"
+  },
+  {
+    category: "LIGHTING",
+    symbol_name: "TYPE Y"
+  },
+  {
+    category: "LIGHTING",
+    symbol_name: "TYPE Z"
+  },
+  {
     category: "MECHANICAL/ELECTRICAL",
     symbol_name: "Disconnect-Switch-Fused"
   },
