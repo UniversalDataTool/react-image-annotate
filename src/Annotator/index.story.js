@@ -22,8 +22,30 @@ const middlewares = [
 ]
 
 storiesOf("Annotator", module)
-  .add("XKEY", () => (
-    <HotKeys keyMap={defaultKeyMap}>
+  .add("XKEY", () => {
+    const [images, setImages] = useState([
+      {
+        src: "https://xkey.blob.core.windows.net/xkey-ai/767632511/188765679/MAY-20-10.png",
+        name: "Image 1",
+        regions: [
+          {
+            color: "#00ff00",
+            id: "box1",
+            type: "box",
+            x: 0.6492276531819365,
+            y: 0.6189871322167486, 
+            w: 0.01047985281460484,
+            h: 0.009113300492610832,
+            highlighted: true,
+            cls: "Delta",
+          },
+        ]
+      },
+    ]);
+
+
+    return (
+      <HotKeys keyMap={defaultKeyMap}>
       <Annotator
         onExit={actionAddon("onExit")}
         onSave={(output) => {
@@ -35,15 +57,12 @@ storiesOf("Annotator", module)
         showTags={false}
         regionClsList={["Alpha", "Beta", "Charlie", "Delta"]}
         imageClsList={["Alpha", "Beta", "Charlie", "Delta"]}
-        images={[
-          {
-            src: "https://xkey.blob.core.windows.net/xkey-ai/767632511/188765679/MAY-20-10.png",
-            name: "Image 1",
-          },
-        ]}
+        images={images}
+        key={images}
       />
     </HotKeys>
-  ))
+    );
+  })
   .add("Basic", () => (
     <Annotator
       onExit={actionAddon("onExit")}

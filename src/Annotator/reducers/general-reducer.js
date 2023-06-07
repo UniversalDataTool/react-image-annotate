@@ -864,6 +864,20 @@ export default (state: MainLayoutState, action: Action) => {
         (activeImage.regions || []).filter((r) => !r.highlighted)
       )
     }
+    case "MATCH_REGION_LOADING": {
+      return setIn(state, ["loadingTemplateMatching"], true);
+    }
+    case "MATCH_REGION_FINISHED": {
+      let regions = [...(getIn(state, pathToActiveImage).regions || [])]
+        .map((r) =>
+          setIn(r, ["editingLabels"], false).setIn(["highlighted"], false)
+        )
+        .concat(action.region ? [...action.region] : []);
+      let newState = { ...state };
+      newState = setIn(newState, ["loadingTemplateMatching"], false);
+      return setIn(newState, [...pathToActiveImage, "regions"], regions);
+    }
+
     case "HEADER_BUTTON_CLICKED": {
       const buttonName = action.buttonName.toLowerCase()
       switch (buttonName) {

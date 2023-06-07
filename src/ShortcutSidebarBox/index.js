@@ -44,7 +44,6 @@ export const HistorySidebarBox = ({
   history: Array<{ name: string, time: Date }>,
 }) => {
   const classes = useStyles()
-  console.log(defaultHotkeys)
   return (
     <SidebarBoxContainer
       title="Shortcuts"

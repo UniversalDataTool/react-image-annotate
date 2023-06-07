@@ -8,7 +8,7 @@ import type {
   ToolEnum,
 } from "../MainLayout/types"
 import React, { useEffect, useReducer } from "react"
-import makeImmutable, { without } from "seamless-immutable"
+import makeImmutable, { without, setIn, getIn } from "seamless-immutable"
 
 import type { KeypointsDefinition } from "../ImageCanvas/region-tools"
 import MainLayout from "../MainLayout"
@@ -23,6 +23,9 @@ import useEventCallback from "use-event-callback"
 import videoReducer from "./reducers/video-reducer.js"
 import { HotKeys } from "react-hotkeys";
 import { defaultKeyMap } from "../ShortcutsManager"
+import getActiveImage from "../Annotator/reducers/get-active-image";
+
+const getRandomId = () => Math.random().toString().split(".")[1]
 
 type Props = {
   taskDescription?: string,
@@ -48,16 +51,17 @@ type Props = {
   keypointDefinitions: KeypointsDefinition,
   fullImageSegmentationMode?: boolean,
   autoSegmentationOptions?:
-    | {| type: "simple" |}
-    | {| type: "autoseg", maxClusters?: number, slicWeightFactor?: number |},
-  hideHeader?: boolean,
-  hideHeaderText?: boolean,
-  hideNext?: boolean,
-  hidePrev?: boolean,
-  hideClone?: boolean,
-  hideSettings?: boolean,
-  hideFullScreen?: boolean,
-  hideSave?: boolean,
+  | {| type: "simple" |}
+    | {| type: "autoseg", maxClusters ?: number, slicWeightFactor ?: number |},
+hideHeader ?: boolean,
+  hideHeaderText ?: boolean,
+  hideNext ?: boolean,
+  hidePrev ?: boolean,
+  hideClone ?: boolean,
+  hideSettings ?: boolean,
+  hideFullScreen ?: boolean,
+  hideSave ?: boolean,
+  
 }
 
 export const Annotator = ({
@@ -140,21 +144,22 @@ export const Annotator = ({
       videoName,
       keypointDefinitions,
       allowComments,
+      loadingTemplateMatching: false,
       ...(annotationType === "image"
         ? {
-            selectedImage,
-            images,
-            selectedImageFrameTime:
-              images && images.length > 0 ? images[0].frameTime : undefined,
-          }
+          selectedImage,
+          images,
+          selectedImageFrameTime:
+            images && images.length > 0 ? images[0].frameTime : undefined,
+        }
         : {
-            videoSrc,
-            keyframes,
-          }),
+          videoSrc,
+          keyframes,
+        }),
     })
   )
 
-  const dispatch = useEventCallback((action: Action) => {
+  const dispatch =  useEventCallback(async (action: Action) => {
     if (action.type === "HEADER_BUTTON_CLICKED") {
       //if (["Exit", "Done", "Save", "Complete"].includes(action.buttonName)) {
       if (["Exit", "Done", "Complete"].includes(action.buttonName)) {
@@ -167,7 +172,9 @@ export const Annotator = ({
         return onPrevImage(without(state, "history"))
       }
     }
-    dispatchToReducer(action)
+    else {
+      dispatchToReducer(action)
+    }
   })
 
   const onRegionClassAdded = useEventCallback((cls) => {

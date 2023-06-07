@@ -149,6 +149,8 @@ export type Action =
   | {| type: "OPEN_REGION_EDITOR", region: Region |}
   | {| type: "CLOSE_REGION_EDITOR", region: Region |}
   | {| type: "DELETE_REGION", region: Region |}
+  | {| type: "MATCH_REGION_LOADING", region: Region |}
+  | {| type: "MATCH_REGION_FINISHED", region: Region |}
   | {| type: "DELETE_SELECTED_REGION" |}
   | {| type: "HEADER_BUTTON_CLICKED", buttonName: string |}
   | {| type: "SELECT_TOOL", selectedTool: ToolEnum |}

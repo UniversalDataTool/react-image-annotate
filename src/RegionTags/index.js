@@ -23,6 +23,10 @@ export const RegionTags = ({
   onChangeRegion,
   onCloseRegionEdit,
   onDeleteRegion,
+  onMatchTemplate,
+  finishMatchTemplate,
+  pageIndex,
+  regionTemplateMatchingDisabled,
   layoutParams,
   imageSrc,
   RegionEditLabel,
@@ -114,6 +118,10 @@ export const RegionTags = ({
               onChange={onChangeRegion}
               onClose={onCloseRegionEdit}
               onDelete={onDeleteRegion}
+              onMatchTemplate={onMatchTemplate}
+              finishMatchTemplate={finishMatchTemplate}
+              pageIndex={pageIndex}
+              regionTemplateMatchingDisabled={regionTemplateMatchingDisabled}  
               editing={region.editingLabels}
               region={region}
               regions={regions}

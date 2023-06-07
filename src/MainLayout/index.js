@@ -57,7 +57,7 @@ type Props = {
   dispatch: (Action) => any,
   alwaysShowNextButton?: boolean,
   alwaysShowPrevButton?: boolean,
-  onRegionClassAdded: () => {},
+  onRegionClassAdded: (cls) => any,
   hideHeader?: boolean,
   hideHeaderText?: boolean,
 }
@@ -102,7 +102,7 @@ export const MainLayout = ({
     return fn
   }
 
-  const { currentImageIndex, activeImage } = getActiveImage(state)
+  const { currentImageIndex, pathToActiveImage, activeImage } = getActiveImage(state)
   let nextImage
   if (currentImageIndex !== null) {
     nextImage = state.images[currentImageIndex + 1]
@@ -162,6 +162,8 @@ export const MainLayout = ({
           ? state.selectedImageFrameTime
           : state.currentVideoTime
       }
+      pageIndex={pathToActiveImage[1]}
+      regionTemplateMatchingDisabled={state.loadingTemplateMatching}
       keypointDefinitions={state.keypointDefinitions}
       onMouseMove={action("MOUSE_MOVE")}
       onMouseDown={action("MOUSE_DOWN")}
@@ -170,6 +172,8 @@ export const MainLayout = ({
       onBeginRegionEdit={action("OPEN_REGION_EDITOR", "region")}
       onCloseRegionEdit={action("CLOSE_REGION_EDITOR", "region")}
       onDeleteRegion={action("DELETE_REGION", "region")}
+      onMatchRegionTemplate={action("MATCH_REGION_LOADING", "region")}
+      finishMatchRegionTemplate={action("MATCH_REGION_FINISHED", "region")}
       onBeginBoxTransform={action("BEGIN_BOX_TRANSFORM", "box", "directions")}
       onBeginMovePolygonPoint={action(
         "BEGIN_MOVE_POLYGON_POINT",
@@ -378,6 +382,7 @@ export const MainLayout = ({
                 onSelectRegion={action("SELECT_REGION", "region")}
                 onDeleteRegion={action("DELETE_REGION", "region")}
                 onChangeRegion={action("CHANGE_REGION", "region")}
+                onMatchRegionTemplate={action("MATCH_REGION", "region")}
               />,
               state.keyframes && (
                 <KeyframesSelector

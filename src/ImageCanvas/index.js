@@ -67,10 +67,13 @@ type Props = {
   autoSegmentationOptions?: Object,
   modifyingAllowedArea?: boolean,
   allowComments?: Boolean,
+  regionTemplateMatchingDisabled?: boolean,
   onChangeRegion: (Region) => any,
   onBeginRegionEdit: (Region) => any,
   onCloseRegionEdit: (Region) => any,
   onDeleteRegion: (Region) => any,
+  onMatchRegionTemplate: (Region) => any,
+  finishMatchRegionTemplate: (Region) => any,
   onBeginBoxTransform: (Box, [number, number]) => any,
   onBeginMovePolygonPoint: (Polygon, index: number) => any,
   onBeginMoveKeypoint: (Keypoints, index: number) => any,
@@ -83,8 +86,9 @@ type Props = {
     duration?: number,
   }) => any,
   onChangeVideoTime: (number) => any,
-  onRegionClassAdded: () => {},
+  onRegionClassAdded: (cls) => any,
   onChangeVideoPlaying?: Function,
+  addRegion: (index: number, region: Region) => any,
 }
 
 const getDefaultMat = (allowedArea = null, { iw, ih } = {}) => {
@@ -123,6 +127,8 @@ export const ImageCanvas = ({
   fullImageSegmentationMode,
   autoSegmentationOptions,
   onImageOrVideoLoaded,
+  pageIndex,
+  regionTemplateMatchingDisabled,
   onChangeRegion,
   onBeginRegionEdit,
   onCloseRegionEdit,
@@ -133,6 +139,8 @@ export const ImageCanvas = ({
   onSelectRegion,
   onBeginMovePoint,
   onDeleteRegion,
+  onMatchRegionTemplate,
+  finishMatchRegionTemplate,
   onChangeVideoTime,
   onChangeVideoPlaying,
   onRegionClassAdded,
@@ -385,8 +393,12 @@ export const ImageCanvas = ({
             onChangeRegion={onChangeRegion}
             onCloseRegionEdit={onCloseRegionEdit}
             onDeleteRegion={onDeleteRegion}
+            onMatchTemplate={onMatchRegionTemplate}
+            finishMatchTemplate={finishMatchRegionTemplate}
             layoutParams={layoutParams}
             imageSrc={imageSrc}
+            pageIndex={pageIndex}
+            regionTemplateMatchingDisabled={regionTemplateMatchingDisabled}
             RegionEditLabel={RegionEditLabel}
             onRegionClassAdded={onRegionClassAdded}
             allowComments={allowComments}
@@ -402,9 +414,14 @@ export const ImageCanvas = ({
             allowedTags={regionTagList}
             onChange={onChangeRegion}
             onDelete={onDeleteRegion}
+            onMatchTemplate={onMatchRegionTemplate}
+            finishMatchTemplate={finishMatchRegionTemplate}
             editing
             region={highlightedRegion}
             imageSrc={imageSrc}
+            pageIndex={pageIndex}
+            regionTemplateMatchingDisabled={regionTemplateMatchingDisabled}
+            onRegionClassAdded={onRegionClassAdded}
             allowComments={allowComments}
           />
         </div>

@@ -1,6 +1,6 @@
 // @flow
 
-import React, { useRef, memo } from "react"
+import React, { useRef, memo, useEffect } from "react"
 import Paper from "@material-ui/core/Paper"
 import { makeStyles } from "@material-ui/core/styles"
 import styles from "./styles"
@@ -17,6 +17,7 @@ import { InputAdornment } from "@material-ui/core"
 import { asMutable } from "seamless-immutable"
 import SquareFootIcon from '@mui/icons-material/SquareFoot'
 import DeviceList from "./DeviceList"
+import ImageSearchIcon from '@material-ui/icons/ImageSearch';
 
 const useStyles = makeStyles(styles)
 
@@ -27,11 +28,16 @@ type Props = {
   allowedTags?: Array<string>,
   cls?: string,
   tags?: Array<string>,
+  imageSrc?: string,
+  pageIndex: number,
+  regionTemplateMatchingDisabled?: boolean,
   onDelete: (Region) => null,
   onChange: (Region) => null,
   onClose: (Region) => null,
   onOpen: (Region) => null,
-  onRegionClassAdded: () => {},
+  onMatchTemplate: (Region) => null,
+  finishMatchTemplate: (Region) => null,
+  onRegionClassAdded: (cls) => any,
   allowComments?: boolean,
 }
 
@@ -41,16 +47,22 @@ const allowed_conduit_type = ["FEEDERS", "CABLE", "TRAY", "WIREMOLD", "CONDUIT A
 const allowed_device_type = all_types.filter(x => !allowed_conduit_type.includes(x));
 const conduit_symbols = DeviceList.filter(i => allowed_conduit_type.includes(i.category)).map(symbol => symbol.symbol_name);
 const device_symbols = DeviceList.filter(i => allowed_device_type.includes(i.category)).map(symbol => symbol.symbol_name);
+const getRandomId = () => Math.random().toString().split(".")[1]
 
 export const RegionLabel = ({
   region,
   editing,
   allowedClasses,
   allowedTags,
+  imageSrc,
+  pageIndex,
+  regionTemplateMatchingDisabled,
   onDelete,
   onChange,
   onClose,
   onOpen,
+  onMatchTemplate,
+  finishMatchTemplate,
   onRegionClassAdded,
   allowComments,
 }: Props) => {
@@ -62,7 +74,7 @@ export const RegionLabel = ({
 
     if (commentInput) return commentInput.focus()
   }
-
+  const [isTemplateMatchingLoading, setIsTemplateMatchingLoading] = React.useState(regionTemplateMatchingDisabled);
   const conditionalRegionTextField = (regionType) => {
     if (regionType === "scale") {
       // do scale
@@ -184,8 +196,83 @@ export const RegionLabel = ({
               {region.type}
             </div>
             <div style={{ flexGrow: 1 }} />
+            {
+              region.type === "box" ?
+                <IconButton
+                  disabled={isTemplateMatchingLoading}
+                  onClick={() => {
+                    setIsTemplateMatchingLoading(true);
+                    const region_coords = {
+                      "x": region.x,
+                      "y": region.y,
+                      "w": region.w,
+                      "h": region.h
+                    };
+                    const region_color = region.color;
+                    const endpoint = "https://atmhj61aob.execute-api.us-east-2.amazonaws.com/default/xkey-lambda-ocr";
+                    const json_data = {
+                      "image_url": imageSrc,
+                      "page_index": pageIndex,
+                      "template_symbol_name": region.cls,
+                      "threshold": 0.7,
+                      "user_id": 80808080,
+                      "doc_id": 80808080,
+                      "page_id": 80808080,
+                      "template_coord": region_coords,
+                    };
+                    // TODO: call OCR here
+                    onMatchTemplate(region);
+                    fetch(endpoint, {
+                      method: "POST", // or 'PUT'
+                      headers: {
+                        "Content-Type": "application/json",
+                      },
+                      body: JSON.stringify({ "queryStringParameters": json_data }),
+                    }).then((response) => {
+                      if (response.ok) {
+                        return response.json();
+                      }
+                      throw new Error('Backend Error');                    
+                    }).then((data) => {
+                      // result can be empty
+                      return data.body ? data.body.result : [];
+                    }).then((res) => {
+                      let results = res.map((r) => {
+                        const new_region = {};
+                        new_region["isOCR"] = true;
+                        new_region["x"] = r["x"];
+                        new_region["y"] = r["y"];
+                        new_region["w"] = r["w"];
+                        new_region["h"] = r["h"];
+                        new_region["editingLabels"] = false;
+                        new_region["highlighted"] = false;
+                        new_region["id"] = getRandomId();
+                        new_region["cls"] = region.cls;
+                        new_region["type"] = "box";
+                        new_region["color"] = region.color;
+                        return new_region;
+                      });
+                      finishMatchTemplate(results);
+                      setIsTemplateMatchingLoading(false);
+                    }).catch((error) => {
+                      console.error("Error:", error);
+                      finishMatchTemplate([]);
+                      setIsTemplateMatchingLoading(false);
+                    });
+                  }
+                  }
+                  tabIndex={-1}
+                  style={{ width: 22, height: 22 }}
+                  size="small"
+                  variant="outlined"
+                >
+                  <ImageSearchIcon style={{ marginTop: -8, width: 16, height: 16 }} />
+                </IconButton> : null
+            }
             <IconButton
-              onClick={() => onDelete(region)}
+              onClick={() => {
+                onDelete(region)
+              }}
               tabIndex={-1}
               style={{ width: 22, height: 22 }}
               size="small"
