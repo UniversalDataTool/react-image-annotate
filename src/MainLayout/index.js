@@ -173,7 +173,7 @@ export const MainLayout = ({
       onCloseRegionEdit={action("CLOSE_REGION_EDITOR", "region")}
       onDeleteRegion={action("DELETE_REGION", "region")}
       onMatchRegionTemplate={action("MATCH_REGION_LOADING", "region")}
-      finishMatchRegionTemplate={action("MATCH_REGION_FINISHED", "region")}
+      finishMatchRegionTemplate={action("MATCH_REGION_FINISHED", "region", "page_properties")}
       onBeginBoxTransform={action("BEGIN_BOX_TRANSFORM", "box", "directions")}
       onBeginMovePolygonPoint={action(
         "BEGIN_MOVE_POLYGON_POINT",

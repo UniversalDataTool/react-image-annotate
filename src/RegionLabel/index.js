@@ -36,7 +36,7 @@ type Props = {
   onClose: (Region) => null,
   onOpen: (Region) => null,
   onMatchTemplate: (Region) => null,
-  finishMatchTemplate: (Region) => null,
+  finishMatchTemplate: (Region, PageProperties) => null,
   onRegionClassAdded: (cls) => any,
   allowComments?: boolean,
 }
@@ -48,6 +48,13 @@ const allowed_device_type = all_types.filter(x => !allowed_conduit_type.includes
 const conduit_symbols = DeviceList.filter(i => allowed_conduit_type.includes(i.category)).map(symbol => symbol.symbol_name);
 const device_symbols = DeviceList.filter(i => allowed_device_type.includes(i.category)).map(symbol => symbol.symbol_name);
 const getRandomId = () => Math.random().toString().split(".")[1]
+
+const encodeAzureURL = url => {
+  var first = url.substring(0, url.lastIndexOf("/"));
+  var parts = url.split("/");
+  var part = parts[parts.length - 1];
+  return first + "/" + encodeURIComponent(part);
+};
 
 export const RegionLabel = ({
   region,
@@ -202,6 +209,14 @@ export const RegionLabel = ({
                   disabled={isTemplateMatchingLoading}
                   onClick={() => {
                     setIsTemplateMatchingLoading(true);
+                    // TODO: get user_id, doc_id, page_id, threshold from the parent component above annotator
+                    let page_properties = {
+                      "user_id": 80808080,
+                      "doc_id": 80808080,
+                      "page_id": 80808080,
+                      "threshold": 0.7,
+                      "page_index":pageIndex,
+                    };
                     const region_coords = {
                       "x": region.x,
                       "y": region.y,
@@ -212,15 +227,14 @@ export const RegionLabel = ({
                     const endpoint = "https://atmhj61aob.execute-api.us-east-2.amazonaws.com/default/xkey-lambda-ocr";
                     const json_data = {
                       "image_url": imageSrc,
-                      "page_index": pageIndex,
+                      "page_index": page_properties["page_index"],
                       "template_symbol_name": region.cls,
-                      "threshold": 0.7,
-                      "user_id": 80808080,
-                      "doc_id": 80808080,
-                      "page_id": 80808080,
+                      "threshold": page_properties["threshold"],
+                      "user_id": page_properties["user_id"],
+                      "doc_id": page_properties["doc_id"],
+                      "page_id": page_properties["page_id"],
                       "template_coord": region_coords,
                     };
-                    // TODO: call OCR here
                     onMatchTemplate(region);
                     fetch(endpoint, {
                       method: "POST", // or 'PUT'
@@ -252,11 +266,11 @@ export const RegionLabel = ({
                         new_region["color"] = region.color;
                         return new_region;
                       });
-                      finishMatchTemplate(results);
+                      finishMatchTemplate(results, page_properties);
                       setIsTemplateMatchingLoading(false);
                     }).catch((error) => {
                       console.error("Error:", error);
-                      finishMatchTemplate([]);
+                      finishMatchTemplate([], page_properties);
                       setIsTemplateMatchingLoading(false);
                     });
                   }
@@ -316,7 +330,7 @@ export const RegionLabel = ({
               onClick={onCommentInputClick}
               value={region.comment || ""}
               onChange={(event) =>
-                onChange({ ...(region: any), comment: event.target.value })
+                onChange({ ...(region), comment: event.target.value })
               }
             />
           )}
@@ -324,7 +338,7 @@ export const RegionLabel = ({
             <div style={{ marginTop: 4, display: "flex" }}>
               <div style={{ flexGrow: 1 }} />
               <Button
-                onClick={() => onClose(region)}
+                onClick={() => onClose(region)}  // TODO: check icon will disable OCR for this (highlighted) region
                 size="small"
                 variant="contained"
                 color="primary"

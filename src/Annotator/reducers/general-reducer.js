@@ -15,6 +15,24 @@ import setInLocalStorage from "../../utils/set-in-local-storage"
 import DeviceList from "../../RegionLabel/DeviceList"
 
 const getRandomId = () => Math.random().toString().split(".")[1]
+
+const calculateIoU = (box1, box2) => {
+  const x1 = Math.max(box1.x, box2.x);
+  const y1 = Math.max(box1.y, box2.y);
+  const x2 = Math.min(box1.x + box1.w, box2.x + box2.w);
+  const y2 = Math.min(box1.y + box1.h, box2.y + box2.h);
+
+  const intersection = Math.max(0, x2 - x1) * Math.max(0, y2 - y1);
+
+  const box1Area = box1.w * box1.h;
+  const box2Area = box2.w * box2.h;
+
+  const union = box1Area + box2Area - intersection;
+
+  return intersection / union;
+};
+
+
 const color_mapping = {
   "COMMUNICATION SYSTEMS": "#0000FF", // blue
   "FIRE ALARM": "#FF0000",  // red
@@ -843,6 +861,7 @@ export default (state: MainLayoutState, action: Action) => {
       const { region } = action
       const regionIndex = getRegionIndex(action.region)
       if (regionIndex === null) return state
+      // TODO: set highlighted region "isOCR" property to false
       return setIn(state, [...pathToActiveImage, "regions", regionIndex], {
         ...(activeImage.regions || [])[regionIndex],
         editingLabels: false,
@@ -868,14 +887,36 @@ export default (state: MainLayoutState, action: Action) => {
       return setIn(state, ["loadingTemplateMatching"], true);
     }
     case "MATCH_REGION_FINISHED": {
-      let regions = [...(getIn(state, pathToActiveImage).regions || [])]
+      // we need a new _pathToActiveImage to store the path of image where the template matching is applied to, 
+      // to prevent the case that the user may switch to another image while the template matching is still running,
+      // and the result of template matching is applied to the wrong image. 
+      const page_index = action.page_properties.page_index;
+      let _pathToActiveImage = [...pathToActiveImage];
+      _pathToActiveImage[_pathToActiveImage.length - 1] = page_index;
+      let page_properties = action.page_properties;
+      let old_regions = [...(getIn(state, _pathToActiveImage).regions || [])];
+      let new_regions = action.region;
+
+      // remove the new regions that have IoU > 0.5 with the old regions to prevent duplicate regions
+      for (let i = 0; i < old_regions.length; i++) {
+        for (let j = 0; j < new_regions.length; j++) {
+          let iou_temp = calculateIoU(old_regions[i], new_regions[j]);
+          if (iou_temp > 0.5) {
+            new_regions.splice(j, 1);
+            break
+          }
+        }
+      }
+
+      // append new regions to the old regions, and reset highlighting
+      let regions = [...(getIn(state, _pathToActiveImage).regions || [])]
         .map((r) =>
           setIn(r, ["editingLabels"], false).setIn(["highlighted"], false)
         )
         .concat(action.region ? [...action.region] : []);
       let newState = { ...state };
       newState = setIn(newState, ["loadingTemplateMatching"], false);
-      return setIn(newState, [...pathToActiveImage, "regions"], regions);
+      return setIn(newState, [..._pathToActiveImage, "regions"], regions);
     }
 
     case "HEADER_BUTTON_CLICKED": {
