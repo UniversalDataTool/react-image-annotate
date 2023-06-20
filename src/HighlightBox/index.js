@@ -25,7 +25,7 @@ const useStyles = makeStyles({
       stroke: "#696969",
     },
     "&.isOCR" :{
-      stroke: "#ff00ff",
+      stroke: "#c700cb",
     },
     "& path": {
       vectorEffect: "non-scaling-stroke",

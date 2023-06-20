@@ -47,13 +47,13 @@ const RegionComponents = {
   box: memo(({ region, iw, ih }) => (
     <g transform={`translate(${region.x * iw} ${region.y * ih})`}>
       <rect
-        strokeWidth={2}
+        strokeWidth={region.isOCR?1.5:2}
         x={0}
         y={0}
         width={Math.max(region.w * iw, 0)}
         height={Math.max(region.h * ih, 0)}
-        stroke={colorAlpha(region.color, 0.75)}
-        fill={colorAlpha(region.color, 0.25)}
+        stroke={colorAlpha(region.isOCR?"#080808":region.color, region.isOCR?0.75:0.75)}
+        fill={colorAlpha(region.color, 0.5)}
       />
     </g>
   )),
