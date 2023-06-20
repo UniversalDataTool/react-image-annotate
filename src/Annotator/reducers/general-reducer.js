@@ -861,10 +861,10 @@ export default (state: MainLayoutState, action: Action) => {
       const { region } = action
       const regionIndex = getRegionIndex(action.region)
       if (regionIndex === null) return state
-      // TODO: set highlighted region "isOCR" property to false
       return setIn(state, [...pathToActiveImage, "regions", regionIndex], {
         ...(activeImage.regions || [])[regionIndex],
         editingLabels: false,
+        isOCR: false
       })
     }
     case "DELETE_REGION": {

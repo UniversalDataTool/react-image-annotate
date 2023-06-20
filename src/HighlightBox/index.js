@@ -21,10 +21,15 @@ const useStyles = makeStyles({
     "&:not(.highlighted):hover": {
       opacity: 0.6,
     },
+    "&:not(.isOCR)":{
+      stroke: "#696969",
+    },
+    "&.isOCR" :{
+      stroke: "#ff00ff",
+    },
     "& path": {
       vectorEffect: "non-scaling-stroke",
       strokeWidth: 2,
-      stroke: "#696969",
       fill: "none",
       strokeDasharray: 5,
       animationName: "$borderDance",
@@ -100,6 +105,7 @@ export const HighlightBox = ({
       key={r.id}
       className={classnames(classes.highlightBox, {
         highlighted: r.highlighted,
+        isOCR: r.isOCR,
       })}
       {...mouseEvents}
       {...(!zoomWithPrimary && !dragWithPrimary
