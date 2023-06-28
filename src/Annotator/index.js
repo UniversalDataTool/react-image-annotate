@@ -199,7 +199,7 @@ export const Annotator = ({
   return (
     <HotKeys keyMap={defaultKeyMap}>
       <SettingsProvider>
-        <Main Layout
+        <MainLayout
           RegionEditLabel={RegionEditLabel}
           alwaysShowNextButton={Boolean(onNextImage)}
           alwaysShowPrevButton={Boolean(onPrevImage)}
