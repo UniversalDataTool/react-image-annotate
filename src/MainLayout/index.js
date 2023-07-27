@@ -383,6 +383,8 @@ export const MainLayout = ({
                 onDeleteRegion={action("DELETE_REGION", "region")}
                 onChangeRegion={action("CHANGE_REGION", "region")}
                 onMatchRegionTemplate={action("MATCH_REGION", "region")}
+                allRegionVisibility={activeImage.allRegionVisibility}
+                setAllRegionVisibility={action("CHANGE_ALL_REGION_VISIBILITY")}
               />,
               state.keyframes && (
                 <KeyframesSelector

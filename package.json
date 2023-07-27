@@ -61,7 +61,18 @@
     "prettier:test": "prettier --check \"src/**/*.js\""
   },
   "eslintConfig": {
-    "extends": "react-app"
+    "extends": "react-app",
+    "parser": "jsx",
+    "parserOptions": {
+      "babelOptions": {
+        "presets": [
+          [
+            "babel-preset-react-app",
+            false
+          ]
+        ]
+      }
+    }
   },
   "browserslist": [
     ">0.2%",
