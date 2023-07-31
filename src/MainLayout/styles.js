@@ -7,7 +7,7 @@ export default {
     flexDirection: "column",
     height: "100%",
     maxHeight: "100vh",
-    backgroundColor: "#fff",
+    backgroundColor: "#121212",
     overflow: "hidden",
     "&.fullscreen": {
       position: "absolute",
@@ -20,7 +20,7 @@ export default {
   },
   headerTitle: {
     fontWeight: "bold",
-    color: grey[700],
+    color: '#fff',
     paddingLeft: 16,
   },
 }

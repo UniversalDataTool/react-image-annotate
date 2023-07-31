@@ -30,7 +30,7 @@ import useImpliedVideoRegions from "./use-implied-video-regions"
 import useKey from "use-key-hook"
 import { useSettings } from "../SettingsProvider"
 import { withHotKeys } from "react-hotkeys"
-
+import favicon from "./favicon.png"
 // import Fullscreen from "../Fullscreen"
 
 const emptyArr = []
@@ -102,7 +102,8 @@ export const MainLayout = ({
     return fn
   }
 
-  const { currentImageIndex, pathToActiveImage, activeImage } = getActiveImage(state)
+  const { currentImageIndex, pathToActiveImage, activeImage } =
+    getActiveImage(state)
   let nextImage
   if (currentImageIndex !== null) {
     nextImage = state.images[currentImageIndex + 1]
@@ -173,7 +174,11 @@ export const MainLayout = ({
       onCloseRegionEdit={action("CLOSE_REGION_EDITOR", "region")}
       onDeleteRegion={action("DELETE_REGION", "region")}
       onMatchRegionTemplate={action("MATCH_REGION_LOADING", "region")}
-      finishMatchRegionTemplate={action("MATCH_REGION_FINISHED", "region", "page_properties")}
+      finishMatchRegionTemplate={action(
+        "MATCH_REGION_FINISHED",
+        "region",
+        "page_properties"
+      )}
       onBeginBoxTransform={action("BEGIN_BOX_TRANSFORM", "box", "directions")}
       onBeginMovePolygonPoint={action(
         "BEGIN_MOVE_POLYGON_POINT",
@@ -257,7 +262,13 @@ export const MainLayout = ({
                   keyframes={state.keyframes}
                 />
               ) : activeImage ? (
-                <div className={classes.headerTitle}>{activeImage.name}</div>
+                <div className={classes.headerTitle} style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                }}>
+                  <img src={favicon} title={activeImage.name} />
+                  {activeImage.name}
+                </div>
               ) : null,
             ].filter(Boolean)}
             headerItems={[
