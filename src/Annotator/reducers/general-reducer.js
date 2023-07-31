@@ -1,7 +1,7 @@
 // @flow
 import type { MainLayoutState, Action } from "../../MainLayout/types"
 import { moveRegion } from "../../ImageCanvas/region-tools.js"
-import { getIn, setIn, updateIn } from "seamless-immutable"
+import { getIn, setIn, updateIn, set, merge } from "seamless-immutable"
 import moment from "moment"
 import isEqual from "lodash/isEqual"
 import getActiveImage from "./get-active-image"
@@ -167,6 +167,19 @@ export default (state: MainLayoutState, action: Action) => {
     }
     case "SELECT_CLASSIFICATION": {
       return setIn(state, ["selectedCls"], action.cls)
+    }
+    case "CHANGE_ALL_REGION_VISIBILITY": {
+      let newState = {...state};
+      let current_visibility = getIn(state, ["images", currentImageIndex, "allRegionVisibility"]);
+      let new_visibility = current_visibility === undefined || current_visibility === true ? false : true;
+      let newImage = getIn(newState, ["images", currentImageIndex]);
+      newImage = merge(newImage, [{allRegionVisibility: new_visibility}]);
+      let newRegions = getIn(newState, ["images", currentImageIndex, "regions"]);
+      newRegions = newRegions.map((region) => ({...region, visible: new_visibility}));
+      newImage = setIn(newImage, ["regions"], newRegions);
+      newState = setIn(newState, ["images", currentImageIndex], newImage);
+      return newState;
+
     }
     case "CHANGE_REGION": {
       const regionIndex = getRegionIndex(action.region)

@@ -16,6 +16,7 @@ import VisibleOffIcon from "@material-ui/icons/VisibilityOff"
 import styles from "./styles"
 import classnames from "classnames"
 import isEqual from "lodash/isEqual"
+import Tooltip from "@material-ui/core/Tooltip";
 
 const useStyles = makeStyles(styles)
 
@@ -80,7 +81,7 @@ const RowLayout = ({
   )
 }
 
-const RowHeader = () => {
+const RowHeader = ({allRegionVisibility, setAllRegionVisibility}) => {
   return (
     <RowLayout
       header
@@ -90,7 +91,28 @@ const RowHeader = () => {
       area={<PieChartIcon className="icon" />}
       trash={<TrashIcon className="icon" />}
       lock={<LockIcon className="icon" />}
-      visible={<VisibleIcon className="icon" />}
+      visible={
+        allRegionVisibility === true || allRegionVisibility === undefined ? (
+          <Tooltip title="Hide all regions (h)">
+            <VisibleIcon
+              onClick={() => {
+                setAllRegionVisibility(false);
+              }}
+              className="icon2"
+            />
+          </Tooltip>
+        ) : (
+          <Tooltip title="Show all regions (h)">
+            <VisibleOffIcon
+              onClick={() => {
+                setAllRegionVisibility(true);
+              }}
+              className="icon2"
+            />
+          </Tooltip>
+        )
+
+      }
     />
   )
 }
@@ -167,6 +189,8 @@ export const RegionSelectorSidebarBox = ({
   onDeleteRegion,
   onChangeRegion,
   onSelectRegion,
+  allRegionVisibility,
+  setAllRegionVisibility
 }) => {
   const classes = useStyles()
   return (
@@ -177,7 +201,10 @@ export const RegionSelectorSidebarBox = ({
       expandedByDefault
     >
       <div className={classes.container}>
-        <MemoRowHeader />
+        <MemoRowHeader
+          allRegionVisibility={allRegionVisibility}
+          setAllRegionVisibility={setAllRegionVisibility}
+        />
         <HeaderSep />
         {regions.map((r, i) => (
           <MemoRow

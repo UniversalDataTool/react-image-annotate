@@ -72,6 +72,11 @@ export const defaultHotkeys = [
     description: "Undo latest change",
     binding: "Ctrl+z",
   },
+  {
+    id: "hide",
+    description: "hide regions of current image",
+    binding: "h"
+  },
 ]
 export const defaultKeyMap = {}
 for (const { id, binding } of defaultHotkeys) defaultKeyMap[id] = binding
@@ -159,6 +164,11 @@ export const useDispatchHotkeyHandlers = ({ dispatch }) => {
       undo: () => {
         dispatch({
           type: "RESTORE_HISTORY",
+        })
+      },
+      hide: () => {
+        dispatch({
+          type: "CHANGE_ALL_REGION_VISIBILITY"
         })
       },
       // TODO
