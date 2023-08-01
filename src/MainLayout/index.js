@@ -30,7 +30,6 @@ import useImpliedVideoRegions from "./use-implied-video-regions"
 import useKey from "use-key-hook"
 import { useSettings } from "../SettingsProvider"
 import { withHotKeys } from "react-hotkeys"
-import favicon from "./favicon.png"
 import { Input } from "@material-ui/core"
 // import Fullscreen from "../Fullscreen"
 
@@ -83,6 +82,9 @@ export const MainLayout = ({
   const classes = useStyles()
   const settings = useSettings()
   const fullScreenHandle = useFullScreenHandle()
+
+  var path = process.env.PUBLIC_URL
+  var image = "/images/favicon.png"
 
   const memoizedActionFns = useRef({})
   const action = (type: string, ...params: Array<string>) => {
@@ -273,7 +275,7 @@ export const MainLayout = ({
                     alignItems: "center",
                   }}
                 >
-                  <img src={favicon} title={activeImage.name} />
+                  <img src={path+image} title={activeImage.name} />
                   <div>{title}</div>
                   <Input
                     style={{
