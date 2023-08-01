@@ -16,7 +16,8 @@ import VisibleOffIcon from "@material-ui/icons/VisibilityOff"
 import styles from "./styles"
 import classnames from "classnames"
 import isEqual from "lodash/isEqual"
-import Tooltip from "@material-ui/core/Tooltip";
+import Tooltip from "@material-ui/core/Tooltip"
+import { FormControlLabel, FormGroup, Switch } from "@material-ui/core"
 
 const useStyles = makeStyles(styles)
 
@@ -81,7 +82,11 @@ const RowLayout = ({
   )
 }
 
-const RowHeader = ({allRegionVisibility, setAllRegionVisibility}) => {
+const RowHeader = ({ allRegionVisibility, setAllRegionVisibility }) => {
+  const handleChange = (event) => {
+    setAllRegionVisibility(event.target.checked)
+  }
+
   return (
     <RowLayout
       header
@@ -92,26 +97,18 @@ const RowHeader = ({allRegionVisibility, setAllRegionVisibility}) => {
       trash={<TrashIcon className="icon" />}
       lock={<LockIcon className="icon" />}
       visible={
-        allRegionVisibility === true || allRegionVisibility === undefined ? (
-          <Tooltip title="Hide all regions (h)">
-            <VisibleIcon
-              onClick={() => {
-                setAllRegionVisibility(false);
-              }}
-              className="icon2"
-            />
-          </Tooltip>
-        ) : (
-          <Tooltip title="Show all regions (h)">
-            <VisibleOffIcon
-              onClick={() => {
-                setAllRegionVisibility(true);
-              }}
-              className="icon2"
-            />
-          </Tooltip>
-        )
-
+        <FormGroup>
+          <FormControlLabel
+            control={
+              <Switch checked={allRegionVisibility} onChange={handleChange} />
+            }
+            label={
+              allRegionVisibility === true || allRegionVisibility === undefined
+                ? "Hide all regions (h)"
+                : "Show all regions (h)"
+            }
+          />
+        </FormGroup>
       }
     />
   )
@@ -190,7 +187,7 @@ export const RegionSelectorSidebarBox = ({
   onChangeRegion,
   onSelectRegion,
   allRegionVisibility,
-  setAllRegionVisibility
+  setAllRegionVisibility,
 }) => {
   const classes = useStyles()
   return (
