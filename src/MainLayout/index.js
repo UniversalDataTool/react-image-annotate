@@ -2,7 +2,7 @@
 
 import type { Action, MainLayoutState } from "./types"
 import { FullScreen, useFullScreenHandle } from "react-full-screen"
-import React, { useCallback, useRef } from "react"
+import React, { useCallback, useRef, useState } from "react"
 import { makeStyles, styled } from "@material-ui/core/styles"
 
 import ClassSelectionMenu from "../ClassSelectionMenu"
@@ -31,6 +31,7 @@ import useKey from "use-key-hook"
 import { useSettings } from "../SettingsProvider"
 import { withHotKeys } from "react-hotkeys"
 import favicon from "./favicon.png"
+import { Input } from "@material-ui/core"
 // import Fullscreen from "../Fullscreen"
 
 const emptyArr = []
@@ -221,6 +222,9 @@ export const MainLayout = ({
     dispatch({ type: "HEADER_BUTTON_CLICKED", buttonName: item.name })
   })
 
+  const [pageName, setPageName] = useState(activeImage ? activeImage.name : "")
+  const title = "Xkey AiE Annotation Tool"
+
   const debugModeOn = Boolean(window.localStorage.$ANNOTATE_DEBUG_MODE && state)
   const nextImageHasRegions =
     !nextImage || (nextImage.regions && nextImage.regions.length > 0)
@@ -262,12 +266,26 @@ export const MainLayout = ({
                   keyframes={state.keyframes}
                 />
               ) : activeImage ? (
-                <div className={classes.headerTitle} style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                }}>
+                <div
+                  className={classes.headerTitle}
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                  }}
+                >
                   <img src={favicon} title={activeImage.name} />
-                  {activeImage.name}
+                  <div>{title}</div>
+                  <Input
+                    style={{
+                      marginLeft: "16px",
+                      color: "white",
+                    }}
+                    defaultValue={pageName}
+                    onChange={(e) => {
+                      e.preventDefault()
+                      setPageName(pageName)
+                    }}
+                  ></Input>
                 </div>
               ) : null,
             ].filter(Boolean)}
