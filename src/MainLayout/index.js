@@ -31,6 +31,7 @@ import useKey from "use-key-hook"
 import { useSettings } from "../SettingsProvider"
 import { withHotKeys } from "react-hotkeys"
 import { Input } from "@material-ui/core"
+import favicon from "../../public/images/favicon.png"
 // import Fullscreen from "../Fullscreen"
 
 const emptyArr = []
@@ -82,9 +83,6 @@ export const MainLayout = ({
   const classes = useStyles()
   const settings = useSettings()
   const fullScreenHandle = useFullScreenHandle()
-
-  var path = process.env.PUBLIC_URL
-  var image = "/images/favicon.png"
 
   const memoizedActionFns = useRef({})
   const action = (type: string, ...params: Array<string>) => {
@@ -275,7 +273,7 @@ export const MainLayout = ({
                     alignItems: "center",
                   }}
                 >
-                  <img src={path+image} title={activeImage.name} />
+                  <img src={favicon} title={activeImage.name} />
                   <div>{title}</div>
                   <Input
                     style={{
