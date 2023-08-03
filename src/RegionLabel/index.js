@@ -15,7 +15,7 @@ import Select from "react-select"
 import CreatableSelect from "react-select/creatable"
 import { InputAdornment } from "@material-ui/core"
 import { asMutable } from "seamless-immutable"
-import SquareFootIcon from '@mui/icons-material/SquareFoot'
+import LinearScaleIcon from '@material-ui/icons/LinearScale';
 import DeviceList from "./DeviceList"
 import ImageSearchIcon from '@material-ui/icons/ImageSearch';
 
@@ -163,7 +163,7 @@ export const RegionLabel = ({
           {region.cls && (
             <div className="name">
               {region.type === "scale" ?
-                <SquareFootIcon style={{ color: region.color }}/>
+                <LinearScaleIcon style={{ color: region.color }}/>
                 : <div
                   className="circle"
                   style={{ backgroundColor: region.color }}
