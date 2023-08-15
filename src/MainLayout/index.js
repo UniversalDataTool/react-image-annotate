@@ -273,6 +273,8 @@ export const MainLayout = ({
                   style={{
                     display: "flex",
                     alignItems: "center",
+                    justifyContent: "center",
+                    paddingLeft: "64px",
                   }}
                 >
                   <img src={favicon} title={activeImage.name} />
