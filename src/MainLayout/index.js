@@ -32,7 +32,7 @@ import { useSettings } from "../SettingsProvider"
 import { withHotKeys } from "react-hotkeys"
 import { Input } from "@material-ui/core"
 import ToggleSidebarBox from "../ToggleSidebarBox"
-import favicon from '../../public/images/favicon.png'
+import favicon from "../../public/images/favicon.png"
 // import favicon from "./favicon.png"
 // import Fullscreen from "../Fullscreen"
 
@@ -268,29 +268,40 @@ export const MainLayout = ({
                   keyframes={state.keyframes}
                 />
               ) : activeImage ? (
-                <div
-                  className={classes.headerTitle}
-                  style={{
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    paddingLeft: "64px",
-                  }}
-                >
-                  <img src={favicon} title={activeImage.name} />
-                  <div>{title}</div>
-                  <Input
+                <>
+                  <div
+                    className={classes.headerTitle}
                     style={{
-                      marginLeft: "16px",
-                      color: "white",
+                      display: "flex",
+                      alignItems: "center",
+                      flexDirection: "row",
                     }}
-                    defaultValue={pageName}
-                    onChange={(e) => {
-                      e.preventDefault()
-                      setPageName(pageName)
-                    }}
-                  ></Input>
-                </div>
+                  >
+                    <img src={favicon} title={activeImage.name} />
+                    <div
+                      class="center"
+                      style={{
+                        display: "flex",
+                        margin: "auto",
+                        textAlign: "center",
+                        alignItems: "center",
+                      }}
+                    >
+                      <div>{title}</div>
+                      <Input
+                        style={{
+                          marginLeft: "16px",
+                          color: "white",
+                        }}
+                        defaultValue={pageName}
+                        onChange={(e) => {
+                          e.preventDefault()
+                          setPageName(pageName)
+                        }}
+                      ></Input>
+                    </div>
+                  </div>
+                </>
               ) : null,
             ].filter(Boolean)}
             headerItems={[
