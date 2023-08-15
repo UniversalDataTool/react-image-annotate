@@ -72,7 +72,6 @@ Object.keys(ColorMapping).forEach(
     })
 )
 
-
 const RowLayout = ({ visible, onClick }) => {
   const classes = useStyles()
   const [mouseOver, changeMouseOver] = useState(false)
