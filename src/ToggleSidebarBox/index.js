@@ -151,7 +151,26 @@ const RowHeader = ({ onRegionToggle }) => {
                         onChange={handleChange}
                       />
                     }
-                    label={device}
+                    label={
+                      <div
+                        style={{
+                          display: "flex",
+                          flexDirection: "row",
+                          alignItems: "center",
+                        }}
+                      >
+                        <div style={{ paddingRight: 10 }}>{device}</div>
+                        <div
+                          style={{
+                            backgroundColor: ColorMapping[device],
+                            color: "white",
+                            width: 10,
+                            height: 10,
+                            borderRadius: 5,
+                          }}
+                        />
+                      </div>
+                    }
                   />
                 </div>
               )
