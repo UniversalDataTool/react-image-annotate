@@ -22,14 +22,14 @@ import TableHead from "@material-ui/core/TableHead"
 import TableRow from "@material-ui/core/TableRow"
 import Button from "@material-ui/core/Button"
 import EditIcon from "@material-ui/icons/Edit"
-import KeyboardIcon from '@material-ui/icons/Keyboard';
+import KeyboardIcon from "@material-ui/icons/Keyboard"
 import { defaultHotkeys } from "../ShortcutsManager"
 
 const useStyles = makeStyles({
   emptyText: {
     fontSize: 14,
     fontWeight: "bold",
-    color: grey[500],
+    color: "white",
     textAlign: "center",
     padding: 20,
   },
@@ -47,7 +47,7 @@ export const HistorySidebarBox = ({
   return (
     <SidebarBoxContainer
       title="Shortcuts"
-      icon={<KeyboardIcon style={{ color: grey[700] }} />}
+      icon={<KeyboardIcon style={{ color: "white" }} />}
       expandedByDefault
       noScroll
     >
@@ -55,24 +55,25 @@ export const HistorySidebarBox = ({
         <Table className={classes.table} aria-label="simple table">
           <TableHead>
             <TableRow>
-              <TableCell>Action</TableCell>
-              <TableCell align="center">Keyboard Shortcut</TableCell>
+              <TableCell style={{ color: "white" }}>Action</TableCell>
+              <TableCell style={{ color: "white" }} align="center">
+                Keyboard Shortcut
+              </TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
-            {defaultHotkeys.map(row => (
-              row.binding?
-              <TableRow>
-              <TableCell>
-                {row.description}
-              </TableCell>
-              <TableCell align="center">
-                {row.binding.toUpperCase()}
-              </TableCell>
-            </TableRow>
-            :
-            null
-            ))}
+            {defaultHotkeys.map((row) =>
+              row.binding ? (
+                <TableRow>
+                  <TableCell style={{ color: "white" }}>
+                    {row.description}
+                  </TableCell>
+                  <TableCell style={{ color: "white" }} align="center">
+                    {row.binding.toUpperCase()}
+                  </TableCell>
+                </TableRow>
+              ) : null
+            )}
           </TableBody>
         </Table>
       </TableContainer>
@@ -80,4 +81,4 @@ export const HistorySidebarBox = ({
   )
 }
 
-export default HistorySidebarBox;
+export default HistorySidebarBox

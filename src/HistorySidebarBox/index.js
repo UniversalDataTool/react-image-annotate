@@ -14,18 +14,19 @@ import moment from "moment"
 import { grey } from "@material-ui/core/colors"
 import isEqual from "lodash/isEqual"
 import Box from "@material-ui/core/Box"
+import { Typography } from "@material-ui/core"
 
 const useStyles = makeStyles({
   emptyText: {
     fontSize: 14,
     fontWeight: "bold",
-    color: grey[500],
+    color: "white",
     textAlign: "center",
     padding: 20,
   },
 })
 
-const listItemTextStyle = { paddingLeft: 16 }
+const listItemTextStyle = { paddingLeft: 16, color: "white" }
 
 export const HistorySidebarBox = ({
   history,
@@ -38,7 +39,7 @@ export const HistorySidebarBox = ({
   return (
     <SidebarBoxContainer
       title="History"
-      icon={<HistoryIcon style={{ color: grey[700] }} />}
+      icon={<HistoryIcon style={{ color: "white" }} />}
       expandedByDefault
     >
       <List>
@@ -49,12 +50,25 @@ export const HistorySidebarBox = ({
           <ListItem button dense key={i}>
             <ListItemText
               style={listItemTextStyle}
-              primary={name}
-              secondary={moment(time).format("LT")}
+              disableTypography
+              primary={
+                <Typography variant="body2" style={{ color: "#FFFFFF" }}>
+                  {name}
+                </Typography>
+              }
+              secondary={
+                <Typography variant="body2" style={{ color: "#FFFFFF" }}>
+                  {moment(time).format("LT")}
+                </Typography>
+              }
             />
             {i === 0 && (
               <ListItemSecondaryAction onClick={() => onRestoreHistory()}>
-                <IconButton>
+                <IconButton
+                  style={{
+                    color: "white",
+                  }}
+                >
                   <UndoIcon />
                 </IconButton>
               </ListItemSecondaryAction>
