@@ -10,6 +10,7 @@ import DebugBox from "../DebugSidebarBox"
 import TagsSidebarBox from "../TagsSidebarBox"
 import KeyframesSelector from "../KeyframesSelectorSidebarBox"
 import type { Region } from "../ImageCanvas/region-tools.js"
+import ToggleSidebarBox from "../ToggleSidebarBox"
 
 const Container = styled("div")({})
 
@@ -72,9 +73,9 @@ export const Sidebar = ({
   return (
     <Container>
       {debug && <DebugBox state={debug} lastAction={debug.lastAction} />}
-      {taskDescription && (taskDescription || "").length > 1 && (
+      {/* {taskDescription && (taskDescription || "").length > 1 && (
         <TaskDescription description={taskDescription} />
-      )}
+      )} */}
       {labelImages && (
         <TagsSidebarBox
           currentImage={currentImage}

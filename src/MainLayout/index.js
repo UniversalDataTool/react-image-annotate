@@ -31,7 +31,9 @@ import useKey from "use-key-hook"
 import { useSettings } from "../SettingsProvider"
 import { withHotKeys } from "react-hotkeys"
 import { Input } from "@material-ui/core"
-import favicon from "../../public/images/favicon.png"
+import ToggleSidebarBox from "../ToggleSidebarBox"
+import favicon from '../../public/images/favicon.png'
+// import favicon from "./favicon.png"
 // import Fullscreen from "../Fullscreen"
 
 const emptyArr = []
@@ -388,9 +390,9 @@ export const MainLayout = ({
               debugModeOn && (
                 <DebugBox state={debugModeOn} lastAction={state.lastAction} />
               ),
-              state.taskDescription && (
-                <TaskDescription description={state.taskDescription} />
-              ),
+              // state.taskDescription && (
+              //   <TaskDescription description={state.taskDescription} />
+              // ),
               state.labelImages && (
                 <TagsSidebarBox
                   currentImage={activeImage}
@@ -406,14 +408,28 @@ export const MainLayout = ({
               //     images={state.images}
               //   />
               // ),
+              <ToggleSidebarBox
+                regions={activeImage ? activeImage.regions : emptyArr}
+                onRegionToggle={(event) => {
+                  dispatch({
+                    type: "TOGGLE_VISIBILITY",
+                    category: event.target.id,
+                  })
+                }}
+              />,
+
               <RegionSelector
                 regions={activeImage ? activeImage.regions : emptyArr}
                 onSelectRegion={action("SELECT_REGION", "region")}
                 onDeleteRegion={action("DELETE_REGION", "region")}
                 onChangeRegion={action("CHANGE_REGION", "region")}
                 onMatchRegionTemplate={action("MATCH_REGION", "region")}
-                allRegionVisibility={activeImage.allRegionVisibility}
-                setAllRegionVisibility={action("CHANGE_ALL_REGION_VISIBILITY")}
+                onRegionToggle={(event) => {
+                  dispatch({
+                    type: "TOGGLE_VISIBILITY",
+                    category: event.target.id,
+                  })
+                }}
               />,
               state.keyframes && (
                 <KeyframesSelector

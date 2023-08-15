@@ -17,44 +17,43 @@ import DeviceList from "../../RegionLabel/DeviceList"
 const getRandomId = () => Math.random().toString().split(".")[1]
 
 const calculateIoU = (box1, box2) => {
-  const x1 = Math.max(box1.x, box2.x);
-  const y1 = Math.max(box1.y, box2.y);
-  const x2 = Math.min(box1.x + box1.w, box2.x + box2.w);
-  const y2 = Math.min(box1.y + box1.h, box2.y + box2.h);
+  const x1 = Math.max(box1.x, box2.x)
+  const y1 = Math.max(box1.y, box2.y)
+  const x2 = Math.min(box1.x + box1.w, box2.x + box2.w)
+  const y2 = Math.min(box1.y + box1.h, box2.y + box2.h)
 
-  const intersection = Math.max(0, x2 - x1) * Math.max(0, y2 - y1);
+  const intersection = Math.max(0, x2 - x1) * Math.max(0, y2 - y1)
 
-  const box1Area = box1.w * box1.h;
-  const box2Area = box2.w * box2.h;
+  const box1Area = box1.w * box1.h
+  const box2Area = box2.w * box2.h
 
-  const union = box1Area + box2Area - intersection;
+  const union = box1Area + box2Area - intersection
 
-  return intersection / union;
-};
-
+  return intersection / union
+}
 
 const color_mapping = {
   "COMMUNICATION SYSTEMS": "#0000FF", // blue
-  "FIRE ALARM": "#FF0000",  // red
-  "LIGHTING": "#FFFF00",  // yellow
-  "MECHANICAL/ELECTRICAL": "#800080",  // purple
-  "POWER": "#008000",  // green
-  "SECURITY SYSTEMS": "#545454",  // light grey
-  "CONDUIT AND WIRE": "#00FFFF",  // bright cyan
-  "FEEDERS": "#66FF00",  // bright green
-  "CABLE": "#C4A484",  // everything below is light brown
-  "TRAY": "#C4A484",
-  "WIREMOLD": "#C4A484",
-  "BREAKERS": "#C4A484",
-  "WARNING": "#FFA500",  // orange
-
+  "FIRE ALARM": "#FF0000", // red
+  LIGHTING: "#FFFF00", // yellow
+  "MECHANICAL/ELECTRICAL": "#800080", // purple
+  POWER: "#008000", // green
+  "SECURITY SYSTEMS": "#545454", // light grey
+  "CONDUIT AND WIRE": "#00FFFF", // bright cyan
+  FEEDERS: "#66FF00", // bright green
+  CABLE: "#C4A484", // everything below is light brown
+  TRAY: "#C4A484",
+  WIREMOLD: "#C4A484",
+  BREAKERS: "#C4A484",
+  WARNING: "#FFA500", // orange
 }
+
 const getColor = (device_name) => {
-  let device_type = DeviceList.find(o => o.symbol_name === device_name);
+  let device_type = DeviceList.find((o) => o.symbol_name === device_name)
   if (device_type) {
-    return color_mapping[device_type["category"]];
+    return color_mapping[device_type["category"]]
   } else {
-    return "#C4A484";
+    return "#C4A484"
   }
 }
 export default (state: MainLayoutState, action: Action) => {
@@ -149,6 +148,17 @@ export default (state: MainLayoutState, action: Action) => {
     )
   }
 
+  const getCategoryBySymbolName = (symbolName) => {
+    const filteredDevice = DeviceList.find(
+      (device) => device.symbol_name === symbolName
+    )
+    if (filteredDevice) {
+      return filteredDevice.category
+    } else {
+      return undefined
+    }
+  }
+
   const setNewImage = (img: string | Object, index: number) => {
     let { src, frameTime } = typeof img === "object" ? img : { src: img }
     return setIn(
@@ -175,24 +185,46 @@ export default (state: MainLayoutState, action: Action) => {
       let newImage = getIn(newState, ["images", currentImageIndex]);
       newImage = merge(newImage, [{allRegionVisibility: new_visibility}]);
       let newRegions = getIn(newState, ["images", currentImageIndex, "regions"]);
+      if (!newRegions) {
+        return state;
+      }
       newRegions = newRegions.map((region) => ({...region, visible: new_visibility}));
       newImage = setIn(newImage, ["regions"], newRegions);
       newState = setIn(newState, ["images", currentImageIndex], newImage);
       return newState;
-
+    }
+    case "TOGGLE_VISIBILITY": {
+      let newState = { ...state }
+      let newImage = getIn(newState, ["images", currentImageIndex])
+      let newRegions = getIn(newState, ["images", currentImageIndex, "regions"])
+      if (!newRegions) {
+        return state
+      }
+      newRegions = newRegions.map((region) => ({
+        ...region,
+        visible:
+          region.category === action.category
+            ? !region.visible
+            : region.visible,
+      }))
+      newImage = setIn(newImage, ["regions"], newRegions)
+      newState = setIn(newState, ["images", currentImageIndex], newImage)
+      return newState
     }
     case "CHANGE_REGION": {
       const regionIndex = getRegionIndex(action.region)
       if (regionIndex === null) return state
       const oldRegion = activeImage.regions[regionIndex]
       if (oldRegion.cls !== action.region.cls) {
+        action.region.color = getColor(action.region.cls)
+        action.region.visible = true
+        action.region.category = getCategoryBySymbolName(action.region.cls)
         state = saveToHistory(state, "Change Region Classification")
         const clsIndex = state.regionClsList.indexOf(action.region.cls)
         if (clsIndex !== -1) {
           state = setIn(state, ["selectedCls"], action.region.cls)
-          action.region.color = getColor(action.region.cls)
         }
-      } 
+      }
       if (!isEqual(oldRegion.tags, action.region.tags)) {
         state = saveToHistory(state, "Change Region Tags")
       }
@@ -600,7 +632,8 @@ export default (state: MainLayoutState, action: Action) => {
 
       let newRegion
       let defaultRegionCls = state.selectedCls,
-        defaultRegionColor = "#C4A484"
+        defaultRegionColor = "#C4A484",
+        category = getCategoryBySymbolName(defaultRegionCls)
 
       const clsIndex = (state.regionClsList || []).indexOf(defaultRegionCls)
       if (clsIndex !== -1) {
@@ -619,6 +652,7 @@ export default (state: MainLayoutState, action: Action) => {
             color: defaultRegionColor,
             id: getRandomId(),
             cls: defaultRegionCls,
+            visible: true,
           }
           break
         }
@@ -635,6 +669,8 @@ export default (state: MainLayoutState, action: Action) => {
             color: defaultRegionColor,
             cls: defaultRegionCls,
             id: getRandomId(),
+            category: getCategoryBySymbolName(defaultRegionCls),
+            visible: true,
           }
           state = setIn(state, ["mode"], {
             mode: "RESIZE_BOX",
@@ -877,7 +913,7 @@ export default (state: MainLayoutState, action: Action) => {
       return setIn(state, [...pathToActiveImage, "regions", regionIndex], {
         ...(activeImage.regions || [])[regionIndex],
         editingLabels: false,
-        isOCR: false
+        isOCR: false,
       })
     }
     case "DELETE_REGION": {
@@ -897,25 +933,25 @@ export default (state: MainLayoutState, action: Action) => {
       )
     }
     case "MATCH_REGION_LOADING": {
-      return setIn(state, ["loadingTemplateMatching"], true);
+      return setIn(state, ["loadingTemplateMatching"], true)
     }
     case "MATCH_REGION_FINISHED": {
-      // we need a new _pathToActiveImage to store the path of image where the template matching is applied to, 
+      // we need a new _pathToActiveImage to store the path of image where the template matching is applied to,
       // to prevent the case that the user may switch to another image while the template matching is still running,
-      // and the result of template matching is applied to the wrong image. 
-      const page_index = action.page_properties.page_index;
-      let _pathToActiveImage = [...pathToActiveImage];
-      _pathToActiveImage[_pathToActiveImage.length - 1] = page_index;
-      let page_properties = action.page_properties;
-      let old_regions = [...(getIn(state, _pathToActiveImage).regions || [])];
-      let new_regions = action.region;
+      // and the result of template matching is applied to the wrong image.
+      const page_index = action.page_properties.page_index
+      let _pathToActiveImage = [...pathToActiveImage]
+      _pathToActiveImage[_pathToActiveImage.length - 1] = page_index
+      let page_properties = action.page_properties
+      let old_regions = [...(getIn(state, _pathToActiveImage).regions || [])]
+      let new_regions = action.region
 
       // remove the new regions that have IoU > 0.5 with the old regions to prevent duplicate regions
       for (let i = 0; i < old_regions.length; i++) {
         for (let j = 0; j < new_regions.length; j++) {
-          let iou_temp = calculateIoU(old_regions[i], new_regions[j]);
+          let iou_temp = calculateIoU(old_regions[i], new_regions[j])
           if (iou_temp > 0.5) {
-            new_regions.splice(j, 1);
+            new_regions.splice(j, 1)
             break
           }
         }
@@ -926,10 +962,10 @@ export default (state: MainLayoutState, action: Action) => {
         .map((r) =>
           setIn(r, ["editingLabels"], false).setIn(["highlighted"], false)
         )
-        .concat(action.region ? [...action.region] : []);
-      let newState = { ...state };
-      newState = setIn(newState, ["loadingTemplateMatching"], false);
-      return setIn(newState, [..._pathToActiveImage, "regions"], regions);
+        .concat(action.region ? [...action.region] : [])
+      let newState = { ...state }
+      newState = setIn(newState, ["loadingTemplateMatching"], false)
+      return setIn(newState, [..._pathToActiveImage, "regions"], regions)
     }
 
     case "HEADER_BUTTON_CLICKED": {

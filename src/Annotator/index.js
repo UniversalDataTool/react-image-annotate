@@ -145,6 +145,7 @@ export const Annotator = ({
       keypointDefinitions,
       allowComments,
       loadingTemplateMatching: false,
+      toggleList: [],
       ...(annotationType === "image"
         ? {
           selectedImage,

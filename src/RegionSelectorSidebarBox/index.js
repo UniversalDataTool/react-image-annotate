@@ -1,6 +1,6 @@
 // @flow
-
-import React, { Fragment, useState, memo } from "react"
+import React, { Fragment, useState, memo, useCallback } from "react"
+import { SwitchProps } from "@material-ui/core"
 import SidebarBoxContainer from "../SidebarBoxContainer"
 import { makeStyles, styled } from "@material-ui/core/styles"
 import { grey } from "@material-ui/core/colors"
@@ -16,7 +16,10 @@ import VisibleOffIcon from "@material-ui/icons/VisibilityOff"
 import styles from "./styles"
 import classnames from "classnames"
 import isEqual from "lodash/isEqual"
-import Tooltip from "@material-ui/core/Tooltip";
+import Tooltip from "@material-ui/core/Tooltip"
+import { FormControlLabel, FormGroup, Switch } from "@material-ui/core"
+import DeviceList from "../RegionLabel/DeviceList"
+import { action } from "@storybook/addon-actions"
 
 const useStyles = makeStyles(styles)
 
@@ -25,6 +28,8 @@ const HeaderSep = styled("div")({
   marginTop: 2,
   marginBottom: 2,
 })
+
+const DEVICE_LIST = [...new Set(DeviceList.map((item) => item.category))]
 
 const Chip = ({ color, text }) => {
   const classes = useStyles()
@@ -41,11 +46,8 @@ const RowLayout = ({
   highlighted,
   order,
   classification,
-  area,
   tags,
   trash,
-  lock,
-  visible,
   onClick,
 }) => {
   const classes = useStyles()
@@ -55,7 +57,7 @@ const RowLayout = ({
       onClick={onClick}
       onMouseEnter={() => changeMouseOver(true)}
       onMouseLeave={() => changeMouseOver(false)}
-      className={classnames(classes.row, { header, highlighted })}
+      // className={classnames(classes.row, { header, highlighted })}
     >
       <Grid container alignItems="center">
         <Grid item xs={2}>
@@ -64,24 +66,15 @@ const RowLayout = ({
         <Grid item xs={5}>
           {classification}
         </Grid>
-        <Grid item xs={2}>
-          <div style={{ textAlign: "right", paddingRight: 6 }}>{area}</div>
-        </Grid>
         <Grid item xs={1}>
           {trash}
-        </Grid>
-        <Grid item xs={1}>
-          {lock}
-        </Grid>
-        <Grid item xs={1}>
-          {visible}
         </Grid>
       </Grid>
     </div>
   )
 }
 
-const RowHeader = ({allRegionVisibility, setAllRegionVisibility}) => {
+const RowHeader = ({}) => {
   return (
     <RowLayout
       header
@@ -91,28 +84,6 @@ const RowHeader = ({allRegionVisibility, setAllRegionVisibility}) => {
       area={<PieChartIcon className="icon" />}
       trash={<TrashIcon className="icon" />}
       lock={<LockIcon className="icon" />}
-      visible={
-        allRegionVisibility === true || allRegionVisibility === undefined ? (
-          <Tooltip title="Hide all regions (h)">
-            <VisibleIcon
-              onClick={() => {
-                setAllRegionVisibility(false);
-              }}
-              className="icon2"
-            />
-          </Tooltip>
-        ) : (
-          <Tooltip title="Show all regions (h)">
-            <VisibleOffIcon
-              onClick={() => {
-                setAllRegionVisibility(true);
-              }}
-              className="icon2"
-            />
-          </Tooltip>
-        )
-
-      }
     />
   )
 }
@@ -189,22 +160,18 @@ export const RegionSelectorSidebarBox = ({
   onDeleteRegion,
   onChangeRegion,
   onSelectRegion,
-  allRegionVisibility,
-  setAllRegionVisibility
+  onRegionToggle,
 }) => {
   const classes = useStyles()
   return (
     <SidebarBoxContainer
       title="Regions"
       subTitle=""
-      icon={<RegionIcon style={{ color: grey[700] }} />}
+      icon={<RegionIcon style={{ color: "white" }} />}
       expandedByDefault
     >
       <div className={classes.container}>
-        <MemoRowHeader
-          allRegionVisibility={allRegionVisibility}
-          setAllRegionVisibility={setAllRegionVisibility}
-        />
+        <MemoRowHeader />
         <HeaderSep />
         {regions.map((r, i) => (
           <MemoRow

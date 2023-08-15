@@ -76,6 +76,7 @@ export type MainLayoutStateBase = {|
   regionClsList?: Array<string>,
   regionTagList?: Array<string>,
   imageClsList?: Array<string>,
+  toggleDevices?: Array<string>,
   imageTagList?: Array<string>,
   enabledTools: Array<string>,
   history: Array<{ time: Date, state: MainLayoutState, name: string }>,

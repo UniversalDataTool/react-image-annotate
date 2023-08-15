@@ -11,6 +11,7 @@ const MarkdownContainer = styled("div")({
   paddingLeft: 16,
   paddingRight: 16,
   fontSize: 12,
+  color: "white",
   "& h1": { fontSize: 18 },
   "& h2": { fontSize: 14 },
   "& h3": { fontSize: 12 },
@@ -26,7 +27,7 @@ export const TaskDescriptionSidebarBox = ({ description }) => {
   return (
     <SidebarBoxContainer
       title="Task Description"
-      icon={<DescriptionIcon style={{ color: grey[700] }} />}
+      icon={<DescriptionIcon style={{ color: "white" }} />}
       expandedByDefault={description && description !== "" ? false : true}
     >
       <MarkdownContainer>
