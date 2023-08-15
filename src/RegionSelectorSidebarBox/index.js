@@ -163,7 +163,6 @@ export const RegionSelectorSidebarBox = ({
   onRegionToggle,
 }) => {
   const classes = useStyles()
-  console.log(regions)
   return (
     <SidebarBoxContainer
       title="Regions"

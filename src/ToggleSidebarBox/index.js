@@ -72,7 +72,6 @@ Object.keys(ColorMapping).forEach(
     })
 )
 
-console.log(theme)
 
 const RowLayout = ({ visible, onClick }) => {
   const classes = useStyles()

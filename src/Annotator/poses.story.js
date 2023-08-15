@@ -85,7 +85,6 @@ storiesOf("Annotator (Poses)", module)
       onExit={(...props) => {
         actionAddon("onExit")(...props)
         window.testPropsSavePlease = props
-        console.log(...props)
       }}
       labelImages
       enabledTools={["create-box", "create-keypoints"]}
