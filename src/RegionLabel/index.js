@@ -284,6 +284,7 @@ export const RegionLabel = ({
                         new_region["cls"] = region.cls
                         new_region["type"] = "box"
                         new_region["color"] = region.color
+                        new_region["visible"] = true
                         new_region["category"] =
                           region?.category ||
                           DeviceList.find((x) => x.symbol_name === region.cls)
