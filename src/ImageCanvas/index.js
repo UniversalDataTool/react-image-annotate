@@ -92,10 +92,12 @@ type Props = {
 }
 
 const getDefaultMat = (allowedArea = null, { iw, ih } = {}) => {
-  let mat = Matrix.from(1, 0, 0, 1, -10, -10)
+  // 0.67 for defauly zoom for 150% zoom
+  //  for 100 # use let mat = Matrix.from(1, 0, 0, 1, -10, -10)
+  let mat = Matrix.from(0.67, 0, 0, 0.67, -10, -10)
   if (allowedArea && iw) {
     mat = mat
-      .translate(allowedArea.x * iw, allowedArea.y * ih)
+      .translate(allowedArea.x * iw , allowedArea.y * ih )
       .scaleU(allowedArea.w + 0.05)
   }
   return mat
