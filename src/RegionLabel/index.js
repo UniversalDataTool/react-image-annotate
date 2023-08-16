@@ -15,9 +15,9 @@ import Select from "react-select"
 import CreatableSelect from "react-select/creatable"
 import { InputAdornment } from "@material-ui/core"
 import { asMutable } from "seamless-immutable"
-import LinearScaleIcon from '@material-ui/icons/LinearScale';
+import LinearScaleIcon from "@material-ui/icons/LinearScale"
 import DeviceList from "./DeviceList"
-import ImageSearchIcon from '@material-ui/icons/ImageSearch';
+import ImageSearchIcon from "@material-ui/icons/ImageSearch"
 
 const useStyles = makeStyles(styles)
 
@@ -41,20 +41,32 @@ type Props = {
   allowComments?: boolean,
 }
 
-const all_types = [...new Set(DeviceList.map(pair => pair.category))];
-const all_symbols = [...new Set(DeviceList.map(pair => pair.symbol_name))]
-const allowed_conduit_type = ["FEEDERS", "CABLE", "TRAY", "WIREMOLD", "CONDUIT AND WIRE"];
-const allowed_device_type = all_types.filter(x => !allowed_conduit_type.includes(x));
-const conduit_symbols = DeviceList.filter(i => allowed_conduit_type.includes(i.category)).map(symbol => symbol.symbol_name);
-const device_symbols = DeviceList.filter(i => allowed_device_type.includes(i.category)).map(symbol => symbol.symbol_name);
+const all_types = [...new Set(DeviceList.map((pair) => pair.category))]
+const all_symbols = [...new Set(DeviceList.map((pair) => pair.symbol_name))]
+const allowed_conduit_type = [
+  "FEEDERS",
+  "CABLE",
+  "TRAY",
+  "WIREMOLD",
+  "CONDUIT AND WIRE",
+]
+const allowed_device_type = all_types.filter(
+  (x) => !allowed_conduit_type.includes(x)
+)
+const conduit_symbols = DeviceList.filter((i) =>
+  allowed_conduit_type.includes(i.category)
+).map((symbol) => symbol.symbol_name)
+const device_symbols = DeviceList.filter((i) =>
+  allowed_device_type.includes(i.category)
+).map((symbol) => symbol.symbol_name)
 const getRandomId = () => Math.random().toString().split(".")[1]
 
-const encodeAzureURL = url => {
-  var first = url.substring(0, url.lastIndexOf("/"));
-  var parts = url.split("/");
-  var part = parts[parts.length - 1];
-  return first + "/" + encodeURIComponent(part);
-};
+const encodeAzureURL = (url) => {
+  var first = url.substring(0, url.lastIndexOf("/"))
+  var parts = url.split("/")
+  var part = parts[parts.length - 1]
+  return first + "/" + encodeURIComponent(part)
+}
 
 export const RegionLabel = ({
   region,
@@ -81,16 +93,17 @@ export const RegionLabel = ({
 
     if (commentInput) return commentInput.focus()
   }
-  const [isTemplateMatchingLoading, setIsTemplateMatchingLoading] = React.useState(regionTemplateMatchingDisabled);
+  const [isTemplateMatchingLoading, setIsTemplateMatchingLoading] =
+    React.useState(regionTemplateMatchingDisabled)
   const conditionalRegionTextField = (regionType) => {
     if (regionType === "scale") {
       // do scale
       return (
         <TextField
-          inputProps={{ style: { textAlign: 'right' } }}
+          inputProps={{ style: { textAlign: "right" } }}
           InputProps={{
             className: classes.textfieldClass,
-            endAdornment: <InputAdornment position="end"> ft</InputAdornment>
+            endAdornment: <InputAdornment position="end"> ft</InputAdornment>,
           }}
           width="50%"
           type="number"
@@ -102,8 +115,7 @@ export const RegionLabel = ({
           }
         />
       )
-    }
-    else if (regionType === "line") {
+    } else if (regionType === "line") {
       // do line
       return (
         <CreatableSelect
@@ -117,12 +129,12 @@ export const RegionLabel = ({
               cls: o.value,
             })
           }}
-          value={
-            region.cls ? { label: region.cls, value: region.cls } : null
-          }
+          value={region.cls ? { label: region.cls, value: region.cls } : null}
           options={asMutable(
-            allowedClasses.filter(x => !all_symbols.includes(x)).concat(conduit_symbols).map((c) => ({ value: c, label: c }))
-
+            allowedClasses
+              .filter((x) => !all_symbols.includes(x))
+              .concat(conduit_symbols)
+              .map((c) => ({ value: c, label: c }))
           )}
         />
       )
@@ -140,11 +152,12 @@ export const RegionLabel = ({
               cls: o.value,
             })
           }}
-          value={
-            region.cls ? { label: region.cls, value: region.cls } : null
-          }
+          value={region.cls ? { label: region.cls, value: region.cls } : null}
           options={asMutable(
-            allowedClasses.filter(x => !all_symbols.includes(x)).concat(device_symbols).map((c) => ({ value: c, label: c }))
+            allowedClasses
+              .filter((x) => !all_symbols.includes(x))
+              .concat(device_symbols)
+              .map((c) => ({ value: c, label: c }))
           )}
         />
       )
@@ -162,16 +175,20 @@ export const RegionLabel = ({
         <div>
           {region.cls && (
             <div className="name">
-              {region.type === "scale" ?
-                <LinearScaleIcon style={{ color: region.color }}/>
-                : <div
+              {region.type === "scale" ? (
+                <LinearScaleIcon style={{ color: region.color }} />
+              ) : (
+                <div
                   className="circle"
                   style={{ backgroundColor: region.color }}
-                />}
+                />
+              )}
 
-              {region.type === "scale" ?
-                <div>{region.cls} ft</div> :
-                <div>{region.cls}</div>}
+              {region.type === "scale" ? (
+                <div>{region.cls} ft</div>
+              ) : (
+                <div>{region.cls}</div>
+              )}
             </div>
           )}
           {region.tags && (
@@ -203,86 +220,97 @@ export const RegionLabel = ({
               {region.type}
             </div>
             <div style={{ flexGrow: 1 }} />
-            {
-              region.type === "box" ?
-                <IconButton
-                  disabled={isTemplateMatchingLoading}
-                  onClick={() => {
-                    setIsTemplateMatchingLoading(true);
-                    // TODO: get user_id, doc_id, page_id, threshold from the parent component above annotator
-                    let page_properties = {
-                      "user_id": 80808080,
-                      "doc_id": 80808080,
-                      "page_id": 80808080,
-                      "threshold": 0.7,
-                      "page_index":pageIndex,
-                    };
-                    const region_coords = {
-                      "x": region.x,
-                      "y": region.y,
-                      "w": region.w,
-                      "h": region.h
-                    };
-                    const region_color = region.color;
-                    const endpoint = "https://6lufq8mux5.execute-api.us-east-2.amazonaws.com/default/xkey-lambda-ocr-arbiter";
-                    const json_data = {
-                      "image_url": imageSrc,
-                      "page_index": page_properties["page_index"],
-                      "template_symbol_name": region.cls,
-                      "threshold": page_properties["threshold"],
-                      "user_id": page_properties["user_id"],
-                      "doc_id": page_properties["doc_id"],
-                      "page_id": page_properties["page_id"],
-                      "template_coord": region_coords,
-                    };
-                    onMatchTemplate(region);
-                    fetch(endpoint, {
-                      method: "POST", // or 'PUT'
-                      headers: {
-                        "Content-Type": "application/json",
-                      },
-                      body: JSON.stringify({ "queryStringParameters": json_data }),
-                    }).then((response) => {
+            {region.type === "box" ? (
+              <IconButton
+                disabled={isTemplateMatchingLoading}
+                onClick={() => {
+                  setIsTemplateMatchingLoading(true)
+                  // TODO: get user_id, doc_id, page_id, threshold from the parent component above annotator
+                  let page_properties = {
+                    user_id: 80808080,
+                    doc_id: 80808080,
+                    page_id: 80808080,
+                    threshold: 0.7,
+                    page_index: pageIndex,
+                  }
+                  const region_coords = {
+                    x: region.x,
+                    y: region.y,
+                    w: region.w,
+                    h: region.h,
+                  }
+                  const region_color = region.color
+                  const endpoint =
+                    "https://6lufq8mux5.execute-api.us-east-2.amazonaws.com/default/xkey-lambda-ocr-arbiter"
+                  const json_data = {
+                    image_url: imageSrc,
+                    page_index: page_properties["page_index"],
+                    template_symbol_name: region.cls,
+                    threshold: page_properties["threshold"],
+                    user_id: page_properties["user_id"],
+                    doc_id: page_properties["doc_id"],
+                    page_id: page_properties["page_id"],
+                    template_coord: region_coords,
+                  }
+                  onMatchTemplate(region)
+                  fetch(endpoint, {
+                    method: "POST", // or 'PUT'
+                    headers: {
+                      "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({ queryStringParameters: json_data }),
+                  })
+                    .then((response) => {
                       if (response.ok) {
-                        return response.json();
+                        return response.json()
                       }
-                      throw new Error('Backend Error');                    
-                    }).then((data) => {
+                      throw new Error("Backend Error")
+                    })
+                    .then((data) => {
                       // result can be empty
-                      return data.body ? data.body.result : [];
-                    }).then((res) => {
+                      return data.body ? data.body.result : []
+                    })
+                    .then((res) => {
                       let results = res.map((r) => {
-                        const new_region = {};
-                        new_region["isOCR"] = true;
-                        new_region["x"] = r["x"];
-                        new_region["y"] = r["y"];
-                        new_region["w"] = r["w"];
-                        new_region["h"] = r["h"];
-                        new_region["editingLabels"] = false;
-                        new_region["highlighted"] = false;
-                        new_region["id"] = getRandomId();
-                        new_region["cls"] = region.cls;
-                        new_region["type"] = "box";
-                        new_region["color"] = region.color;
-                        return new_region;
-                      });
-                      finishMatchTemplate(results, page_properties);
-                      setIsTemplateMatchingLoading(false);
-                    }).catch((error) => {
-                      console.error("Error:", error);
-                      finishMatchTemplate([], page_properties);
-                      setIsTemplateMatchingLoading(false);
-                    });
-                  }
-                  }
-                  tabIndex={-1}
-                  style={{ width: 22, height: 22 }}
-                  size="small"
-                  variant="outlined"
-                >
-                  <ImageSearchIcon style={{ marginTop: -8, width: 16, height: 16 }} />
-                </IconButton> : null
-            }
+                        const new_region = {}
+                        new_region["isOCR"] = true
+                        new_region["x"] = r["x"]
+                        new_region["y"] = r["y"]
+                        new_region["w"] = r["w"]
+                        new_region["h"] = r["h"]
+                        new_region["editingLabels"] = false
+                        new_region["highlighted"] = false
+                        new_region["id"] = getRandomId()
+                        new_region["cls"] = region.cls
+                        new_region["type"] = "box"
+                        new_region["color"] = region.color
+                        new_region["visible"] = true
+                        new_region["category"] =
+                          region?.category ||
+                          DeviceList.find((x) => x.symbol_name === region.cls)
+                            ?.category ||
+                          "NOT CLASSIFIED"
+                        return new_region
+                      })
+                      finishMatchTemplate(results, page_properties)
+                      setIsTemplateMatchingLoading(false)
+                    })
+                    .catch((error) => {
+                      console.error("Error:", error)
+                      finishMatchTemplate([], page_properties)
+                      setIsTemplateMatchingLoading(false)
+                    })
+                }}
+                tabIndex={-1}
+                style={{ width: 22, height: 22 }}
+                size="small"
+                variant="outlined"
+              >
+                <ImageSearchIcon
+                  style={{ marginTop: -8, width: 16, height: 16 }}
+                />
+              </IconButton>
+            ) : null}
             <IconButton
               onClick={() => {
                 onDelete(region)
@@ -330,7 +358,7 @@ export const RegionLabel = ({
               onClick={onCommentInputClick}
               value={region.comment || ""}
               onChange={(event) =>
-                onChange({ ...(region), comment: event.target.value })
+                onChange({ ...region, comment: event.target.value })
               }
             />
           )}
@@ -338,7 +366,7 @@ export const RegionLabel = ({
             <div style={{ marginTop: 4, display: "flex" }}>
               <div style={{ flexGrow: 1 }} />
               <Button
-                onClick={() => onClose(region)}  // TODO: check icon will disable OCR for this (highlighted) region
+                onClick={() => onClose(region)} // TODO: check icon will disable OCR for this (highlighted) region
                 size="small"
                 variant="contained"
                 color="primary"

@@ -179,19 +179,29 @@ export default (state: MainLayoutState, action: Action) => {
       return setIn(state, ["selectedCls"], action.cls)
     }
     case "CHANGE_ALL_REGION_VISIBILITY": {
-      let newState = {...state};
-      let current_visibility = getIn(state, ["images", currentImageIndex, "allRegionVisibility"]);
-      let new_visibility = current_visibility === undefined || current_visibility === true ? false : true;
-      let newImage = getIn(newState, ["images", currentImageIndex]);
-      newImage = merge(newImage, [{allRegionVisibility: new_visibility}]);
-      let newRegions = getIn(newState, ["images", currentImageIndex, "regions"]);
+      let newState = { ...state }
+      let current_visibility = getIn(state, [
+        "images",
+        currentImageIndex,
+        "allRegionVisibility",
+      ])
+      let new_visibility =
+        current_visibility === undefined || current_visibility === true
+          ? false
+          : true
+      let newImage = getIn(newState, ["images", currentImageIndex])
+      newImage = merge(newImage, [{ allRegionVisibility: new_visibility }])
+      let newRegions = getIn(newState, ["images", currentImageIndex, "regions"])
       if (!newRegions) {
-        return state;
+        return state
       }
-      newRegions = newRegions.map((region) => ({...region, visible: new_visibility}));
-      newImage = setIn(newImage, ["regions"], newRegions);
-      newState = setIn(newState, ["images", currentImageIndex], newImage);
-      return newState;
+      newRegions = newRegions.map((region) => ({
+        ...region,
+        visible: new_visibility,
+      }))
+      newImage = setIn(newImage, ["regions"], newRegions)
+      newState = setIn(newState, ["images", currentImageIndex], newImage)
+      return newState
     }
     case "TOGGLE_VISIBILITY": {
       let newState = { ...state }
@@ -246,6 +256,11 @@ export default (state: MainLayoutState, action: Action) => {
         state = setIn(state, [...pathToActiveImage, key], delta[key])
       }
       return state
+    }
+    case "CHANGE_IMAGE_NAME": {
+      if (!activeImage) return state
+      const { name } = action
+      return setIn(state, [...pathToActiveImage, "name"], name)
     }
     case "SELECT_REGION": {
       const { region } = action
@@ -896,6 +911,7 @@ export default (state: MainLayoutState, action: Action) => {
           ...r,
           highlighted: false,
           editingLabels: false,
+          visible: true,
         })),
         [regionIndex],
         {
@@ -1017,7 +1033,23 @@ export default (state: MainLayoutState, action: Action) => {
         }
         case "exit":
         case "save": {
-          return state
+          let newState = { ...state }
+          let newImage = getIn(newState, ["images", currentImageIndex])
+          let newRegions = getIn(newState, [
+            "images",
+            currentImageIndex,
+            "regions",
+          ])
+          if (!newRegions) {
+            return state
+          }
+          newRegions = newRegions.map((region) => ({
+            ...region,
+            visible: true,
+          }))
+          newImage = setIn(newImage, ["regions"], newRegions)
+          newState = setIn(newState, ["images", currentImageIndex], newImage)
+          return newState
         }
         case "done": {
           return state
