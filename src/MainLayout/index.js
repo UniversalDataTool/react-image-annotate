@@ -34,6 +34,7 @@ import { Input } from "@material-ui/core"
 import ToggleSidebarBox from "../ToggleSidebarBox"
 import favicon from "../../public/images/favicon.png"
 // import favicon from "./favicon.png"
+import { action } from "@storybook/addon-actions"
 // import Fullscreen from "../Fullscreen"
 
 const emptyArr = []
@@ -227,6 +228,19 @@ export const MainLayout = ({
   const [pageName, setPageName] = useState(activeImage ? activeImage.name : "")
   const title = "Xkey AiE Annotation Tool"
 
+  const onChangeImageName = useEventCallback(
+    (e) => {
+      e.preventDefault()
+      setPageName(e.target.value)
+      // action("CHANGE_IMAGE", { name: e.target.value })
+      dispatch({
+        type: "CHANGE_IMAGE_NAME",
+        name: e.target.value,
+      })
+    }
+    // action("CHANGE_IMAGE", { name: o.value })
+  )
+
   const debugModeOn = Boolean(window.localStorage.$ANNOTATE_DEBUG_MODE && state)
   const nextImageHasRegions =
     !nextImage || (nextImage.regions && nextImage.regions.length > 0)
@@ -294,10 +308,7 @@ export const MainLayout = ({
                           color: "white",
                         }}
                         defaultValue={pageName}
-                        onChange={(e) => {
-                          e.preventDefault()
-                          setPageName(pageName)
-                        }}
+                        onChange={onChangeImageName}
                       ></Input>
                     </div>
                   </div>
