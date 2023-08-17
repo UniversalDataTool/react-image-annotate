@@ -77,7 +77,7 @@ export const MainLayout = ({
   hideHeaderText,
   hideNext = false,
   hidePrev = false,
-  hideClone = false,
+  hideClone = true,
   hideSettings = false,
   hideFullScreen = false,
   hideSave = false,
@@ -225,7 +225,7 @@ export const MainLayout = ({
     dispatch({ type: "HEADER_BUTTON_CLICKED", buttonName: item.name })
   })
 
-  const [pageName, setPageName] = useState(activeImage ? activeImage.name : "")
+  const [pageName, setPageName] = useState(activeImage ? activeImage.name : activeImage.name)
   const title = "Xkey AiE Annotation Tool"
 
   const onChangeImageName = useEventCallback(
@@ -307,7 +307,9 @@ export const MainLayout = ({
                           marginLeft: "16px",
                           color: "white",
                         }}
-                        defaultValue={pageName}
+                        placeholder={`Page ${currentImageIndex + 1}`}
+                        value={activeImage.name}
+                        defaultValue={activeImage.name}
                         onChange={onChangeImageName}
                       ></Input>
                     </div>
