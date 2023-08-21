@@ -210,13 +210,18 @@ export default (state: MainLayoutState, action: Action) => {
       if (!newRegions) {
         return state
       }
-      newRegions = newRegions.map((region) => ({
-        ...region,
-        visible:
-          region.category === action.category
-            ? !region.visible
-            : region.visible,
-      }))
+
+      newRegions = newRegions.map((region) => {
+        if (region.category === action.category) {
+          // Toggle visibility if the region's category matches the action's category
+          return {
+            ...region,
+            visible: action.isVisible,
+          }
+        } else {
+          return region
+        }
+      })
       newImage = setIn(newImage, ["regions"], newRegions)
       newState = setIn(newState, ["images", currentImageIndex], newImage)
       return newState
@@ -667,6 +672,7 @@ export default (state: MainLayoutState, action: Action) => {
             color: defaultRegionColor,
             id: getRandomId(),
             cls: defaultRegionCls,
+            category: getCategoryBySymbolName(defaultRegionCls),
             visible: true,
           }
           break
@@ -711,6 +717,8 @@ export default (state: MainLayoutState, action: Action) => {
             color: defaultRegionColor,
             cls: defaultRegionCls,
             id: getRandomId(),
+            category: getCategoryBySymbolName(defaultRegionCls),
+            visible: true,
           }
           state = setIn(state, ["mode"], {
             mode: "DRAW_POLYGON",
@@ -729,6 +737,8 @@ export default (state: MainLayoutState, action: Action) => {
             color: defaultRegionColor,
             cls: defaultRegionCls,
             id: getRandomId(),
+            category: getCategoryBySymbolName(defaultRegionCls),
+            visible: true,
           }
           state = setIn(state, ["mode"], {
             mode: "DRAW_EXPANDING_LINE",
@@ -750,6 +760,8 @@ export default (state: MainLayoutState, action: Action) => {
             color: defaultRegionColor,
             cls: defaultRegionCls,
             id: getRandomId(),
+            category: getCategoryBySymbolName(defaultRegionCls),
+            visible: true,
           }
           state = setIn(state, ["mode"], {
             mode: "DRAW_LINE",
@@ -796,6 +808,8 @@ export default (state: MainLayoutState, action: Action) => {
             highlighted: true,
             editingLabels: false,
             id: getRandomId(),
+            category: getCategoryBySymbolName(defaultRegionCls),
+            visible: true,
           }
           state = setIn(state, ["mode"], {
             mode: "RESIZE_KEYPOINTS",

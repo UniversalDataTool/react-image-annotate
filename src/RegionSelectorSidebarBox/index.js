@@ -160,7 +160,6 @@ export const RegionSelectorSidebarBox = ({
   onDeleteRegion,
   onChangeRegion,
   onSelectRegion,
-  onRegionToggle,
 }) => {
   const classes = useStyles()
   return (
