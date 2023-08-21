@@ -16,7 +16,7 @@ import PieChartIcon from "@material-ui/icons/PieChart"
 import ReorderIcon from "@material-ui/icons/SwapVert"
 import ToggleOnIcon from "@material-ui/icons/ToggleOn"
 import isEqual from "lodash/isEqual"
-import React, { memo, useCallback, useState } from "react"
+import React, { memo, useCallback, useEffect, useState, useMemo } from "react"
 import DeviceList from "../RegionLabel/DeviceList"
 import SidebarBoxContainer from "../SidebarBoxContainer"
 import styles from "./styles"
@@ -94,13 +94,32 @@ const RowLayout = ({ visible, onClick }) => {
   )
 }
 
-const RowHeader = ({ onRegionToggle }) => {
+const RowHeader = ({ onRegionToggle, regions }) => {
   const [checkedList, setCheckedList] = useState(
-    DEVICE_LIST.map((item) => ({
-      item: item,
-      checked: true,
-    }))
+    DEVICE_LIST.map((item) => {
+      let matchedObject = regions.find((region) => {
+        return region.category === item
+      })
+      return {
+        item: item,
+        checked: matchedObject ? matchedObject.visible : true,
+      }
+    })
   )
+
+  useMemo(() => {
+    setCheckedList(
+      DEVICE_LIST.map((item) => {
+        let matchedObject = regions.find((region) => {
+          return region.category === item
+        })
+        return {
+          item: item,
+          checked: matchedObject ? matchedObject.visible : true,
+        }
+      })
+    )
+  }, [regions])
 
   const setCheckedItem = useCallback((id, checked) => {
     setCheckedList(() =>
@@ -186,19 +205,20 @@ const RowHeader = ({ onRegionToggle }) => {
 
 const emptyArr = []
 
-const MemoRowHeader = memo(
-  RowHeader,
-  (prevProps, nextProps) =>
-    prevProps.highlighted === nextProps.highlighted &&
-    prevProps.visible === nextProps.visible &&
-    prevProps.locked === nextProps.locked &&
-    prevProps.id === nextProps.id &&
-    prevProps.index === nextProps.index &&
-    prevProps.cls === nextProps.cls &&
-    prevProps.color === nextProps.color
-)
+// const MemoRowHeader = memo(
+//   RowHeader,
+//   (prevProps, nextProps) =>
+//     prevProps.highlighted === nextProps.highlighted &&
+//     prevProps.visible === nextProps.visible &&
+//     prevProps.locked === nextProps.locked &&
+//     prevProps.id === nextProps.id &&
+//     prevProps.index === nextProps.index &&
+//     prevProps.cls === nextProps.cls &&
+//     prevProps.color === nextProps.color &&
+//     prevProps.region === nextProps.region
+// )
 
-export const ToggleSidebarBox = ({ regions = emptyArr, onRegionToggle }) => {
+export const ToggleSidebarBox = ({ regions, onRegionToggle }) => {
   const classes = useStyles()
   return (
     <SidebarBoxContainer
@@ -207,7 +227,7 @@ export const ToggleSidebarBox = ({ regions = emptyArr, onRegionToggle }) => {
       expandedByDefault
     >
       <div className={classes.container}>
-        <MemoRowHeader onRegionToggle={onRegionToggle} />
+        <RowHeader onRegionToggle={onRegionToggle} regions={regions} />
       </div>
     </SidebarBoxContainer>
   )

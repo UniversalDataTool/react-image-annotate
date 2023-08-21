@@ -225,7 +225,9 @@ export const MainLayout = ({
     dispatch({ type: "HEADER_BUTTON_CLICKED", buttonName: item.name })
   })
 
-  const [pageName, setPageName] = useState(activeImage ? activeImage.name : activeImage.name)
+  const [pageName, setPageName] = useState(
+    activeImage ? activeImage.name : activeImage.name
+  )
   const title = "Xkey AiE Annotation Tool"
 
   const onChangeImageName = useEventCallback(
@@ -440,6 +442,7 @@ export const MainLayout = ({
                   dispatch({
                     type: "TOGGLE_VISIBILITY",
                     category: event.target.id,
+                    isVisible: event.target.checked,
                   })
                 }}
               />,
@@ -450,12 +453,6 @@ export const MainLayout = ({
                 onDeleteRegion={action("DELETE_REGION", "region")}
                 onChangeRegion={action("CHANGE_REGION", "region")}
                 onMatchRegionTemplate={action("MATCH_REGION", "region")}
-                onRegionToggle={(event) => {
-                  dispatch({
-                    type: "TOGGLE_VISIBILITY",
-                    category: event.target.id,
-                  })
-                }}
               />,
               state.keyframes && (
                 <KeyframesSelector
