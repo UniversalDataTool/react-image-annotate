@@ -219,7 +219,6 @@ export default (state: MainLayoutState, action: Action) => {
             visible: action.isVisible,
           }
         } else {
-          // Otherwise, keep the visibility unchanged
           return region
         }
       })
