@@ -2,7 +2,7 @@ name: Create release and tag
 
 on:
   push:
-    branches: [ main ]
+    branches: [ main, feature/AB#868-Build-&-and-Release-job-for-image-annotation-tool ]
   workflow_dispatch:
     inputs:
       release-type: # id of input
