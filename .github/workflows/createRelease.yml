@@ -1,0 +1,77 @@
+name: Create release and tag
+
+on:
+  push:
+    branches: [ main, feature/AB#868-Build-&-and-Release-job-for-image-annotation-tool ]
+  workflow_dispatch:
+    inputs:
+      release-type: # id of input
+        description: "prerelease, patch, minor or major"
+        required: true
+        default: "prerelease"
+
+env:
+  REGISTRY: ghcr.io
+  IMAGE_NAME: ${{ github.repository }}
+  release-type: ${{ github.event.inputs.release-type }}
+
+jobs:
+  build:
+    name: "Creating changelog and release"
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: '0'
+
+      - name: generate tag and release body
+        run: |
+          RELEASE_TYPE=$(sh ${{ github.workspace }}/.github/workflows/getReleaseType.sh ${{ env.release-type }})
+          git config user.name github-ljprojectbuilder
+          git config user.email code@starwit.de
+          npx standard-version -i CHANGELOG.md --release-as $RELEASE_TYPE --tag-prefix=''
+
+      - name: Read CHANGELOG.md
+        id: package
+        uses: juliangruber/read-file-action@v1
+        with:
+          path: ./CHANGELOG.md
+      - name: Echo CHANGELOG.md
+        run: echo '${{ steps.package.outputs.content }}'
+
+      - name: publish tag
+        id: publish_tag
+        run: |
+          git push --follow-tags
+          echo ::set-output name=tag_name::$(git describe HEAD --abbrev=0)
+
+      - name: create release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          release_name: Release ${{ steps.publish_tag.outputs.tag_name }}
+          tag_name: ${{ steps.publish_tag.outputs.tag_name }}
+          body_path: CHANGELOG.md
+
+      - name: Set up Node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+      - name: npm install
+        run: |
+          npm install --legacy-peer-deps
+          npm run build
+      - name: Upload NPM build artifact
+        uses: actions/upload-artifact@v1
+        with:
+          name: artifact
+          path: dist/index.js
+      - name: publish
+        uses: JS-DevTools/npm-publish@v1
+        with:
+          token: ${{ secrets.NPM_TOKEN }}
+      - if: steps.publish.outputs.type != 'none'
+        run: |
+          echo "Version changed: ${{ steps.publish.outputs.old-version }} => ${{ steps.publish.outputs.version }}"
