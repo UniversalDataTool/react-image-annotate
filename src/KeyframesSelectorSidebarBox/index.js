@@ -6,8 +6,7 @@ import SidebarBoxContainer from "../SidebarBoxContainer"
 import * as colors from "@mui/material/colors"
 import getTimeString from "../KeyframeTimeline/get-time-string.js"
 import TrashIcon from "@mui/icons-material/Delete"
-import { styled } from "@mui/material/styles"
-import { createTheme, ThemeProvider } from "@mui/material/styles"
+import { createTheme, styled, ThemeProvider } from "@mui/material/styles"
 
 const theme = createTheme()
 const KeyframeRow = styled("div")(({ theme }) => ({

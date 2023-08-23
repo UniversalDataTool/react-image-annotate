@@ -2,7 +2,7 @@
 
 import { useEffect } from "react"
 
-import { useRafState, useInterval } from "react-use"
+import { useInterval, useRafState } from "react-use"
 
 const useWindowSize = (initialWidth = Infinity, initialHeight = Infinity) => {
   const isClient = typeof window !== "undefined"

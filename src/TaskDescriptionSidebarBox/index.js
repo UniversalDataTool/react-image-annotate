@@ -3,8 +3,7 @@
 import React, { memo } from "react"
 import SidebarBoxContainer from "../SidebarBoxContainer"
 import DescriptionIcon from "@mui/icons-material/Description"
-import { styled } from "@mui/material/styles"
-import { createTheme, ThemeProvider } from "@mui/material/styles"
+import { createTheme, styled, ThemeProvider } from "@mui/material/styles"
 import { grey } from "@mui/material/colors"
 import Markdown from "react-markdown"
 

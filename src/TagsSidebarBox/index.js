@@ -1,6 +1,6 @@
 // @flow
 
-import React, { useMemo, memo } from "react"
+import React, { memo, useMemo } from "react"
 import SidebarBoxContainer from "../SidebarBoxContainer"
 import StyleIcon from "@mui/icons-material/Style"
 import { grey } from "@mui/material/colors"

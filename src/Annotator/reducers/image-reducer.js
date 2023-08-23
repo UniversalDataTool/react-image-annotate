@@ -1,9 +1,6 @@
 // @flow
 
-import type {
-  MainLayoutImageAnnotationState,
-  Action,
-} from "../../MainLayout/types"
+import type { Action, MainLayoutImageAnnotationState } from "../../MainLayout/types"
 import { setIn } from "seamless-immutable"
 import getActiveImage from "./get-active-image"
 

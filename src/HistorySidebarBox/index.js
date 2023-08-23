@@ -1,6 +1,6 @@
 // @flow
 
-import React, { setState, memo } from "react"
+import React, { memo } from "react"
 import { makeStyles } from "@mui/styles"
 import { createTheme, ThemeProvider } from "@mui/material/styles"
 import SidebarBoxContainer from "../SidebarBoxContainer"
@@ -14,7 +14,6 @@ import UndoIcon from "@mui/icons-material/Undo"
 import moment from "moment"
 import { grey } from "@mui/material/colors"
 import isEqual from "lodash/isEqual"
-import Box from "@mui/material/Box"
 
 const theme = createTheme()
 const useStyles = makeStyles((theme) => ({

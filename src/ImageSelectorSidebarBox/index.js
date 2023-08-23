@@ -9,7 +9,6 @@ import { grey } from "@mui/material/colors"
 import List from "@mui/material/List"
 import ListItem from "@mui/material/ListItem"
 import ListItemText from "@mui/material/ListItemText"
-import Avatar from "@mui/material/Avatar"
 import isEqual from "lodash/isEqual"
 
 const theme = createTheme()

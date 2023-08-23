@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react"
+import React, { useEffect, useState } from "react"
 import SidebarBoxContainer from "../SidebarBoxContainer"
 import { setIn } from "seamless-immutable"
 import ShortcutField from "./ShortcutField"

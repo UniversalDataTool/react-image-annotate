@@ -2,8 +2,7 @@
 
 import React, { useState } from "react"
 import { RemoveScroll } from "react-remove-scroll"
-import { styled } from "@mui/material/styles"
-import { createTheme, ThemeProvider } from "@mui/material/styles"
+import { createTheme, styled, ThemeProvider } from "@mui/material/styles"
 import useEventCallback from "use-event-callback"
 
 const theme = createTheme()

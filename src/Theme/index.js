@@ -1,7 +1,7 @@
 // @flow
 
 import React from "react"
-import { ThemeProvider, createTheme } from "@mui/material/styles"
+import { createTheme, ThemeProvider } from "@mui/material/styles"
 import { makeStyles } from "@mui/styles"
 
 const useStyles = makeStyles((theme) => ({

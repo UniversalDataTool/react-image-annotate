@@ -1,6 +1,5 @@
 // @flow
 import React, { useState } from "react"
-import ReactDOM from "react-dom"
 import Editor, { examples } from "./Editor"
 import Annotator from "../Annotator"
 import ErrorBoundaryDialog from "./ErrorBoundaryDialog.js"

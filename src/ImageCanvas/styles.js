@@ -1,5 +1,3 @@
-import { grey } from "@mui/material/colors"
-
 export default {
   canvas: { width: "100%", height: "100%", position: "relative", zIndex: 1 },
   zoomIndicator: {

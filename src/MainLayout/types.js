@@ -1,16 +1,14 @@
 // @flow
 
 import type {
-  Region,
-  Polygon,
   Box,
-  Point,
-  KeypointsDefinition,
-  Keypoints,
   KeypointDefinition,
+  Keypoints,
+  KeypointsDefinition,
+  Point,
+  Polygon,
+  Region
 } from "../ImageCanvas/region-tools.js"
-
-import type { Node } from "react"
 
 export type ToolEnum =
   | "select"

@@ -1,23 +1,10 @@
 // @flow weak
 
-import React, {
-  useRef,
-  useState,
-  useLayoutEffect,
-  useEffect,
-  useMemo,
-} from "react"
 import type { Node } from "react"
+import React, { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react"
 import { Matrix } from "transformation-matrix-js"
 import Crosshairs from "../Crosshairs"
-import type {
-  Region,
-  Point,
-  Polygon,
-  Box,
-  Keypoints,
-  KeypointsDefinition,
-} from "./region-tools.js"
+import type { Box, Keypoints, Point, Polygon, Region } from "./region-tools.js"
 import { makeStyles } from "@mui/styles"
 import { createTheme, ThemeProvider } from "@mui/material/styles"
 import styles from "./styles"
