@@ -1,6 +1,6 @@
 {
-  "name": "react-image-annotate",
-  "version": "2.0.0",
+  "name": "@starwit/react-image-annotate",
+  "version": "0.1.0",
   "dependencies": {
     "@emotion/react": "^11.7.0",
     "@emotion/styled": "^11.6.0",
@@ -46,7 +46,7 @@
   "homepage": "/react-image-annotate",
   "repository": {
     "type": "git",
-    "url": "https://github.com/UniversalDataTool/react-image-annotate.git"
+    "url": "https://github.com/starwit/react-image-annotate"
   },
   "scripts": {
     "start": "react-scripts start",
