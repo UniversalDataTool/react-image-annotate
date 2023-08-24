@@ -2,7 +2,7 @@ name: Create release and tag
 
 on:
   push:
-    branches: [ main, feature/AB#868-Build-&-and-Release-job-for-image-annotation-tool ]
+    branches: [ main ]
   workflow_dispatch:
     inputs:
       release-type: # id of input
@@ -63,15 +63,12 @@ jobs:
         run: |
           npm install --legacy-peer-deps
           npm run build
-      - name: Upload NPM build artifact
-        uses: actions/upload-artifact@v1
-        with:
-          name: artifact
-          path: dist/index.js
       - name: publish
         uses: JS-DevTools/npm-publish@v1
         with:
           token: ${{ secrets.NPM_TOKEN }}
+          access: public
+          package: dist/package.json
       - if: steps.publish.outputs.type != 'none'
         run: |
           echo "Version changed: ${{ steps.publish.outputs.old-version }} => ${{ steps.publish.outputs.version }}"
