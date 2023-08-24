@@ -19,8 +19,6 @@
     "material-survey": "^2.1.0",
     "mmgc1-cpp": "^1.0.50",
     "moment": "^2.23.0",
-    "react": "^17.0.2",
-    "react-dom": "^17.0.2",
     "react-full-screen": "^0.3.1",
     "react-hotkeys": "^2.0.0",
     "react-json-view": "^1.19.1",
