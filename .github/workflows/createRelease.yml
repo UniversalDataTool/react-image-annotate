@@ -74,7 +74,7 @@ jobs:
           token: ${{ secrets.NPM_TOKEN }}
           dry-run: true
           access: public
-          package: ./dist/
+          package: dist/
       - if: steps.publish.outputs.type != 'none'
         run: |
           echo "Version changed: ${{ steps.publish.outputs.old-version }} => ${{ steps.publish.outputs.version }}"
