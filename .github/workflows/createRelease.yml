@@ -30,7 +30,7 @@ jobs:
           RELEASE_TYPE=$(sh ${{ github.workspace }}/.github/workflows/getReleaseType.sh ${{ env.release-type }})
           git config user.name github-ljprojectbuilder
           git config user.email code@starwit.de
-        #  npx standard-version -i CHANGELOG.md --release-as $RELEASE_TYPE --tag-prefix=''
+          npx standard-version -i CHANGELOG.md --release-as $RELEASE_TYPE --tag-prefix=''
 
       - name: Read CHANGELOG.md
         id: package
@@ -40,20 +40,20 @@ jobs:
       - name: Echo CHANGELOG.md
         run: echo '${{ steps.package.outputs.content }}'
 
-      #- name: publish tag
-      #  id: publish_tag
-      #  run: |
-      #    git push --follow-tags
-      #    echo ::set-output name=tag_name::$(git describe HEAD --abbrev=0)
+      - name: publish tag
+        id: publish_tag
+        run: |
+          git push --follow-tags
+          echo ::set-output name=tag_name::$(git describe HEAD --abbrev=0)
 
-      #- name: create release
-      ##  uses: actions/create-release@v1
-      #  env:
-      #    GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      #  with:
-      #    release_name: Release ${{ steps.publish_tag.outputs.tag_name }}
-      #    tag_name: ${{ steps.publish_tag.outputs.tag_name }}
-      #    body_path: CHANGELOG.md
+      - name: create release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          release_name: Release ${{ steps.publish_tag.outputs.tag_name }}
+          tag_name: ${{ steps.publish_tag.outputs.tag_name }}
+          body_path: CHANGELOG.md
 
       - name: Set up Node
         uses: actions/setup-node@v3
@@ -63,10 +63,6 @@ jobs:
         run: |
           npm install --legacy-peer-deps
           npm run build
-      - name: debug
-        run: |
-          ls -al
-          ls -al dist/
       - name: publish
         uses: JS-DevTools/npm-publish@v1
         with:
