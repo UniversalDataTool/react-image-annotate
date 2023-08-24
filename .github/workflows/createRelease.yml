@@ -67,7 +67,6 @@ jobs:
         uses: JS-DevTools/npm-publish@v1
         with:
           token: ${{ secrets.NPM_TOKEN }}
-          dry-run: true
           access: public
           package: dist/package.json
       - if: steps.publish.outputs.type != 'none'
