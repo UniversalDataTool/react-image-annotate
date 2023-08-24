@@ -67,18 +67,13 @@ jobs:
         run: |
           ls -al
           ls -al dist/
-      - name: Upload NPM build artifact
-        uses: actions/upload-artifact@v1
-        with:
-          name: artifact
-          path: dist/
       - name: publish
         uses: JS-DevTools/npm-publish@v1
         with:
           token: ${{ secrets.NPM_TOKEN }}
           dry-run: true
           access: public
-          package: dist/
+          package: dist/package.json
       - if: steps.publish.outputs.type != 'none'
         run: |
           echo "Version changed: ${{ steps.publish.outputs.old-version }} => ${{ steps.publish.outputs.version }}"
