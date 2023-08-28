@@ -99,3 +99,5 @@ To test this package in your project follow this quickstart:
 3. Run `npm link`
 4. With the same Terminal window, go to your project folder where the `package.json` is located
 5. Run `npm link "@starwit/react-image-annotate"` to install the package. It might be necessary to remove a previously installed `@starwit/react-image-annotate` package. Please use the same node version when using npm link and executing the application. 
+
+Warning: if you change something in the package you have to rerun `npm run build` so that the changes will apply.
