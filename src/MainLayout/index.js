@@ -55,8 +55,6 @@ type Props = {
   state: MainLayoutState,
   RegionEditLabel?: Node,
   dispatch: (Action) => any,
-  alwaysShowNextButton?: boolean,
-  alwaysShowPrevButton?: boolean,
   onRegionClassAdded: () => {},
   hideHeader?: boolean,
   hideHeaderText?: boolean,
@@ -65,8 +63,6 @@ type Props = {
 export const MainLayout = ({
   state,
   dispatch,
-  alwaysShowNextButton = false,
-  alwaysShowPrevButton = false,
   RegionEditLabel,
   onRegionClassAdded,
   hideHeader,

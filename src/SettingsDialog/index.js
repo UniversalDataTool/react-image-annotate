@@ -12,7 +12,8 @@ import { useSettings } from "../SettingsProvider"
 export const SettingsDialog = ({ open, onClose }) => {
   const settings = useSettings()
   return (
-    <Dialog open={open || false} onClose={onClose}>
+    <Dialog open={open || false} onClose={onClose} style={{zIndex: 1300}}>
+      {/* Setting z-index manually due to conflict of drawer ^^ */}
       <DialogTitle>Settings</DialogTitle>
       <DialogContent style={{ minWidth: 400 }}>
         <Survey
