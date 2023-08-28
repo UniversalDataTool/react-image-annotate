@@ -29,6 +29,7 @@ import useImpliedVideoRegions from "./use-implied-video-regions"
 import useKey from "use-key-hook"
 import { useSettings } from "../SettingsProvider"
 import { withHotKeys } from "react-hotkeys"
+import { Save } from "@mui/icons-material"
 
 // import Fullscreen from "../Fullscreen"
 
@@ -268,7 +269,7 @@ export const MainLayout = ({
                   (state.fullScreen
                     ? { name: "Window" }
                     : { name: "Fullscreen" }),
-                !hideSave && { name: "Save" },
+                !hideSave && { name: "Save", icon: <Save/> },
               ].filter(Boolean)}
               onClickHeaderItem={onClickHeaderItem}
               onClickIconSidebarItem={onClickIconSidebarItem}
