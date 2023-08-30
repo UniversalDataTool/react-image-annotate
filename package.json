@@ -1,6 +1,7 @@
 {
-  "name": "react-image-annotate",
-  "version": "2.0.0",
+  "name": "@starwit/react-image-annotate",
+  "version": "0.1.8",
+  "private": false,
   "dependencies": {
     "@emotion/react": "^11.7.0",
     "@emotion/styled": "^11.6.0",
@@ -18,8 +19,6 @@
     "material-survey": "^2.1.0",
     "mmgc1-cpp": "^1.0.50",
     "moment": "^2.23.0",
-    "react": "^17.0.2",
-    "react-dom": "^17.0.2",
     "react-full-screen": "^0.3.1",
     "react-hotkeys": "^2.0.0",
     "react-json-view": "^1.19.1",
@@ -43,10 +42,10 @@
     "react": "^17.0.0",
     "react-dom": "^17.0.0"
   },
-  "homepage": "/react-image-annotate",
+  "homepage": "https://www.starwit-technologies.de/",
   "repository": {
     "type": "git",
-    "url": "https://github.com/UniversalDataTool/react-image-annotate.git"
+    "url": "https://github.com/starwit/react-image-annotate"
   },
   "scripts": {
     "start": "react-scripts start",
