@@ -1,12 +1,8 @@
 // @flow
 
-import React, { useState, memo } from "react"
-import Paper from "@mui/material/Paper"
+import React, { memo, useState } from "react"
 import { makeStyles } from "@mui/styles"
 import { createTheme, ThemeProvider } from "@mui/material/styles"
-import ExpandIcon from "@mui/icons-material/ExpandMore"
-import IconButton from "@mui/material/IconButton"
-import Collapse from "@mui/material/Collapse"
 import { grey } from "@mui/material/colors"
 import classnames from "classnames"
 import useEventCallback from "use-event-callback"

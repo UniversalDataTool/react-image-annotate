@@ -1,8 +1,7 @@
 // @flow
-import type { MainLayoutState, Action } from "../../MainLayout/types"
+import type { Action, MainLayoutState } from "../../MainLayout/types"
 import { moveRegion } from "../../ImageCanvas/region-tools.js"
-import { getIn, setIn, updateIn } from "seamless-immutable"
-import moment from "moment"
+import { getIn, setIn } from "seamless-immutable"
 import isEqual from "lodash/isEqual"
 import getActiveImage from "./get-active-image"
 import { saveToHistory } from "./history-handler.js"

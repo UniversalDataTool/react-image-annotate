@@ -1,18 +1,12 @@
 // @flow
 
-import type {
-  Action,
-  Image,
-  MainLayoutState,
-  Mode,
-  ToolEnum,
-} from "../MainLayout/types"
+import type { Action, Image, MainLayoutState } from "../MainLayout/types"
+import type { Node } from "react"
 import React, { useEffect, useReducer } from "react"
 import makeImmutable, { without } from "seamless-immutable"
 
 import type { KeypointsDefinition } from "../ImageCanvas/region-tools"
 import MainLayout from "../MainLayout"
-import type { Node } from "react"
 import SettingsProvider from "../SettingsProvider"
 import combineReducers from "./reducers/combine-reducers.js"
 import generalReducer from "./reducers/general-reducer.js"

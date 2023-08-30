@@ -2,19 +2,17 @@
 
 import type { Action, MainLayoutState } from "./types"
 import { FullScreen, useFullScreenHandle } from "react-full-screen"
+import type { Node } from "react"
 import React, { useCallback, useRef } from "react"
 import { makeStyles } from "@mui/styles"
-import { createTheme, ThemeProvider } from "@mui/material/styles"
-import { styled } from "@mui/material/styles"
+import { createTheme, styled, ThemeProvider } from "@mui/material/styles"
 
 import ClassSelectionMenu from "../ClassSelectionMenu"
 import DebugBox from "../DebugSidebarBox"
 import HistorySidebarBox from "../HistorySidebarBox"
 import ImageCanvas from "../ImageCanvas"
-import ImageSelector from "../ImageSelectorSidebarBox"
 import KeyframeTimeline from "../KeyframeTimeline"
 import KeyframesSelector from "../KeyframesSelectorSidebarBox"
-import type { Node } from "react"
 import RegionSelector from "../RegionSelectorSidebarBox"
 import SettingsDialog from "../SettingsDialog"
 import TagsSidebarBox from "../TagsSidebarBox"
@@ -31,6 +29,7 @@ import useImpliedVideoRegions from "./use-implied-video-regions"
 import useKey from "use-key-hook"
 import { useSettings } from "../SettingsProvider"
 import { withHotKeys } from "react-hotkeys"
+import { Save } from "@mui/icons-material"
 
 // import Fullscreen from "../Fullscreen"
 
@@ -57,8 +56,6 @@ type Props = {
   state: MainLayoutState,
   RegionEditLabel?: Node,
   dispatch: (Action) => any,
-  alwaysShowNextButton?: boolean,
-  alwaysShowPrevButton?: boolean,
   onRegionClassAdded: () => {},
   hideHeader?: boolean,
   hideHeaderText?: boolean,
@@ -67,8 +64,6 @@ type Props = {
 export const MainLayout = ({
   state,
   dispatch,
-  alwaysShowNextButton = false,
-  alwaysShowPrevButton = false,
   RegionEditLabel,
   onRegionClassAdded,
   hideHeader,
@@ -274,7 +269,7 @@ export const MainLayout = ({
                   (state.fullScreen
                     ? { name: "Window" }
                     : { name: "Fullscreen" }),
-                !hideSave && { name: "Save" },
+                !hideSave && { name: "Save", icon: <Save/> },
               ].filter(Boolean)}
               onClickHeaderItem={onClickHeaderItem}
               onClickIconSidebarItem={onClickIconSidebarItem}

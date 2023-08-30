@@ -1,9 +1,6 @@
 // @flow
 
-import type {
-  MainLayoutVideoAnnotationState,
-  Action,
-} from "../../MainLayout/types"
+import type { Action, MainLayoutVideoAnnotationState } from "../../MainLayout/types"
 import { setIn, without } from "seamless-immutable"
 import getImpliedVideoRegions from "./get-implied-video-regions"
 import { saveToHistory } from "./history-handler.js"

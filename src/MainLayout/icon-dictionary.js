@@ -3,20 +3,17 @@
 import React from "react"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import {
-  faArrowsAlt,
-  faMousePointer,
-  faExpandArrowsAlt,
-  faGripLines,
-  faTag,
-  faPaintBrush,
+  faChartLine,
   faCrosshairs,
   faDrawPolygon,
-  faVectorSquare,
-  faHandPaper,
-  faSearch,
-  faMask,
   faEdit,
-  faChartLine,
+  faGripLines,
+  faHandPaper,
+  faMask,
+  faMousePointer,
+  faSearch,
+  faTag,
+  faVectorSquare
 } from "@fortawesome/free-solid-svg-icons"
 import FullscreenIcon from "@mui/icons-material/Fullscreen"
 import AccessibilityNewIcon from "@mui/icons-material/AccessibilityNew"

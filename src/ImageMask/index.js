@@ -1,7 +1,6 @@
 // @flow
 
-import React, { useState, useEffect, useMemo, useRef } from "react"
-import { colorInts } from "../colors"
+import React, { useEffect, useMemo, useState } from "react"
 import { useDebounce } from "react-use"
 import loadImage from "./load-image"
 import autoseg from "autoseg/webworker"

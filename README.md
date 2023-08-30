@@ -91,3 +91,13 @@ Consult these icon repositories:
 
 - [Material Icons](https://material.io/tools/icons/)
 - [Font Awesome Icons](https://fontawesome.com/icons?d=gallery&m=free)
+
+### Testdrive in project
+To test this package in your project follow this quickstart:
+1. Create a build from the package with `npm run build`
+2. Go into the dist folder `cd dist`
+3. Run `npm link`
+4. With the same Terminal window, go to your project folder where the `package.json` is located
+5. Run `npm link "@starwit/react-image-annotate"` to install the package. It might be necessary to remove a previously installed `@starwit/react-image-annotate` package. Please use the same node version when using npm link and executing the application. 
+
+Warning: if you change something in the package you have to rerun `npm run build` so that the changes will apply.

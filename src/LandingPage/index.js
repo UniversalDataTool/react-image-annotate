@@ -2,10 +2,8 @@
 
 import React from "react"
 import Button from "@mui/material/Button"
-import { styled } from "@mui/material/styles"
-import { createTheme, ThemeProvider } from "@mui/material/styles"
+import { createTheme, styled, ThemeProvider } from "@mui/material/styles"
 import * as colors from "@mui/material/colors"
-import Grid from "@mui/material/Grid"
 import Markdown from "react-markdown"
 import GitHubButton from "react-github-btn"
 import "./github-markdown.css"

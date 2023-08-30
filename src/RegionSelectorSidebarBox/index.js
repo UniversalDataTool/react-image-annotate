@@ -1,10 +1,9 @@
 // @flow
 
-import React, { Fragment, useState, memo } from "react"
+import React, { memo, useState } from "react"
 import SidebarBoxContainer from "../SidebarBoxContainer"
 import { makeStyles } from "@mui/styles"
-import { createTheme, ThemeProvider } from "@mui/material/styles"
-import { styled } from "@mui/material/styles"
+import { createTheme, styled, ThemeProvider } from "@mui/material/styles"
 import { grey } from "@mui/material/colors"
 import RegionIcon from "@mui/icons-material/PictureInPicture"
 import Grid from "@mui/material/Grid"

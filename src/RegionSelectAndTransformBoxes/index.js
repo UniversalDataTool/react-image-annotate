@@ -1,7 +1,6 @@
 import React, { Fragment, memo } from "react"
 import HighlightBox from "../HighlightBox"
-import { styled } from "@mui/material/styles"
-import { createTheme, ThemeProvider } from "@mui/material/styles"
+import { createTheme, styled, ThemeProvider } from "@mui/material/styles"
 import PreventScrollToParents from "../PreventScrollToParents"
 import Tooltip from "@mui/material/Tooltip"
 
