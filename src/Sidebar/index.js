@@ -71,7 +71,8 @@ export const Sidebar = ({
   if (!regions) regions = emptyArr
 
   return (
-    <Container>
+    <Container
+    >
       {debug && <DebugBox state={debug} lastAction={debug.lastAction} />}
       {/* {taskDescription && (taskDescription || "").length > 1 && (
         <TaskDescription description={taskDescription} />

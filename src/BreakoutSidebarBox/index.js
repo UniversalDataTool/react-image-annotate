@@ -20,7 +20,7 @@ import Tooltip from "@material-ui/core/Tooltip"
 import { FormControlLabel, FormGroup, Switch } from "@material-ui/core"
 import DeviceList from "../RegionLabel/DeviceList"
 import { action } from "@storybook/addon-actions"
-
+import DashboardIcon from '@material-ui/icons/Dashboard';
 const useStyles = makeStyles(styles)
 
 const HeaderSep = styled("div")({
@@ -76,15 +76,20 @@ const RowLayout = ({
 
 const RowHeader = ({}) => {
   return (
-    <RowLayout
-      header
-      highlighted={false}
-      order={<ReorderIcon className="icon" />}
-      classification={<div style={{ paddingLeft: 10 }}>Class</div>}
-      area={<PieChartIcon className="icon" />}
-      trash={<TrashIcon className="icon" />}
-      lock={<LockIcon className="icon" />}
-    />
+    <Grid container>
+      <Grid
+        item
+        xs={10}
+        style={{
+          paddingLeft: 16,
+        }}
+      >
+        Breakout Name
+      </Grid>
+      <Grid item xs={2}>
+        <TrashIcon className="icon" />
+      </Grid>
+    </Grid>
   )
 }
 
@@ -93,9 +98,9 @@ const MemoRowHeader = memo(RowHeader)
 const Row = ({
   region: r,
   highlighted,
-  onSelectRegion,
-  onDeleteRegion,
-  onChangeRegion,
+  onDeleteBreakout,
+  onChangeBreakout,
+  onSelectBreakout,
   visible,
   locked,
   color,
@@ -106,20 +111,22 @@ const Row = ({
     <RowLayout
       header={false}
       highlighted={highlighted}
-      onClick={() => onSelectRegion(r)}
+      onClick={() => onSelectBreakout(r)}
       order={`#${index + 1}`}
       classification={<Chip text={cls || ""} color={color || "#ddd"} />}
       area=""
-      trash={<TrashIcon onClick={() => onDeleteRegion(r)} className="icon2" />}
+      trash={
+        <TrashIcon onClick={() => onDeleteBreakout(r)} className="icon2" />
+      }
       lock={
         r.locked ? (
           <LockIcon
-            onClick={() => onChangeRegion({ ...r, locked: false })}
+            onClick={() => onChangeBreakout({ ...r, locked: false })}
             className="icon2"
           />
         ) : (
           <UnlockIcon
-            onClick={() => onChangeRegion({ ...r, locked: true })}
+            onClick={() => onChangeBreakout({ ...r, locked: true })}
             className="icon2"
           />
         )
@@ -127,12 +134,12 @@ const Row = ({
       visible={
         r.visible || r.visible === undefined ? (
           <VisibleIcon
-            onClick={() => onChangeRegion({ ...r, visible: false })}
+            onClick={() => onChangeBreakout({ ...r, visible: false })}
             className="icon2"
           />
         ) : (
           <VisibleOffIcon
-            onClick={() => onChangeRegion({ ...r, visible: true })}
+            onClick={() => onChangeBreakout({ ...r, visible: true })}
             className="icon2"
           />
         )
@@ -155,34 +162,43 @@ const MemoRow = memo(
 
 const emptyArr = []
 
-export const RegionSelectorSidebarBox = ({
-  regions = emptyArr,
-  onDeleteRegion,
-  onChangeRegion,
-  onSelectRegion,
-}) => {
+export const BreakoutSidebarBox = (
+  {
+    //   breakouts = emptyArr,
+    //   onDeleteBreakout,
+    //   onChangeBreakout,
+    //   onSelectBreakout,
+  }
+) => {  
+
+    const breakouts = [
+        'Breakout 1',
+        'Breakout 2',
+        'Breakout 3',
+    ]
+
   const classes = useStyles()
   return (
     <SidebarBoxContainer
-      title="Regions"
+      title="Breakouts"
       subTitle=""
-      icon={<RegionIcon style={{ color: "white" }} />}
+      icon={<DashboardIcon style={{ color: "white" }} />}
       expandedByDefault
     >
       <div className={classes.container}>
         <MemoRowHeader />
         <HeaderSep />
-        {regions.map((r, i) => (
+        {/* {breakouts.map((r, i) => (
           <MemoRow
             key={r.id}
             {...r}
             region={r}
             index={i}
-            onSelectRegion={onSelectRegion}
-            onDeleteRegion={onDeleteRegion}
-            onChangeRegion={onChangeRegion}
+            onSelectBreakout={onSelectBreakout}
+            onDeleteBreakout={onDeleteBreakout}
+            onChangeBreakout={onChangeBreakout}
           />
-        ))}
+        ))} */}
       </div>
     </SidebarBoxContainer>
   )
@@ -196,7 +212,7 @@ const mapUsedRegionProperties = (r) => [
   r.highlighted,
 ]
 
-export default memo(RegionSelectorSidebarBox, (prevProps, nextProps) =>
+export default memo(BreakoutSidebarBox, (prevProps, nextProps) =>
   isEqual(
     (prevProps.regions || emptyArr).map(mapUsedRegionProperties),
     (nextProps.regions || emptyArr).map(mapUsedRegionProperties)

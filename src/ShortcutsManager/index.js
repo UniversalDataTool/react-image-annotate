@@ -7,35 +7,35 @@ export const defaultHotkeys = [
     description: "Switch to the Select Tool",
     binding: "escape",
   },
-  {
-    id: "zoom_tool",
-    description: "Select the Zoom Tool",
-    binding: "z",
-  },
-  {
-    id: "create_point",
-    description: "Create a point",
-    binding: "p",
-  },
-  {
-    id: "create_bounding_box",
-    description: "Create a bounding box",
-    binding: "b",
-  },
-  {
-    id: "create_line",
-    description: "Create a line",
-    binding: "l",
-  }, {
-    id: "create_scale",
-    description: "Create a scale",
-    binding: "s",
-  },
-  {
-    id: "delete_region",
-    description: "Delete selected region",
-    binding: "d",
-  },
+  // {
+  //   id: "zoom_tool",
+  //   description: "Select the Zoom Tool",
+  //   binding: "z",
+  // },
+  // {
+  //   id: "create_point",
+  //   description: "Create a point",
+  //   binding: "p",
+  // },
+  // {
+  //   id: "create_bounding_box",
+  //   description: "Create a bounding box",
+  //   binding: "b",
+  // },
+  // {
+  //   id: "create_line",
+  //   description: "Create a line",
+  //   binding: "l",
+  // }, {
+  //   id: "create_scale",
+  //   description: "Create a scale",
+  //   binding: "s",
+  // },
+  // {
+  //   id: "delete_region",
+  //   description: "Delete selected region",
+  //   binding: "d",
+  // },
   {
     id: "pan_tool",
     description: "Select the Pan Tool",
@@ -72,11 +72,11 @@ export const defaultHotkeys = [
     description: "Undo latest change",
     binding: "Ctrl+z",
   },
-  {
-    id: "hide",
-    description: "hide regions of current image",
-    binding: "h"
-  },
+  // {
+  //   id: "hide",
+  //   description: "hide regions of current image",
+  //   binding: "h"
+  // },
 ]
 export const defaultKeyMap = {}
 for (const { id, binding } of defaultHotkeys) defaultKeyMap[id] = binding

@@ -14,7 +14,25 @@ import getLandmarksWithTransform from "../../utils/get-landmarks-with-transform"
 import setInLocalStorage from "../../utils/set-in-local-storage"
 import DeviceList from "../../RegionLabel/DeviceList"
 
-const getRandomId = () => Math.random().toString().split(".")[1]
+const getRandomId = () => {
+  var S4 = function () {
+    return (((1 + Math.random()) * 0x10000) | 0).toString(16).substring(1)
+  }
+  return (
+    S4() +
+    S4() +
+    "-" +
+    S4() +
+    "-" +
+    S4() +
+    "-" +
+    S4() +
+    "-" +
+    S4() +
+    S4() +
+    S4()
+  )
+}
 
 const calculateIoU = (box1, box2) => {
   const x1 = Math.max(box1.x, box2.x)
@@ -217,6 +235,117 @@ export default (state: MainLayoutState, action: Action) => {
           return {
             ...region,
             visible: action.isVisible,
+          }
+        } else {
+          return region
+        }
+      })
+      newImage = setIn(newImage, ["regions"], newRegions)
+      newState = setIn(newState, ["images", currentImageIndex], newImage)
+      return newState
+    }
+    case "ADD_NEW_BREAKOUT": {
+      let newState = { ...state }
+      let newImage = getIn(newState, ["images", currentImageIndex])
+      let newRegions = getIn(newState, ["images", currentImageIndex, "regions"])
+      if (!newRegions) {
+        return state
+      }
+      newRegions = newRegions.map((region) => {
+        if (region.id === action.region.id) {
+          return {
+            ...region,
+            breakout: {
+              is_breakout: true,
+              name: action.name,
+              id: getRandomId(),
+              visible: true,
+            },
+          }
+        } else {
+          return region
+        }
+      })
+      console.log(newRegions)
+      console.log(newRegions.filter((region) => region.breakout))
+      newImage = setIn(newImage, ["regions"], newRegions)
+      newState = setIn(newState, ["images", currentImageIndex], newImage)
+      return newState
+    }
+
+    case "ADD_EXISTING_BREAKOUT": {
+      let newState = { ...state }
+      let newImage = getIn(newState, ["images", currentImageIndex])
+      let newRegions = getIn(newState, ["images", currentImageIndex, "regions"])
+      if (!newRegions) {
+        return state
+      }
+      newRegions = newRegions.map((region) => {
+        if (region.id === action.region.id) {
+          return {
+            ...region,
+            breakout: {
+              is_breakout: true,
+              name: action.breakoutName,
+              id: action.breakoutId,
+              visible: true,
+            },
+          }
+        } else {
+          return region
+        }
+      })
+      newImage = setIn(newImage, ["regions"], newRegions)
+      newState = setIn(newState, ["images", currentImageIndex], newImage)
+      return newState
+    }
+
+    case "REMOVE_BREAKOUT_BY_REGION_ID": {
+      let newState = { ...state }
+      let newImage = getIn(newState, ["images", currentImageIndex])
+      let newRegions = getIn(newState, ["images", currentImageIndex, "regions"])
+      if (!newRegions) {
+        return state
+      }
+      newRegions = newRegions.map((region) => {
+        if (region.id === action.region.id) {
+          return {
+            ...region,
+            breakout: {
+              is_breakout: false,
+              name: "",
+              id: "",
+              visible: false,
+            },
+          }
+        } else {
+          return region
+        }
+      })
+      newImage = setIn(newImage, ["regions"], newRegions)
+      newState = setIn(newState, ["images", currentImageIndex], newImage)
+      return newState
+    }
+
+    case "DELETE_BREAKOUT": {
+      let newState = { ...state }
+      let newImage = getIn(newState, ["images", currentImageIndex])
+      let newRegions = getIn(newState, ["images", currentImageIndex, "regions"])
+      if (!newRegions) {
+        return state
+      }
+      const deleteBreakoutId = action.breakoutId
+      newRegions = newRegions.map((region) => {
+        if (region.breakout.id === deleteBreakoutId) {
+          // Toggle visibility if the region's category matches the action's category
+          return {
+            ...region,
+            breakout: {
+              name: "",
+              is_breakout: false,
+              id: "",
+              visible: false,
+            },
           }
         } else {
           return region
@@ -674,6 +803,12 @@ export default (state: MainLayoutState, action: Action) => {
             cls: defaultRegionCls,
             category: getCategoryBySymbolName(defaultRegionCls),
             visible: true,
+            breakout: {
+              is_breakout: false,
+              name: "",
+              id: undefined,
+              visible: false,
+            },
           }
           break
         }
@@ -692,6 +827,12 @@ export default (state: MainLayoutState, action: Action) => {
             id: getRandomId(),
             category: getCategoryBySymbolName(defaultRegionCls),
             visible: true,
+            breakout: {
+              is_breakout: false,
+              name: "",
+              id: undefined,
+              visible: false,
+            },
           }
           state = setIn(state, ["mode"], {
             mode: "RESIZE_BOX",
@@ -719,6 +860,12 @@ export default (state: MainLayoutState, action: Action) => {
             id: getRandomId(),
             category: getCategoryBySymbolName(defaultRegionCls),
             visible: true,
+            breakout: {
+              is_breakout: false,
+              name: "",
+              id: undefined,
+              visible: false,
+            },
           }
           state = setIn(state, ["mode"], {
             mode: "DRAW_POLYGON",
@@ -739,6 +886,12 @@ export default (state: MainLayoutState, action: Action) => {
             id: getRandomId(),
             category: getCategoryBySymbolName(defaultRegionCls),
             visible: true,
+            breakout: {
+              is_breakout: false,
+              name: "",
+              id: undefined,
+              visible: false,
+            },
           }
           state = setIn(state, ["mode"], {
             mode: "DRAW_EXPANDING_LINE",
@@ -762,6 +915,12 @@ export default (state: MainLayoutState, action: Action) => {
             id: getRandomId(),
             category: getCategoryBySymbolName(defaultRegionCls),
             visible: true,
+            breakout: {
+              is_breakout: false,
+              name: "",
+              id: undefined,
+              visible: false,
+            },
           }
           state = setIn(state, ["mode"], {
             mode: "DRAW_LINE",
@@ -785,6 +944,12 @@ export default (state: MainLayoutState, action: Action) => {
             color: "#C4A484",
             cls: 1,
             id: getRandomId(),
+            breakout: {
+              is_breakout: false,
+              name: "",
+              id: undefined,
+              visible: false,
+            },
           }
           state = setIn(state, ["mode"], {
             mode: "ASSIGN_SCALE",
@@ -810,6 +975,12 @@ export default (state: MainLayoutState, action: Action) => {
             id: getRandomId(),
             category: getCategoryBySymbolName(defaultRegionCls),
             visible: true,
+            breakout: {
+              is_breakout: false,
+              name: "",
+              id: undefined,
+              visible: false,
+            },
           }
           state = setIn(state, ["mode"], {
             mode: "RESIZE_KEYPOINTS",

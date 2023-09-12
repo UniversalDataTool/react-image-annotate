@@ -97,12 +97,19 @@ const RowLayout = ({ visible, onClick }) => {
 const RowHeader = ({ onRegionToggle, regions }) => {
   const [checkedList, setCheckedList] = useState(
     DEVICE_LIST.map((item) => {
-      let matchedObject = regions.find((region) => {
-        return region.category === item
-      })
-      return {
-        item: item,
-        checked: matchedObject ? matchedObject.visible : true,
+      if (regions !== undefined && regions.length > 0) {
+        let matchedObject = regions.find((region) => {
+          return region.category === item
+        })
+        return {
+          item: item,
+          checked: matchedObject ? matchedObject.visible : true,
+        }
+      } else {
+        return {
+          item: item,
+          checked: true,
+        }
       }
     })
   )
@@ -110,12 +117,19 @@ const RowHeader = ({ onRegionToggle, regions }) => {
   useMemo(() => {
     setCheckedList(
       DEVICE_LIST.map((item) => {
-        let matchedObject = regions.find((region) => {
-          return region.category === item
-        })
-        return {
-          item: item,
-          checked: matchedObject ? matchedObject.visible : true,
+        if (regions !== undefined && regions.length > 0) {
+          let matchedObject = regions.find((region) => {
+            return region.category === item
+          })
+          return {
+            item: item,
+            checked: matchedObject ? matchedObject.visible : true,
+          }
+        } else {
+          return {
+            item: item,
+            checked: true,
+          }
         }
       })
     )
@@ -178,7 +192,9 @@ const RowHeader = ({ onRegionToggle, regions }) => {
                           alignItems: "center",
                         }}
                       >
-                        <div style={{ paddingRight: 10 }}>{device}</div>
+                        <div style={{ paddingRight: 10, fontSize: '0.7500em' }}>
+                          {device}
+                        </div>
                         <div
                           style={{
                             backgroundColor: ColorMapping[device],
