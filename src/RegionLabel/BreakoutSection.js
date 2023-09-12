@@ -37,7 +37,9 @@ export default function BreakoutSection({
         }
       : null
   )
-  const [isExisting, setExisting] = React.useState(false)
+  const [isExisting, setExisting] = React.useState(
+    breakoutList === null ? false : true
+  )
 
   const ExistingSetup = () => {
     return (

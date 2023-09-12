@@ -32,6 +32,7 @@ const Chip = ({ color, text }) => {
 const RowLayout = ({ order, classification, trash, onClick }) => {
   const classes = useStyles()
   const [mouseOver, changeMouseOver] = useState(false)
+  console.log(order)
   return (
     <div
       onClick={onClick}
@@ -115,10 +116,7 @@ const MemoRow = memo(
 
 const emptyArr = []
 
-export const BreakoutSidebarBox = ({
-  regions,
-  onBreakoutDelete,
-}) => {
+export const BreakoutSidebarBox = ({ regions, onBreakoutDelete }) => {
   const breakoutList = useMemo(() => {
     const breakoutRegions = [
       ...new Set(
@@ -131,6 +129,7 @@ export const BreakoutSidebarBox = ({
     return breakoutRegions
   }, [regions])
 
+  console.log(breakoutList)
   const classes = useStyles()
   return (
     <SidebarBoxContainer
@@ -145,15 +144,17 @@ export const BreakoutSidebarBox = ({
 
         {breakoutList &&
           breakoutList.map((r, i) => (
-            <MemoRow
-              index={i}
-              key={r.id}
-              id={r.id}
-              name={r.name}
-              is_breakout={r.is_breakout}
-              visible={r.visible}
-              onBreakoutDelete={onBreakoutDelete}
-            />
+            <>
+              <MemoRow
+                index={i}
+                key={r.id}
+                id={r.id}
+                name={r.name}
+                is_breakout={r.is_breakout}
+                visible={r.visible}
+                onBreakoutDelete={onBreakoutDelete}
+              />
+            </>
           ))}
       </div>
     </SidebarBoxContainer>
