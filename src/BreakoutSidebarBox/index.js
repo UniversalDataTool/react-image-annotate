@@ -32,7 +32,6 @@ const Chip = ({ color, text }) => {
 const RowLayout = ({ order, classification, trash, onClick }) => {
   const classes = useStyles()
   const [mouseOver, changeMouseOver] = useState(false)
-  console.log(order)
   return (
     <div
       onClick={onClick}
@@ -129,7 +128,6 @@ export const BreakoutSidebarBox = ({ regions, onBreakoutDelete }) => {
     return breakoutRegions
   }, [regions])
 
-  console.log(breakoutList)
   const classes = useStyles()
   return (
     <SidebarBoxContainer
