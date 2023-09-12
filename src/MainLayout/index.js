@@ -447,6 +447,12 @@ export const MainLayout = ({
               />,
               <BreakoutSidebarBox
                 regions={activeImage ? activeImage.regions : emptyArr}
+                onBreakoutDelete={(breakoutId) => {
+                  dispatch({
+                    type: "DELETE_BREAKOUT_BY_BREAKOUT_ID",
+                    breakoutId: breakoutId,
+                  })
+                }}
               />,
 
               <RegionSelector

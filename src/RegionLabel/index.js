@@ -104,8 +104,6 @@ export const RegionLabel = ({
   const classes = useStyles()
   const [open, setOpen] = React.useState(false)
 
-  console.log("breakout list in region label", breakoutList)
-
   const commentInputRef = useRef(null)
   const onCommentInputClick = (_) => {
     // The TextField wraps the <input> tag with two divs

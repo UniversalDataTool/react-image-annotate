@@ -155,7 +155,7 @@ export default function BreakoutSection({
           onChange={(event) => setBreakoutName(event.target.value)}
           size="small"
           inputProps={{
-            style: { fontSize: "10px" },
+            style: { fontSize: "12px" },
           }}
         />
         <Button

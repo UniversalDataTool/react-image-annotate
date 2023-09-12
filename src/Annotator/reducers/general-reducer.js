@@ -266,8 +266,39 @@ export default (state: MainLayoutState, action: Action) => {
           return region
         }
       })
-      console.log(newRegions)
-      console.log(newRegions.filter((region) => region.breakout))
+      newImage = setIn(newImage, ["regions"], newRegions)
+      newState = setIn(newState, ["images", currentImageIndex], newImage)
+      return newState
+    }
+
+    case "DELETE_BREAKOUT_BY_BREAKOUT_ID": {
+      let newState = { ...state }
+      let newImage = getIn(newState, ["images", currentImageIndex])
+      let newRegions = getIn(newState, ["images", currentImageIndex, "regions"])
+      if (!newRegions) {
+        return state
+      }
+      const deleteBreakoutId = action.breakoutId
+      newRegions = newRegions.map((region) => {
+        if (region.breakout) {
+          console.log(region.breakout.id, deleteBreakoutId)
+          if (region.breakout.id === deleteBreakoutId) {
+            return {
+              ...region,
+              breakout: {
+                name: "",
+                is_breakout: false,
+                id: "",
+                visible: false,
+              },
+            }
+          } else {
+            return region
+          }
+        } else {
+          return region
+        }
+      })
       newImage = setIn(newImage, ["regions"], newRegions)
       newState = setIn(newState, ["images", currentImageIndex], newImage)
       return newState

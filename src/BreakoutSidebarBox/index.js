@@ -1,5 +1,5 @@
 // @flow
-import React, { Fragment, useState, memo, useCallback } from "react"
+import React, { Fragment, useState, memo, useCallback, useMemo } from "react"
 import { SwitchProps } from "@material-ui/core"
 import SidebarBoxContainer from "../SidebarBoxContainer"
 import { makeStyles, styled } from "@material-ui/core/styles"
@@ -20,7 +20,7 @@ import Tooltip from "@material-ui/core/Tooltip"
 import { FormControlLabel, FormGroup, Switch } from "@material-ui/core"
 import DeviceList from "../RegionLabel/DeviceList"
 import { action } from "@storybook/addon-actions"
-import DashboardIcon from '@material-ui/icons/Dashboard';
+import DashboardIcon from "@material-ui/icons/Dashboard"
 const useStyles = makeStyles(styles)
 
 const HeaderSep = styled("div")({
@@ -41,15 +41,7 @@ const Chip = ({ color, text }) => {
   )
 }
 
-const RowLayout = ({
-  header,
-  highlighted,
-  order,
-  classification,
-  tags,
-  trash,
-  onClick,
-}) => {
+const RowLayout = ({ order, classification, trash, onClick }) => {
   const classes = useStyles()
   const [mouseOver, changeMouseOver] = useState(false)
   return (
@@ -95,55 +87,30 @@ const RowHeader = ({}) => {
 
 const MemoRowHeader = memo(RowHeader)
 
-const Row = ({
-  region: r,
-  highlighted,
-  onDeleteBreakout,
-  onChangeBreakout,
-  onSelectBreakout,
-  visible,
-  locked,
-  color,
-  cls,
-  index,
-}) => {
+const Row = ({ id, name, is_breakout, visible, index, onBreakoutDelete }) => {
   return (
     <RowLayout
       header={false}
-      highlighted={highlighted}
-      onClick={() => onSelectBreakout(r)}
+      //   onClick={() => onSelectBreakout(r)}
       order={`#${index + 1}`}
-      classification={<Chip text={cls || ""} color={color || "#ddd"} />}
+      classification={name}
       area=""
       trash={
-        <TrashIcon onClick={() => onDeleteBreakout(r)} className="icon2" />
+        <TrashIcon onClick={() => onBreakoutDelete(id)} className="icon2" />
       }
-      lock={
-        r.locked ? (
-          <LockIcon
-            onClick={() => onChangeBreakout({ ...r, locked: false })}
-            className="icon2"
-          />
-        ) : (
-          <UnlockIcon
-            onClick={() => onChangeBreakout({ ...r, locked: true })}
-            className="icon2"
-          />
-        )
-      }
-      visible={
-        r.visible || r.visible === undefined ? (
-          <VisibleIcon
-            onClick={() => onChangeBreakout({ ...r, visible: false })}
-            className="icon2"
-          />
-        ) : (
-          <VisibleOffIcon
-            onClick={() => onChangeBreakout({ ...r, visible: true })}
-            className="icon2"
-          />
-        )
-      }
+      //   visible={
+      //     visible || visible === undefined ? (
+      //       <VisibleIcon
+      //         // onClick={() => onChangeBreakout({ ...r, visible: false })}
+      //         className="icon2"
+      //       />
+      //     ) : (
+      //       <VisibleOffIcon
+      //         // onClick={() => onChangeBreakout({ ...r, visible: true })}
+      //         className="icon2"
+      //       />
+      //     )
+      //   }
     />
   )
 }
@@ -151,31 +118,35 @@ const Row = ({
 const MemoRow = memo(
   Row,
   (prevProps, nextProps) =>
-    prevProps.highlighted === nextProps.highlighted &&
     prevProps.visible === nextProps.visible &&
-    prevProps.locked === nextProps.locked &&
     prevProps.id === nextProps.id &&
-    prevProps.index === nextProps.index &&
-    prevProps.cls === nextProps.cls &&
-    prevProps.color === nextProps.color
+    prevProps.name === nextProps.name &&
+    prevProps.is_breakout === nextProps.is_breakout &&
+    prevProps.onBreakoutDelete === nextProps.onBreakoutDelete
 )
 
 const emptyArr = []
 
-export const BreakoutSidebarBox = (
-  {
-    //   breakouts = emptyArr,
-    //   onDeleteBreakout,
-    //   onChangeBreakout,
-    //   onSelectBreakout,
-  }
-) => {  
-
-    const breakouts = [
-        'Breakout 1',
-        'Breakout 2',
-        'Breakout 3',
-    ]
+export const BreakoutSidebarBox = ({
+  //   breakouts = emptyArr,
+  //   onDeleteBreakout,
+  //   onChangeBreakout,
+  //   onSelectBreakout,
+  regions,
+  onBreakoutDelete,
+}) => {
+  console.log(regions)
+  const breakoutList = useMemo(() => {
+    const breakoutRegions = [
+      ...new Set(
+        regions
+          .filter((obj) => obj.breakout && obj.breakout.is_breakout === true)
+          .map((obj) => JSON.stringify(obj.breakout))
+      ),
+    ].map((str) => JSON.parse(str))
+    if (breakoutRegions.length === 0) return null
+    return breakoutRegions
+  }, [regions])
 
   const classes = useStyles()
   return (
@@ -188,6 +159,19 @@ export const BreakoutSidebarBox = (
       <div className={classes.container}>
         <MemoRowHeader />
         <HeaderSep />
+
+        {breakoutList &&
+          breakoutList.map((r, i) => (
+            <MemoRow
+              index={i}
+              key={r.id}
+              id={r.id}
+              name={r.name}
+              is_breakout={r.is_breakout}
+              visible={r.visible}
+              onBreakoutDelete={onBreakoutDelete}
+            />
+          ))}
         {/* {breakouts.map((r, i) => (
           <MemoRow
             key={r.id}
