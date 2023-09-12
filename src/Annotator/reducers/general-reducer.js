@@ -279,29 +279,23 @@ export default (state: MainLayoutState, action: Action) => {
         return state
       }
       const deleteBreakoutId = action.breakoutId
-      newRegions = newRegions.map((region) => {
-        if (region.breakout) {
-          console.log(region.breakout.id, deleteBreakoutId)
-          if (region.breakout.id === deleteBreakoutId) {
-            return {
-              ...region,
-              breakout: {
+      newRegions = newRegions.map((region) => ({
+        ...region,
+        breakout:
+          region.breakout && region.breakout.id === deleteBreakoutId
+            ? {
                 name: "",
                 is_breakout: false,
                 id: "",
                 visible: false,
-              },
-            }
-          } else {
-            return region
-          }
-        } else {
-          return region
-        }
-      })
+              }
+            : region.breakout,
+      }))
+
       newImage = setIn(newImage, ["regions"], newRegions)
       newState = setIn(newState, ["images", currentImageIndex], newImage)
-      return newState
+      return setIn(newState, [...pathToActiveImage, "regions"], newRegions)
+      // return newState
     }
 
     case "ADD_EXISTING_BREAKOUT": {

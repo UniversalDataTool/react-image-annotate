@@ -1,26 +1,14 @@
 // @flow
-import React, { Fragment, useState, memo, useCallback, useMemo } from "react"
-import { SwitchProps } from "@material-ui/core"
-import SidebarBoxContainer from "../SidebarBoxContainer"
-import { makeStyles, styled } from "@material-ui/core/styles"
-import { grey } from "@material-ui/core/colors"
-import RegionIcon from "@material-ui/icons/PictureInPicture"
 import Grid from "@material-ui/core/Grid"
-import ReorderIcon from "@material-ui/icons/SwapVert"
-import PieChartIcon from "@material-ui/icons/PieChart"
-import TrashIcon from "@material-ui/icons/Delete"
-import LockIcon from "@material-ui/icons/Lock"
-import UnlockIcon from "@material-ui/icons/LockOpen"
-import VisibleIcon from "@material-ui/icons/Visibility"
-import VisibleOffIcon from "@material-ui/icons/VisibilityOff"
-import styles from "./styles"
-import classnames from "classnames"
-import isEqual from "lodash/isEqual"
-import Tooltip from "@material-ui/core/Tooltip"
-import { FormControlLabel, FormGroup, Switch } from "@material-ui/core"
-import DeviceList from "../RegionLabel/DeviceList"
-import { action } from "@storybook/addon-actions"
+import { grey } from "@material-ui/core/colors"
+import { makeStyles, styled } from "@material-ui/core/styles"
 import DashboardIcon from "@material-ui/icons/Dashboard"
+import TrashIcon from "@material-ui/icons/Delete"
+import isEqual from "lodash/isEqual"
+import React, { memo, useMemo, useState } from "react"
+import DeviceList from "../RegionLabel/DeviceList"
+import SidebarBoxContainer from "../SidebarBoxContainer"
+import styles from "./styles"
 const useStyles = makeStyles(styles)
 
 const HeaderSep = styled("div")({
@@ -128,14 +116,9 @@ const MemoRow = memo(
 const emptyArr = []
 
 export const BreakoutSidebarBox = ({
-  //   breakouts = emptyArr,
-  //   onDeleteBreakout,
-  //   onChangeBreakout,
-  //   onSelectBreakout,
   regions,
   onBreakoutDelete,
 }) => {
-  console.log(regions)
   const breakoutList = useMemo(() => {
     const breakoutRegions = [
       ...new Set(
@@ -172,17 +155,6 @@ export const BreakoutSidebarBox = ({
               onBreakoutDelete={onBreakoutDelete}
             />
           ))}
-        {/* {breakouts.map((r, i) => (
-          <MemoRow
-            key={r.id}
-            {...r}
-            region={r}
-            index={i}
-            onSelectBreakout={onSelectBreakout}
-            onDeleteBreakout={onDeleteBreakout}
-            onChangeBreakout={onChangeBreakout}
-          />
-        ))} */}
       </div>
     </SidebarBoxContainer>
   )
@@ -194,6 +166,7 @@ const mapUsedRegionProperties = (r) => [
   r.locked,
   r.visible,
   r.highlighted,
+  r.breakout,
 ]
 
 export default memo(BreakoutSidebarBox, (prevProps, nextProps) =>

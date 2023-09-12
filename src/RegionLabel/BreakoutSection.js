@@ -146,7 +146,7 @@ export default function BreakoutSection({
           style={{
             width: "100%",
             fontSize: "10px",
-            "& .MuiFormLabel-root": {
+            "& .MuiFormLabelRoot": {
               fontSize: "10px",
             },
           }}

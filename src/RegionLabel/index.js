@@ -442,7 +442,7 @@ export const RegionLabel = ({
                   alignItems="flex-start"
                 >
                   <Typography
-                    variant="subtitle3"
+                    variant="subtitle2"
                     gutterBottom
                     style={{
                       fontWeight: "bold",

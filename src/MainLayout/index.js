@@ -1,7 +1,7 @@
 // @flow
 
 import { makeStyles, styled } from "@material-ui/core/styles"
-import React, { useCallback, useRef, useState } from "react"
+import React, { useCallback, useEffect, useMemo, useRef, useState } from "react"
 import { FullScreen, useFullScreenHandle } from "react-full-screen"
 import type { MainLayoutState } from "./types"
 
@@ -447,12 +447,10 @@ export const MainLayout = ({
               />,
               <BreakoutSidebarBox
                 regions={activeImage ? activeImage.regions : emptyArr}
-                onBreakoutDelete={(breakoutId) => {
-                  dispatch({
-                    type: "DELETE_BREAKOUT_BY_BREAKOUT_ID",
-                    breakoutId: breakoutId,
-                  })
-                }}
+                onBreakoutDelete={action(
+                  "DELETE_BREAKOUT_BY_BREAKOUT_ID",
+                  "breakoutId"
+                )}
               />,
 
               <RegionSelector
