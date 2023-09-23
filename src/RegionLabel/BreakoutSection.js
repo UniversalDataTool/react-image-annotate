@@ -30,7 +30,7 @@ export default function BreakoutSection({
 }) {
   const [breakoutName, setBreakoutName] = React.useState("")
   const [selectedBreakout, setSelectedBreakout] = React.useState(
-    breakoutList !== null && breakoutList.length > 0
+    breakoutList != null && breakoutList.length > 0
       ? {
           label: breakoutList[0].name,
           value: breakoutList[0].id,
@@ -79,10 +79,11 @@ export default function BreakoutSection({
             }}
             value={selectedBreakout}
             options={asMutable(
-              breakoutList.map((b) => ({
-                label: b.name,
-                value: b.id,
-              }))
+              breakoutList != null &&
+                breakoutList.map((b) => ({
+                  label: b.name,
+                  value: b.id,
+                }))
             )}
           />
         </div>

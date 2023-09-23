@@ -2,25 +2,24 @@
 import {
   FormControlLabel,
   FormGroup,
-  MuiThemeProvider,
+  IconButton,
   Switch,
-  ThemeProvider,
   createTheme,
-  withStyles,
 } from "@material-ui/core"
 import Grid from "@material-ui/core/Grid"
 import { makeStyles } from "@material-ui/core/styles"
 import TrashIcon from "@material-ui/icons/Delete"
 import LockIcon from "@material-ui/icons/Lock"
 import PieChartIcon from "@material-ui/icons/PieChart"
+import DashboardIcon from "@material-ui/icons/Dashboard"
 import ReorderIcon from "@material-ui/icons/SwapVert"
 import ToggleOnIcon from "@material-ui/icons/ToggleOn"
 import isEqual from "lodash/isEqual"
-import React, { memo, useCallback, useEffect, useState, useMemo } from "react"
+import React, { memo, useCallback, useMemo, useState } from "react"
+import { ColorMapping } from "../RegionLabel/ColorMapping"
 import DeviceList from "../RegionLabel/DeviceList"
 import SidebarBoxContainer from "../SidebarBoxContainer"
 import styles from "./styles"
-import { ColorMapping } from "../RegionLabel/ColorMapping"
 
 const useStyles = makeStyles(styles)
 
@@ -192,7 +191,7 @@ const RowHeader = ({ onRegionToggle, regions }) => {
                           alignItems: "center",
                         }}
                       >
-                        <div style={{ paddingRight: 10, fontSize: '0.7500em' }}>
+                        <div style={{ paddingRight: 10, fontSize: "0.7500em" }}>
                           {device}
                         </div>
                         <div
@@ -207,6 +206,15 @@ const RowHeader = ({ onRegionToggle, regions }) => {
                       </div>
                     }
                   />
+                  <IconButton
+                    style={{
+                      color: "white",
+                    }}
+                  >
+                    <DashboardIcon
+                      style={{ color: "white", width: 20, height:20 }}
+                    />
+                  </IconButton>
                 </div>
               )
             })}
