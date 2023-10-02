@@ -451,6 +451,10 @@ export const MainLayout = ({
                   "DELETE_BREAKOUT_BY_BREAKOUT_ID",
                   "breakoutId"
                 )}
+                onBreakoutVisible={action(
+                  "TOGGLE_BREAKOUT_VISIBILITY",
+                  "breakoutId"
+                )}
               />,
 
               <RegionSelector

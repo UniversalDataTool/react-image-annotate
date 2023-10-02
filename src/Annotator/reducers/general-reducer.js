@@ -244,6 +244,94 @@ export default (state: MainLayoutState, action: Action) => {
       newState = setIn(newState, ["images", currentImageIndex], newImage)
       return newState
     }
+    case "TOGGLE_BREAKOUT_VISIBILITY":
+      let newState = { ...state }
+      let counter = 0
+      let newImage = getIn(newState, ["images", currentImageIndex])
+      let newRegions = getIn(newState, ["images", currentImageIndex, "regions"])
+      if (!newRegions) {
+        return state
+      }
+
+      const isAlreadyBreakoutVisible = newRegions.some(
+        (region) =>
+          region.breakout &&
+          region.breakout.visible === true &&
+          region.breakout.id === action.breakoutId
+      )
+      console.log(isAlreadyBreakoutVisible)
+
+      newRegions = newRegions.map((region) => {
+        // if (region.breakout)
+        //   console.log(region, action.breakoutId, region.breakout.id, counter++)
+        if (isAlreadyBreakoutVisible) {
+          return {
+            ...region,
+            visible: true,
+            breakout: region.breakout
+              ? { ...region.breakout, visible: false }
+              : undefined,
+          }
+        }
+
+        if (region.breakout && region.breakout.id === action.breakoutId) {
+          // Set region.visible to true if breakout.id and breakout.visible match the action's values
+          console.log("if true")
+          const b = {
+            ...region,
+            visible: true,
+            breakout: {
+              ...region.breakout,
+              visible: true,
+            },
+          }
+
+          return b
+        } else {
+          console.log("else false")
+          // Set breakout.visible and region.visible to false otherwise
+          const b = {
+            ...region,
+            visible: false,
+            breakout:  region.breakout
+            ? { ...region.breakout, visible: false }
+            : undefined,
+          }
+          return b
+        }
+      })
+
+      // newRegions = newRegions.map((region) => {
+      //   if (
+      //     region.breakout &&
+      //     region.breakout.id === action.id &&
+      //     region.breakout.visible === true
+      //   ) {
+      //     // Set region.visible to true if breakout.id and breakout.visible match the action's values
+      //     return {
+      //       ...region,
+      //       visible: true,
+      //       breakout: {
+      //         ...region.breakout,
+      //         visible: true,
+      //       },
+      //     }
+      //   } else {
+      //     // Set breakout.visible and region.visible to false otherwise
+      //     return {
+      //       ...region,
+      //       visible: false,
+      //       breakout: {
+      //         ...region.breakout,
+      //         visible: false,
+      //       },
+      //     }
+      //   }
+      // })
+
+      newImage = setIn(newImage, ["regions"], newRegions)
+      newState = setIn(newState, ["images", currentImageIndex], newImage)
+      return newState
     case "ADD_NEW_BREAKOUT": {
       let newState = { ...state }
       let newImage = getIn(newState, ["images", currentImageIndex])
@@ -259,7 +347,7 @@ export default (state: MainLayoutState, action: Action) => {
               is_breakout: true,
               name: action.name,
               id: getRandomId(),
-              visible: true,
+              visible: false,
             },
           }
         } else {
@@ -313,7 +401,7 @@ export default (state: MainLayoutState, action: Action) => {
               is_breakout: true,
               name: action.breakoutName,
               id: action.breakoutId,
-              visible: true,
+              visible: false,
             },
           }
         } else {

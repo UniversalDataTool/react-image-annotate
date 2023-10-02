@@ -244,6 +244,7 @@ export const RegionLabel = ({
               </div>
 
               <div style={{ flexGrow: 1, padding: 12 }} />
+              {console.log(region)}
               {region.cls &&
                 (region.breakout === undefined ||
                   (region.breakout &&

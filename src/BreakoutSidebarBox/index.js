@@ -9,6 +9,7 @@ import React, { memo, useMemo, useState } from "react"
 import DeviceList from "../RegionLabel/DeviceList"
 import SidebarBoxContainer from "../SidebarBoxContainer"
 import styles from "./styles"
+import VisibilityIcon from "@material-ui/icons/Visibility"
 const useStyles = makeStyles(styles)
 
 const HeaderSep = styled("div")({
@@ -29,7 +30,7 @@ const Chip = ({ color, text }) => {
   )
 }
 
-const RowLayout = ({ order, classification, trash, onClick }) => {
+const RowLayout = ({ order, classification, trash, visible, onClick }) => {
   const classes = useStyles()
   const [mouseOver, changeMouseOver] = useState(false)
   return (
@@ -46,7 +47,10 @@ const RowLayout = ({ order, classification, trash, onClick }) => {
         <Grid item xs={8}>
           {classification}
         </Grid>
-        <Grid item xs={2}>
+        <Grid item xs={1}>
+          {visible}
+        </Grid>
+        <Grid item xs={1}>
           {trash}
         </Grid>
       </Grid>
@@ -66,7 +70,10 @@ const RowHeader = ({}) => {
       >
         Breakout Name
       </Grid>
-      <Grid item xs={2}>
+      <Grid item xs={1}>
+        <VisibilityIcon className="icon" />
+      </Grid>
+      <Grid item xs={1}>
         <TrashIcon className="icon" />
       </Grid>
     </Grid>
@@ -75,7 +82,7 @@ const RowHeader = ({}) => {
 
 const MemoRowHeader = memo(RowHeader)
 
-const Row = ({ id, name, is_breakout, visible, index, onBreakoutDelete }) => {
+const Row = ({ id, name, is_breakout, visible, index, onBreakoutDelete, onBreakoutVisible }) => {
   return (
     <RowLayout
       header={false}
@@ -83,6 +90,14 @@ const Row = ({ id, name, is_breakout, visible, index, onBreakoutDelete }) => {
       order={`#${index + 1}`}
       classification={name}
       area=""
+      visible={
+        <VisibilityIcon
+          className="icon2"
+          onClick={() => {
+            onBreakoutVisible(id)
+          }}
+        />
+      }
       trash={
         <TrashIcon onClick={() => onBreakoutDelete(id)} className="icon2" />
       }
@@ -115,7 +130,11 @@ const MemoRow = memo(
 
 const emptyArr = []
 
-export const BreakoutSidebarBox = ({ regions, onBreakoutDelete }) => {
+export const BreakoutSidebarBox = ({
+  regions,
+  onBreakoutDelete,
+  onBreakoutVisible,
+}) => {
   const breakoutList = useMemo(() => {
     const breakoutRegions = [
       ...new Set(
@@ -151,6 +170,7 @@ export const BreakoutSidebarBox = ({ regions, onBreakoutDelete }) => {
                 is_breakout={r.is_breakout}
                 visible={r.visible}
                 onBreakoutDelete={onBreakoutDelete}
+                onBreakoutVisible={onBreakoutVisible}
               />
             </>
           ))}
