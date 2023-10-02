@@ -7,7 +7,7 @@ import ErrorBoundaryDialog from "./ErrorBoundaryDialog.js"
 
 export default () => {
   const [annotatorOpen, changeAnnotatorOpen] = useState(false)
-  const [annotatorProps, changeAnnotatorProps] = useState(examples["Custom"]())
+  const [annotatorProps, changeAnnotatorProps] = useState(examples["Simple Bounding Box"]())
   const [lastOutput, changeLastOutput] = useState()
 
   return (
@@ -19,7 +19,7 @@ export default () => {
           }}
         >
           <Annotator
-            {...(annotatorProps: any)}
+            {...(annotatorProps)}
             onExit={(output) => {
               delete (output: any)["lastAction"]
               changeLastOutput(output)

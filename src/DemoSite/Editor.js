@@ -39,15 +39,13 @@ const loadSavedInput = () => {
 
 export const examples = {
   "Simple Bounding Box": () => ({
-    enabledTools: ["select", "create-box", "show-mask", "create-point"],
+    
     onSave: () => console.log("save clicked!"),
     taskDescription:
       "Annotate each image according to this _markdown_ specification.",
-    // regionTagList: [],
-    // regionClsList: ["hotdog"],
     regionTagList: ["has-bun"],
     regionClsList: ["hotdog", "not-hotdog"],
-    enabledTools: ["select", "create-box"],
+    enabledTools: ["select", "create-box", "show-mask", "create-point"],
     // showTags: true,
     images: [
       {
@@ -65,7 +63,7 @@ export const examples = {
     taskDescription:
       "Annotate each image according to this _markdown_ specification.",
     regionClsList: ["car", "truck"],
-    enabledTools: ["select", "create-polygon"],
+    enabledTools: ["select", "create-polygon", 'create-point'],
     images: [
       {
         src: "https://images.unsplash.com/photo-1561518776-e76a5e48f731?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=750&q=80",

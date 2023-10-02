@@ -32,6 +32,7 @@ export const RegionTags = ({
   RegionEditLabel,
   onRegionClassAdded,
   allowComments,
+  dispatch,
 }) => {
   const RegionLabel =
     RegionEditLabel != null ? RegionEditLabel : DefaultRegionLabel
@@ -121,13 +122,14 @@ export const RegionTags = ({
               onMatchTemplate={onMatchTemplate}
               finishMatchTemplate={finishMatchTemplate}
               pageIndex={pageIndex}
-              regionTemplateMatchingDisabled={regionTemplateMatchingDisabled}  
+              regionTemplateMatchingDisabled={regionTemplateMatchingDisabled}
               editing={region.editingLabels}
               region={region}
               regions={regions}
               imageSrc={imageSrc}
               onRegionClassAdded={onRegionClassAdded}
               allowComments={allowComments}
+              dispatch={dispatch}
             />
           </div>
         </div>

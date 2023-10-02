@@ -97,7 +97,7 @@ const getDefaultMat = (allowedArea = null, { iw, ih } = {}) => {
   let mat = Matrix.from(0.67, 0, 0, 0.67, -10, -10)
   if (allowedArea && iw) {
     mat = mat
-      .translate(allowedArea.x * iw , allowedArea.y * ih )
+      .translate(allowedArea.x * iw, allowedArea.y * ih)
       .scaleU(allowedArea.w + 0.05)
   }
   return mat
@@ -150,6 +150,7 @@ export const ImageCanvas = ({
   modifyingAllowedArea = false,
   keypointDefinitions,
   allowComments,
+  dispatch,
 }: Props) => {
   const classes = useStyles()
 
@@ -322,6 +323,18 @@ export const ImageCanvas = ({
     return highlightedRegions[0]
   }, [regions])
 
+  const breakoutList = useMemo(() => {
+    const breakoutRegions = [
+      ...new Set(
+        regions
+          .filter((obj) => obj.breakout && obj.breakout.is_breakout === true)
+          .map((obj) => JSON.stringify(obj.breakout))
+      ),
+    ].map((str) => JSON.parse(str))
+    if (breakoutRegions.length === 0) return null
+    return breakoutRegions
+  }, [regions])
+
   return (
     <div
       style={{
@@ -404,6 +417,7 @@ export const ImageCanvas = ({
             RegionEditLabel={RegionEditLabel}
             onRegionClassAdded={onRegionClassAdded}
             allowComments={allowComments}
+            dispatch={dispatch}
           />
         </PreventScrollToParents>
       )}
@@ -425,6 +439,8 @@ export const ImageCanvas = ({
             regionTemplateMatchingDisabled={regionTemplateMatchingDisabled}
             onRegionClassAdded={onRegionClassAdded}
             allowComments={allowComments}
+            breakoutList={breakoutList}
+            dispatch={dispatch}
           />
         </div>
       )}

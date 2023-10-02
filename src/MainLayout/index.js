@@ -1,40 +1,38 @@
 // @flow
 
-import type { Action, MainLayoutState } from "./types"
-import { FullScreen, useFullScreenHandle } from "react-full-screen"
-import React, { useCallback, useRef, useState } from "react"
 import { makeStyles, styled } from "@material-ui/core/styles"
+import React, { useCallback, useEffect, useMemo, useRef, useState } from "react"
+import { FullScreen, useFullScreenHandle } from "react-full-screen"
+import type { MainLayoutState } from "./types"
 
-import ClassSelectionMenu from "../ClassSelectionMenu"
-import DebugBox from "../DebugSidebarBox"
-import HistorySidebarBox from "../HistorySidebarBox"
-import ShortcutSidebarBox from "../ShortcutSidebarBox"
-import ImageCanvas from "../ImageCanvas"
-import ImageSelector from "../ImageSelectorSidebarBox"
-import KeyframeTimeline from "../KeyframeTimeline"
-import KeyframesSelector from "../KeyframesSelectorSidebarBox"
-import type { Node } from "react"
-import RegionSelector from "../RegionSelectorSidebarBox"
-import SettingsDialog from "../SettingsDialog"
-import TagsSidebarBox from "../TagsSidebarBox"
-import TaskDescription from "../TaskDescriptionSidebarBox"
+import { Input } from "@material-ui/core"
 import Workspace from "@xkey-aiestimation/react-material-workspace-layout/Workspace"
 import classnames from "classnames"
+import type { Node } from "react"
+import { withHotKeys } from "react-hotkeys"
+import useEventCallback from "use-event-callback"
+import useKey from "use-key-hook"
 import getActiveImage from "../Annotator/reducers/get-active-image"
+import DebugBox from "../DebugSidebarBox"
+import HistorySidebarBox from "../HistorySidebarBox"
+import ImageCanvas from "../ImageCanvas"
+import KeyframeTimeline from "../KeyframeTimeline"
+import KeyframesSelector from "../KeyframesSelectorSidebarBox"
+import RegionSelector from "../RegionSelectorSidebarBox"
+import SettingsDialog from "../SettingsDialog"
+import { useSettings } from "../SettingsProvider"
+import ShortcutSidebarBox from "../ShortcutSidebarBox"
+import { useDispatchHotkeyHandlers } from "../ShortcutsManager"
+import TagsSidebarBox from "../TagsSidebarBox"
+import ToggleSidebarBox from "../ToggleSidebarBox"
 import getHotkeyHelpText from "../utils/get-hotkey-help-text"
 import iconDictionary from "./icon-dictionary"
 import styles from "./styles"
-import { useDispatchHotkeyHandlers } from "../ShortcutsManager"
-import useEventCallback from "use-event-callback"
 import useImpliedVideoRegions from "./use-implied-video-regions"
-import useKey from "use-key-hook"
-import { useSettings } from "../SettingsProvider"
-import { withHotKeys } from "react-hotkeys"
-import { Input } from "@material-ui/core"
-import ToggleSidebarBox from "../ToggleSidebarBox"
 import favicon from "../../public/images/favicon.png"
 // import favicon from "./favicon.png"
 import { action } from "@storybook/addon-actions"
+import BreakoutSidebarBox from "../BreakoutSidebarBox"
 // import Fullscreen from "../Fullscreen"
 
 const emptyArr = []
@@ -209,6 +207,7 @@ export const MainLayout = ({
       onChangeVideoPlaying={action("CHANGE_VIDEO_PLAYING", "isPlaying")}
       onRegionClassAdded={onRegionClassAdded}
       allowComments={state.allowComments}
+      dispatch={dispatch}
     />
   )
 
@@ -445,6 +444,17 @@ export const MainLayout = ({
                     isVisible: event.target.checked,
                   })
                 }}
+              />,
+              <BreakoutSidebarBox
+                regions={activeImage ? activeImage.regions : emptyArr}
+                onBreakoutDelete={action(
+                  "DELETE_BREAKOUT_BY_BREAKOUT_ID",
+                  "breakoutId"
+                )}
+                onBreakoutVisible={action(
+                  "TOGGLE_BREAKOUT_VISIBILITY",
+                  "breakoutId"
+                )}
               />,
 
               <RegionSelector

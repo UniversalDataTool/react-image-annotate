@@ -59,14 +59,14 @@ const RowLayout = ({
       onMouseLeave={() => changeMouseOver(false)}
       // className={classnames(classes.row, { header, highlighted })}
     >
-      <Grid container alignItems="center">
+      <Grid container>
         <Grid item xs={2}>
           <div style={{ textAlign: "right", paddingRight: 10 }}>{order}</div>
         </Grid>
-        <Grid item xs={5}>
+        <Grid item xs={8}>
           {classification}
         </Grid>
-        <Grid item xs={1}>
+        <Grid item xs={2}>
           {trash}
         </Grid>
       </Grid>

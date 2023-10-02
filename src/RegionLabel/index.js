@@ -1,23 +1,37 @@
 // @flow
 
-import React, { useRef, memo, useEffect } from "react"
-import Paper from "@material-ui/core/Paper"
-import { makeStyles } from "@material-ui/core/styles"
-import styles from "./styles"
-import classnames from "classnames"
-import type { Region } from "../ImageCanvas/region-tools.js"
-import IconButton from "@material-ui/core/IconButton"
+import {
+  Box,
+  ButtonGroup,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+  Grid,
+  InputAdornment,
+  Modal,
+  Typography,
+} from "@material-ui/core"
 import Button from "@material-ui/core/Button"
-import TrashIcon from "@material-ui/icons/Delete"
-import CheckIcon from "@material-ui/icons/Check"
+import IconButton from "@material-ui/core/IconButton"
+import Paper from "@material-ui/core/Paper"
 import TextField from "@material-ui/core/TextField"
+import { makeStyles } from "@material-ui/core/styles"
+import AddIcon from "@material-ui/icons/Add"
+import CheckIcon from "@material-ui/icons/Check"
+import TrashIcon from "@material-ui/icons/Delete"
+import ImageSearchIcon from "@material-ui/icons/ImageSearch"
+import LinearScaleIcon from "@material-ui/icons/LinearScale"
+import classnames from "classnames"
+import React, { memo, useRef, useState } from "react"
 import Select from "react-select"
 import CreatableSelect from "react-select/creatable"
-import { InputAdornment } from "@material-ui/core"
 import { asMutable } from "seamless-immutable"
-import LinearScaleIcon from "@material-ui/icons/LinearScale"
+import type { Region } from "../ImageCanvas/region-tools.js"
 import DeviceList from "./DeviceList"
-import ImageSearchIcon from "@material-ui/icons/ImageSearch"
+import styles from "./styles"
+import BreakoutSection from "./BreakoutSection.js"
 
 const useStyles = makeStyles(styles)
 
@@ -84,8 +98,12 @@ export const RegionLabel = ({
   finishMatchTemplate,
   onRegionClassAdded,
   allowComments,
+  breakoutList,
+  dispatch,
 }: Props) => {
   const classes = useStyles()
+  const [open, setOpen] = React.useState(false)
+
   const commentInputRef = useRef(null)
   const onCommentInputClick = (_) => {
     // The TextField wraps the <input> tag with two divs
@@ -165,219 +183,330 @@ export const RegionLabel = ({
   }
 
   return (
-    <Paper
-      onClick={() => (!editing ? onOpen(region) : null)}
-      className={classnames(classes.regionInfo, {
-        highlighted: region.highlighted,
-      })}
-    >
-      {!editing ? (
-        <div>
-          {region.cls && (
-            <div className="name">
-              {region.type === "scale" ? (
-                <LinearScaleIcon style={{ color: region.color }} />
-              ) : (
-                <div
-                  className="circle"
-                  style={{ backgroundColor: region.color }}
-                />
-              )}
+    <>
+      <Paper
+        onClick={() => (!editing ? onOpen(region) : null)}
+        className={classnames(classes.regionInfo, {
+          highlighted: region.highlighted,
+        })}
+        style={{
+          minWidth: 300,
+          maxWidth: 300,
+        }}
+      >
+        {!editing ? (
+          <div>
+            {region.cls && (
+              <div className="name">
+                {region.type === "scale" ? (
+                  <LinearScaleIcon style={{ color: region.color }} />
+                ) : (
+                  <div
+                    className="circle"
+                    style={{ backgroundColor: region.color }}
+                  />
+                )}
 
-              {region.type === "scale" ? (
-                <div>{region.cls} ft</div>
-              ) : (
-                <div>{region.cls}</div>
-              )}
-            </div>
-          )}
-          {region.tags && (
-            <div className="tags">
-              {region.tags.map((t) => (
-                <div key={t} className="tag">
-                  {t}
-                </div>
-              ))}
-            </div>
-          )}
-        </div>
-      ) : (
-        <div style={{ width: 200 }}>
-          <div style={{ display: "flex", flexDirection: "row" }}>
-            <div
-              style={{
-                display: "flex",
-                backgroundColor: region.color || "#888",
-                color: "#fff",
-                padding: 4,
-                paddingLeft: 8,
-                paddingRight: 8,
-                borderRadius: 4,
-                fontWeight: "bold",
-                textShadow: "0px 0px 5px rgba(0,0,0,0.4)",
-              }}
-            >
-              {region.type}
-            </div>
-            <div style={{ flexGrow: 1 }} />
-            {region.type === "box" ? (
-              <IconButton
-                disabled={isTemplateMatchingLoading}
-                onClick={() => {
-                  setIsTemplateMatchingLoading(true)
-                  // TODO: get user_id, doc_id, page_id, threshold from the parent component above annotator
-                  let page_properties = {
-                    user_id: 80808080,
-                    doc_id: 80808080,
-                    page_id: 80808080,
-                    threshold: 0.7,
-                    page_index: pageIndex,
-                  }
-                  const region_coords = {
-                    x: region.x,
-                    y: region.y,
-                    w: region.w,
-                    h: region.h,
-                  }
-                  const region_color = region.color
-                  const endpoint =
-                    "https://6lufq8mux5.execute-api.us-east-2.amazonaws.com/default/xkey-lambda-ocr-arbiter"
-                  const json_data = {
-                    image_url: imageSrc,
-                    page_index: page_properties["page_index"],
-                    template_symbol_name: region.cls,
-                    threshold: page_properties["threshold"],
-                    user_id: page_properties["user_id"],
-                    doc_id: page_properties["doc_id"],
-                    page_id: page_properties["page_id"],
-                    template_coord: region_coords,
-                  }
-                  onMatchTemplate(region)
-                  fetch(endpoint, {
-                    method: "POST", // or 'PUT'
-                    headers: {
-                      "Content-Type": "application/json",
-                    },
-                    body: JSON.stringify({ queryStringParameters: json_data }),
-                  })
-                    .then((response) => {
-                      if (response.ok) {
-                        return response.json()
-                      }
-                      throw new Error("Backend Error")
+                {region.type === "scale" ? (
+                  <div>{region.cls} ft</div>
+                ) : (
+                  <div>{region.cls}</div>
+                )}
+              </div>
+            )}
+            {region.tags && (
+              <div className="tags">
+                {region.tags.map((t) => (
+                  <div key={t} className="tag">
+                    {t}
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+        ) : (
+          <div style={{ maxWidth: 300 }}>
+            <div style={{ display: "flex", flexDirection: "row" }}>
+              <div
+                style={{
+                  display: "flex",
+                  backgroundColor: region.color || "#888",
+                  color: "#fff",
+                  padding: 4,
+                  paddingLeft: 8,
+                  paddingRight: 8,
+                  borderRadius: 4,
+                  fontWeight: "bold",
+                  textShadow: "0px 0px 5px rgba(0,0,0,0.4)",
+                }}
+              >
+                {region.type}
+              </div>
+
+              <div style={{ flexGrow: 1, padding: 12 }} />
+              {console.log(region)}
+              {region.cls &&
+                (region.breakout === undefined ||
+                  (region.breakout &&
+                    region.breakout.is_breakout === false)) && (
+                  <IconButton
+                    style={{
+                      height: 22,
+                    }}
+                    classes={{
+                      label: {
+                        display: "flex",
+                        flexDirection: "row",
+                        marginTop: -2,
+                      },
+                    }}
+                    onClick={() => setOpen((open) => !open)}
+                  >
+                    <AddIcon
+                      style={{
+                        width: 16,
+                        height: 16,
+                      }}
+                    />
+                    <div
+                      style={{
+                        fontSize: "12px",
+                      }}
+                    >
+                      Breakout
+                    </div>
+                  </IconButton>
+                )}
+
+              {region.cls && region.type === "box" ? (
+                <IconButton
+                  disabled={isTemplateMatchingLoading}
+                  onClick={() => {
+                    setIsTemplateMatchingLoading(true)
+                    // TODO: get user_id, doc_id, page_id, threshold from the parent component above annotator
+                    let page_properties = {
+                      user_id: 80808080,
+                      doc_id: 80808080,
+                      page_id: 80808080,
+                      threshold: 0.7,
+                      page_index: pageIndex,
+                    }
+                    const region_coords = {
+                      x: region.x,
+                      y: region.y,
+                      w: region.w,
+                      h: region.h,
+                    }
+                    const region_color = region.color
+                    const endpoint =
+                      "https://6lufq8mux5.execute-api.us-east-2.amazonaws.com/default/xkey-lambda-ocr-arbiter"
+                    const json_data = {
+                      image_url: imageSrc,
+                      page_index: page_properties["page_index"],
+                      template_symbol_name: region.cls,
+                      threshold: page_properties["threshold"],
+                      user_id: page_properties["user_id"],
+                      doc_id: page_properties["doc_id"],
+                      page_id: page_properties["page_id"],
+                      template_coord: region_coords,
+                    }
+                    onMatchTemplate(region)
+                    fetch(endpoint, {
+                      method: "POST", // or 'PUT'
+                      headers: {
+                        "Content-Type": "application/json",
+                      },
+                      body: JSON.stringify({
+                        queryStringParameters: json_data,
+                      }),
                     })
-                    .then((data) => {
-                      // result can be empty
-                      return data.body ? data.body.result : []
-                    })
-                    .then((res) => {
-                      let results = res.map((r) => {
-                        const new_region = {}
-                        new_region["isOCR"] = true
-                        new_region["x"] = r["x"]
-                        new_region["y"] = r["y"]
-                        new_region["w"] = r["w"]
-                        new_region["h"] = r["h"]
-                        new_region["editingLabels"] = false
-                        new_region["highlighted"] = false
-                        new_region["id"] = getRandomId()
-                        new_region["cls"] = region.cls
-                        new_region["type"] = "box"
-                        new_region["color"] = region.color
-                        new_region["visible"] = true
-                        new_region["category"] =
-                          region?.category ||
-                          DeviceList.find((x) => x.symbol_name === region.cls)
-                            ?.category ||
-                          "NOT CLASSIFIED"
-                        return new_region
+                      .then((response) => {
+                        if (response.ok) {
+                          return response.json()
+                        }
+                        throw new Error("Backend Error")
                       })
-                      finishMatchTemplate(results, page_properties)
-                      setIsTemplateMatchingLoading(false)
-                    })
-                    .catch((error) => {
-                      console.error("Error:", error)
-                      finishMatchTemplate([], page_properties)
-                      setIsTemplateMatchingLoading(false)
-                    })
+                      .then((data) => {
+                        // result can be empty
+                        return data.body ? data.body.result : []
+                      })
+                      .then((res) => {
+                        let results = res.map((r) => {
+                          const new_region = {}
+                          new_region["isOCR"] = true
+                          new_region["x"] = r["x"]
+                          new_region["y"] = r["y"]
+                          new_region["w"] = r["w"]
+                          new_region["h"] = r["h"]
+                          new_region["editingLabels"] = false
+                          new_region["highlighted"] = false
+                          new_region["id"] = getRandomId()
+                          new_region["cls"] = region.cls
+                          new_region["type"] = "box"
+                          new_region["color"] = region.color
+                          new_region["visible"] = true
+                          new_region["category"] =
+                            region?.category ||
+                            DeviceList.find((x) => x.symbol_name === region.cls)
+                              ?.category ||
+                            "NOT CLASSIFIED"
+                          return new_region
+                        })
+                        finishMatchTemplate(results, page_properties)
+                        setIsTemplateMatchingLoading(false)
+                      })
+                      .catch((error) => {
+                        console.error("Error:", error)
+                        finishMatchTemplate([], page_properties)
+                        setIsTemplateMatchingLoading(false)
+                      })
+                  }}
+                  tabIndex={-1}
+                  style={{ width: 22, height: 22 }}
+                  size="small"
+                  variant="outlined"
+                >
+                  <ImageSearchIcon
+                    style={{ marginTop: -4, width: 16, height: 16 }}
+                  />
+                </IconButton>
+              ) : null}
+
+              <IconButton
+                onClick={() => {
+                  onDelete(region)
                 }}
                 tabIndex={-1}
                 style={{ width: 22, height: 22 }}
                 size="small"
                 variant="outlined"
+                color="secondary"
               >
-                <ImageSearchIcon
-                  style={{ marginTop: -8, width: 16, height: 16 }}
-                />
+                <TrashIcon style={{ marginTop: -4, width: 16, height: 16 }} />
               </IconButton>
-            ) : null}
-            <IconButton
-              onClick={() => {
-                onDelete(region)
-              }}
-              tabIndex={-1}
-              style={{ width: 22, height: 22 }}
-              size="small"
-              variant="outlined"
-            >
-              <TrashIcon style={{ marginTop: -8, width: 16, height: 16 }} />
-            </IconButton>
-          </div>
-          {(allowedClasses || []).length > 0 && (
-            <div style={{ marginTop: 6 }}>
-              {conditionalRegionTextField(region.type)}
             </div>
-          )}
-          {(allowedTags || []).length > 0 && (
-            <div style={{ marginTop: 4 }}>
-              <Select
-                onChange={(newTags) =>
-                  onChange({
-                    ...(region: any),
-                    tags: newTags.map((t) => t.value),
-                  })
+            {(allowedClasses || []).length > 0 && (
+              <div style={{ marginTop: 6 }}>
+                {conditionalRegionTextField(region.type)}
+              </div>
+            )}
+            {(allowedTags || []).length > 0 && (
+              <div style={{ marginTop: 4 }}>
+                <Select
+                  onChange={(newTags) =>
+                    onChange({
+                      ...(region: any),
+                      tags: newTags.map((t) => t.value),
+                    })
+                  }
+                  placeholder="Tags"
+                  value={(region.tags || []).map((c) => ({
+                    label: c,
+                    value: c,
+                  }))}
+                  isMulti
+                  options={asMutable(
+                    allowedTags.map((c) => ({ value: c, label: c }))
+                  )}
+                />
+              </div>
+            )}
+            {allowComments && (
+              <TextField
+                InputProps={{
+                  className: classes.commentBox,
+                }}
+                fullWidth
+                multiline
+                rows={3}
+                ref={commentInputRef}
+                onClick={onCommentInputClick}
+                value={region.comment || ""}
+                onChange={(event) =>
+                  onChange({ ...region, comment: event.target.value })
                 }
-                placeholder="Tags"
-                value={(region.tags || []).map((c) => ({ label: c, value: c }))}
-                isMulti
-                options={asMutable(
-                  allowedTags.map((c) => ({ value: c, label: c }))
-                )}
               />
-            </div>
-          )}
-          {allowComments && (
-            <TextField
-              InputProps={{
-                className: classes.commentBox,
-              }}
-              fullWidth
-              multiline
-              rows={3}
-              ref={commentInputRef}
-              onClick={onCommentInputClick}
-              value={region.comment || ""}
-              onChange={(event) =>
-                onChange({ ...region, comment: event.target.value })
-              }
-            />
-          )}
-          {onClose && (
-            <div style={{ marginTop: 4, display: "flex" }}>
-              <div style={{ flexGrow: 1 }} />
-              <Button
-                onClick={() => onClose(region)} // TODO: check icon will disable OCR for this (highlighted) region
-                size="small"
-                variant="contained"
-                color="primary"
+            )}
+            {region.cls && region.breakout && region.breakout.is_breakout && (
+              <div
+                style={{
+                  marginTop: 4,
+                  display: "flex",
+                  flexDirection: "column",
+                  padding: 16,
+                }}
               >
-                <CheckIcon />
-              </Button>
-            </div>
-          )}
-        </div>
+                <Grid
+                  container
+                  direction="row"
+                  justifyContent="space-between"
+                  alignItems="flex-start"
+                >
+                  <Typography
+                    variant="subtitle2"
+                    gutterBottom
+                    style={{
+                      fontWeight: "bold",
+                    }}
+                  >
+                    Breakout Group:
+                  </Typography>
+                  <Button
+                    onClick={() => {
+                      dispatch({
+                        type: "REMOVE_BREAKOUT_BY_REGION_ID",
+                        region: region,
+                      })
+                    }}
+                    tabIndex={-1}
+                    style={{ fontSize: "8px" }}
+                    size="small"
+                    variant="outlined"
+                    color="secondary"
+                    startIcon={<TrashIcon />}
+                  >
+                    Remove
+                  </Button>
+                </Grid>
+                <Typography
+                  variant="body2"
+                  gutterBottom
+                  style={{
+                    paddingLeft: 16,
+                    fontSize: "12px",
+                    wordBreak: "break-word",
+                  }}
+                >
+                  {region.breakout.name}
+                </Typography>
+              </div>
+            )}
+            {onClose && (
+              <div style={{ marginTop: 4, display: "flex" }}>
+                <div style={{ flexGrow: 1 }} />
+                <Button
+                  onClick={() => onClose(region)} // TODO: check icon will disable OCR for this (highlighted) region
+                  size="small"
+                  variant="contained"
+                  color="primary"
+                >
+                  <CheckIcon />
+                </Button>
+              </div>
+            )}
+          </div>
+        )}
+      </Paper>
+
+      {open && (
+        <BreakoutSection
+          region={region}
+          dispatch={dispatch}
+          setOpen={setOpen}
+          breakoutList={breakoutList}
+        />
       )}
-    </Paper>
+    </>
   )
 }
 
