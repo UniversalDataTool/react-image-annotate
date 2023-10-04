@@ -10,6 +10,7 @@ import DeviceList from "../RegionLabel/DeviceList"
 import SidebarBoxContainer from "../SidebarBoxContainer"
 import styles from "./styles"
 import VisibilityIcon from "@material-ui/icons/Visibility"
+import { FormControlLabel, Switch } from "@material-ui/core"
 const useStyles = makeStyles(styles)
 
 const HeaderSep = styled("div")({
@@ -82,7 +83,15 @@ const RowHeader = ({}) => {
 
 const MemoRowHeader = memo(RowHeader)
 
-const Row = ({ id, name, is_breakout, visible, index, onBreakoutDelete, onBreakoutVisible }) => {
+const Row = ({
+  id,
+  name,
+  is_breakout,
+  visible,
+  index,
+  onBreakoutDelete,
+  onBreakoutVisible,
+}) => {
   return (
     <RowLayout
       header={false}
@@ -91,29 +100,27 @@ const Row = ({ id, name, is_breakout, visible, index, onBreakoutDelete, onBreako
       classification={name}
       area=""
       visible={
-        <VisibilityIcon
-          className="icon2"
-          onClick={() => {
-            onBreakoutVisible(id)
-          }}
-        />
+        <>
+          <FormControlLabel
+            control={
+              <Switch
+                style={{
+                  color: "white",
+                }}
+                size="small"
+                id={name}
+                checked={visible}
+                onChange={() => {
+                  onBreakoutVisible(id)
+                }}
+              />
+            }
+          />
+        </>
       }
       trash={
         <TrashIcon onClick={() => onBreakoutDelete(id)} className="icon2" />
       }
-      //   visible={
-      //     visible || visible === undefined ? (
-      //       <VisibleIcon
-      //         // onClick={() => onChangeBreakout({ ...r, visible: false })}
-      //         className="icon2"
-      //       />
-      //     ) : (
-      //       <VisibleOffIcon
-      //         // onClick={() => onChangeBreakout({ ...r, visible: true })}
-      //         className="icon2"
-      //       />
-      //     )
-      //   }
     />
   )
 }

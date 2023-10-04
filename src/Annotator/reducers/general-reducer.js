@@ -288,7 +288,6 @@ export default (state: MainLayoutState, action: Action) => {
 
           return b
         } else {
-          console.log("else false")
           // Set breakout.visible and region.visible to false otherwise
           const b = {
             ...region,
