@@ -1,16 +1,16 @@
 // @flow
 
-import React, { memo, useState } from "react"
-import { makeStyles } from "@mui/styles"
-import { createTheme, ThemeProvider } from "@mui/material/styles"
-import { grey } from "@mui/material/colors"
+import React, {memo, useState} from "react"
+import {makeStyles} from "@mui/styles"
+import {createTheme, ThemeProvider} from "@mui/material/styles"
+import {grey} from "@mui/material/colors"
 import classnames from "classnames"
 import useEventCallback from "use-event-callback"
 import SidebarBox from "react-material-workspace-layout/SidebarBox"
 
 const theme = createTheme()
 const useStyles = makeStyles((theme) => ({
-  container: { margin: 8 },
+  container: {margin: 8},
   header: {
     display: "flex",
     flexDirection: "row",
@@ -62,18 +62,6 @@ export const SidebarBoxContainer = ({
   noScroll = false,
   expandedByDefault = false,
 }) => {
-  const classes = useStyles()
-  const content = (
-    <div
-      className={classnames(classes.expandedContent, noScroll && "noScroll")}
-    >
-      {children}
-    </div>
-  )
-
-  const [expanded, changeExpanded] = useState(expandedByDefault)
-  const toggleExpanded = useEventCallback(() => changeExpanded(!expanded))
-
   return (
     <ThemeProvider theme={theme}>
       <SidebarBox icon={icon} title={title}>
