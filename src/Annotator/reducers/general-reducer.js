@@ -414,11 +414,12 @@ export default (state, action) => {
 
         }
         case "SET_EXPANDING_LINE_WIDTH": {
-          const {regionId} = state.mode
-          const [expandingLine, regionIndex] = getRegion(regionId)
-          if (!expandingLine) return state
-          const lastPoint = expandingLine.points.slice(-1)[0]
-          const {mouseDownAt} = state
+          const {regionId} = state.mode;
+          const [expandingLine, regionIndex] = getRegion(regionId);
+          if (!expandingLine) {
+            return state;
+          }
+          const lastPoint = expandingLine.points.slice(-1)[0];
           return setIn(
             state,
             [...pathToActiveImage, "regions", regionIndex, "expandingWidth"],
@@ -701,12 +702,6 @@ export default (state, action) => {
             expandingLine.points.length !== 0
               ? expandingLine.points.slice(-1)[0]
               : mouseDownAt
-          let jointStart
-          if (expandingLine.points.length > 1) {
-            jointStart = expandingLine.points.slice(-2)[0]
-          } else {
-            jointStart = lastPoint
-          }
           const mouseDistFromLastPoint = Math.sqrt(
             (lastPoint.x - x) ** 2 + (lastPoint.y - y) ** 2
           )
@@ -739,7 +734,6 @@ export default (state, action) => {
       }
     }
     case "OPEN_REGION_EDITOR": {
-      const {region} = action
       const regionIndex = getRegionIndex(action.region)
       if (regionIndex === null) return state
       const newRegions = setIn(
