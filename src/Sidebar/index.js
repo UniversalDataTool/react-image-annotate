@@ -1,48 +1,17 @@
 // @flow
 
 import React from "react"
-import { styled } from "@mui/styles"
-import { createTheme, ThemeProvider } from "@mui/material/styles"
+import {styled} from "@mui/styles"
+import {createTheme, ThemeProvider} from "@mui/material/styles"
 import TaskDescription from "../TaskDescriptionSidebarBox"
 import RegionSelector from "../RegionSelectorSidebarBox"
 import History from "../HistorySidebarBox"
 import DebugBox from "../DebugSidebarBox"
 import TagsSidebarBox from "../TagsSidebarBox"
 import KeyframesSelector from "../KeyframesSelectorSidebarBox"
-import type { Region } from "../ImageCanvas/region-tools.js"
 
 const theme = createTheme()
-const Container = styled("div")(({ theme }) => ({}))
-
-type Image = {
-  name: string,
-  src: string,
-  cls?: string,
-  tags?: Array<string>,
-  thumbnailSrc?: string,
-  regions?: Array<Region>,
-}
-
-type Props = {
-  debug: any,
-  taskDescription: string,
-  images?: Array<Image>,
-  regions: Array<Region>,
-  history: Array<{ state: Object, name: string, time: Date }>,
-
-  labelImages?: boolean,
-  currentImage?: Image,
-  imageClsList?: Array<string>,
-  imageTagList?: Array<string>,
-
-  onChangeImage: (Image) => any,
-  onSelectRegion: (Region) => any,
-  onSelectImage: (Image) => any,
-  onChangeRegion: (Region) => any,
-  onDeleteRegion: (Region) => any,
-  onRestoreHistory: () => any,
-  onShortcutActionDispatched: (action: any) => any,
-}
+const Container = styled("div")(({theme}) => ({}))
 
 const emptyArr = []
 
@@ -67,7 +36,7 @@ export const Sidebar = ({
   onChangeVideoTime,
   onDeleteKeyframe,
   onShortcutActionDispatched,
-}: Props) => {
+}) => {
   if (!regions) regions = emptyArr
 
   return (

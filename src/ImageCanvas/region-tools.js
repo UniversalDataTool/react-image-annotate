@@ -12,82 +12,82 @@ export type BaseRegion = {
 }
 
 export type Point = {|
-  ...$Exact<BaseRegion>,
+  ...$Exact < BaseRegion >,
   type: "point",
-  x: number,
-  y: number,
+    x: number,
+      y: number,
 |}
 
 export type PixelRegion =
   | {|
-      ...$Exact<BaseRegion>,
-      type: "pixel",
-      sx: number,
+      ...$Exact < BaseRegion >,
+  type: "pixel",
+    sx: number,
       sy: number,
-      w: number,
-      h: number,
-      src: string,
+        w: number,
+          h: number,
+            src: string,
     |}
   | {|
-      ...$Exact<BaseRegion>,
-      type: "pixel",
-      points: Array<[number, number]>,
+      ...$Exact < BaseRegion >,
+  type: "pixel",
+    points: Array < [number, number] >,
     |}
 export type Box = {|
-  ...$Exact<BaseRegion>,
+  ...$Exact < BaseRegion >,
   type: "box",
-  x: number,
-  y: number,
-  w: number,
-  h: number,
+    x: number,
+      y: number,
+        w: number,
+          h: number,
 |}
 
 export type Polygon = {|
-  ...$Exact<BaseRegion>,
+  ...$Exact < BaseRegion >,
   type: "polygon",
-  open?: boolean,
-  points: Array<[number, number]>,
+    open ?: boolean,
+    points: Array < [number, number] >,
 |}
 
 export type Line = {|
-  ...$Exact<BaseRegion>,
+  ...$Exact < BaseRegion >,
   type: "line",
-  x1: number,
-  y1: number,
-  x2: number,
-  y2: number,
+    x1: number,
+      y1: number,
+        x2: number,
+          y2: number,
 |}
 
 export type ExpandingLine = {|
-  ...$Exact<BaseRegion>,
+  ...$Exact < BaseRegion >,
   type: "expanding-line",
-  points: Array<{ x: number, y: number, angle: number, width: number }>,
+    points: Array < {x: number, y: number, angle: number, width: number} >,
 |}
 
 export type KeypointDefinition = {|
   label: string,
-  color: string,
-  defaultPosition: [number, number],
+    color: string,
+      defaultPosition: [number, number],
 |}
 
 export type KeypointId = string
 
 export type KeypointsDefinition = {|
-  [id: string]: {
-    connections: Array<[KeypointId, KeypointId]>,
+[id: string]: {
+  connections: Array < [KeypointId, KeypointId] >,
     landmarks: {
-      [KeypointId]: KeypointDefinition,
+    [KeypointId]: KeypointDefinition,
     },
-  },
+},
 |}
 
 export type Keypoints = {|
-  ...$Exact<BaseRegion>,
+  ...$Exact < BaseRegion >,
   type: "keypoints",
-  keypointsDefinitionId: string,
-  points: {
-    [string]: { x: number, y: number },
-  },
+    keypointsDefinitionId: string,
+      points: {
+  [string]: {x: number, y: number},
+},
 |}
 
 export type Region =
@@ -113,16 +113,16 @@ export const getEnclosingBox = (region: Region) => {
     }
     case "keypoints": {
       const minX = Math.min(
-        ...Object.values(region.points).map(({ x, y }) => x)
+        ...Object.values(region.points).map(({x, y}) => x)
       )
       const minY = Math.min(
-        ...Object.values(region.points).map(({ x, y }) => y)
+        ...Object.values(region.points).map(({x, y}) => y)
       )
       const maxX = Math.max(
-        ...Object.values(region.points).map(({ x, y }) => x)
+        ...Object.values(region.points).map(({x, y}) => x)
       )
       const maxY = Math.max(
-        ...Object.values(region.points).map(({ x, y }) => y)
+        ...Object.values(region.points).map(({x, y}) => y)
       )
       return {
         x: minX,
@@ -133,39 +133,40 @@ export const getEnclosingBox = (region: Region) => {
     }
     case "expanding-line": {
       const box = {
-        x: Math.min(...region.points.map(({ x, y }) => x)),
-        y: Math.min(...region.points.map(({ x, y }) => y)),
+        x: Math.min(...region.points.map(({x, y}) => x)),
+        y: Math.min(...region.points.map(({x, y}) => y)),
         w: 0,
         h: 0,
       }
-      box.w = Math.max(...region.points.map(({ x, y }) => x)) - box.x
-      box.h = Math.max(...region.points.map(({ x, y }) => y)) - box.y
+      box.w = Math.max(...region.points.map(({x, y}) => x)) - box.x
+      box.h = Math.max(...region.points.map(({x, y}) => y)) - box.y
       return box
     }
     case "line": {
-      return { x: region.x1, y: region.y1, w: 0, h: 0 }
+      return {x: region.x1, y: region.y1, w: 0, h: 0}
     }
     case "box": {
-      return { x: region.x, y: region.y, w: region.w, h: region.h }
+      return {x: region.x, y: region.y, w: region.w, h: region.h}
     }
     case "point": {
-      return { x: region.x, y: region.y, w: 0, h: 0 }
+      return {x: region.x, y: region.y, w: 0, h: 0}
     }
     default: {
-      return { x: 0, y: 0, w: 0, h: 0 }
+      return {x: 0, y: 0, w: 0, h: 0}
     }
   }
-  throw new Error("unknown region")
 }
 
-export const moveRegion = (region: Region, x: number, y: number) => {
+export const moveRegion = (region, x, y) => {
   switch (region.type) {
     case "point": {
-      return { ...region, x, y }
+      return {...region, x, y}
     }
     case "box": {
-      return { ...region, x: x - region.w / 2, y: y - region.h / 2 }
+      return {...region, x: x - region.w / 2, y: y - region.h / 2}
+    }
+    default: {
+      return region
     }
   }
-  return region
 }
