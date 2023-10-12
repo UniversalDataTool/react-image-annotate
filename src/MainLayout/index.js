@@ -79,7 +79,8 @@ export const MainLayout = ({
         ? dispatch(
           ({
             type,
-            ...params.reduce((acc, p, i) => ((acc[p] = args[i]), acc), {}),
+            ...params.reduce(
+              (acc, p, i) => ((acc[p] = args[i]), acc), {})
           })
         )
         : dispatch({type, ...args[0]})
@@ -232,13 +233,14 @@ export const MainLayout = ({
               headerLeftSide={[
                 state.annotationType === "video" ? (
                   <KeyframeTimeline
+                    key="KeyframeTimeline"
                     currentTime={state.currentVideoTime}
                     duration={state.videoDuration}
                     onChangeCurrentTime={action("CHANGE_VIDEO_TIME", "newTime")}
                     keyframes={state.keyframes}
                   />
                 ) : activeImage ? (
-                  <div className={classes.headerTitle}>{activeImage.name}</div>
+                  <div key="activeImage" className={classes.headerTitle}>{activeImage.name}</div>
                 ) : null,
               ].filter(Boolean)}
               headerItems={[
@@ -333,13 +335,14 @@ export const MainLayout = ({
                 )}
               rightSidebarItems={[
                 debugModeOn && (
-                  <DebugBox state={debugModeOn} lastAction={state.lastAction} />
+                  <DebugBox state={debugModeOn} lastAction={state.lastAction} key="DebugBox" />
                 ),
                 state.taskDescription && (
-                  <TaskDescription description={state.taskDescription} />
+                  <TaskDescription description={state.taskDescription} key="TaskDescription" />
                 ),
                 state.regionClsList && (
                   <ClassSelectionMenu
+                    key="ClassSelectionMenu"
                     selectedCls={state.selectedCls}
                     regionClsList={state.regionClsList}
                     onSelectCls={action("SELECT_CLASSIFICATION", "cls")}
@@ -347,6 +350,7 @@ export const MainLayout = ({
                 ),
                 state.labelImages && (
                   <TagsSidebarBox
+                    key="TagsSidebareBox"
                     currentImage={activeImage}
                     imageClsList={state.imageClsList}
                     imageTagList={state.imageTagList}
@@ -369,6 +373,7 @@ export const MainLayout = ({
                 />,
                 state.keyframes && (
                   <KeyframesSelector
+                    key="KeyframesSelector"
                     onChangeVideoTime={action("CHANGE_VIDEO_TIME", "newTime")}
                     onDeleteKeyframe={action("DELETE_KEYFRAME", "time")}
                     onChangeCurrentTime={action("CHANGE_VIDEO_TIME", "newTime")}
@@ -378,7 +383,7 @@ export const MainLayout = ({
                   />
                 ),
                 <HistorySidebarBox
-                  key={"history" + state.history.name}
+                  key="HistorySideBox"
                   history={state.history}
                   onRestoreHistory={action("RESTORE_HISTORY")}
                 />,
