@@ -1,8 +1,6 @@
 // @flow
 
-import type {Action, MainLayoutState} from "./types"
 import {FullScreen, useFullScreenHandle} from "react-full-screen"
-import type {Node} from "react"
 import React, {useCallback, useRef} from "react"
 import {makeStyles} from "@mui/styles"
 import {createTheme, styled, ThemeProvider} from "@mui/material/styles"
@@ -51,15 +49,6 @@ const FullScreenContainer = styled("div")(({theme}) => ({
     height: "100%",
   },
 }))
-
-type Props = {
-  state: MainLayoutState,
-  RegionEditLabel?: Node,
-  dispatch: (Action) => any,
-  onRegionClassAdded: () => {},
-  hideHeader?: boolean,
-  hideHeaderText?: boolean,
-}
 
 export const MainLayout = ({
   state,
@@ -372,6 +361,7 @@ export const MainLayout = ({
                 //   />
                 // ),
                 <RegionSelector
+                  key={"activeImage" + activeImage.id}
                   regions={activeImage ? activeImage.regions : emptyArr}
                   onSelectRegion={action("SELECT_REGION", "region")}
                   onDeleteRegion={action("DELETE_REGION", "region")}
@@ -388,6 +378,7 @@ export const MainLayout = ({
                   />
                 ),
                 <HistorySidebarBox
+                  key={"history" + state.history.name}
                   history={state.history}
                   onRestoreHistory={action("RESTORE_HISTORY")}
                 />,

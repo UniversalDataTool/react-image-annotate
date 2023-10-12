@@ -1,6 +1,6 @@
 // @flow
 
-import React, {memo, useState} from "react"
+import React, {memo} from "react"
 import SidebarBoxContainer from "../SidebarBoxContainer"
 import {makeStyles} from "@mui/styles"
 import {createTheme, styled, ThemeProvider} from "@mui/material/styles"
@@ -50,12 +50,9 @@ const RowLayout = ({
   onClick,
 }) => {
   const classes = useStyles()
-  const [changeMouseOver] = useState(false)
   return (
     <div
       onClick={onClick}
-      onMouseEnter={() => changeMouseOver(true)}
-      onMouseLeave={() => changeMouseOver(false)}
       className={classnames(classes.row, {header, highlighted})}
     >
       <Grid container alignItems="center">

@@ -682,9 +682,14 @@ export default (state, action) => {
               mode: null,
             }
           }
+          return {...state, mode: null}
         }
-        case "MOVE_REGION":
-        case "RESIZE_KEYPOINTS":
+        case "MOVE_REGION": {
+          return {...state, mode: null}
+        }
+        case "RESIZE_KEYPOINTS": {
+          return {...state, mode: null}
+        }
         case "MOVE_POLYGON_POINT": {
           return {...state, mode: null}
         }
