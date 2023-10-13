@@ -1,12 +1,11 @@
 // @flow
 
-import React, { memo, useRef } from "react"
+import React, {memo, useRef} from "react"
 import Paper from "@mui/material/Paper"
-import { makeStyles } from "@mui/styles"
-import { createTheme, ThemeProvider } from "@mui/material/styles"
+import {makeStyles} from "@mui/styles"
+import {createTheme, ThemeProvider} from "@mui/material/styles"
 import styles from "./styles"
 import classnames from "classnames"
-import type { Region } from "../ImageCanvas/region-tools.js"
 import IconButton from "@mui/material/IconButton"
 import Button from "@mui/material/Button"
 import TrashIcon from "@mui/icons-material/Delete"
@@ -15,25 +14,11 @@ import TextField from "@mui/material/TextField"
 import Select from "react-select"
 import CreatableSelect from "react-select/creatable"
 
-import { asMutable } from "seamless-immutable"
+import {asMutable} from "seamless-immutable"
 
 const theme = createTheme()
 const useStyles = makeStyles((theme) => styles)
 
-type Props = {
-  region: Region,
-  editing?: boolean,
-  allowedClasses?: Array<string>,
-  allowedTags?: Array<string>,
-  cls?: string,
-  tags?: Array<string>,
-  onDelete: (Region) => null,
-  onChange: (Region) => null,
-  onClose: (Region) => null,
-  onOpen: (Region) => null,
-  onRegionClassAdded: () => {},
-  allowComments?: boolean,
-}
 
 export const RegionLabel = ({
   region,
@@ -46,7 +31,7 @@ export const RegionLabel = ({
   onOpen,
   onRegionClassAdded,
   allowComments,
-}: Props) => {
+}) => {
   const classes = useStyles()
   const commentInputRef = useRef(null)
   const onCommentInputClick = (_) => {
@@ -70,7 +55,7 @@ export const RegionLabel = ({
               <div className="name">
                 <div
                   className="circle"
-                  style={{ backgroundColor: region.color }}
+                  style={{backgroundColor: region.color}}
                 />
                 {region.cls}
               </div>
@@ -86,8 +71,8 @@ export const RegionLabel = ({
             )}
           </div>
         ) : (
-          <div style={{ width: 200 }}>
-            <div style={{ display: "flex", flexDirection: "row" }}>
+          <div style={{width: 200}}>
+            <div style={{display: "flex", flexDirection: "row"}}>
               <div
                 style={{
                   display: "flex",
@@ -103,45 +88,45 @@ export const RegionLabel = ({
               >
                 {region.type}
               </div>
-              <div style={{ flexGrow: 1 }} />
+              <div style={{flexGrow: 1}} />
               <IconButton
                 onClick={() => onDelete(region)}
                 tabIndex={-1}
-                style={{ width: 22, height: 22 }}
+                style={{width: 22, height: 22}}
                 size="small"
                 variant="outlined"
               >
-                <TrashIcon style={{ marginTop: -8, width: 16, height: 16 }} />
+                <TrashIcon style={{marginTop: -8, width: 16, height: 16}} />
               </IconButton>
             </div>
             {(allowedClasses || []).length > 0 && (
-              <div style={{ marginTop: 6 }}>
+              <div style={{marginTop: 6}}>
                 <CreatableSelect
                   placeholder="Classification"
                   onChange={(o, actionMeta) => {
-                    if (actionMeta.action == "create-option") {
+                    if (actionMeta.action === "create-option") {
                       onRegionClassAdded(o.value)
                     }
                     return onChange({
-                      ...(region: any),
+                      ...(region),
                       cls: o.value,
                     })
                   }}
                   value={
-                    region.cls ? { label: region.cls, value: region.cls } : null
+                    region.cls ? {label: region.cls, value: region.cls} : null
                   }
                   options={asMutable(
-                    allowedClasses.map((c) => ({ value: c, label: c }))
+                    allowedClasses.map((c) => ({value: c, label: c}))
                   )}
                 />
               </div>
             )}
             {(allowedTags || []).length > 0 && (
-              <div style={{ marginTop: 4 }}>
+              <div style={{marginTop: 4}}>
                 <Select
                   onChange={(newTags) =>
                     onChange({
-                      ...(region: any),
+                      ...(region),
                       tags: newTags.map((t) => t.value),
                     })
                   }
@@ -152,7 +137,7 @@ export const RegionLabel = ({
                   }))}
                   isMulti
                   options={asMutable(
-                    allowedTags.map((c) => ({ value: c, label: c }))
+                    allowedTags.map((c) => ({value: c, label: c}))
                   )}
                 />
               </div>
@@ -169,13 +154,13 @@ export const RegionLabel = ({
                 onClick={onCommentInputClick}
                 value={region.comment || ""}
                 onChange={(event) =>
-                  onChange({ ...(region: any), comment: event.target.value })
+                  onChange({...(region), comment: event.target.value})
                 }
               />
             )}
             {onClose && (
-              <div style={{ marginTop: 4, display: "flex" }}>
-                <div style={{ flexGrow: 1 }} />
+              <div style={{marginTop: 4, display: "flex"}}>
+                <div style={{flexGrow: 1}} />
                 <Button
                   onClick={() => onClose(region)}
                   size="small"

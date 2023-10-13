@@ -2,6 +2,22 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [3.0.2-1](https://github.com/starwit/react-image-annotate/compare/3.0.2-0...3.0.2-1) (2023-10-13)
+
+### [3.0.2-0](https://github.com/starwit/react-image-annotate/compare/3.0.1...3.0.2-0) (2023-10-13)
+
+### [3.0.1](https://github.com/starwit/react-image-annotate/compare/3.0.1-3...3.0.1) (2023-10-13)
+
+### [3.0.1-3](https://github.com/starwit/react-image-annotate/compare/3.0.1-2...3.0.1-3) (2023-10-13)
+
+### [3.0.1-2](https://github.com/starwit/react-image-annotate/compare/3.0.1-1...3.0.1-2) (2023-10-12)
+
+### [3.0.1-1](https://github.com/starwit/react-image-annotate/compare/3.0.1-0...3.0.1-1) (2023-10-12)
+
+### [3.0.1-0](https://github.com/starwit/react-image-annotate/compare/3.0.0...3.0.1-0) (2023-10-12)
+
+## [3.0.0](https://github.com/starwit/react-image-annotate/compare/0.1.9-0...3.0.0) (2023-10-12)
+
 ### [0.1.9-0](https://github.com/starwit/react-image-annotate/compare/0.1.8...0.1.9-0) (2023-08-30)
 
 ### [0.1.8](https://github.com/starwit/react-image-annotate/compare/0.1.7...0.1.8) (2023-08-24)

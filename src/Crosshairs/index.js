@@ -1,18 +1,12 @@
 // @flow
 
-import React, { Fragment, useEffect, useState } from "react"
+import React, {Fragment, useEffect} from "react"
 
 export const Crosshairs = ({
   mousePosition,
   x,
   y,
-}: {
-  mousePosition: { current: { x: number, y: number } },
-  x?: number,
-  y?: number,
 }) => {
-  const [forceRenderState, changeForceRenderState] = useState()
-
   if (mousePosition) {
     x = mousePosition.current.x
     y = mousePosition.current.y
@@ -20,14 +14,7 @@ export const Crosshairs = ({
 
   useEffect(() => {
     if (!mousePosition) return
-    const interval = setInterval(() => {
-      if (x !== mousePosition.current.x || y !== mousePosition.current.y) {
-        changeForceRenderState([
-          mousePosition.current.x,
-          mousePosition.current.y,
-        ])
-      }
-    }, 10)
+    const interval = setInterval(() => { }, 10)
     return () => clearInterval(interval)
   })
 
