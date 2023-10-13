@@ -1,6 +1,6 @@
 {
   "name": "@starwit/react-image-annotate",
-  "version": "3.0.2-5",
+  "version": "3.0.2-6",
   "private": false,
   "dependencies": {
     "@emotion/react": "^11.7.0",
