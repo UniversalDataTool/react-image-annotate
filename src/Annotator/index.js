@@ -1,11 +1,8 @@
 // @flow
 
-import type { Action, Image, MainLayoutState } from "../MainLayout/types"
-import type { Node } from "react"
-import React, { useEffect, useReducer } from "react"
-import makeImmutable, { without } from "seamless-immutable"
+import React, {useEffect, useReducer} from "react"
+import makeImmutable, {without} from "seamless-immutable"
 
-import type { KeypointsDefinition } from "../ImageCanvas/region-tools"
 import MainLayout from "../MainLayout"
 import SettingsProvider from "../SettingsProvider"
 import combineReducers from "./reducers/combine-reducers.js"
@@ -17,84 +14,50 @@ import useEventCallback from "use-event-callback"
 import videoReducer from "./reducers/video-reducer.js"
 import PropTypes from "prop-types"
 
-type Props = {
-  taskDescription?: string,
-  allowedArea?: { x: number, y: number, w: number, h: number },
-  regionTagList?: Array<string>,
-  regionClsList?: Array<string>,
-  imageTagList?: Array<string>,
-  imageClsList?: Array<string>,
-  enabledTools?: Array<string>,
-  selectedTool?: String,
-  showTags?: boolean,
-  selectedImage?: string | number,
-  images?: Array<Image>,
-  showPointDistances?: boolean,
-  pointDistancePrecision?: number,
-  RegionEditLabel?: Node,
-  onExit: (MainLayoutState) => any,
-  videoTime?: number,
-  videoSrc?: string,
-  keyframes?: Object,
-  videoName?: string,
-  keypointDefinitions: KeypointsDefinition,
-  fullImageSegmentationMode?: boolean,
-  autoSegmentationOptions?:
-    | {| type: "simple" |}
-    | {| type: "autoseg", maxClusters?: number, slicWeightFactor?: number |},
-  hideHeader?: boolean,
-  hideHeaderText?: boolean,
-  hideNext?: boolean,
-  hidePrev?: boolean,
-  hideClone?: boolean,
-  hideSettings?: boolean,
-  hideFullScreen?: boolean,
-  hideSave?: boolean,
-}
 
 export const Annotator = ({
-                            images,
-                            allowedArea,
-                            selectedImage = images && images.length > 0 ? 0 : undefined,
-                            showPointDistances,
-                            pointDistancePrecision,
-                            showTags = getFromLocalStorage("showTags", true),
-                            enabledTools = [
-                              "select",
-                              "create-point",
-                              "create-box",
-                              "create-polygon",
-                              "create-line",
-                              "create-expanding-line",
-                              "show-mask"
-                            ],
-                            selectedTool = "select",
-                            regionTagList = [],
-                            regionClsList = [],
-                            imageTagList = [],
-                            imageClsList = [],
-                            keyframes = {},
-                            taskDescription = "",
-                            fullImageSegmentationMode = false,
-                            RegionEditLabel,
-                            videoSrc,
-                            videoTime = 0,
-                            videoName,
-                            onExit,
-                            onNextImage,
-                            onPrevImage,
-                            keypointDefinitions,
-                            autoSegmentationOptions = { type: "autoseg" },
-                            hideHeader,
-                            hideHeaderText,
-                            hideNext,
-                            hidePrev,
-                            hideClone,
-                            hideSettings,
-                            hideFullScreen,
-                            hideSave,
-                            allowComments
-                          }: Props) => {
+  images,
+  allowedArea,
+  selectedImage = images && images.length > 0 ? 0 : undefined,
+  showPointDistances,
+  pointDistancePrecision,
+  showTags = getFromLocalStorage("showTags", true),
+  enabledTools = [
+    "select",
+    "create-point",
+    "create-box",
+    "create-polygon",
+    "create-line",
+    "create-expanding-line",
+    "show-mask"
+  ],
+  selectedTool = "select",
+  regionTagList = [],
+  regionClsList = [],
+  imageTagList = [],
+  imageClsList = [],
+  keyframes = {},
+  taskDescription = "",
+  fullImageSegmentationMode = false,
+  RegionEditLabel,
+  videoSrc,
+  videoTime = 0,
+  videoName,
+  onExit,
+  onNextImage,
+  onPrevImage,
+  keypointDefinitions,
+  autoSegmentationOptions = {type: "autoseg"},
+  hideHeader,
+  hideHeaderText,
+  hideNext,
+  hidePrev,
+  hideClone,
+  hideSettings,
+  hideFullScreen,
+  hideSave,
+  allowComments
+}) => {
   if (typeof selectedImage === "string") {
     selectedImage = (images || []).findIndex((img) => img.src === selectedImage)
     if (selectedImage === -1) selectedImage = undefined
@@ -144,7 +107,7 @@ export const Annotator = ({
     })
   )
 
-  const dispatch = useEventCallback((action: Action) => {
+  const dispatch = useEventCallback((action) => {
     if (action.type === "HEADER_BUTTON_CLICKED") {
       if (["Exit", "Done", "Save", "Complete"].includes(action.buttonName)) {
         return onExit(without(state, "history"))

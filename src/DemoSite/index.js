@@ -1,6 +1,6 @@
 // @flow
-import React, { useState } from "react"
-import Editor, { examples } from "./Editor"
+import React, {useState} from "react"
+import Editor, {examples} from "./Editor"
 import Annotator from "../Annotator"
 import ErrorBoundaryDialog from "./ErrorBoundaryDialog.js"
 
@@ -18,9 +18,9 @@ export default () => {
           }}
         >
           <Annotator
-            {...(annotatorProps: any)}
+            {...(annotatorProps)}
             onExit={(output) => {
-              delete (output: any)["lastAction"]
+              delete (output)["lastAction"]
               changeLastOutput(output)
               changeAnnotatorOpen(false)
             }}

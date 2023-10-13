@@ -1,8 +1,8 @@
 // @flow
 
-import React, { memo } from "react"
-import { makeStyles } from "@mui/styles"
-import { createTheme, ThemeProvider } from "@mui/material/styles"
+import React, {memo} from "react"
+import {makeStyles} from "@mui/styles"
+import {createTheme, ThemeProvider} from "@mui/material/styles"
 import SidebarBoxContainer from "../SidebarBoxContainer"
 import HistoryIcon from "@mui/icons-material/History"
 import List from "@mui/material/List"
@@ -12,7 +12,7 @@ import IconButton from "@mui/material/IconButton"
 import ListItemSecondaryAction from "@mui/material/ListItemSecondaryAction"
 import UndoIcon from "@mui/icons-material/Undo"
 import moment from "moment"
-import { grey } from "@mui/material/colors"
+import {grey} from "@mui/material/colors"
 import isEqual from "lodash/isEqual"
 
 const theme = createTheme()
@@ -26,13 +26,11 @@ const useStyles = makeStyles((theme) => ({
   },
 }))
 
-const listItemTextStyle = { paddingLeft: 16 }
+const listItemTextStyle = {paddingLeft: 16}
 
 export const HistorySidebarBox = ({
   history,
   onRestoreHistory,
-}: {
-  history: Array<{ name: string, time: Date }>,
 }) => {
   const classes = useStyles()
 
@@ -40,14 +38,14 @@ export const HistorySidebarBox = ({
     <ThemeProvider theme={theme}>
       <SidebarBoxContainer
         title="History"
-        icon={<HistoryIcon style={{ color: grey[700] }} />}
+        icon={<HistoryIcon style={{color: grey[700]}} />}
         expandedByDefault
       >
         <List>
           {history.length === 0 && (
             <div className={classes.emptyText}>No History Yet</div>
           )}
-          {history.map(({ name, time }, i) => (
+          {history.map(({name, time}, i) => (
             <ListItem button dense key={i}>
               <ListItemText
                 style={listItemTextStyle}

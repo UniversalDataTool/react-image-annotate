@@ -2,14 +2,14 @@
 
 import React from "react"
 import classnames from "classnames"
-import { makeStyles } from "@mui/styles"
-import { createTheme, ThemeProvider } from "@mui/material/styles"
+import {makeStyles} from "@mui/styles"
+import {createTheme, ThemeProvider} from "@mui/material/styles"
 
 const theme = createTheme()
 const useStyles = makeStyles((theme) => ({
   "@keyframes borderDance": {
-    from: { strokeDashoffset: 0 },
-    to: { strokeDashoffset: 100 },
+    from: {strokeDashoffset: 0},
+    to: {strokeDashoffset: 100},
   },
   highlightBox: {
     zIndex: 2,
@@ -47,15 +47,6 @@ export const HighlightBox = ({
   onSelectRegion,
   region: r,
   pbox,
-}: {
-  mouseEvents: any,
-  dragWithPrimary: boolean,
-  zoomWithPrimary: boolean,
-  createWithPrimary: boolean,
-  onBeginMovePoint: Function,
-  onSelectRegion: Function,
-  region: any,
-  pbox: { x: number, y: number, w: number, h: number },
 }) => {
   const classes = useStyles()
   if (!pbox.w || pbox.w === Infinity) return null
@@ -65,23 +56,22 @@ export const HighlightBox = ({
   const styleCoords =
     r.type === "point"
       ? {
-          left: pbox.x + pbox.w / 2 - 30,
-          top: pbox.y + pbox.h / 2 - 30,
-          width: 60,
-          height: 60,
-        }
+        left: pbox.x + pbox.w / 2 - 30,
+        top: pbox.y + pbox.h / 2 - 30,
+        width: 60,
+        height: 60,
+      }
       : {
-          left: pbox.x - 5,
-          top: pbox.y - 5,
-          width: pbox.w + 10,
-          height: pbox.h + 10,
-        }
+        left: pbox.x - 5,
+        top: pbox.y - 5,
+        width: pbox.w + 10,
+        height: pbox.h + 10,
+      }
 
   const pathD =
     r.type === "point"
-      ? `M5,5 L${styleCoords.width - 5} 5L${styleCoords.width - 5} ${
-          styleCoords.height - 5
-        }L5 ${styleCoords.height - 5}Z`
+      ? `M5,5 L${styleCoords.width - 5} 5L${styleCoords.width - 5} ${styleCoords.height - 5
+      }L5 ${styleCoords.height - 5}Z`
       : `M5,5 L${pbox.w + 5},5 L${pbox.w + 5},${pbox.h + 5} L5,${pbox.h + 5} Z`
 
   return (
@@ -94,42 +84,42 @@ export const HighlightBox = ({
         {...mouseEvents}
         {...(!zoomWithPrimary && !dragWithPrimary
           ? {
-              onMouseDown: (e) => {
-                if (
-                  !r.locked &&
-                  r.type === "point" &&
-                  r.highlighted &&
-                  e.button === 0
-                ) {
-                  return onBeginMovePoint(r)
-                }
-                if (e.button === 0 && !createWithPrimary)
-                  return onSelectRegion(r)
-                mouseEvents.onMouseDown(e)
-              },
-            }
+            onMouseDown: (e) => {
+              if (
+                !r.locked &&
+                r.type === "point" &&
+                r.highlighted &&
+                e.button === 0
+              ) {
+                return onBeginMovePoint(r)
+              }
+              if (e.button === 0 && !createWithPrimary)
+                return onSelectRegion(r)
+              mouseEvents.onMouseDown(e)
+            },
+          }
           : {})}
         style={{
           ...(r.highlighted
             ? {
-                pointerEvents: r.type !== "point" ? "none" : undefined,
-                cursor: "grab",
-              }
+              pointerEvents: r.type !== "point" ? "none" : undefined,
+              cursor: "grab",
+            }
             : {
-                cursor: !(
-                  zoomWithPrimary ||
-                  dragWithPrimary ||
-                  createWithPrimary
-                )
-                  ? "pointer"
-                  : undefined,
-                pointerEvents:
-                  zoomWithPrimary ||
+              cursor: !(
+                zoomWithPrimary ||
+                dragWithPrimary ||
+                createWithPrimary
+              )
+                ? "pointer"
+                : undefined,
+              pointerEvents:
+                zoomWithPrimary ||
                   dragWithPrimary ||
                   (createWithPrimary && !r.highlighted)
-                    ? "none"
-                    : undefined,
-              }),
+                  ? "none"
+                  : undefined,
+            }),
           position: "absolute",
           ...styleCoords,
         }}
