@@ -1,7 +1,7 @@
 {
   "name": "react-image-annotate",
   "version": "3.0.1-1",
-  "private": true,
+  "private": false,
   "dependencies": {
     "@emotion/react": "^11.7.0",
     "@emotion/styled": "^11.6.0",
@@ -45,10 +45,10 @@
     "react": "^17.0.0",
     "react-dom": "^17.0.0"
   },
-  "homepage": "/react-image-annotate",
+  "homepage": "https://www.starwit-technologies.de/",
   "repository": {
     "type": "git",
-    "url": "https://github.com/starwit/react-image-annotate.git"
+    "url": "https://github.com/starwit/react-image-annotate"
   },
   "scripts": {
     "start": "react-scripts --openssl-legacy-provider start",
