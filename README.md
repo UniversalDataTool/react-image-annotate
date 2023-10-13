@@ -76,10 +76,10 @@ All of the following properties can be defined on the Annotator...
 
 ### Development
 
-This project uses [react-storybook](https://storybook.js.org/). To begin developing run the following commands in the cloned repo.
+To begin developing run the following commands in the cloned repo.
 
-1. `yarn install`
-2. `yarn storybook`
+1. `npm install --legacy-peer-deps`
+2. `npm start`
 
 A browser tab will automatically open with the project components.
 
