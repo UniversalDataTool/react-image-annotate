@@ -2,30 +2,30 @@
 
 import React from "react"
 import Button from "@mui/material/Button"
-import { createTheme, styled, ThemeProvider } from "@mui/material/styles"
+import {createTheme, styled, ThemeProvider} from "@mui/material/styles"
 import * as colors from "@mui/material/colors"
 import Markdown from "react-markdown"
 import GitHubButton from "react-github-btn"
 import "./github-markdown.css"
 import raw from "raw.macro"
-import { Prism as SyntaxHighlighter } from "react-syntax-highlighter"
-import { docco } from "react-syntax-highlighter/dist/cjs/languages/hljs/javascript"
+import {Prism as SyntaxHighlighter} from "react-syntax-highlighter"
+import {docco} from "react-syntax-highlighter/dist/cjs/languages/hljs/javascript"
 
 const contentMd = raw("./content.md")
 const theme = createTheme()
-const RootContainer = styled("div")(({ theme }) => ({
+const RootContainer = styled("div")(({theme}) => ({
   display: "flex",
   flexDirection: "column",
   alignItems: "center",
 }))
-const ContentContainer = styled("div")(({ theme }) => ({
+const ContentContainer = styled("div")(({theme}) => ({
   width: "100%",
   boxSizing: "border-box",
   display: "flex",
   flexDirection: "column",
   maxWidth: 1200,
 }))
-const Header = styled("div")(({ theme }) => ({
+const Header = styled("div")(({theme}) => ({
   width: "100%",
   display: "flex",
   justifyContent: "center",
@@ -33,14 +33,14 @@ const Header = styled("div")(({ theme }) => ({
   padding: 8,
   boxSizing: "border-box",
 }))
-const HeaderButton = styled(Button)(({ theme }) => ({
+const HeaderButton = styled(Button)(({theme}) => ({
   color: "white",
   margin: 8,
   padding: 16,
   paddingLeft: 24,
   paddingRight: 24,
 }))
-const Hero = styled("div")(({ theme }) => ({
+const Hero = styled("div")(({theme}) => ({
   display: "flex",
   justifyContent: "center",
   width: "100%",
@@ -49,30 +49,30 @@ const Hero = styled("div")(({ theme }) => ({
   color: "white",
   boxSizing: "border-box",
 }))
-const HeroMain = styled("div")(({ theme }) => ({
+const HeroMain = styled("div")(({theme}) => ({
   fontSize: 48,
   fontWeight: "bold",
   paddingTop: 64,
   textShadow: "0px 1px 5px rgba(0,0,0,0.3)",
 }))
-const HeroSub = styled("div")(({ theme }) => ({
+const HeroSub = styled("div")(({theme}) => ({
   paddingTop: 32,
   lineHeight: 1.5,
   fontSize: 24,
   textShadow: "0px 1px 3px rgba(0,0,0,0.2)",
 }))
-const HeroButtons = styled("div")(({ theme }) => ({
+const HeroButtons = styled("div")(({theme}) => ({
   paddingTop: 32,
   paddingBottom: 48,
 }))
-const Section = styled("div")(({ theme }) => ({
+const Section = styled("div")(({theme}) => ({
   display: "flex",
   padding: 16,
   paddingTop: 32,
   flexDirection: "column",
 }))
 
-const CodeBlock = ({ language, value }) => {
+const CodeBlock = ({language, value}) => {
   return (
     <SyntaxHighlighter language={language} style={docco}>
       {value}
@@ -87,18 +87,18 @@ function flatten(text, child) {
 }
 
 function HeadingRenderer(props) {
-  var children = React.Children.toArray(props.children)
-  var text = children.reduce(flatten, "")
-  var slug = text.toLowerCase().replace(/\W/g, "-")
-  return React.createElement("h" + props.level, { id: slug }, props.children)
+  let children = React.Children.toArray(props.children)
+  let text = children.reduce(flatten, "")
+  let slug = text.toLowerCase().replace(/\W/g, "-")
+  return React.createElement("h" + props.level, {id: slug}, props.children)
 }
 
 const LandingPage = () => {
   return (
     <ThemeProvider theme={theme}>
       <RootContainer>
-        <Header id="about">
-          <ContentContainer style={{ flexDirection: "row", flexGrow: 1 }}>
+        <Header id="about" key="header">
+          <ContentContainer style={{flexDirection: "row", flexGrow: 1}}>
             <HeaderButton href="#features">Features</HeaderButton>
             <HeaderButton href="#usage">Usage</HeaderButton>
             <HeaderButton href="#props">Props</HeaderButton>

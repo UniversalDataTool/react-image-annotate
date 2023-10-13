@@ -1,19 +1,17 @@
 // @flow weak
 
-import type { Node } from "react"
-import React, { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react"
-import { Matrix } from "transformation-matrix-js"
+import React, {useEffect, useLayoutEffect, useMemo, useRef, useState} from "react"
+import {Matrix} from "transformation-matrix-js"
 import Crosshairs from "../Crosshairs"
-import type { Box, Keypoints, Point, Polygon, Region } from "./region-tools.js"
-import { makeStyles } from "@mui/styles"
-import { createTheme, ThemeProvider } from "@mui/material/styles"
+import {makeStyles} from "@mui/styles"
+import {createTheme, ThemeProvider} from "@mui/material/styles"
 import styles from "./styles"
 import PreventScrollToParents from "../PreventScrollToParents"
 import useWindowSize from "../hooks/use-window-size.js"
 import useMouse from "./use-mouse"
 import useProjectRegionBox from "./use-project-box"
 import useExcludePattern from "../hooks/use-exclude-pattern"
-import { useRafState } from "react-use"
+import {useRafState} from "react-use"
 import PointDistances from "../PointDistances"
 import RegionTags from "../RegionTags"
 import RegionLabel from "../RegionLabel"
@@ -33,14 +31,14 @@ type Props = {
   videoSrc?: string,
   videoTime?: number,
   keypointDefinitions?: KeypointDefinitions,
-  onMouseMove?: ({ x: number, y: number }) => any,
-  onMouseDown?: ({ x: number, y: number }) => any,
-  onMouseUp?: ({ x: number, y: number }) => any,
+  onMouseMove?: ({x: number, y: number}) => any,
+  onMouseDown?: ({x: number, y: number}) => any,
+  onMouseUp?: ({x: number, y: number}) => any,
   dragWithPrimary?: boolean,
   zoomWithPrimary?: boolean,
   createWithPrimary?: boolean,
   showTags?: boolean,
-  realSize?: { width: number, height: number, unitName: string },
+  realSize?: {width: number, height: number, unitName: string},
   showCrosshairs?: boolean,
   showMask?: boolean,
   showHighlightBox?: boolean,
@@ -48,7 +46,7 @@ type Props = {
   pointDistancePrecision?: number,
   regionClsList?: Array<string>,
   regionTagList?: Array<string>,
-  allowedArea?: { x: number, y: number, w: number, h: number },
+  allowedArea?: {x: number, y: number, w: number, h: number},
   RegionEditLabel?: Node,
   videoPlaying?: boolean,
   zoomOnAllowedArea?: boolean,
@@ -67,16 +65,16 @@ type Props = {
   onSelectRegion: (Region) => any,
   onBeginMovePoint: (Point) => any,
   onImageOrVideoLoaded: ({
-                           naturalWidth: number,
-                           naturalHeight: number,
-                           duration?: number,
-                         }) => any,
+    naturalWidth: number,
+    naturalHeight: number,
+    duration?: number,
+  }) => any,
   onChangeVideoTime: (number) => any,
   onRegionClassAdded: () => {},
   onChangeVideoPlaying?: Function,
 }
 
-const getDefaultMat = (allowedArea = null, { iw, ih } = {}) => {
+const getDefaultMat = (allowedArea = null, {iw, ih} = {}) => {
   let mat = Matrix.from(1, 0, 0, 1, -10, -10)
   if (allowedArea && iw) {
     mat = mat
@@ -87,65 +85,63 @@ const getDefaultMat = (allowedArea = null, { iw, ih } = {}) => {
 }
 
 export const ImageCanvas = ({
-                              regions,
-                              imageSrc,
-                              videoSrc,
-                              videoTime,
-                              realSize,
-                              showTags,
-                              onMouseMove = (p) => null,
-                              onMouseDown = (p) => null,
-                              onMouseUp = (p) => null,
-                              dragWithPrimary = false,
-                              zoomWithPrimary = false,
-                              createWithPrimary = false,
-                              pointDistancePrecision = 0,
-                              regionClsList,
-                              regionTagList,
-                              showCrosshairs,
-                              showHighlightBox = true,
-                              showPointDistances,
-                              allowedArea,
-                              RegionEditLabel = null,
-                              videoPlaying = false,
-                              showMask = true,
-                              fullImageSegmentationMode,
-                              autoSegmentationOptions,
-                              onImageOrVideoLoaded,
-                              onChangeRegion,
-                              onBeginRegionEdit,
-                              onCloseRegionEdit,
-                              onBeginBoxTransform,
-                              onBeginMovePolygonPoint,
-                              onAddPolygonPoint,
-                              onBeginMoveKeypoint,
-                              onSelectRegion,
-                              onBeginMovePoint,
-                              onDeleteRegion,
-                              onChangeVideoTime,
-                              onChangeVideoPlaying,
-                              onRegionClassAdded,
-                              zoomOnAllowedArea = true,
-                              modifyingAllowedArea = false,
-                              keypointDefinitions,
-                              allowComments
-                            }: Props) => {
+  regions,
+  imageSrc,
+  videoSrc,
+  videoTime,
+  realSize,
+  showTags,
+  onMouseMove = (p) => null,
+  onMouseDown = (p) => null,
+  onMouseUp = (p) => null,
+  dragWithPrimary = false,
+  zoomWithPrimary = false,
+  createWithPrimary = false,
+  pointDistancePrecision = 0,
+  regionClsList,
+  regionTagList,
+  showCrosshairs,
+  showHighlightBox = true,
+  showPointDistances,
+  allowedArea,
+  RegionEditLabel = null,
+  videoPlaying = false,
+  showMask = true,
+  fullImageSegmentationMode,
+  autoSegmentationOptions,
+  onImageOrVideoLoaded,
+  onChangeRegion,
+  onBeginRegionEdit,
+  onCloseRegionEdit,
+  onBeginBoxTransform,
+  onBeginMovePolygonPoint,
+  onAddPolygonPoint,
+  onBeginMoveKeypoint,
+  onSelectRegion,
+  onBeginMovePoint,
+  onDeleteRegion,
+  onChangeVideoTime,
+  onChangeVideoPlaying,
+  onRegionClassAdded,
+  zoomOnAllowedArea = true,
+  modifyingAllowedArea = false,
+  keypointDefinitions,
+  allowComments
+}: Props) => {
   const classes = useStyles()
 
   const canvasEl = useRef(null)
   const layoutParams = useRef({})
   const [dragging, changeDragging] = useRafState(false)
-  const [maskImagesLoaded, changeMaskImagesLoaded] = useRafState(0)
   const [zoomStart, changeZoomStart] = useRafState(null)
   const [zoomEnd, changeZoomEnd] = useRafState(null)
   const [mat, changeMat] = useRafState(getDefaultMat())
-  const maskImages = useRef({})
   const windowSize = useWindowSize()
 
   const getLatestMat = useEventCallback(() => mat)
-  useWasdMode({ getLatestMat, changeMat })
+  useWasdMode({getLatestMat, changeMat})
 
-  const { mouseEvents, mousePosition } = useMouse({
+  const {mouseEvents, mousePosition} = useMouse({
     canvasEl,
     dragging,
     mat,
@@ -163,21 +159,16 @@ export const ImageCanvas = ({
     onMouseUp
   })
 
-  useLayoutEffect(() => changeMat(mat.clone()), [windowSize])
+  useLayoutEffect(() => changeMat(mat.clone()), [changeMat, mat, windowSize])
 
-  const innerMousePos = mat.applyToPoint(
-    mousePosition.current.x,
-    mousePosition.current.y
-  )
-
-  const projectRegionBox = useProjectRegionBox({ layoutParams, mat })
+  const projectRegionBox = useProjectRegionBox({layoutParams, mat})
 
   const [imageDimensions, changeImageDimensions] = useState()
   const imageLoaded = Boolean(imageDimensions && imageDimensions.naturalWidth)
 
   const onVideoOrImageLoaded = useEventCallback(
-    ({ naturalWidth, naturalHeight, duration }) => {
-      const dims = { naturalWidth, naturalHeight, duration }
+    ({naturalWidth, naturalHeight, duration}) => {
+      const dims = {naturalWidth, naturalHeight, duration}
       if (onImageOrVideoLoaded) onImageOrVideoLoaded(dims)
       changeImageDimensions(dims)
       // Redundant update to fix rerendering issues
@@ -189,7 +180,7 @@ export const ImageCanvas = ({
 
   const canvas = canvasEl.current
   if (canvas && imageLoaded) {
-    const { clientWidth, clientHeight } = canvas
+    const {clientWidth, clientHeight} = canvas
 
     const fitScale = Math.max(
       imageDimensions.naturalWidth / (clientWidth - 20),
@@ -223,7 +214,7 @@ export const ImageCanvas = ({
 
   useLayoutEffect(() => {
     if (!imageDimensions) return
-    const { clientWidth, clientHeight } = canvas
+    const {clientWidth, clientHeight} = canvas
     canvas.width = clientWidth
     // TODO: This might a problem - Content window becoming bigger comes from this
     canvas.height = clientHeight
@@ -231,11 +222,11 @@ export const ImageCanvas = ({
     context.save()
     context.transform(...mat.clone().inverse().toArray())
 
-    const { iw, ih } = layoutParams.current
+    const {iw, ih} = layoutParams.current
 
     if (allowedArea) {
       // Pattern to indicate the NOT allowed areas
-      const { x, y, w, h } = allowedArea
+      const {x, y, w, h} = allowedArea
       context.save()
       context.globalAlpha = 1
       const outer = [
@@ -269,7 +260,7 @@ export const ImageCanvas = ({
     context.restore()
   })
 
-  const { iw, ih } = layoutParams.current
+  const {iw, ih} = layoutParams.current
 
   let zoomBox =
     !zoomStart || !zoomEnd
@@ -424,7 +415,7 @@ export const ImageCanvas = ({
           />
         )}
         <PreventScrollToParents
-          style={{ width: "100%", height: "100%" }}
+          style={{width: "100%", height: "100%"}}
           {...mouseEvents}
         >
           <>
@@ -439,7 +430,7 @@ export const ImageCanvas = ({
               />
             )}
             <canvas
-              style={{ opacity: 0.25 }}
+              style={{opacity: 0.25}}
               className={classes.canvas}
               ref={canvasEl}
             />

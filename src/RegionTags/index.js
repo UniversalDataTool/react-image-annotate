@@ -6,7 +6,7 @@ import DefaultRegionLabel from "../RegionLabel"
 import LockIcon from "@mui/icons-material/Lock"
 
 const copyWithout = (obj, ...args) => {
-  const newObj = { ...obj }
+  const newObj = {...obj}
   for (const arg of args) {
     delete newObj[arg]
   }
@@ -35,7 +35,6 @@ export const RegionTags = ({
     .filter((r) => r.visible || r.visible === undefined)
     .map((region) => {
       const pbox = projectRegionBox(region)
-      const { iw, ih } = layoutParams.current
       let margin = 8
       if (region.highlighted && region.type === "box") margin += 6
       const labelBoxHeight =
@@ -44,10 +43,10 @@ export const RegionTags = ({
 
       const coords = displayOnTop
         ? {
-            left: pbox.x,
-            top: pbox.y - margin / 2,
-          }
-        : { left: pbox.x, top: pbox.y + pbox.h + margin / 2 }
+          left: pbox.x,
+          top: pbox.y - margin / 2,
+        }
+        : {left: pbox.x, top: pbox.y + pbox.h + margin / 2}
       if (region.locked) {
         return (
           <div
@@ -62,7 +61,7 @@ export const RegionTags = ({
               style={{
                 position: "absolute",
                 left: 0,
-                ...(displayOnTop ? { bottom: 0 } : { top: 0 }),
+                ...(displayOnTop ? {bottom: 0} : {top: 0}),
                 zIndex: 10,
                 backgroundColor: "#fff",
                 borderRadius: 4,
@@ -72,7 +71,7 @@ export const RegionTags = ({
                 pointerEvents: "none",
               }}
             >
-              <LockIcon style={{ width: 16, height: 16, color: "#333" }} />
+              <LockIcon style={{width: 16, height: 16, color: "#333"}} />
             </Paper>
           </div>
         )
@@ -101,7 +100,7 @@ export const RegionTags = ({
               position: "absolute",
               zIndex: 20,
               left: 0,
-              ...(displayOnTop ? { bottom: 0 } : { top: 0 }),
+              ...(displayOnTop ? {bottom: 0} : {top: 0}),
             }}
             {...(!region.editingLabels
               ? copyWithout(mouseEvents, "onMouseDown", "onMouseUp")
