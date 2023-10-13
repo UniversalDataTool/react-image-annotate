@@ -1,8 +1,8 @@
 // @flow
 
-import {useEffect} from "react"
+import { useEffect } from "react"
 
-import {useInterval, useRafState} from "react-use"
+import { useInterval, useRafState } from "react-use"
 
 const useWindowSize = (initialWidth = Infinity, initialHeight = Infinity) => {
   const isClient = typeof window !== "undefined"
@@ -25,7 +25,7 @@ const useWindowSize = (initialWidth = Infinity, initialHeight = Infinity) => {
     return () => {
       window.removeEventListener("resize", handler)
     }
-  }, [isClient, setState])
+  }, [])
 
   useInterval(() => {
     if (!isClient) return

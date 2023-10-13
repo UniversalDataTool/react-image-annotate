@@ -1,6 +1,6 @@
 // @flow
 
-import React, {memo} from "react"
+import React, { memo } from "react"
 import colorAlpha from "color-alpha"
 
 function clamp(num, min, max) {
@@ -8,7 +8,7 @@ function clamp(num, min, max) {
 }
 
 const RegionComponents = {
-  point: memo(({region, iw, ih}) => (
+  point: memo(({ region, iw, ih }) => (
     <g transform={`translate(${region.x * iw} ${region.y * ih})`}>
       <path
         d={"M0 8L8 0L0 -8L-8 0Z"}
@@ -18,7 +18,7 @@ const RegionComponents = {
       />
     </g>
   )),
-  line: memo(({region, iw, ih}) => (
+  line: memo(({ region, iw, ih }) => (
     <g transform={`translate(${region.x1 * iw} ${region.y1 * ih})`}>
       <line
         strokeWidth={2}
@@ -31,7 +31,7 @@ const RegionComponents = {
       />
     </g>
   )),
-  box: memo(({region, iw, ih}) => (
+  box: memo(({ region, iw, ih }) => (
     <g transform={`translate(${region.x * iw} ${region.y * ih})`}>
       <rect
         strokeWidth={2}
@@ -44,8 +44,9 @@ const RegionComponents = {
       />
     </g>
   )),
-  polygon: memo(({region, iw, ih, fullSegmentationMode}) => {
+  polygon: memo(({ region, iw, ih, fullSegmentationMode }) => {
     const Component = region.open ? "polyline" : "polygon"
+    const alphaBase = fullSegmentationMode ? 0.5 : 1
     return (
       <Component
         points={region.points
@@ -58,18 +59,18 @@ const RegionComponents = {
       />
     )
   }),
-  keypoints: ({region, iw, ih, keypointDefinitions}) => {
-    const {points, keypointsDefinitionId} = region
+  keypoints: ({ region, iw, ih, keypointDefinitions }) => {
+    const { points, keypointsDefinitionId } = region
     if (!keypointDefinitions[keypointsDefinitionId]) {
       throw new Error(
         `No definition for keypoint configuration "${keypointsDefinitionId}"`
       )
     }
-    const {landmarks, connections} =
+    const { landmarks, connections } =
       keypointDefinitions[keypointsDefinitionId]
     return (
       <g>
-        {Object.entries(points).map(([keypointId, {x, y}], i) => (
+        {Object.entries(points).map(([keypointId, { x, y }], i) => (
           <g key={i} transform={`translate(${x * iw} ${y * ih})`}>
             <path
               d={"M0 8L8 0L0 -8L-8 0Z"}
@@ -82,7 +83,7 @@ const RegionComponents = {
         {connections.map(([kp1Id, kp2Id]) => {
           const kp1 = points[kp1Id]
           const kp2 = points[kp2Id]
-          const midPoint = {x: (kp1.x + kp2.x) / 2, y: (kp1.y + kp2.y) / 2}
+          const midPoint = { x: (kp1.x + kp2.x) / 2, y: (kp1.y + kp2.y) / 2 }
 
           return (
             <g key={`${kp1.x},${kp1.y}.${kp2.x},${kp2.y}`}>
@@ -108,10 +109,10 @@ const RegionComponents = {
       </g>
     )
   },
-  "expanding-line": memo(({region, iw, ih}) => {
-    let {expandingWidth = 0.005, points} = region
+  "expanding-line": memo(({ region, iw, ih }) => {
+    let { expandingWidth = 0.005, points } = region
     expandingWidth = points.slice(-1)[0].width || expandingWidth
-    const pointPairs = points.map(({x, y, angle, width}, i) => {
+    const pointPairs = points.map(({ x, y, angle, width }, i) => {
       if (!angle) {
         const n = points[clamp(i + 1, 0, points.length - 1)]
         const p = points[clamp(i - 1, 0, points.length - 1)]
@@ -120,8 +121,8 @@ const RegionComponents = {
       const dx = (Math.sin(angle) * (width || expandingWidth)) / 2
       const dy = (Math.cos(angle) * (width || expandingWidth)) / 2
       return [
-        {x: x + dx, y: y + dy},
-        {x: x - dx, y: y - dy},
+        { x: x + dx, y: y + dy },
+        { x: x - dx, y: y - dy },
       ]
     })
     const firstSection = pointPairs.map(([p1, p2]) => p1)
@@ -140,11 +141,12 @@ const RegionComponents = {
           stroke={colorAlpha(region.color, 0.75)}
           fill={colorAlpha(region.color, 0.25)}
         />
-        {points.map(({x, y, angle}, i) => (
+        {points.map(({ x, y, angle }, i) => (
           <g
             key={i}
-            transform={`translate(${x * iw} ${y * ih}) rotate(${(-(angle || 0) * 180) / Math.PI
-              })`}
+            transform={`translate(${x * iw} ${y * ih}) rotate(${
+              (-(angle || 0) * 180) / Math.PI
+            })`}
           >
             <g>
               <rect
@@ -175,7 +177,7 @@ const RegionComponents = {
 }
 
 export const WrappedRegionList = memo(
-  ({regions, keypointDefinitions, iw, ih, fullSegmentationMode}) => {
+  ({ regions, keypointDefinitions, iw, ih, fullSegmentationMode }) => {
     return regions
       .filter((r) => r.visible !== false)
       .map((r) => {

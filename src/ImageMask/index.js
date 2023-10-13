@@ -1,7 +1,7 @@
 // @flow
 
-import React, {useEffect, useMemo, useState} from "react"
-import {useDebounce} from "react-use"
+import React, { useEffect, useMemo, useState } from "react"
+import { useDebounce } from "react-use"
 import loadImage from "./load-image"
 import autoseg from "autoseg/webworker"
 
@@ -21,7 +21,7 @@ function convertToUDTRegions(regions) {
           return {
             regionType: "polygon",
             classification: r.cls,
-            points: r.points.map(([x, y]) => ({x, y})),
+            points: r.points.map(([x, y]) => ({ x, y })),
           }
         }
         case "box": {
@@ -49,7 +49,7 @@ export const ImageMask = ({
   imagePosition,
   zIndex = 1,
   hide = false,
-  autoSegmentationOptions = {type: "simple"},
+  autoSegmentationOptions = { type: "simple" },
 }) => {
   // if (!window.mmgc) window.mmgc = MMGC_INIT()
   // const mmgc = window.mmgc
@@ -68,7 +68,7 @@ export const ImageMask = ({
       autoseg.loadImage(imageData)
       setSampleImageData(imageData)
     })
-  }, [autoSegmentationOptions, imageSrc, regionClsList])
+  }, [imageSrc])
 
   useDebounce(
     () => {

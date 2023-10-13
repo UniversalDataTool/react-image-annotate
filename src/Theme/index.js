@@ -1,7 +1,14 @@
 // @flow
 
 import React from "react"
-import {createTheme, ThemeProvider} from "@mui/material/styles"
+import { createTheme, ThemeProvider } from "@mui/material/styles"
+import { makeStyles } from "@mui/styles"
+
+const useStyles = makeStyles((theme) => ({
+  container: {
+    fontFamily: '"Inter", sans-serif',
+  },
+}))
 
 const theme = createTheme({
   typography: {
@@ -16,7 +23,8 @@ const theme = createTheme({
   },
 })
 
-export const Theme = ({children}) => {
+export const Theme = ({ children }: any) => {
+  const classes = useStyles()
   return (
     <ThemeProvider theme={theme}>
       {/* <div className={classes.container}>{children}</div> */}

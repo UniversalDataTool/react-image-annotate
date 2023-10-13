@@ -1,9 +1,11 @@
 // @flow
 
-import {FullScreen, useFullScreenHandle} from "react-full-screen"
-import React, {useCallback, useRef} from "react"
-import {makeStyles} from "@mui/styles"
-import {createTheme, styled, ThemeProvider} from "@mui/material/styles"
+import type { Action, MainLayoutState } from "./types"
+import { FullScreen, useFullScreenHandle } from "react-full-screen"
+import type { Node } from "react"
+import React, { useCallback, useRef } from "react"
+import { makeStyles } from "@mui/styles"
+import { createTheme, styled, ThemeProvider } from "@mui/material/styles"
 
 import ClassSelectionMenu from "../ClassSelectionMenu"
 import DebugBox from "../DebugSidebarBox"
@@ -21,13 +23,13 @@ import getActiveImage from "../Annotator/reducers/get-active-image"
 import getHotkeyHelpText from "../utils/get-hotkey-help-text"
 import iconDictionary from "./icon-dictionary"
 import styles from "./styles"
-import {useDispatchHotkeyHandlers} from "../ShortcutsManager"
+import { useDispatchHotkeyHandlers } from "../ShortcutsManager"
 import useEventCallback from "use-event-callback"
 import useImpliedVideoRegions from "./use-implied-video-regions"
 import useKey from "use-key-hook"
-import {useSettings} from "../SettingsProvider"
-import {withHotKeys} from "react-hotkeys"
-import {Save} from "@mui/icons-material"
+import { useSettings } from "../SettingsProvider"
+import { withHotKeys } from "react-hotkeys"
+import { Save } from "@mui/icons-material"
 
 // import Fullscreen from "../Fullscreen"
 
@@ -35,13 +37,13 @@ const emptyArr = []
 const theme = createTheme()
 const useStyles = makeStyles((theme) => styles)
 
-const HotkeyDiv = withHotKeys(({hotKeys, children, divRef, ...props}) => (
-  <div {...{...hotKeys, ...props}} ref={divRef}>
+const HotkeyDiv = withHotKeys(({ hotKeys, children, divRef, ...props }) => (
+  <div {...{ ...hotKeys, ...props }} ref={divRef}>
     {children}
   </div>
 ))
 
-const FullScreenContainer = styled("div")(({theme}) => ({
+const FullScreenContainer = styled("div")(({ theme }) => ({
   width: "100%",
   height: "100%",
   "& .fullscreen": {
@@ -49,6 +51,15 @@ const FullScreenContainer = styled("div")(({theme}) => ({
     height: "100%",
   },
 }))
+
+type Props = {
+  state: MainLayoutState,
+  RegionEditLabel?: Node,
+  dispatch: (Action) => any,
+  onRegionClassAdded: () => {},
+  hideHeader?: boolean,
+  hideHeaderText?: boolean,
+}
 
 export const MainLayout = ({
   state,
@@ -63,43 +74,43 @@ export const MainLayout = ({
   hideSettings = false,
   hideFullScreen = false,
   hideSave = false,
-}) => {
+}: Props) => {
   const classes = useStyles()
   const settings = useSettings()
   const fullScreenHandle = useFullScreenHandle()
 
   const memoizedActionFns = useRef({})
-  const action = (type, ...params) => {
+  const action = (type: string, ...params: Array<string>) => {
     const fnKey = `${type}(${params.join(",")})`
     if (memoizedActionFns.current[fnKey])
       return memoizedActionFns.current[fnKey]
 
-    const fn = (...args) =>
+    const fn = (...args: any) =>
       params.length > 0
         ? dispatch(
-          ({
-            type,
-            ...params.reduce(
-              (acc, p, i) => ((acc[p] = args[i]), acc), {})
-          })
-        )
-        : dispatch({type, ...args[0]})
+            ({
+              type,
+              ...params.reduce((acc, p, i) => ((acc[p] = args[i]), acc), {}),
+            }: any)
+          )
+        : dispatch({ type, ...args[0] })
     memoizedActionFns.current[fnKey] = fn
     return fn
   }
 
-  const {currentImageIndex, activeImage} = getActiveImage(state)
+  const { currentImageIndex, activeImage } = getActiveImage(state)
   let nextImage
   if (currentImageIndex !== null) {
     nextImage = state.images[currentImageIndex + 1]
   }
 
-  useKey(() => dispatch({type: "CANCEL"}), {
+  useKey(() => dispatch({ type: "CANCEL" }), {
     detectKeys: [27],
   })
 
+  const isAVideoFrame = activeImage && activeImage.frameTime !== undefined
   const innerContainerRef = useRef()
-  const hotkeyHandlers = useDispatchHotkeyHandlers({dispatch})
+  const hotkeyHandlers = useDispatchHotkeyHandlers({ dispatch })
 
   let impliedVideoRegions = useImpliedVideoRegions(state)
 
@@ -185,7 +196,7 @@ export const MainLayout = ({
   )
 
   const onClickIconSidebarItem = useEventCallback((item) => {
-    dispatch({type: "SELECT_TOOL", selectedTool: item.name})
+    dispatch({ type: "SELECT_TOOL", selectedTool: item.name })
   })
 
   const onClickHeaderItem = useEventCallback((item) => {
@@ -194,7 +205,7 @@ export const MainLayout = ({
     } else if (item.name === "Window") {
       fullScreenHandle.exit()
     }
-    dispatch({type: "HEADER_BUTTON_CLICKED", buttonName: item.name})
+    dispatch({ type: "HEADER_BUTTON_CLICKED", buttonName: item.name })
   })
 
   const debugModeOn = Boolean(window.localStorage.$ANNOTATE_DEBUG_MODE && state)
@@ -233,33 +244,32 @@ export const MainLayout = ({
               headerLeftSide={[
                 state.annotationType === "video" ? (
                   <KeyframeTimeline
-                    key="KeyframeTimeline"
                     currentTime={state.currentVideoTime}
                     duration={state.videoDuration}
                     onChangeCurrentTime={action("CHANGE_VIDEO_TIME", "newTime")}
                     keyframes={state.keyframes}
                   />
                 ) : activeImage ? (
-                  <div key="activeImage" className={classes.headerTitle}>{activeImage.name}</div>
+                  <div className={classes.headerTitle}>{activeImage.name}</div>
                 ) : null,
               ].filter(Boolean)}
               headerItems={[
-                !hidePrev && {name: "Prev"},
-                !hideNext && {name: "Next"},
+                !hidePrev && { name: "Prev" },
+                !hideNext && { name: "Next" },
                 state.annotationType !== "video"
                   ? null
                   : !state.videoPlaying
-                    ? {name: "Play"}
-                    : {name: "Pause"},
+                  ? { name: "Play" }
+                  : { name: "Pause" },
                 !hideClone &&
-                !nextImageHasRegions &&
-                activeImage.regions && {name: "Clone"},
-                !hideSettings && {name: "Settings"},
+                  !nextImageHasRegions &&
+                  activeImage.regions && { name: "Clone" },
+                !hideSettings && { name: "Settings" },
                 !hideFullScreen &&
-                (state.fullScreen
-                  ? {name: "Window"}
-                  : {name: "Fullscreen"}),
-                !hideSave && {name: "Save", icon: <Save />},
+                  (state.fullScreen
+                    ? { name: "Window" }
+                    : { name: "Fullscreen" }),
+                !hideSave && { name: "Save", icon: <Save/> },
               ].filter(Boolean)}
               onClickHeaderItem={onClickHeaderItem}
               onClickIconSidebarItem={onClickIconSidebarItem}
@@ -335,14 +345,13 @@ export const MainLayout = ({
                 )}
               rightSidebarItems={[
                 debugModeOn && (
-                  <DebugBox state={debugModeOn} lastAction={state.lastAction} key="DebugBox" />
+                  <DebugBox state={debugModeOn} lastAction={state.lastAction} />
                 ),
                 state.taskDescription && (
-                  <TaskDescription description={state.taskDescription} key="TaskDescription" />
+                  <TaskDescription description={state.taskDescription} />
                 ),
                 state.regionClsList && (
                   <ClassSelectionMenu
-                    key="ClassSelectionMenu"
                     selectedCls={state.selectedCls}
                     regionClsList={state.regionClsList}
                     onSelectCls={action("SELECT_CLASSIFICATION", "cls")}
@@ -350,7 +359,6 @@ export const MainLayout = ({
                 ),
                 state.labelImages && (
                   <TagsSidebarBox
-                    key="TagsSidebareBox"
                     currentImage={activeImage}
                     imageClsList={state.imageClsList}
                     imageTagList={state.imageTagList}
@@ -365,7 +373,6 @@ export const MainLayout = ({
                 //   />
                 // ),
                 <RegionSelector
-                  key={"activeImage" + activeImage.id}
                   regions={activeImage ? activeImage.regions : emptyArr}
                   onSelectRegion={action("SELECT_REGION", "region")}
                   onDeleteRegion={action("DELETE_REGION", "region")}
@@ -373,7 +380,6 @@ export const MainLayout = ({
                 />,
                 state.keyframes && (
                   <KeyframesSelector
-                    key="KeyframesSelector"
                     onChangeVideoTime={action("CHANGE_VIDEO_TIME", "newTime")}
                     onDeleteKeyframe={action("DELETE_KEYFRAME", "time")}
                     onChangeCurrentTime={action("CHANGE_VIDEO_TIME", "newTime")}
@@ -383,7 +389,6 @@ export const MainLayout = ({
                   />
                 ),
                 <HistorySidebarBox
-                  key="HistorySideBox"
                   history={state.history}
                   onRestoreHistory={action("RESTORE_HISTORY")}
                 />,
