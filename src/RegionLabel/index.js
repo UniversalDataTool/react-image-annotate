@@ -182,6 +182,86 @@ export const RegionLabel = ({
     }
   }
 
+  // const onOCRClick = () => {
+  //   setIsTemplateMatchingLoading(true)
+  //   // TODO: get user_id, doc_id, page_id, threshold from the parent component above annotator
+  //   let page_properties = {
+  //     user_id: 80808080,
+  //     doc_id: 80808080,
+  //     page_id: 80808080,
+  //     threshold: 0.7,
+  //     page_index: pageIndex,
+  //   }
+  //   const region_coords = {
+  //     x: region.x,
+  //     y: region.y,
+  //     w: region.w,
+  //     h: region.h,
+  //   }
+  //   const region_color = region.color
+  //   const endpoint =
+  //     "https://6lufq8mux5.execute-api.us-east-2.amazonaws.com/default/xkey-lambda-ocr-arbiter"
+  //   const json_data = {
+  //     image_url: imageSrc,
+  //     page_index: page_properties["page_index"],
+  //     template_symbol_name: region.cls,
+  //     threshold: page_properties["threshold"],
+  //     user_id: page_properties["user_id"],
+  //     doc_id: page_properties["doc_id"],
+  //     page_id: page_properties["page_id"],
+  //     template_coord: region_coords,
+  //   }
+  //   onMatchTemplate(region)
+  //   fetch(endpoint, {
+  //     method: "POST", // or 'PUT'
+  //     headers: {
+  //       "Content-Type": "application/json",
+  //     },
+  //     body: JSON.stringify({
+  //       queryStringParameters: json_data,
+  //     }),
+  //   })
+  //     .then((response) => {
+  //       if (response.ok) {
+  //         return response.json()
+  //       }
+  //       throw new Error("Backend Error")
+  //     })
+  //     .then((data) => {
+  //       // result can be empty
+  //       return data.body ? data.body.result : []
+  //     })
+  //     .then((res) => {
+  //       let results = res.map((r) => {
+  //         const new_region = {}
+  //         new_region["isOCR"] = true
+  //         new_region["x"] = r["x"]
+  //         new_region["y"] = r["y"]
+  //         new_region["w"] = r["w"]
+  //         new_region["h"] = r["h"]
+  //         new_region["editingLabels"] = false
+  //         new_region["highlighted"] = false
+  //         new_region["id"] = getRandomId()
+  //         new_region["cls"] = region.cls
+  //         new_region["type"] = "box"
+  //         new_region["color"] = region.color
+  //         new_region["visible"] = true
+  //         new_region["category"] =
+  //           region?.category ||
+  //           DeviceList.find((x) => x.symbol_name === region.cls)?.category ||
+  //           "NOT CLASSIFIED"
+  //         return new_region
+  //       })
+  //       finishMatchTemplate(results, page_properties)
+  //       setIsTemplateMatchingLoading(false)
+  //     })
+  //     .catch((error) => {
+  //       console.error("Error:", error)
+  //       finishMatchTemplate([], page_properties)
+  //       setIsTemplateMatchingLoading(false)
+  //     })
+  // }
+
   return (
     <>
       <Paper
@@ -226,7 +306,7 @@ export const RegionLabel = ({
           </div>
         ) : (
           <div style={{ maxWidth: 300 }}>
-            <div style={{ display: "flex", flexDirection: "row" }}>
+            <div style={{ display: "flex", flexDirection: "row", justifyContent:'space-between', height:'32px', alignItems:'center' }}>
               <div
                 style={{
                   display: "flex",
@@ -243,15 +323,19 @@ export const RegionLabel = ({
                 {region.type}
               </div>
 
-              <div style={{ flexGrow: 1, padding: 12 }} />
-              {console.log(region)}
+              {/* <div style={{ flexGrow: 1, padding: 12 }} /> */}
+              <div 
+              style={{justifyContent:''}}
+              >
               {region.cls &&
                 (region.breakout === undefined ||
                   (region.breakout &&
                     region.breakout.is_breakout === false)) && (
                   <IconButton
                     style={{
-                      height: 22,
+                      color: "#1DA1F2",
+                      paddingLeft: "12px",
+                      paddingRight: "12px",
                     }}
                     classes={{
                       label: {
@@ -362,13 +446,31 @@ export const RegionLabel = ({
                       })
                   }}
                   tabIndex={-1}
-                  style={{ width: 22, height: 22 }}
+                  style={{
+                    color: "#4CAF50",
+                    paddingLeft: "12px",
+                    paddingRight: "12px",
+                  }}
+                  classes={{
+                    label: {
+                      display: "flex",
+                      flexDirection: "row",
+                      marginTop: -2,
+                    },
+                  }}
                   size="small"
                   variant="outlined"
                 >
                   <ImageSearchIcon
                     style={{ marginTop: -4, width: 16, height: 16 }}
                   />
+                  <div
+                    style={{
+                      fontSize: "12px",
+                    }}
+                  >
+                    OCR
+                  </div>
                 </IconButton>
               ) : null}
 
@@ -377,13 +479,14 @@ export const RegionLabel = ({
                   onDelete(region)
                 }}
                 tabIndex={-1}
-                style={{ width: 22, height: 22 }}
+                style={{  }}
                 size="small"
                 variant="outlined"
                 color="secondary"
               >
                 <TrashIcon style={{ marginTop: -4, width: 16, height: 16 }} />
               </IconButton>
+            </div>
             </div>
             {(allowedClasses || []).length > 0 && (
               <div style={{ marginTop: 6 }}>
