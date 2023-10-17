@@ -340,7 +340,6 @@ export const RegionLabel = ({
                       borderRadius: '4px' , 
                       marginRight: '8px', 
                       height: '22px',
-                      
                     }}
                     classes={{
                       label: {
