@@ -333,9 +333,14 @@ export const RegionLabel = ({
                     region.breakout.is_breakout === false)) && (
                   <IconButton
                     style={{
-                      color: "#1DA1F2",
+                      backgroundColor: "#1DA1F2",
+                      color:' black',
                       paddingLeft: "12px",
                       paddingRight: "12px",
+                      borderRadius: '4px' , 
+                      marginRight: '8px', 
+                      height: '22px',
+                      
                     }}
                     classes={{
                       label: {
@@ -447,9 +452,13 @@ export const RegionLabel = ({
                   }}
                   tabIndex={-1}
                   style={{
-                    color: "#4CAF50",
+                    backgroundColor: "#4CAF50",
+                    color: 'black', 
                     paddingLeft: "12px",
                     paddingRight: "12px",
+                    borderRadius: '4px', 
+                    height: '24px', 
+
                   }}
                   classes={{
                     label: {
