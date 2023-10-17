@@ -160,6 +160,7 @@ export default function BreakoutSection({
           inputProps={{
             style: { fontSize: "12px" },
           }}
+          autoFocus
         />
         <Button
           variant="contained"
