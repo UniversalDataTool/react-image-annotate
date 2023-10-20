@@ -71,7 +71,6 @@ export const ClassSelectionMenu = ({
     window.addEventListener("keydown", onKeyDown)
     return () => window.removeEventListener("keydown", onKeyDown)
   }, [regionClsList, selectedCls])
-  console.log("class selection", selectedCls)
   return (
     <SidebarBoxContainer
       title="Classifications"

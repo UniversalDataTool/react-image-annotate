@@ -146,6 +146,7 @@ export const MainLayout = ({
       modifyingAllowedArea={state.selectedTool === "modify-allowed-area"}
       regionClsList={state.regionClsList}
       regionTagList={state.regionTagList}
+      breakouts={state.breakouts}
       regions={
         state.annotationType === "image"
           ? activeImage.regions || []
@@ -455,6 +456,7 @@ export const MainLayout = ({
                   "TOGGLE_BREAKOUT_VISIBILITY",
                   "breakoutId"
                 )}
+                breakouts={state.breakouts}
               />,
 
               <RegionSelector

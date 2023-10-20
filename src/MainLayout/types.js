@@ -90,9 +90,9 @@ export type MainLayoutImageAnnotationState = {|
   selectedImage?: string,
   images: Array<Image>,
   labelImages?: boolean,
-
   // If the selectedImage corresponds to a frame of a video
   selectedImageFrameTime?: number,
+  breakouts: Array<any>
 |}
 
 export type MainLayoutVideoAnnotationState = {|

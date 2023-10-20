@@ -139,20 +139,21 @@ const emptyArr = []
 
 export const BreakoutSidebarBox = ({
   regions,
+  breakouts,
   onBreakoutDelete,
   onBreakoutVisible,
 }) => {
   const breakoutList = useMemo(() => {
     const breakoutRegions = [
       ...new Set(
-        regions
-          .filter((obj) => obj.breakout && obj.breakout.is_breakout === true)
-          .map((obj) => JSON.stringify(obj.breakout))
+        breakouts
+          .filter((obj) => obj.is_breakout === true)
+          .map((obj) => JSON.stringify(obj))
       ),
     ].map((str) => JSON.parse(str))
     if (breakoutRegions.length === 0) return null
     return breakoutRegions
-  }, [regions])
+  }, [breakouts])
 
   const classes = useStyles()
   return (

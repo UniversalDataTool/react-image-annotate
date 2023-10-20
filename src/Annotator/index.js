@@ -7,7 +7,7 @@ import type {
   Mode,
   ToolEnum,
 } from "../MainLayout/types"
-import React, { useEffect, useReducer } from "react"
+import React, { useEffect, useMemo, useReducer } from "react"
 import makeImmutable, { without, setIn, getIn } from "seamless-immutable"
 
 import type { KeypointsDefinition } from "../ImageCanvas/region-tools"
@@ -21,9 +21,9 @@ import historyHandler from "./reducers/history-handler.js"
 import imageReducer from "./reducers/image-reducer.js"
 import useEventCallback from "use-event-callback"
 import videoReducer from "./reducers/video-reducer.js"
-import { HotKeys } from "react-hotkeys";
+import { HotKeys } from "react-hotkeys"
 import { defaultKeyMap } from "../ShortcutsManager"
-import getActiveImage from "../Annotator/reducers/get-active-image";
+import getActiveImage from "../Annotator/reducers/get-active-image"
 
 const getRandomId = () => Math.random().toString().split(".")[1]
 
@@ -51,17 +51,16 @@ type Props = {
   keypointDefinitions: KeypointsDefinition,
   fullImageSegmentationMode?: boolean,
   autoSegmentationOptions?:
-  | {| type: "simple" |}
-    | {| type: "autoseg", maxClusters ?: number, slicWeightFactor ?: number |},
-hideHeader ?: boolean,
-  hideHeaderText ?: boolean,
-  hideNext ?: boolean,
-  hidePrev ?: boolean,
-  hideClone ?: boolean,
-  hideSettings ?: boolean,
-  hideFullScreen ?: boolean,
-  hideSave ?: boolean,
-  
+    | {| type: "simple" |}
+    | {| type: "autoseg", maxClusters?: number, slicWeightFactor?: number |},
+  hideHeader?: boolean,
+  hideHeaderText?: boolean,
+  hideNext?: boolean,
+  hidePrev?: boolean,
+  hideClone?: boolean,
+  hideSettings?: boolean,
+  hideFullScreen?: boolean,
+  hideSave?: boolean,
 }
 
 export const Annotator = ({
@@ -114,6 +113,23 @@ export const Annotator = ({
     if (selectedImage === -1) selectedImage = undefined
   }
   const annotationType = images ? "image" : "video"
+
+  const uniqueBreakouts = new Set()
+  if (images) {
+    images.forEach((image) => {
+      if (image.regions) {
+        image.regions.forEach((region) => {
+          if (region.breakout && region.breakout.is_breakout) {
+            uniqueBreakouts.add(region.breakout)
+          }
+        })
+      }
+    })
+  }
+
+  // Converting Set back to an array before returning
+  const breakouts = Array.from(uniqueBreakouts)
+
   const [state, dispatchToReducer] = useReducer(
     historyHandler(
       combineReducers(
@@ -146,21 +162,22 @@ export const Annotator = ({
       allowComments,
       loadingTemplateMatching: false,
       toggleList: [],
+      breakouts: breakouts,
       ...(annotationType === "image"
         ? {
-          selectedImage,
-          images,
-          selectedImageFrameTime:
-            images && images.length > 0 ? images[0].frameTime : undefined,
-        }
+            selectedImage,
+            images,
+            selectedImageFrameTime:
+              images && images.length > 0 ? images[0].frameTime : undefined,
+          }
         : {
-          videoSrc,
-          keyframes,
-        }),
+            videoSrc,
+            keyframes,
+          }),
     })
   )
 
-  const dispatch =  useEventCallback( (action: Action) => {
+  const dispatch = useEventCallback((action: Action) => {
     if (action.type === "HEADER_BUTTON_CLICKED") {
       //if (["Exit", "Done", "Save", "Complete"].includes(action.buttonName)) {
       if (["Exit", "Done", "Complete"].includes(action.buttonName)) {
@@ -168,12 +185,17 @@ export const Annotator = ({
       } else if (action.buttonName === "Save") {
         return onSave(without(state, "history"))
       } else if (action.buttonName === "Next" && onNextImage) {
+        dispatchToReducer({
+          type: "ON_NEXT_OR_PREV_BREAKOUT_RESET",
+        })
         return onNextImage(without(state, "history"))
       } else if (action.buttonName === "Prev" && onPrevImage) {
+        dispatchToReducer({
+          type: "ON_NEXT_OR_PREV_BREAKOUT_RESET",
+        })
         return onPrevImage(without(state, "history"))
       }
-    }
-    else {
+    } else {
       dispatchToReducer(action)
     }
   })

@@ -244,6 +244,41 @@ export default (state: MainLayoutState, action: Action) => {
       newState = setIn(newState, ["images", currentImageIndex], newImage)
       return newState
     }
+    case "ON_NEXT_OR_PREV_BREAKOUT_RESET": {
+      let newState = { ...state }
+      let newImage = getIn(newState, ["images", currentImageIndex])
+      let newBreakouts = getIn(newState, ["breakouts"])
+      let newRegions = getIn(newState, ["images", currentImageIndex, "regions"])
+      if (!newRegions) {
+        return state
+      }
+
+      newBreakouts = newBreakouts.map((breakout) => {
+        return {
+          ...breakout,
+          visible: false,
+        }
+      })
+
+      newRegions = newRegions.map((region) => {
+        return {
+          ...region,
+          visible: region.breakout
+            ? region.breakout.visible
+              ? false
+              : true
+            : true,
+          breakout: region.breakout
+            ? { ...region.breakout, visible: false }
+            : undefined,
+        }
+      })
+      newState = merge(newState, [{ breakouts: newBreakouts }])
+      newImage = setIn(newImage, ["regions"], newRegions)
+      newState = setIn(newState, ["images", currentImageIndex], newImage)
+      // return newState
+      return newState
+    }
     case "TOGGLE_BREAKOUT_VISIBILITY":
       let newState = { ...state }
       let counter = 0
@@ -252,18 +287,29 @@ export default (state: MainLayoutState, action: Action) => {
       if (!newRegions) {
         return state
       }
-
-      const isAlreadyBreakoutVisible = newRegions.some(
-        (region) =>
-          region.breakout &&
-          region.breakout.visible === true &&
-          region.breakout.id === action.breakoutId
+      let newBreakouts = getIn(newState, ["breakouts"])
+      const isAlreadyBreakoutVisible = newBreakouts.some(
+        (breakout) =>
+          breakout.visible === true && breakout.id === action.breakoutId
       )
-      console.log(isAlreadyBreakoutVisible)
+
+      newBreakouts = newBreakouts.map((breakout) => {
+        if (isAlreadyBreakoutVisible) {
+          return {
+            ...breakout,
+            visible: false,
+          }
+        } else if (breakout.id === action.breakoutId) {
+          return {
+            ...breakout,
+            visible: !breakout.visible,
+          }
+        } else {
+          return breakout
+        }
+      })
 
       newRegions = newRegions.map((region) => {
-        // if (region.breakout)
-        //   console.log(region, action.breakoutId, region.breakout.id, counter++)
         if (isAlreadyBreakoutVisible) {
           return {
             ...region,
@@ -276,7 +322,6 @@ export default (state: MainLayoutState, action: Action) => {
 
         if (region.breakout && region.breakout.id === action.breakoutId) {
           // Set region.visible to true if breakout.id and breakout.visible match the action's values
-          console.log("if true")
           const b = {
             ...region,
             visible: true,
@@ -292,42 +337,15 @@ export default (state: MainLayoutState, action: Action) => {
           const b = {
             ...region,
             visible: false,
-            breakout:  region.breakout
-            ? { ...region.breakout, visible: false }
-            : undefined,
+            breakout: region.breakout
+              ? { ...region.breakout, visible: false }
+              : undefined,
           }
           return b
         }
       })
 
-      // newRegions = newRegions.map((region) => {
-      //   if (
-      //     region.breakout &&
-      //     region.breakout.id === action.id &&
-      //     region.breakout.visible === true
-      //   ) {
-      //     // Set region.visible to true if breakout.id and breakout.visible match the action's values
-      //     return {
-      //       ...region,
-      //       visible: true,
-      //       breakout: {
-      //         ...region.breakout,
-      //         visible: true,
-      //       },
-      //     }
-      //   } else {
-      //     // Set breakout.visible and region.visible to false otherwise
-      //     return {
-      //       ...region,
-      //       visible: false,
-      //       breakout: {
-      //         ...region.breakout,
-      //         visible: false,
-      //       },
-      //     }
-      //   }
-      // })
-
+      newState = merge(newState, [{ breakouts: newBreakouts }])
       newImage = setIn(newImage, ["regions"], newRegions)
       newState = setIn(newState, ["images", currentImageIndex], newImage)
       return newState
@@ -338,6 +356,7 @@ export default (state: MainLayoutState, action: Action) => {
       if (!newRegions) {
         return state
       }
+      const breakoutId = getRandomId()
       newRegions = newRegions.map((region) => {
         if (region.id === action.region.id) {
           return {
@@ -345,7 +364,7 @@ export default (state: MainLayoutState, action: Action) => {
             breakout: {
               is_breakout: true,
               name: action.name,
-              id: getRandomId(),
+              id: breakoutId,
               visible: false,
             },
           }
@@ -353,36 +372,102 @@ export default (state: MainLayoutState, action: Action) => {
           return region
         }
       })
+      let newBreakouts = getIn(newState, ["breakouts"])
+      newBreakouts = newBreakouts.concat({
+        name: action.name,
+        is_breakout: true,
+        visible: false,
+        id: breakoutId,
+      })
+
       newImage = setIn(newImage, ["regions"], newRegions)
+      newState = merge(newState, [{ breakouts: newBreakouts }])
       newState = setIn(newState, ["images", currentImageIndex], newImage)
       return newState
     }
 
     case "DELETE_BREAKOUT_BY_BREAKOUT_ID": {
       let newState = { ...state }
+      let images = getIn(newState, ["images"])
+      let newBreakouts = getIn(newState, ["breakouts"])
       let newImage = getIn(newState, ["images", currentImageIndex])
       let newRegions = getIn(newState, ["images", currentImageIndex, "regions"])
       if (!newRegions) {
         return state
       }
       const deleteBreakoutId = action.breakoutId
-      newRegions = newRegions.map((region) => ({
-        ...region,
-        breakout:
-          region.breakout && region.breakout.id === deleteBreakoutId
-            ? {
+
+      newBreakouts = newBreakouts.filter(
+        (breakout) => breakout.id !== deleteBreakoutId
+      )
+      images = images.map((image, imgIDX) => {
+        let regions = getIn(newState, ["images", imgIDX, "regions"])
+
+        if (!regions) {
+          return image
+        }
+        regions = regions.map((region) => {
+          if (region.breakout && region.breakout.id === deleteBreakoutId) {
+            // Toggle visibility if the region's category matches the action's category
+            return {
+              ...region,
+              visible: true,
+              breakout: {
                 name: "",
                 is_breakout: false,
                 id: "",
                 visible: false,
-              }
-            : region.breakout,
-      }))
+              },
+            }
+          } else {
+            return region
+          }
+        })
+        newImage = setIn(image, ["regions"], regions)
+        newState = setIn(newState, ["images", imgIDX], newImage)
+      })
+      newState = merge(newState, [{ breakouts: newBreakouts }])
+      return newState
 
-      newImage = setIn(newImage, ["regions"], newRegions)
-      newState = setIn(newState, ["images", currentImageIndex], newImage)
-      return setIn(newState, [...pathToActiveImage, "regions"], newRegions)
       // return newState
+      // }
+
+      // return setIn(image, ["regions"], regions)
+
+      // newRegions = newRegions.map((region) => {
+      //   if (region.breakout && region.breakout.id === deleteBreakoutId) {
+      //     // Toggle visibility if the region's category matches the action's category
+      //     return {
+      //       ...region,
+      //       breakout: {
+      //         name: "",
+      //         is_breakout: false,
+      //         id: "",
+
+      //         visible: false,
+      //       },
+      //     }
+      //   } else {
+      //     return region
+      //   }
+      // })
+
+      // newRegions = newRegions.map((region) => ({
+      //   ...region,
+      //   breakout:
+      //     region.breakout && region.breakout.id === deleteBreakoutId
+      //       ? {
+      //           name: "",
+      //           is_breakout: false,
+      //           id: "",
+      //           visible: false,
+      //         }
+      //       : region.breakout,
+      // }))
+
+      // newImage = setIn(newImage, ["regions"], newRegions)
+      // newState = setIn(newState, ["images", currentImageIndex], newImage)
+      // return setIn(newState, [...pathToActiveImage, "regions"], newRegions)
     }
 
     case "ADD_EXISTING_BREAKOUT": {
@@ -1280,7 +1365,6 @@ export default (state: MainLayoutState, action: Action) => {
       newState = setIn(newState, ["loadingTemplateMatching"], false)
       return setIn(newState, [..._pathToActiveImage, "regions"], regions)
     }
-
     case "HEADER_BUTTON_CLICKED": {
       const buttonName = action.buttonName.toLowerCase()
       switch (buttonName) {

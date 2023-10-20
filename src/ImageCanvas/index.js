@@ -68,6 +68,7 @@ type Props = {
   modifyingAllowedArea?: boolean,
   allowComments?: Boolean,
   regionTemplateMatchingDisabled?: boolean,
+  breakouts: Array<Object>,
   onChangeRegion: (Region) => any,
   onBeginRegionEdit: (Region) => any,
   onCloseRegionEdit: (Region) => any,
@@ -150,6 +151,7 @@ export const ImageCanvas = ({
   modifyingAllowedArea = false,
   keypointDefinitions,
   allowComments,
+  breakouts,
   dispatch,
 }: Props) => {
   const classes = useStyles()
@@ -326,14 +328,14 @@ export const ImageCanvas = ({
   const breakoutList = useMemo(() => {
     const breakoutRegions = [
       ...new Set(
-        regions
-          .filter((obj) => obj.breakout && obj.breakout.is_breakout === true)
-          .map((obj) => JSON.stringify(obj.breakout))
+        breakouts
+          .filter((obj) => obj.is_breakout === true)
+          .map((obj) => JSON.stringify(obj))
       ),
     ].map((str) => JSON.parse(str))
     if (breakoutRegions.length === 0) return null
     return breakoutRegions
-  }, [regions])
+  }, [breakouts])
 
   return (
     <div

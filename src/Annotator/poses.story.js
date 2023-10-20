@@ -14,7 +14,6 @@ const dancingManVideo =
 const middlewares = [
   (store) => (next) => (action) => {
     actionAddon(action.type)(action)
-    console.log(action)
     return next(action)
   },
 ]
