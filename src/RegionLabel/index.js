@@ -182,86 +182,6 @@ export const RegionLabel = ({
     }
   }
 
-  // const onOCRClick = () => {
-  //   setIsTemplateMatchingLoading(true)
-  //   // TODO: get user_id, doc_id, page_id, threshold from the parent component above annotator
-  //   let page_properties = {
-  //     user_id: 80808080,
-  //     doc_id: 80808080,
-  //     page_id: 80808080,
-  //     threshold: 0.7,
-  //     page_index: pageIndex,
-  //   }
-  //   const region_coords = {
-  //     x: region.x,
-  //     y: region.y,
-  //     w: region.w,
-  //     h: region.h,
-  //   }
-  //   const region_color = region.color
-  //   const endpoint =
-  //     "https://6lufq8mux5.execute-api.us-east-2.amazonaws.com/default/xkey-lambda-ocr-arbiter"
-  //   const json_data = {
-  //     image_url: imageSrc,
-  //     page_index: page_properties["page_index"],
-  //     template_symbol_name: region.cls,
-  //     threshold: page_properties["threshold"],
-  //     user_id: page_properties["user_id"],
-  //     doc_id: page_properties["doc_id"],
-  //     page_id: page_properties["page_id"],
-  //     template_coord: region_coords,
-  //   }
-  //   onMatchTemplate(region)
-  //   fetch(endpoint, {
-  //     method: "POST", // or 'PUT'
-  //     headers: {
-  //       "Content-Type": "application/json",
-  //     },
-  //     body: JSON.stringify({
-  //       queryStringParameters: json_data,
-  //     }),
-  //   })
-  //     .then((response) => {
-  //       if (response.ok) {
-  //         return response.json()
-  //       }
-  //       throw new Error("Backend Error")
-  //     })
-  //     .then((data) => {
-  //       // result can be empty
-  //       return data.body ? data.body.result : []
-  //     })
-  //     .then((res) => {
-  //       let results = res.map((r) => {
-  //         const new_region = {}
-  //         new_region["isOCR"] = true
-  //         new_region["x"] = r["x"]
-  //         new_region["y"] = r["y"]
-  //         new_region["w"] = r["w"]
-  //         new_region["h"] = r["h"]
-  //         new_region["editingLabels"] = false
-  //         new_region["highlighted"] = false
-  //         new_region["id"] = getRandomId()
-  //         new_region["cls"] = region.cls
-  //         new_region["type"] = "box"
-  //         new_region["color"] = region.color
-  //         new_region["visible"] = true
-  //         new_region["category"] =
-  //           region?.category ||
-  //           DeviceList.find((x) => x.symbol_name === region.cls)?.category ||
-  //           "NOT CLASSIFIED"
-  //         return new_region
-  //       })
-  //       finishMatchTemplate(results, page_properties)
-  //       setIsTemplateMatchingLoading(false)
-  //     })
-  //     .catch((error) => {
-  //       console.error("Error:", error)
-  //       finishMatchTemplate([], page_properties)
-  //       setIsTemplateMatchingLoading(false)
-  //     })
-  // }
-
   return (
     <>
       <Paper
@@ -342,8 +262,6 @@ export const RegionLabel = ({
                       style={{
                         backgroundColor: "#1DA1F2",
                         color: " white",
-                        paddingLeft: "12px",
-                        paddingRight: "12px",
                         borderRadius: "4px",
                         marginRight: "8px",
                         height: "22px",
