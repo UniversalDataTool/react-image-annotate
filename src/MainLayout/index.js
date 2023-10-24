@@ -294,6 +294,7 @@ export const MainLayout = ({
                     }}
                   >
                     <img src={favicon} title={activeImage.name} />
+                    <div>{title}</div>
                     <div
                       class="center"
                       style={{
@@ -303,7 +304,6 @@ export const MainLayout = ({
                         alignItems: "center",
                       }}
                     >
-                      <div>{title}</div>
                       <Input
                         style={{
                           marginLeft: "16px",
