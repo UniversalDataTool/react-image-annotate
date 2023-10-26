@@ -14,13 +14,6 @@ export const SmallToolButton = ({
   selected,
   togglable,
   alwaysShowing = false,
-}: {
-  id: string,
-  name: string,
-  icon: any,
-  alwaysShowing?: boolean,
-  selected?: boolean,
-  togglable?: boolean,
 }) => {
   const { enabledTools, selectedTool, onClickTool } = useContext(SelectedTool)
   if (!enabledTools.includes(id) && !alwaysShowing) return null

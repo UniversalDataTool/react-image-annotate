@@ -1,5 +1,3 @@
-// @flow
-
 import React, { useState } from "react"
 import Button from "@mui/material/Button"
 import { makeStyles } from "@mui/styles"
@@ -76,7 +74,7 @@ export const examples = {
   Custom: () => loadSavedInput(),
 }
 
-const Editor = ({ onOpenAnnotator, lastOutput }: any) => {
+const Editor = ({ onOpenAnnotator, lastOutput }) => {
   const c = useStyles()
   const [currentError, changeCurrentError] = useState()
   const [selectedExample, changeSelectedExample] = useState(

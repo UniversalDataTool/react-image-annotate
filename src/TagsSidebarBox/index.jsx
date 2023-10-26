@@ -1,5 +1,3 @@
-// @flow
-
 import React, { memo, useMemo } from "react"
 import SidebarBoxContainer from "../SidebarBoxContainer"
 import StyleIcon from "@mui/icons-material/Style"
@@ -7,14 +5,6 @@ import { grey } from "@mui/material/colors"
 import Select from "react-select"
 import useEventCallback from "use-event-callback"
 import { asMutable } from "seamless-immutable"
-
-type Props = {
-  tags: Array<string>,
-  currentImage: { cls?: string, tags?: Array<string> },
-  imageClsList?: Array<string>,
-  imageTagList?: Array<string>,
-  onChangeImage: (Array<string>) => any,
-}
 
 const emptyArr = []
 const noop = () => null
@@ -24,7 +14,7 @@ export const TagsSidebarBox = ({
   imageClsList = emptyArr,
   imageTagList = emptyArr,
   onChangeImage = noop,
-}: Props) => {
+}) => {
   const { tags = [], cls = null } = currentImage || {}
   const onChangeClassification = useEventCallback((o) =>
     onChangeImage({ cls: o.value })

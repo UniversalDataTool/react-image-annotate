@@ -1,5 +1,3 @@
-// @flow weak
-
 import React, {useEffect, useLayoutEffect, useMemo, useRef, useState} from "react"
 import {Matrix} from "transformation-matrix-js"
 import Crosshairs from "../Crosshairs"
@@ -24,55 +22,6 @@ import useWasdMode from "./use-wasd-mode"
 
 const theme = createTheme()
 const useStyles = makeStyles((theme) => styles)
-
-type Props = {
-  regions: Array<Region>,
-  imageSrc?: string,
-  videoSrc?: string,
-  videoTime?: number,
-  keypointDefinitions?: KeypointDefinitions,
-  onMouseMove?: ({x: number, y: number}) => any,
-  onMouseDown?: ({x: number, y: number}) => any,
-  onMouseUp?: ({x: number, y: number}) => any,
-  dragWithPrimary?: boolean,
-  zoomWithPrimary?: boolean,
-  createWithPrimary?: boolean,
-  showTags?: boolean,
-  realSize?: {width: number, height: number, unitName: string},
-  showCrosshairs?: boolean,
-  showMask?: boolean,
-  showHighlightBox?: boolean,
-  showPointDistances?: boolean,
-  pointDistancePrecision?: number,
-  regionClsList?: Array<string>,
-  regionTagList?: Array<string>,
-  allowedArea?: {x: number, y: number, w: number, h: number},
-  RegionEditLabel?: Node,
-  videoPlaying?: boolean,
-  zoomOnAllowedArea?: boolean,
-  fullImageSegmentationMode?: boolean,
-  autoSegmentationOptions?: Object,
-  modifyingAllowedArea?: boolean,
-  allowComments?: Boolean,
-  onChangeRegion: (Region) => any,
-  onBeginRegionEdit: (Region) => any,
-  onCloseRegionEdit: (Region) => any,
-  onDeleteRegion: (Region) => any,
-  onBeginBoxTransform: (Box, [number, number]) => any,
-  onBeginMovePolygonPoint: (Polygon, index: number) => any,
-  onBeginMoveKeypoint: (Keypoints, index: number) => any,
-  onAddPolygonPoint: (Polygon, point: [number, number], index: number) => any,
-  onSelectRegion: (Region) => any,
-  onBeginMovePoint: (Point) => any,
-  onImageOrVideoLoaded: ({
-    naturalWidth: number,
-    naturalHeight: number,
-    duration?: number,
-  }) => any,
-  onChangeVideoTime: (number) => any,
-  onRegionClassAdded: () => {},
-  onChangeVideoPlaying?: Function,
-}
 
 const getDefaultMat = (allowedArea = null, {iw, ih} = {}) => {
   let mat = Matrix.from(1, 0, 0, 1, -10, -10)
@@ -127,7 +76,7 @@ export const ImageCanvas = ({
   modifyingAllowedArea = false,
   keypointDefinitions,
   allowComments
-}: Props) => {
+}) => {
   const classes = useStyles()
 
   const canvasEl = useRef(null)

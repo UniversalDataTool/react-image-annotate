@@ -2,7 +2,7 @@
 import React, {useState} from "react"
 import Editor, {examples} from "./Editor"
 import Annotator from "../Annotator"
-import ErrorBoundaryDialog from "./ErrorBoundaryDialog.js"
+import ErrorBoundaryDialog from "./ErrorBoundaryDialog.jsx"
 
 export default () => {
   const [annotatorOpen, changeAnnotatorOpen] = useState(false)

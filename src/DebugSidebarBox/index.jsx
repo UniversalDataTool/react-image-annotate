@@ -1,9 +1,7 @@
-// @flow
-
 import React from "react"
 import SidebarBoxContainer from "../SidebarBoxContainer"
 
-export const DebugSidebarBox = ({ state, lastAction }: any) => {
+export const DebugSidebarBox = ({ state, lastAction }) => {
   const image = (state.images || [])[state.selectedImage]
   const region = image
     ? (image.regions || []).filter((r) => r.highlighted)

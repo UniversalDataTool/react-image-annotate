@@ -7,11 +7,13 @@ import * as colors from "@mui/material/colors"
 import Markdown from "react-markdown"
 import GitHubButton from "react-github-btn"
 import "./github-markdown.css"
-import raw from "raw.macro"
+import content from './content.md'
 import {Prism as SyntaxHighlighter} from "react-syntax-highlighter"
 import {docco} from "react-syntax-highlighter/dist/cjs/languages/hljs/javascript"
+import MarkdownIt from "markdown-it"
 
-const contentMd = raw("./content.md")
+
+const contentMd = MarkdownIt().render(content)
 const theme = createTheme()
 const RootContainer = styled("div")(({theme}) => ({
   display: "flex",

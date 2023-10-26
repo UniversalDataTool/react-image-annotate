@@ -101,3 +101,7 @@ To test this package in your project follow this quickstart:
 5. Run `npm link "@starwit/react-image-annotate"` to install the package. It might be necessary to remove a previously installed `@starwit/react-image-annotate` package. Please use the same node version when using npm link and executing the application. 
 
 Warning: if you change something in the package you have to rerun `npm run build` so that the changes will apply.
+
+### Notes
+Currently, there is an issue with vite-plugin-node-polyfills (0.15.0 at the time of writing), 
+which shows many warnings while building (related to "use client"). That is expected and will probably be fixed in the future. See here: https://github.com/davidmyersdev/vite-plugin-node-polyfills/issues/49 
