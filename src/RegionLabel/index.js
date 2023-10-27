@@ -309,7 +309,8 @@ export const RegionLabel = ({
 
               {/* <div style={{ flexGrow: 1, padding: 12 }} /> */}
               <div style={{ justifyContent: "" }}>
-                {region.cls &&
+                {region.type !== "scale" &&
+                  region.cls &&
                   (region.breakout === undefined ||
                     (region.breakout &&
                       region.breakout.is_breakout === false)) && (
