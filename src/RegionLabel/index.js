@@ -24,7 +24,7 @@ import TrashIcon from "@material-ui/icons/Delete"
 import ImageSearchIcon from "@material-ui/icons/ImageSearch"
 import LinearScaleIcon from "@material-ui/icons/LinearScale"
 import classnames from "classnames"
-import React, { memo, useRef, useState } from "react"
+import React, { memo, useEffect, useMemo, useRef, useState } from "react"
 import Select from "react-select"
 import CreatableSelect from "react-select/creatable"
 import { asMutable } from "seamless-immutable"
@@ -84,6 +84,7 @@ const encodeAzureURL = (url) => {
 
 export const RegionLabel = ({
   region,
+  regions,
   editing,
   allowedClasses,
   allowedTags,
@@ -113,48 +114,127 @@ export const RegionLabel = ({
   }
   const [isTemplateMatchingLoading, setIsTemplateMatchingLoading] =
     React.useState(regionTemplateMatchingDisabled)
-  const conditionalRegionTextField = (regionType) => {
+
+  const [scales, setScales] = useState(
+    region.type === "line" ? regions.filter((r) => r.type === "scale") : []
+  )
+
+  const [averageTotalScale, setAverageTotalScale] = useState(0)
+
+  const [relativeLineLengthFt, setRelativeLineLengthFt] = useState(
+    region.length_ft ? region.lenght_ft : 0
+  )
+  const [scaleInputVal, setScaleInputVal] = useState(
+    region.type === "scale" ? region.cls : "1"
+  )
+
+  useEffect(() => {
+    if (region.type === "line") {
+      const imageScales = regions.filter((r) => r.type === "scale") || []
+      setScales(imageScales)
+      const scaleValues = []
+      imageScales.map((scale) => {
+        let scaleVal = parseFloat(scale["cls"])
+        if (scaleVal > 0) {
+          scaleValues.push(
+            Math.sqrt(
+              (scale["x1"] - scale["x2"]) ** 2 +
+                (scale["y1"] - scale["y2"]) ** 2
+            ) / scaleVal
+          )
+        }
+      })
+      setAverageTotalScale(
+        scaleValues.reduce((a, b) => a + b, 0) / scaleValues.length
+      )
+    }
+  }, [regions, region])
+
+  useEffect(() => {
+    if (region.type === "line") {
+      if (region.length_ft !== undefined) {
+        setRelativeLineLengthFt(region.length_ft)
+      } else {
+        if (scales.length !== 0) {
+          const relativeLineLength = Math.sqrt(
+            (region.x1 - region.x2) ** 2 + (region.y1 - region.y2) ** 2
+          )
+          setRelativeLineLengthFt(relativeLineLength / averageTotalScale)
+        }
+      }
+    }
+  }, [scales, region])
+
+  const conditionalRegionTextField = (region, regionType) => {
     if (regionType === "scale") {
       // do scale
       return (
-        <TextField
-          inputProps={{ style: { textAlign: "right" } }}
-          InputProps={{
-            className: classes.textfieldClass,
-            endAdornment: <InputAdornment position="end"> ft</InputAdornment>,
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "column",
           }}
-          width="50%"
-          type="number"
-          ref={commentInputRef}
-          onClick={onCommentInputClick}
-          value={region.cls || ""}
-          onChange={(event) =>
-            onChange({ ...(region: any), cls: event.target.value })
-          }
-        />
+        >
+          <TextField
+            inputProps={{ style: { textAlign: "right" } }}
+            InputProps={{
+              className: classes.textfieldClass,
+              endAdornment: <InputAdornment position="end"> ft</InputAdornment>,
+            }}
+            // width="50%"
+            fullWidth
+            type="number"
+            ref={commentInputRef}
+            onClick={onCommentInputClick}
+            value={scaleInputVal}
+            onChange={(event) => setScaleInputVal(event.target.value)}
+          />
+          <Button
+            style={{
+              marginTop: "10px",
+              marginLeft: "8px",
+              backgroundColor: "#1DA1F2",
+              color: "white",
+            }}
+            disabled={scaleInputVal < 0}
+            onClick={() => {
+              onChange({ ...region, cls: scaleInputVal.toString() })
+            }}
+            size="small"
+          >
+            Save Scale
+          </Button>
+        </div>
       )
     } else if (regionType === "line") {
       // do line
       return (
-        <CreatableSelect
-          placeholder="Conduit"
-          onChange={(o, actionMeta) => {
-            if (actionMeta.action === "create-option") {
-              onRegionClassAdded(o.value)
-            }
-            return onChange({
-              ...(region: any),
-              cls: o.value,
-            })
-          }}
-          value={region.cls ? { label: region.cls, value: region.cls } : null}
-          options={asMutable(
-            allowedClasses
-              .filter((x) => !all_symbols.includes(x))
-              .concat(conduit_symbols)
-              .map((c) => ({ value: c, label: c }))
+        <>
+          <CreatableSelect
+            placeholder="Conduit"
+            onChange={(o, actionMeta) => {
+              if (actionMeta.action === "create-option") {
+                onRegionClassAdded(o.value)
+              }
+              return onChange({
+                ...(region: any),
+                cls: o.value,
+              })
+            }}
+            value={region.cls ? { label: region.cls, value: region.cls } : null}
+            options={asMutable(
+              allowedClasses
+                .filter((x) => !all_symbols.includes(x))
+                .concat(conduit_symbols)
+                .map((c) => ({ value: c, label: c }))
+            )}
+          />
+          {relativeLineLengthFt === 0 ? (
+            <div>No Scales Found</div>
+          ) : (
+            <div>{relativeLineLengthFt.toFixed(2)} ft</div>
           )}
-        />
+        </>
       )
     } else {
       // do device
@@ -253,7 +333,8 @@ export const RegionLabel = ({
 
               {/* <div style={{ flexGrow: 1, padding: 12 }} /> */}
               <div style={{ justifyContent: "" }}>
-                {region.cls &&
+                {region.type !== "scale" &&
+                  region.cls &&
                   (region.breakout === undefined ||
                     (region.breakout &&
                       region.breakout.is_breakout === false)) && (
@@ -424,7 +505,7 @@ export const RegionLabel = ({
             </div>
             {(allowedClasses || []).length > 0 && (
               <div style={{ marginTop: 6 }}>
-                {conditionalRegionTextField(region.type)}
+                {conditionalRegionTextField(region, region.type)}
               </div>
             )}
             {(allowedTags || []).length > 0 && (
@@ -464,60 +545,63 @@ export const RegionLabel = ({
                 }
               />
             )}
-            {region.cls && region.breakout && region.breakout.is_breakout && (
-              <div
-                style={{
-                  marginTop: 4,
-                  display: "flex",
-                  flexDirection: "column",
-                  padding: 16,
-                }}
-              >
-                <Grid
-                  container
-                  direction="row"
-                  justifyContent="space-between"
-                  alignItems="flex-start"
-                >
-                  <Typography
-                    variant="subtitle2"
-                    gutterBottom
-                    style={{
-                      fontWeight: "bold",
-                    }}
-                  >
-                    Breakout Group:
-                  </Typography>
-                  <Button
-                    onClick={() => {
-                      dispatch({
-                        type: "REMOVE_BREAKOUT_BY_REGION_ID",
-                        region: region,
-                      })
-                    }}
-                    tabIndex={-1}
-                    style={{ fontSize: "8px" }}
-                    size="small"
-                    variant="outlined"
-                    color="secondary"
-                    startIcon={<TrashIcon />}
-                  >
-                    Remove
-                  </Button>
-                </Grid>
-                <Typography
-                  variant="body2"
-                  gutterBottom
+            {region.type !== "scale" &&
+              region.cls &&
+              region.breakout &&
+              region.breakout.is_breakout && (
+                <div
                   style={{
-                    paddingLeft: 16,
-                    fontSize: "12px",
-                    wordBreak: "break-word",
+                    marginTop: 4,
+                    display: "flex",
+                    flexDirection: "column",
+                    padding: 16,
                   }}
                 >
-                  {region.breakout.name}
-                </Typography>
-              </div>
-            )}
+                  <Grid
+                    container
+                    direction="row"
+                    justifyContent="space-between"
+                    alignItems="flex-start"
+                  >
+                    <Typography
+                      variant="subtitle2"
+                      gutterBottom
+                      style={{
+                        fontWeight: "bold",
+                      }}
+                    >
+                      Breakout Group:
+                    </Typography>
+                    <Button
+                      onClick={() => {
+                        dispatch({
+                          type: "REMOVE_BREAKOUT_BY_REGION_ID",
+                          region: region,
+                        })
+                      }}
+                      tabIndex={-1}
+                      style={{ fontSize: "8px" }}
+                      size="small"
+                      variant="outlined"
+                      color="secondary"
+                      startIcon={<TrashIcon />}
+                    >
+                      Remove
+                    </Button>
+                  </Grid>
+                  <Typography
+                    variant="body2"
+                    gutterBottom
+                    style={{
+                      paddingLeft: 16,
+                      fontSize: "12px",
+                      wordBreak: "break-word",
+                    }}
+                  >
+                    {region.breakout.name}
+                  </Typography>
+                </div>
+              )}
             {onClose && (
               <div style={{ marginTop: 4, display: "flex" }}>
                 <div style={{ flexGrow: 1 }} />

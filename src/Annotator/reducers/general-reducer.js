@@ -263,6 +263,7 @@ export default (state: MainLayoutState, action: Action) => {
       newRegions = newRegions.map((region) => {
         return {
           ...region,
+          highlighted: false,
           visible: region.breakout
             ? region.breakout.visible
               ? false
@@ -428,46 +429,6 @@ export default (state: MainLayoutState, action: Action) => {
       })
       newState = merge(newState, [{ breakouts: newBreakouts }])
       return newState
-
-      // return newState
-      // }
-
-      // return setIn(image, ["regions"], regions)
-
-      // newRegions = newRegions.map((region) => {
-      //   if (region.breakout && region.breakout.id === deleteBreakoutId) {
-      //     // Toggle visibility if the region's category matches the action's category
-      //     return {
-      //       ...region,
-      //       breakout: {
-      //         name: "",
-      //         is_breakout: false,
-      //         id: "",
-
-      //         visible: false,
-      //       },
-      //     }
-      //   } else {
-      //     return region
-      //   }
-      // })
-
-      // newRegions = newRegions.map((region) => ({
-      //   ...region,
-      //   breakout:
-      //     region.breakout && region.breakout.id === deleteBreakoutId
-      //       ? {
-      //           name: "",
-      //           is_breakout: false,
-      //           id: "",
-      //           visible: false,
-      //         }
-      //       : region.breakout,
-      // }))
-
-      // newImage = setIn(newImage, ["regions"], newRegions)
-      // newState = setIn(newState, ["images", currentImageIndex], newImage)
-      // return setIn(newState, [...pathToActiveImage, "regions"], newRegions)
     }
 
     case "ADD_EXISTING_BREAKOUT": {
@@ -907,10 +868,37 @@ export default (state: MainLayoutState, action: Action) => {
           case "DRAW_LINE": {
             const [line, regionIndex] = getRegion(state.mode.regionId)
             if (!line) break
+            const scales = activeImage.regions.filter(
+              (region) => region.type === "scale"
+            )
+            let relativeLineLengthFt = 0
+            if (scales.length !== 0) {
+              const scaleValues = []
+              scales.map((scale) => {
+                let scaleVal = parseFloat(scale["cls"])
+                if (scaleVal > 0) {
+                  scaleValues.push(
+                    Math.sqrt(
+                      (scale["x1"] - scale["x2"]) ** 2 +
+                        (scale["y1"] - scale["y2"]) ** 2
+                    ) / scaleVal
+                  )
+                }
+              })
+              const average_total_scale =
+                scaleValues.reduce((a, b) => a + b, 0) / scaleValues.length
+              const relativeLineLength = Math.sqrt(
+                (line.x1 - x) ** 2 + (line.y1 - y) ** 2
+              )
+              relativeLineLengthFt = relativeLineLength / average_total_scale
+            }
+
+
             setIn(state, [...pathToActiveImage, "regions", regionIndex], {
               ...line,
               x2: x,
               y2: y,
+              length_ft: relativeLineLengthFt,
             })
             return setIn(state, ["mode"], null)
           }
