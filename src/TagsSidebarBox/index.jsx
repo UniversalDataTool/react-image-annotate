@@ -5,6 +5,7 @@ import { grey } from "@mui/material/colors"
 import Select from "react-select"
 import useEventCallback from "use-event-callback"
 import { asMutable } from "seamless-immutable"
+import PropTypes from "prop-types"
 
 const emptyArr = []
 const noop = () => null
@@ -81,3 +82,14 @@ export default memo(
     prevProps.imageClsList === nextProps.imageClsList &&
     prevProps.imageTagList === nextProps.imageTagList
 )
+
+TagsSidebarBox.propTypes = {
+  tags: PropTypes.arrayOf(PropTypes.string).isRequired,
+  currentImage: PropTypes.shape({ 
+    cls: PropTypes.string, 
+    tags: PropTypes.arrayOf(PropTypes.string),
+  }).isRequired,
+  imageClsList: PropTypes.arrayOf(PropTypes.string),
+  imageTagList: PropTypes.arrayOf(PropTypes.string),
+  onChangeImage: PropTypes.func.isRequired,
+}

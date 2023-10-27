@@ -19,6 +19,7 @@ import VideoOrImageCanvasBackground from "../VideoOrImageCanvasBackground"
 import useEventCallback from "use-event-callback"
 import RegionShapes from "../RegionShapes"
 import useWasdMode from "./use-wasd-mode"
+import PropTypes from 'prop-types'
 
 const theme = createTheme()
 const useStyles = makeStyles((theme) => styles)
@@ -410,6 +411,51 @@ export const ImageCanvas = ({
       </div>
     </ThemeProvider>
   )
+}
+
+ImageCanvas.propTypes = {
+  regions: PropTypes.arrayOf(PropTypes.elementType).isRequired,
+  imageSrc: PropTypes.string,
+  videoSrc: PropTypes.string,
+  videoTime: PropTypes.number,
+  keypointDefinitions: PropTypes.elementType,
+  onMouseMove: PropTypes.func,
+  onMouseDown: PropTypes.func,
+  onMouseUp: PropTypes.func,
+  dragWithPrimary: PropTypes.bool,
+  zoomWithPrimary: PropTypes.bool,
+  createWithPrimary: PropTypes.bool,
+  showTags: PropTypes.bool,
+  realSize: PropTypes.shape({width: PropTypes.number, height: PropTypes.number, unitName: PropTypes.string}),
+  showCrosshairs: PropTypes.bool,
+  showMask: PropTypes.bool,
+  showHighlightBox: PropTypes.bool,
+  showPointDistances: PropTypes.bool,
+  pointDistancePrecision: PropTypes.number,
+  regionClsList: PropTypes.arrayOf(PropTypes.string),
+  regionTagList: PropTypes.arrayOf(PropTypes.string),
+  allowedArea: PropTypes.shape({x: PropTypes.number, y: PropTypes.number, w: PropTypes.number, h: PropTypes.number}),
+  RegionEditLabel: PropTypes.element,
+  videoPlaying: PropTypes.bool,
+  zoomOnAllowedArea: PropTypes.bool,
+  fullImageSegmentationMode: PropTypes.bool,
+  autoSegmentationOptions: PropTypes.object,
+  modifyingAllowedArea: PropTypes.bool,
+  allowComments: PropTypes.bool,
+  onChangeRegion: PropTypes.func.isRequired,
+  onBeginRegionEdit: PropTypes.func.isRequired,
+  onCloseRegionEdit: PropTypes.func.isRequired,
+  onDeleteRegion: PropTypes.func.isRequired,
+  onBeginBoxTransform: PropTypes.func.isRequired,
+  onBeginMovePolygonPoint: PropTypes.func.isRequired,
+  onBeginMoveKeypoint: PropTypes.func.isRequired,
+  onAddPolygonPoint: PropTypes.func.isRequired,
+  onSelectRegion: PropTypes.func.isRequired,
+  onBeginMovePoint: PropTypes.func.isRequired,
+  onImageOrVideoLoaded: PropTypes.func.isRequired,
+  onChangeVideoTime: PropTypes.func.isRequired,
+  onRegionClassAdded: PropTypes.func.isRequired,
+  onChangeVideoPlaying: PropTypes.func,
 }
 
 export default ImageCanvas

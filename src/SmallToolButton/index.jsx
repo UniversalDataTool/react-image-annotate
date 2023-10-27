@@ -4,6 +4,7 @@ import React, { createContext, memo, useContext } from "react"
 import IconButton from "@mui/material/IconButton"
 import Tooltip from "@mui/material/Tooltip"
 import { blue } from "@mui/material/colors"
+import PropTypes from "prop-types"
 
 export const SelectedTool = createContext()
 
@@ -48,3 +49,12 @@ export default memo(
     prevProps.name === nextProps.name &&
     prevProps.id === nextProps.id
 )
+
+SmallToolButton.propTypes = {
+  id: PropTypes.string.isRequired,
+  name: PropTypes.string.isRequired,
+  icon: PropTypes.any.isRequired,
+  alwaysShowing: PropTypes.bool,
+  selected: PropTypes.bool,
+  togglable: PropTypes.bool,
+}
