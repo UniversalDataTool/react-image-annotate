@@ -124,6 +124,9 @@ export const RegionLabel = ({
   const [relativeLineLengthFt, setRelativeLineLengthFt] = useState(
     region.length_ft ? region.lenght_ft : 0
   )
+  const [scaleInputVal, setScaleInputVal] = useState(
+    region.type === "scale" ? region.cls : "1"
+  )
 
   useEffect(() => {
     if (region.type === "line") {
@@ -166,21 +169,42 @@ export const RegionLabel = ({
     if (regionType === "scale") {
       // do scale
       return (
-        <TextField
-          inputProps={{ style: { textAlign: "right" } }}
-          InputProps={{
-            className: classes.textfieldClass,
-            endAdornment: <InputAdornment position="end"> ft</InputAdornment>,
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "column",
           }}
-          width="50%"
-          type="number"
-          ref={commentInputRef}
-          onClick={onCommentInputClick}
-          value={region.cls || ""}
-          onChange={(event) =>
-            onChange({ ...(region: any), cls: event.target.value })
-          }
-        />
+        >
+          <TextField
+            inputProps={{ style: { textAlign: "right" } }}
+            InputProps={{
+              className: classes.textfieldClass,
+              endAdornment: <InputAdornment position="end"> ft</InputAdornment>,
+            }}
+            // width="50%"
+            fullWidth
+            type="number"
+            ref={commentInputRef}
+            onClick={onCommentInputClick}
+            value={scaleInputVal}
+            onChange={(event) => setScaleInputVal(event.target.value)}
+          />
+          <Button
+            style={{
+              marginTop: "10px",
+              marginLeft: "8px",
+              backgroundColor: "#1DA1F2",
+              color: "white",
+            }}
+            disabled={scaleInputVal < 0}
+            onClick={() => {
+              onChange({ ...region, cls: scaleInputVal.toString() })
+            }}
+            size="small"
+          >
+            Save Scale
+          </Button>
+        </div>
       )
     } else if (regionType === "line") {
       // do line
@@ -521,60 +545,63 @@ export const RegionLabel = ({
                 }
               />
             )}
-            {region.cls && region.breakout && region.breakout.is_breakout && (
-              <div
-                style={{
-                  marginTop: 4,
-                  display: "flex",
-                  flexDirection: "column",
-                  padding: 16,
-                }}
-              >
-                <Grid
-                  container
-                  direction="row"
-                  justifyContent="space-between"
-                  alignItems="flex-start"
-                >
-                  <Typography
-                    variant="subtitle2"
-                    gutterBottom
-                    style={{
-                      fontWeight: "bold",
-                    }}
-                  >
-                    Breakout Group:
-                  </Typography>
-                  <Button
-                    onClick={() => {
-                      dispatch({
-                        type: "REMOVE_BREAKOUT_BY_REGION_ID",
-                        region: region,
-                      })
-                    }}
-                    tabIndex={-1}
-                    style={{ fontSize: "8px" }}
-                    size="small"
-                    variant="outlined"
-                    color="secondary"
-                    startIcon={<TrashIcon />}
-                  >
-                    Remove
-                  </Button>
-                </Grid>
-                <Typography
-                  variant="body2"
-                  gutterBottom
+            {region.type !== "scale" &&
+              region.cls &&
+              region.breakout &&
+              region.breakout.is_breakout && (
+                <div
                   style={{
-                    paddingLeft: 16,
-                    fontSize: "12px",
-                    wordBreak: "break-word",
+                    marginTop: 4,
+                    display: "flex",
+                    flexDirection: "column",
+                    padding: 16,
                   }}
                 >
-                  {region.breakout.name}
-                </Typography>
-              </div>
-            )}
+                  <Grid
+                    container
+                    direction="row"
+                    justifyContent="space-between"
+                    alignItems="flex-start"
+                  >
+                    <Typography
+                      variant="subtitle2"
+                      gutterBottom
+                      style={{
+                        fontWeight: "bold",
+                      }}
+                    >
+                      Breakout Group:
+                    </Typography>
+                    <Button
+                      onClick={() => {
+                        dispatch({
+                          type: "REMOVE_BREAKOUT_BY_REGION_ID",
+                          region: region,
+                        })
+                      }}
+                      tabIndex={-1}
+                      style={{ fontSize: "8px" }}
+                      size="small"
+                      variant="outlined"
+                      color="secondary"
+                      startIcon={<TrashIcon />}
+                    >
+                      Remove
+                    </Button>
+                  </Grid>
+                  <Typography
+                    variant="body2"
+                    gutterBottom
+                    style={{
+                      paddingLeft: 16,
+                      fontSize: "12px",
+                      wordBreak: "break-word",
+                    }}
+                  >
+                    {region.breakout.name}
+                  </Typography>
+                </div>
+              )}
             {onClose && (
               <div style={{ marginTop: 4, display: "flex" }}>
                 <div style={{ flexGrow: 1 }} />
