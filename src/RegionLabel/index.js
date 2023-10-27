@@ -24,7 +24,7 @@ import TrashIcon from "@material-ui/icons/Delete"
 import ImageSearchIcon from "@material-ui/icons/ImageSearch"
 import LinearScaleIcon from "@material-ui/icons/LinearScale"
 import classnames from "classnames"
-import React, { memo, useRef, useState } from "react"
+import React, { memo, useEffect, useMemo, useRef, useState } from "react"
 import Select from "react-select"
 import CreatableSelect from "react-select/creatable"
 import { asMutable } from "seamless-immutable"
@@ -84,6 +84,7 @@ const encodeAzureURL = (url) => {
 
 export const RegionLabel = ({
   region,
+  regions,
   editing,
   allowedClasses,
   allowedTags,
@@ -113,7 +114,55 @@ export const RegionLabel = ({
   }
   const [isTemplateMatchingLoading, setIsTemplateMatchingLoading] =
     React.useState(regionTemplateMatchingDisabled)
-  const conditionalRegionTextField = (regionType) => {
+
+  const [scales, setScales] = useState(
+    region.type === "line" ? regions.filter((r) => r.type === "scale") : []
+  )
+
+  const [averageTotalScale, setAverageTotalScale] = useState(0)
+
+  const [relativeLineLengthFt, setRelativeLineLengthFt] = useState(
+    region.lengthFt ? region.lengthFt : 0
+  )
+
+  useEffect(() => {
+    if (region.type === "line") {
+      const imageScales = regions.filter((r) => r.type === "scale") || []
+      setScales(imageScales)
+      const scaleValues = []
+      imageScales.map((scale) => {
+        let scaleVal = parseFloat(scale["cls"])
+        if (scaleVal > 0) {
+          scaleValues.push(
+            Math.sqrt(
+              (scale["x1"] - scale["x2"]) ** 2 +
+                (scale["y1"] - scale["y2"]) ** 2
+            ) / scaleVal
+          )
+        }
+      })
+      setAverageTotalScale(
+        scaleValues.reduce((a, b) => a + b, 0) / scaleValues.length
+      )
+    }
+  }, [regions, region])
+
+  useEffect(() => {
+    if (region.type === "line") {
+      if (region.lengthFt !== undefined) {
+        setRelativeLineLengthFt(region.lengthFt)
+      } else {
+        if (scales.length !== 0) {
+          const relativeLineLength = Math.sqrt(
+            (region.x1 - region.x2) ** 2 + (region.y1 - region.y2) ** 2
+          )
+          setRelativeLineLengthFt(relativeLineLength / averageTotalScale)
+        }
+      }
+    }
+  }, [scales, region])
+
+  const conditionalRegionTextField = (region, regionType) => {
     if (regionType === "scale") {
       // do scale
       return (
@@ -136,25 +185,32 @@ export const RegionLabel = ({
     } else if (regionType === "line") {
       // do line
       return (
-        <CreatableSelect
-          placeholder="Conduit"
-          onChange={(o, actionMeta) => {
-            if (actionMeta.action === "create-option") {
-              onRegionClassAdded(o.value)
-            }
-            return onChange({
-              ...(region: any),
-              cls: o.value,
-            })
-          }}
-          value={region.cls ? { label: region.cls, value: region.cls } : null}
-          options={asMutable(
-            allowedClasses
-              .filter((x) => !all_symbols.includes(x))
-              .concat(conduit_symbols)
-              .map((c) => ({ value: c, label: c }))
+        <>
+          <CreatableSelect
+            placeholder="Conduit"
+            onChange={(o, actionMeta) => {
+              if (actionMeta.action === "create-option") {
+                onRegionClassAdded(o.value)
+              }
+              return onChange({
+                ...(region: any),
+                cls: o.value,
+              })
+            }}
+            value={region.cls ? { label: region.cls, value: region.cls } : null}
+            options={asMutable(
+              allowedClasses
+                .filter((x) => !all_symbols.includes(x))
+                .concat(conduit_symbols)
+                .map((c) => ({ value: c, label: c }))
+            )}
+          />
+          {relativeLineLengthFt === 0 ? (
+            <div>No Scales Found</div>
+          ) : (
+            <div>{relativeLineLengthFt.toFixed(2)} ft</div>
           )}
-        />
+        </>
       )
     } else {
       // do device
@@ -424,7 +480,7 @@ export const RegionLabel = ({
             </div>
             {(allowedClasses || []).length > 0 && (
               <div style={{ marginTop: 6 }}>
-                {conditionalRegionTextField(region.type)}
+                {conditionalRegionTextField(region, region.type)}
               </div>
             )}
             {(allowedTags || []).length > 0 && (

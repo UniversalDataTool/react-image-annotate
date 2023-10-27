@@ -30,7 +30,7 @@ export const Crosshairs = ({
     }, 10)
     return () => clearInterval(interval)
   })
-
+  
   return (
     <Fragment>
       <div

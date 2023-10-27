@@ -436,6 +436,7 @@ export const ImageCanvas = ({
             finishMatchTemplate={finishMatchRegionTemplate}
             editing
             region={highlightedRegion}
+            regions={regions}
             imageSrc={imageSrc}
             pageIndex={pageIndex}
             regionTemplateMatchingDisabled={regionTemplateMatchingDisabled}

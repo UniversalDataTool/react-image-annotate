@@ -877,12 +877,11 @@ export default (state: MainLayoutState, action: Action) => {
               scales.map((scale) => {
                 let scaleVal = parseFloat(scale["cls"])
                 if (scaleVal > 0) {
-                  // avg_total_scale += parseFloat(scale["scale"])
                   scaleValues.push(
                     Math.sqrt(
                       (scale["x1"] - scale["x2"]) ** 2 +
                         (scale["y1"] - scale["y2"]) ** 2
-                    ) / parseFloat(scale["cls"])
+                    ) / scaleVal
                   )
                 }
               })
@@ -893,7 +892,7 @@ export default (state: MainLayoutState, action: Action) => {
               )
               relativeLineLengthFt = relativeLineLength / average_total_scale
             }
-            console.log(relativeLineLengthFt)
+
 
             setIn(state, [...pathToActiveImage, "regions", regionIndex], {
               ...line,
