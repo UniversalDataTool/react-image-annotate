@@ -122,7 +122,7 @@ export const RegionLabel = ({
   const [averageTotalScale, setAverageTotalScale] = useState(0)
 
   const [relativeLineLengthFt, setRelativeLineLengthFt] = useState(
-    region.lengthFt ? region.lengthFt : 0
+    region.length_ft ? region.lengthFt : 0
   )
 
   useEffect(() => {
@@ -149,8 +149,8 @@ export const RegionLabel = ({
 
   useEffect(() => {
     if (region.type === "line") {
-      if (region.lengthFt !== undefined) {
-        setRelativeLineLengthFt(region.lengthFt)
+      if (region.length_ft !== undefined) {
+        setRelativeLineLengthFt(region.length_ft)
       } else {
         if (scales.length !== 0) {
           const relativeLineLength = Math.sqrt(
