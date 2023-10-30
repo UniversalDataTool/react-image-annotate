@@ -71,7 +71,6 @@ export const ClassSelectionMenu = ({
       }
     }
     window.addEventListener("keydown", onKeyDown)
-    console.log("-----selectedCls ="+ selectedCls);
     if(preselectCls!=null && selectedCls==null){
       onSelectCls(preselectCls);
     }
