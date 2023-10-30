@@ -54,6 +54,7 @@ const Number = styled("div")(({theme}) => ({
 
 export const ClassSelectionMenu = ({
   selectedCls,
+  preselectCls,
   regionClsList,
   onSelectCls,
 }) => {
@@ -70,6 +71,10 @@ export const ClassSelectionMenu = ({
       }
     }
     window.addEventListener("keydown", onKeyDown)
+    console.log("-----selectedCls ="+ selectedCls);
+    if(preselectCls && selectedCls==null){
+      onSelectCls(regionClsList[0]);
+    }
     return () => window.removeEventListener("keydown", onKeyDown)
   }, [onSelectCls, regionClsList, selectedCls])
 

@@ -344,6 +344,7 @@ export const MainLayout = ({
                   <ClassSelectionMenu
                     key="ClassSelectionMenu"
                     selectedCls={state.selectedCls}
+                    preselectCls={state.preselectCls}
                     regionClsList={state.regionClsList}
                     onSelectCls={action("SELECT_CLASSIFICATION", "cls")}
                   />
