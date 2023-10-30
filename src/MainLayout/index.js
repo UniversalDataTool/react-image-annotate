@@ -80,7 +80,7 @@ export const MainLayout = ({
           ({
             type,
             ...params.reduce(
-              (acc, p, i) => ((acc[p] = args[i]), acc), {})
+              (acc, p, i) => (((acc[p] = args[i]), acc)), {})
           })
         )
         : dispatch({type, ...args[0]})

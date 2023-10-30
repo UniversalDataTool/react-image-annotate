@@ -72,11 +72,11 @@ export const ClassSelectionMenu = ({
     }
     window.addEventListener("keydown", onKeyDown)
     console.log("-----selectedCls ="+ selectedCls);
-    if(preselectCls && selectedCls==null){
-      onSelectCls(regionClsList[0]);
+    if(preselectCls!=null && selectedCls==null){
+      onSelectCls(preselectCls);
     }
     return () => window.removeEventListener("keydown", onKeyDown)
-  }, [onSelectCls, regionClsList, selectedCls])
+  }, [onSelectCls, regionClsList, selectedCls, preselectCls])
 
   return (
     <ThemeProvider theme={theme}>
