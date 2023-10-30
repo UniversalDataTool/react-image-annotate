@@ -45,7 +45,7 @@
   },
   "scripts": {
     "dev": "vite",
-    "build": "vite build && cp ./package.json ./dist/package.json && cp ./README.md ./dist/README.md",
+    "build": "vite build && cp ./package.json ./dist/package.json && cp ./README.md ./dist/README.md"
   },
   "eslintConfig": {
     "extends": "react-app"
