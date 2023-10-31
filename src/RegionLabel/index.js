@@ -10,13 +10,14 @@ import {
   DialogTitle,
   Grid,
   InputAdornment,
+  TextField,
   Modal,
   Typography,
 } from "@material-ui/core"
 import Button from "@material-ui/core/Button"
 import IconButton from "@material-ui/core/IconButton"
 import Paper from "@material-ui/core/Paper"
-import TextField from "@material-ui/core/TextField"
+
 import { makeStyles } from "@material-ui/core/styles"
 import AddIcon from "@material-ui/icons/Add"
 import CheckIcon from "@material-ui/icons/Check"
@@ -127,6 +128,8 @@ export const RegionLabel = ({
   const [scaleInputVal, setScaleInputVal] = useState(
     region.type === "scale" ? region.cls : "1"
   )
+  const min = 0
+  const max = 999
 
   useEffect(() => {
     if (region.type === "line") {
@@ -165,6 +168,16 @@ export const RegionLabel = ({
     }
   }, [scales, region])
 
+  const handler = (e) => {
+    if (Number(e.target.value) > max) {
+      setScaleInputVal(max)
+    } else if (Number(e.target.value) < min) {
+      setScaleInputVal(min)
+    } else {
+      setScaleInputVal(Number(e.target.value))
+    }
+  }
+
   const conditionalRegionTextField = (region, regionType) => {
     if (regionType === "scale") {
       // do scale
@@ -176,18 +189,23 @@ export const RegionLabel = ({
           }}
         >
           <TextField
-            inputProps={{ style: { textAlign: "right" } }}
+            id="outlined-number"
+            label="Max ft 999ft"
+            type="number"
+            fullWidth
             InputProps={{
+              inputProps: {
+                min,
+                max,
+                step: "1",
+                style: { textAlign: "right" },
+              },
               className: classes.textfieldClass,
               endAdornment: <InputAdornment position="end"> ft</InputAdornment>,
             }}
-            // width="50%"
-            fullWidth
-            type="number"
-            ref={commentInputRef}
-            onClick={onCommentInputClick}
+            variant="outlined"
+            onChange={handler}
             value={scaleInputVal}
-            onChange={(event) => setScaleInputVal(event.target.value)}
           />
           <Button
             style={{
