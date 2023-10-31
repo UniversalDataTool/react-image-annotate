@@ -2,13 +2,12 @@ import {
   Button,
   ButtonGroup,
   Paper,
-  Select,
   TextField,
   Typography,
 } from "@material-ui/core"
 import React from "react"
+import ReactSelect from "react-select"
 import { asMutable } from "seamless-immutable"
-import CreatableSelect from "react-select/creatable"
 
 const style = {
   position: "absolute",
@@ -72,7 +71,7 @@ export default function BreakoutSection({
           Select a Breakout to add this region to.
         </Typography>
         <div style={{ width: "268px" }}>
-          <CreatableSelect
+          <ReactSelect
             placeholder="Breakouts"
             onChange={(e) => {
               setSelectedBreakout(e)

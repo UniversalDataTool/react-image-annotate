@@ -33,6 +33,7 @@ export const RegionTags = ({
   onRegionClassAdded,
   allowComments,
   dispatch,
+  breakoutList,
 }) => {
   const RegionLabel =
     RegionEditLabel != null ? RegionEditLabel : DefaultRegionLabel
@@ -130,6 +131,7 @@ export const RegionTags = ({
               onRegionClassAdded={onRegionClassAdded}
               allowComments={allowComments}
               dispatch={dispatch}
+              breakoutList={breakoutList}
             />
           </div>
         </div>
