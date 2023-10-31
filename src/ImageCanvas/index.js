@@ -420,6 +420,7 @@ export const ImageCanvas = ({
             onRegionClassAdded={onRegionClassAdded}
             allowComments={allowComments}
             dispatch={dispatch}
+            breakoutList={breakoutList}
           />
         </PreventScrollToParents>
       )}
