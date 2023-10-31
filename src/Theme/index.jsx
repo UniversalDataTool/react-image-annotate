@@ -20,7 +20,7 @@ export const Theme = ({children}) => {
   return (
     <ThemeProvider theme={theme}>
       {/* <div className={classes.container}>{children}</div> */}
-      <div>{children}</div>
+      <div style={{height: "100%"}}>{children}</div>
     </ThemeProvider>
   )
 }

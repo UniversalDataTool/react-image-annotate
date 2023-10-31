@@ -322,7 +322,7 @@ export const ImageCanvas = ({
           </PreventScrollToParents>
         )}
         {!showTags && highlightedRegion && (
-          <div key="topLeftTag" sx={styles.fixedRegionLabel}>
+          <div key="topLeftTag" style={styles.fixedRegionLabel}>
             <RegionLabel
               disableClose
               allowedClasses={regionClsList}
@@ -377,8 +377,7 @@ export const ImageCanvas = ({
               />
             )}
             <canvas
-              style={{opacity: 0.25}}
-              sx={styles.canvas}
+              style={{opacity: 0.25, ...styles.canvas}}
               ref={canvasEl}
             />
             <RegionShapes
@@ -402,7 +401,7 @@ export const ImageCanvas = ({
             />
           </>
         </PreventScrollToParents>
-        <div sx={styles.zoomIndicator}>
+        <div style={styles.zoomIndicator}>
           {((1 / mat.a) * 100).toFixed(0)}%
         </div>
       </div>

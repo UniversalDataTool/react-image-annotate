@@ -10,7 +10,7 @@ export default () => {
   const [lastOutput, changeLastOutput] = useState()
 
   return (
-    <div>
+    <div style={{ height: "100%" }}>
       {annotatorOpen ? (
         <ErrorBoundaryDialog
           onClose={() => {

@@ -1,10 +1,40 @@
 // @flow
 
 import React from "react"
-import {createTheme, ThemeProvider} from "@mui/material/styles"
-import styles from "./styles"
+import {createTheme, styled, ThemeProvider} from "@mui/material/styles"
+import classnames from "classnames"
 
 const theme = createTheme()
+
+const StyledSvg = styled('svg')(({ theme }) => ({
+  "@keyframes borderDance": {
+    from: {strokeDashoffset: 0},
+    to: {strokeDashoffset: 100},
+  },
+  zIndex: 2,
+  transition: "opacity 500ms",
+  "&.highlighted": {
+    zIndex: 3,
+  },
+  "&:not(.highlighted)": {
+    opacity: 0,
+  },
+  "&:not(.highlighted):hover": {
+    opacity: 0.6,
+  },
+  "& path": {
+    vectorEffect: "non-scaling-stroke",
+    strokeWidth: 2,
+    stroke: "#FFF",
+    fill: "none",
+    strokeDasharray: 5,
+    animationName: "borderDance",
+    animationDuration: "4s",
+    animationTimingFunction: "linear",
+    animationIterationCount: "infinite",
+    animationPlayState: "running",
+  }
+}))
 
 export const HighlightBox = ({
   mouseEvents,
@@ -43,10 +73,9 @@ export const HighlightBox = ({
 
   return (
     <ThemeProvider theme={theme}>
-      <svg
+      <StyledSvg
         key={r.id}
-        className={r.highlighted ? "highlighted" : ""}
-        sx={styles.highlightBox}
+        className={classnames({highlighted: r.highlighted})}
         {...mouseEvents}
         {...(!zoomWithPrimary && !dragWithPrimary
           ? {
@@ -91,7 +120,7 @@ export const HighlightBox = ({
         }}
       >
         <path d={pathD} />
-      </svg>
+      </StyledSvg>
     </ThemeProvider>
   )
 }
