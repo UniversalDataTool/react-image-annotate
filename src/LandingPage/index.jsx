@@ -8,12 +8,9 @@ import Markdown from "react-markdown"
 import GitHubButton from "react-github-btn"
 import "./github-markdown.css"
 import content from './content.md'
-import {Prism as SyntaxHighlighter} from "react-syntax-highlighter"
-import {docco} from "react-syntax-highlighter/dist/cjs/languages/hljs/javascript"
-import MarkdownIt from "markdown-it"
+import remarkGfm from 'remark-gfm'
 
 
-const contentMd = MarkdownIt().render(content)
 const theme = createTheme()
 const RootContainer = styled("div")(({theme}) => ({
   display: "flex",
@@ -74,25 +71,10 @@ const Section = styled("div")(({theme}) => ({
   flexDirection: "column",
 }))
 
-const CodeBlock = ({language, value}) => {
-  return (
-    <SyntaxHighlighter language={language} style={docco}>
-      {value}
-    </SyntaxHighlighter>
-  )
-}
-
 function flatten(text, child) {
   return typeof child === "string"
     ? text + child
     : React.Children.toArray(child.props.children).reduce(flatten, text)
-}
-
-function HeadingRenderer(props) {
-  let children = React.Children.toArray(props.children)
-  let text = children.reduce(flatten, "")
-  let slug = text.toLowerCase().replace(/\W/g, "-")
-  return React.createElement("h" + props.level, {id: slug}, props.children)
 }
 
 const LandingPage = () => {
@@ -129,14 +111,7 @@ const LandingPage = () => {
         </Hero>
         <ContentContainer className="markdown-body">
           <Section className="markdown-body">
-            <Markdown
-              escapeHtml={false}
-              source={contentMd}
-              renderers={{
-                code: CodeBlock,
-                heading: HeadingRenderer,
-              }}
-            />
+            <Markdown remarkPlugins={[remarkGfm]}>{content}</Markdown>
           </Section>
         </ContentContainer>
       </RootContainer>

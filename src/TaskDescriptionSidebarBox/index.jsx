@@ -32,7 +32,7 @@ export const TaskDescriptionSidebarBox = ({ description }) => {
         expandedByDefault={description && description !== "" ? false : true}
       >
         <MarkdownContainer>
-          <Markdown source={description} />
+          <Markdown>{description}</Markdown>
         </MarkdownContainer>
       </SidebarBoxContainer>
     </ThemeProvider>
