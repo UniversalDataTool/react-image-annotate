@@ -2,7 +2,7 @@
 
 import React, {memo} from "react"
 import {createTheme, ThemeProvider} from "@mui/material/styles"
-import SidebarBox from "react-material-workspace-layout/SidebarBox"
+import SidebarBox from "../workspace/SidebarBox"
 
 const theme = createTheme()
 export const SidebarBoxContainer = ({
