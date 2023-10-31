@@ -128,8 +128,8 @@ export const RegionLabel = ({
   const [scaleInputVal, setScaleInputVal] = useState(
     region.type === "scale" ? region.cls : "1"
   )
-  const min = 0
-  const max = 999
+  const min = 0.01
+  const max = 999.99
 
   useEffect(() => {
     if (region.type === "line") {
@@ -190,7 +190,6 @@ export const RegionLabel = ({
         >
           <TextField
             id="outlined-number"
-            label="Max ft 999ft"
             type="number"
             fullWidth
             InputProps={{
