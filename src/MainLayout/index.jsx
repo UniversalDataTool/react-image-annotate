@@ -2,7 +2,6 @@
 
 import {FullScreen, useFullScreenHandle} from "react-full-screen"
 import React, {useCallback, useRef} from "react"
-import {makeStyles} from "@mui/styles"
 import {createTheme, styled, ThemeProvider} from "@mui/material/styles"
 
 import ClassSelectionMenu from "../ClassSelectionMenu"
@@ -16,7 +15,6 @@ import SettingsDialog from "../SettingsDialog"
 import TagsSidebarBox from "../TagsSidebarBox"
 import TaskDescription from "../TaskDescriptionSidebarBox"
 import Workspace from "react-material-workspace-layout/Workspace"
-import classnames from "classnames"
 import getActiveImage from "../Annotator/reducers/get-active-image"
 import getHotkeyHelpText from "../utils/get-hotkey-help-text"
 import iconDictionary from "./icon-dictionary"
@@ -33,7 +31,6 @@ import {Save} from "@mui/icons-material"
 
 const emptyArr = []
 const theme = createTheme()
-const useStyles = makeStyles((theme) => styles)
 
 const HotkeyDiv = withHotKeys(({hotKeys, children, divRef, ...props}) => (
   <div {...{...hotKeys, ...props}} ref={divRef}>
@@ -64,7 +61,6 @@ export const MainLayout = ({
   hideFullScreen = false,
   hideSave = false,
 }) => {
-  const classes = useStyles()
   const settings = useSettings()
   const fullScreenHandle = useFullScreenHandle()
 
@@ -220,10 +216,8 @@ export const MainLayout = ({
             onMouseOver={refocusOnMouseEvent}
             allowChanges
             handlers={hotkeyHandlers}
-            className={classnames(
-              classes.container,
-              state.fullScreen && "Fullscreen"
-            )}
+            className={state.fullScreen ? "Fullscreen" : ""}
+            style={styles.container}
           >
             <Workspace
               allowFullscreen
@@ -240,7 +234,7 @@ export const MainLayout = ({
                     keyframes={state.keyframes}
                   />
                 ) : activeImage ? (
-                  <div key="activeImage" className={classes.headerTitle}>{activeImage.name}</div>
+                  <div key="activeImage" style={styles.headerTitle}>{activeImage.name}</div>
                 ) : null,
               ].filter(Boolean)}
               headerItems={[

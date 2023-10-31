@@ -1,10 +1,9 @@
 import React from "react"
 import TextField from "@mui/material/TextField"
-import { makeStyles } from "@mui/styles"
 import { createTheme, ThemeProvider } from "@mui/material/styles"
 
 const theme = createTheme()
-const useStyles = makeStyles((theme) => ({
+const styles = {
   shortcutKeyFieldWrapper: {
     paddingTop: 8,
     display: "inline-flex",
@@ -18,18 +17,16 @@ const useStyles = makeStyles((theme) => ({
     boxSizing: "border-box",
     textAlign: "center",
   },
-}))
+}
 
 const ShortcutField = ({ actionId, actionName, keyName, onChangeShortcut }) => {
-  const classes = useStyles()
-
   return (
     <ThemeProvider theme={theme}>
-      <div className={classes.shortcutKeyFieldWrapper}>
+      <div className={styles.shortcutKeyFieldWrapper}>
         <TextField
           variant="outlined"
           label={actionName}
-          className={classes.shortcutTextfield}
+          sx={styles.shortcutTextfield}
           value={keyName}
           onKeyPress={(e) => {
             onChangeShortcut(actionId, e.key)

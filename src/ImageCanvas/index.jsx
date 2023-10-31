@@ -1,7 +1,6 @@
 import React, {useEffect, useLayoutEffect, useMemo, useRef, useState} from "react"
 import {Matrix} from "transformation-matrix-js"
 import Crosshairs from "../Crosshairs"
-import {makeStyles} from "@mui/styles"
 import {createTheme, ThemeProvider} from "@mui/material/styles"
 import styles from "./styles"
 import PreventScrollToParents from "../PreventScrollToParents"
@@ -22,7 +21,6 @@ import useWasdMode from "./use-wasd-mode"
 import PropTypes from 'prop-types'
 
 const theme = createTheme()
-const useStyles = makeStyles((theme) => styles)
 
 const getDefaultMat = (allowedArea = null, {iw, ih} = {}) => {
   let mat = Matrix.from(1, 0, 0, 1, -10, -10)
@@ -78,7 +76,6 @@ export const ImageCanvas = ({
   keypointDefinitions,
   allowComments
 }) => {
-  const classes = useStyles()
 
   const canvasEl = useRef(null)
   const layoutParams = useRef({})
@@ -325,7 +322,7 @@ export const ImageCanvas = ({
           </PreventScrollToParents>
         )}
         {!showTags && highlightedRegion && (
-          <div key="topLeftTag" className={classes.fixedRegionLabel}>
+          <div key="topLeftTag" sx={styles.fixedRegionLabel}>
             <RegionLabel
               disableClose
               allowedClasses={regionClsList}
@@ -381,7 +378,7 @@ export const ImageCanvas = ({
             )}
             <canvas
               style={{opacity: 0.25}}
-              className={classes.canvas}
+              sx={styles.canvas}
               ref={canvasEl}
             />
             <RegionShapes
@@ -405,7 +402,7 @@ export const ImageCanvas = ({
             />
           </>
         </PreventScrollToParents>
-        <div className={classes.zoomIndicator}>
+        <div sx={styles.zoomIndicator}>
           {((1 / mat.a) * 100).toFixed(0)}%
         </div>
       </div>

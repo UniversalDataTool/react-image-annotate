@@ -1,7 +1,6 @@
 // @flow
 
 import React, {memo} from "react"
-import {makeStyles} from "@mui/styles"
 import {createTheme, ThemeProvider} from "@mui/material/styles"
 import SidebarBoxContainer from "../SidebarBoxContainer"
 import HistoryIcon from "@mui/icons-material/History"
@@ -16,7 +15,7 @@ import {grey} from "@mui/material/colors"
 import isEqual from "lodash/isEqual"
 
 const theme = createTheme()
-const useStyles = makeStyles((theme) => ({
+const styles = {
   emptyText: {
     fontSize: 14,
     fontWeight: "bold",
@@ -24,7 +23,7 @@ const useStyles = makeStyles((theme) => ({
     textAlign: "center",
     padding: 20,
   },
-}))
+}
 
 const listItemTextStyle = {paddingLeft: 16}
 
@@ -32,8 +31,6 @@ export const HistorySidebarBox = ({
   history,
   onRestoreHistory,
 }) => {
-  const classes = useStyles()
-
   return (
     <ThemeProvider theme={theme}>
       <SidebarBoxContainer
@@ -43,7 +40,7 @@ export const HistorySidebarBox = ({
       >
         <List>
           {history.length === 0 && (
-            <div className={classes.emptyText}>No History Yet</div>
+            <div sx={styles.emptyText}>No History Yet</div>
           )}
           {history.map(({name, time}, i) => (
             <ListItem button dense key={i}>

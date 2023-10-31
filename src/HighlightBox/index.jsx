@@ -1,42 +1,10 @@
 // @flow
 
 import React from "react"
-import classnames from "classnames"
-import {makeStyles} from "@mui/styles"
 import {createTheme, ThemeProvider} from "@mui/material/styles"
+import styles from "./styles"
 
 const theme = createTheme()
-const useStyles = makeStyles((theme) => ({
-  "@keyframes borderDance": {
-    from: {strokeDashoffset: 0},
-    to: {strokeDashoffset: 100},
-  },
-  highlightBox: {
-    zIndex: 2,
-    transition: "opacity 500ms",
-    "&.highlighted": {
-      zIndex: 3,
-    },
-    "&:not(.highlighted)": {
-      opacity: 0,
-    },
-    "&:not(.highlighted):hover": {
-      opacity: 0.6,
-    },
-    "& path": {
-      vectorEffect: "non-scaling-stroke",
-      strokeWidth: 2,
-      stroke: "#FFF",
-      fill: "none",
-      strokeDasharray: 5,
-      animationName: "$borderDance",
-      animationDuration: "4s",
-      animationTimingFunction: "linear",
-      animationIterationCount: "infinite",
-      animationPlayState: "running",
-    },
-  },
-}))
 
 export const HighlightBox = ({
   mouseEvents,
@@ -48,7 +16,6 @@ export const HighlightBox = ({
   region: r,
   pbox,
 }) => {
-  const classes = useStyles()
   if (!pbox.w || pbox.w === Infinity) return null
   if (!pbox.h || pbox.h === Infinity) return null
   if (r.unfinished) return null
@@ -78,9 +45,8 @@ export const HighlightBox = ({
     <ThemeProvider theme={theme}>
       <svg
         key={r.id}
-        className={classnames(classes.highlightBox, {
-          highlighted: r.highlighted,
-        })}
+        className={r.highlighted ? "highlighted" : ""}
+        sx={styles.highlightBox}
         {...mouseEvents}
         {...(!zoomWithPrimary && !dragWithPrimary
           ? {

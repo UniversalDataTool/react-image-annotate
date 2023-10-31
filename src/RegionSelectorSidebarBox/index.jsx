@@ -2,7 +2,6 @@
 
 import React, {memo} from "react"
 import SidebarBoxContainer from "../SidebarBoxContainer"
-import {makeStyles} from "@mui/styles"
 import {createTheme, styled, ThemeProvider} from "@mui/material/styles"
 import {grey} from "@mui/material/colors"
 import RegionIcon from "@mui/icons-material/PictureInPicture"
@@ -19,7 +18,6 @@ import classnames from "classnames"
 import isEqual from "lodash/isEqual"
 
 const theme = createTheme()
-const useStyles = makeStyles((theme) => styles)
 
 const HeaderSep = styled("div")(({theme}) => ({
   borderTop: `1px solid ${grey[200]}`,
@@ -28,9 +26,8 @@ const HeaderSep = styled("div")(({theme}) => ({
 }))
 
 const Chip = ({color, text}) => {
-  const classes = useStyles()
   return (
-    <span className={classes.chip}>
+    <span sx={styles.chip}>
       <div className="color" style={{backgroundColor: color}} />
       <div className="text">{text}</div>
     </span>
@@ -49,11 +46,11 @@ const RowLayout = ({
   visible,
   onClick,
 }) => {
-  const classes = useStyles()
   return (
     <div
       onClick={onClick}
-      className={classnames(classes.row, {header, highlighted})}
+      className={classnames({header, highlighted})}
+      sx={styles.row}
     >
       <Grid container alignItems="center">
         <Grid item xs={2}>
@@ -167,7 +164,6 @@ export const RegionSelectorSidebarBox = ({
   onChangeRegion,
   onSelectRegion,
 }) => {
-  const classes = useStyles()
   return (
     <ThemeProvider theme={theme}>
       <SidebarBoxContainer
@@ -176,7 +172,7 @@ export const RegionSelectorSidebarBox = ({
         icon={<RegionIcon style={{color: grey[700]}} />}
         expandedByDefault
       >
-        <div className={classes.container}>
+        <div sx={styled.container}>
           <MemoRowHeader />
           <HeaderSep />
           {regions.map((r, i) => (

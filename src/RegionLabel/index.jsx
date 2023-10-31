@@ -2,10 +2,8 @@
 
 import React, {memo, useRef} from "react"
 import Paper from "@mui/material/Paper"
-import {makeStyles} from "@mui/styles"
 import {createTheme, ThemeProvider} from "@mui/material/styles"
 import styles from "./styles"
-import classnames from "classnames"
 import IconButton from "@mui/material/IconButton"
 import Button from "@mui/material/Button"
 import TrashIcon from "@mui/icons-material/Delete"
@@ -17,8 +15,6 @@ import CreatableSelect from "react-select/creatable"
 import {asMutable} from "seamless-immutable"
 
 const theme = createTheme()
-const useStyles = makeStyles((theme) => styles)
-
 
 export const RegionLabel = ({
   region,
@@ -32,7 +28,6 @@ export const RegionLabel = ({
   onRegionClassAdded,
   allowComments,
 }) => {
-  const classes = useStyles()
   const commentInputRef = useRef(null)
   const onCommentInputClick = (_) => {
     // The TextField wraps the <input> tag with two divs
@@ -45,9 +40,8 @@ export const RegionLabel = ({
     <ThemeProvider theme={theme}>
       <Paper
         onClick={() => (!editing ? onOpen(region) : null)}
-        className={classnames(classes.regionInfo, {
-          highlighted: region.highlighted,
-        })}
+        className={region.highlighted ? "highlighted" : ""}
+        sx={styles.regionInfo}
       >
         {!editing ? (
           <div>
@@ -145,7 +139,7 @@ export const RegionLabel = ({
             {allowComments && (
               <TextField
                 InputProps={{
-                  className: classes.commentBox,
+                  sx: styles.commentBox,
                 }}
                 fullWidth
                 multiline

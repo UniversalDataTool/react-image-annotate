@@ -1,6 +1,5 @@
 import React, { useState } from "react"
 import Button from "@mui/material/Button"
-import { makeStyles } from "@mui/styles"
 import { createTheme, ThemeProvider } from "@mui/material/styles"
 import Select from "react-select"
 import Code from "react-syntax-highlighter"
@@ -9,25 +8,9 @@ import DialogTitle from "@mui/material/DialogTitle"
 import DialogContent from "@mui/material/DialogContent"
 import DialogActions from "@mui/material/DialogActions"
 import MonacoEditor from "react-monaco-editor"
+import styles from "./styles"
 
 const theme = createTheme()
-const useStyles = makeStyles((theme) => ({
-  editBar: {
-    padding: 10,
-    borderBottom: "1px solid #ccc",
-    backgroundColor: "#f8f8f8",
-    display: "flex",
-    alignItems: "center",
-    "& .button": { margin: 5 },
-  },
-  select: { width: 240, fontSize: 14 },
-  contentArea: {
-    padding: 10,
-  },
-  specificationArea: {
-    padding: 10,
-  },
-}))
 
 const loadSavedInput = () => {
   try {
@@ -75,7 +58,6 @@ export const examples = {
 }
 
 const Editor = ({ onOpenAnnotator, lastOutput }) => {
-  const c = useStyles()
   const [currentError, changeCurrentError] = useState()
   const [selectedExample, changeSelectedExample] = useState(
     window.localStorage.getItem("customInput")
@@ -89,13 +71,18 @@ const Editor = ({ onOpenAnnotator, lastOutput }) => {
   return (
     <ThemeProvider theme={theme}>
       <div>
-        <div className={c.editBar}>
+        <div style={styles.editBar}>
           <h3>React Image Annotate</h3>
           <div style={{ flexGrow: 1 }} />
           <div>
             <div style={{ display: "inline-flex" }}>
               <Select
-                className={c.select}
+                styles={{
+                  container: (baseStyles) => ({
+                    ...baseStyles,
+                    ...styles.select
+                  })
+                }}
                 value={{ label: selectedExample, value: selectedExample }}
                 options={Object.keys(examples).map((s) => ({
                   label: s,
@@ -140,11 +127,10 @@ const Editor = ({ onOpenAnnotator, lastOutput }) => {
           </div>
         </div>
         <div
-          className={c.contentArea}
           style={
-            currentError
+            {...styles.contentArea, ...currentError
               ? { border: "2px solid #f00" }
-              : { border: "2px solid #fff" }
+              : { border: "2px solid #fff" }}
           }
         >
           <div>
@@ -168,7 +154,7 @@ const Editor = ({ onOpenAnnotator, lastOutput }) => {
             />
           </div>
         </div>
-        <div className={c.specificationArea}>
+        <div style={styles.specificationArea}>
           <h2>React Image Annotate Format</h2>
           <Code language="javascript">{`
 {

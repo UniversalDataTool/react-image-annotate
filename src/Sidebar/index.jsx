@@ -1,8 +1,7 @@
 // @flow
 
 import React from "react"
-import {styled} from "@mui/styles"
-import {createTheme, ThemeProvider} from "@mui/material/styles"
+import {createTheme, styled, ThemeProvider} from "@mui/material/styles"
 import TaskDescription from "../TaskDescriptionSidebarBox"
 import RegionSelector from "../RegionSelectorSidebarBox"
 import History from "../HistorySidebarBox"
