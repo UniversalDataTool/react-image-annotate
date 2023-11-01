@@ -1,6 +1,5 @@
 import React from "react"
-import { styled } from "@mui/styles"
-import { createTheme, ThemeProvider } from "@mui/material/styles"
+import { createTheme, styled, ThemeProvider } from "@mui/material/styles"
 import IconButton from "@mui/material/IconButton"
 import { iconMapping } from "../icon-mapping.js"
 import { useIconDictionary } from "../icon-dictionary.js"

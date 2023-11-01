@@ -2,10 +2,7 @@
 
 import React, {memo} from "react"
 import colorAlpha from "color-alpha"
-
-function clamp(num, min, max) {
-  return num <= min ? min : num >= max ? max : num
-}
+import clamp from "../utils/clamp"
 
 const RegionComponents = {
   point: memo(({region, iw, ih}) => (

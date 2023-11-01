@@ -12,7 +12,6 @@ import {useRafState} from "react-use"
 import PointDistances from "../PointDistances"
 import RegionTags from "../RegionTags"
 import RegionLabel from "../RegionLabel"
-import ImageMask from "../ImageMask"
 import RegionSelectAndTransformBoxes from "../RegionSelectAndTransformBoxes"
 import VideoOrImageCanvasBackground from "../VideoOrImageCanvasBackground"
 import useEventCallback from "use-event-callback"
@@ -54,9 +53,6 @@ export const ImageCanvas = ({
   allowedArea,
   RegionEditLabel = null,
   videoPlaying = false,
-  showMask = true,
-  fullImageSegmentationMode,
-  autoSegmentationOptions,
   onImageOrVideoLoaded,
   onChangeRegion,
   onBeginRegionEdit,
@@ -366,16 +362,6 @@ export const ImageCanvas = ({
           {...mouseEvents}
         >
           <>
-            {fullImageSegmentationMode && (
-              <ImageMask
-                hide={!showMask}
-                autoSegmentationOptions={autoSegmentationOptions}
-                imagePosition={imagePosition}
-                regionClsList={regionClsList}
-                imageSrc={imageSrc}
-                regions={regions}
-              />
-            )}
             <canvas
               style={{opacity: 0.25, ...styles.canvas}}
               ref={canvasEl}
@@ -385,7 +371,7 @@ export const ImageCanvas = ({
               keypointDefinitions={keypointDefinitions}
               imagePosition={imagePosition}
               regions={regions}
-              fullSegmentationMode={fullImageSegmentationMode}
+              fullSegmentationMode={false}
             />
             <VideoOrImageCanvasBackground
               videoPlaying={videoPlaying}
@@ -395,7 +381,7 @@ export const ImageCanvas = ({
               videoTime={videoTime}
               videoSrc={videoSrc}
               imageSrc={imageSrc}
-              useCrossOrigin={fullImageSegmentationMode}
+              useCrossOrigin={false}
               onChangeVideoTime={onChangeVideoTime}
               onChangeVideoPlaying={onChangeVideoPlaying}
             />
@@ -410,7 +396,7 @@ export const ImageCanvas = ({
 }
 
 ImageCanvas.propTypes = {
-  regions: PropTypes.arrayOf(PropTypes.elementType).isRequired,
+  regions: PropTypes.arrayOf(PropTypes.object).isRequired,
   imageSrc: PropTypes.string,
   videoSrc: PropTypes.string,
   videoTime: PropTypes.number,
@@ -434,8 +420,6 @@ ImageCanvas.propTypes = {
   RegionEditLabel: PropTypes.element,
   videoPlaying: PropTypes.bool,
   zoomOnAllowedArea: PropTypes.bool,
-  fullImageSegmentationMode: PropTypes.bool,
-  autoSegmentationOptions: PropTypes.object,
   modifyingAllowedArea: PropTypes.bool,
   allowComments: PropTypes.bool,
   onChangeRegion: PropTypes.func.isRequired,

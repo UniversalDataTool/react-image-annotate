@@ -115,8 +115,7 @@ export const MainLayout = ({
       }
       key={state.selectedImage}
       showMask={state.showMask}
-      fullImageSegmentationMode={state.fullImageSegmentationMode}
-      autoSegmentationOptions={state.autoSegmentationOptions}
+      fullImageSegmentationMode={false}
       showTags={state.showTags}
       allowedArea={state.allowedArea}
       modifyingAllowedArea={state.selectedTool === "modify-allowed-area"}
