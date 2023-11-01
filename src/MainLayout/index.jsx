@@ -22,7 +22,7 @@ import styles from "./styles"
 import {useDispatchHotkeyHandlers} from "../ShortcutsManager"
 import useEventCallback from "use-event-callback"
 import useImpliedVideoRegions from "./use-implied-video-regions"
-import useKey from "use-key-hook"
+import {useKey} from "react-use"
 import {useSettings} from "../SettingsProvider"
 import {withHotKeys} from "react-hotkeys"
 import {Save} from "@mui/icons-material"
@@ -90,9 +90,7 @@ export const MainLayout = ({
     nextImage = state.images[currentImageIndex + 1]
   }
 
-  useKey(() => dispatch({type: "CANCEL"}), {
-    detectKeys: [27],
-  })
+  useKey("Escape", () => dispatch({type: "CANCEL"}))
 
   const innerContainerRef = useRef()
   const hotkeyHandlers = useDispatchHotkeyHandlers({dispatch})

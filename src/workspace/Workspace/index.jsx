@@ -4,8 +4,8 @@ import Header from "../Header"
 import IconSidebar from "../IconSidebar"
 import RightSidebar from "../RightSidebar"
 import WorkContainer from "../WorkContainer"
-import useDimensions from "react-use-dimensions"
 import { IconDictionaryContext } from "../icon-dictionary.js"
+import { useMeasure } from "react-use"
 
 const emptyAr = []
 const emptyObj = {}
@@ -43,7 +43,7 @@ export default ({
   hideHeaderText = false,
   children,
 }) => {
-  const [sidebarAndContentRef, sidebarAndContent] = useDimensions()
+  const [sidebarAndContentRef, sidebarAndContent] = useMeasure()
   return (
     <ThemeProvider theme={theme}>
       <IconDictionaryContext.Provider value={iconDictionary}>

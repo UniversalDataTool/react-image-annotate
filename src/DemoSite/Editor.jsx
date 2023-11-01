@@ -7,7 +7,6 @@ import Dialog from "@mui/material/Dialog"
 import DialogTitle from "@mui/material/DialogTitle"
 import DialogContent from "@mui/material/DialogContent"
 import DialogActions from "@mui/material/DialogActions"
-import MonacoEditor from "react-monaco-editor"
 import styles from "./styles"
 
 const theme = createTheme()
@@ -134,24 +133,6 @@ const Editor = ({ onOpenAnnotator, lastOutput }) => {
           }
         >
           <div>
-            <MonacoEditor
-              value={currentJSONValue}
-              language="javascript"
-              onChange={(code) => {
-                try {
-                  window.localStorage.setItem(
-                    "customInput",
-                    JSON.stringify(JSON.parse(code))
-                  )
-                  changeCurrentError(null)
-                } catch (e) {
-                  changeCurrentError(e.toString())
-                }
-                changeCurrentJSONValue(code)
-              }}
-              width="100%"
-              height="550px"
-            />
           </div>
         </div>
         <div style={styles.specificationArea}>
@@ -200,12 +181,6 @@ const Editor = ({ onOpenAnnotator, lastOutput }) => {
         <Dialog fullScreen open={outputDialogOpen}>
           <DialogTitle>React Image Annotate Output</DialogTitle>
           <DialogContent style={{ minWidth: 400 }}>
-            <MonacoEditor
-              value={JSON.stringify(lastOutput, null, "  ")}
-              language="javascript"
-              width="100%"
-              height="550px"
-            />
           </DialogContent>
           <DialogActions>
             <Button onClick={() => changeOutputOpen(false)}>Close</Button>
