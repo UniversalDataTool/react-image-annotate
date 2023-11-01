@@ -445,6 +445,14 @@ export const MainLayout = ({
                     isVisible: event.target.checked,
                   })
                 }}
+                onRegionBreakout={(regionCategory) => {
+                  // console.log(event.target.id)
+                  console.log(regionCategory)
+                  dispatch({
+                    type: "ADD_NEW_BREAKOUT_BY_CATEGORY",
+                    category: regionCategory,
+                  })
+                }}
               />,
               <BreakoutSidebarBox
                 regions={activeImage ? activeImage.regions : emptyArr}
