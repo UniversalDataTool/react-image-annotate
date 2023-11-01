@@ -1,7 +1,7 @@
 // @flow
 
 import React, { memo } from "react"
-import { createTheme, ThemeProvider } from "@mui/material/styles"
+import { createTheme, styled, ThemeProvider } from "@mui/material/styles"
 import SidebarBoxContainer from "../SidebarBoxContainer"
 import CollectionsIcon from "@mui/icons-material/Collections"
 import { grey } from "@mui/material/colors"
@@ -11,9 +11,8 @@ import ListItemText from "@mui/material/ListItemText"
 import isEqual from "lodash/isEqual"
 
 const theme = createTheme()
-const styles = {
-  img: { width: 40, height: 40, borderRadius: 8 },
-}
+
+const StyledImg = styled('img')(() => ({width: 40, height: 40, borderRadius: 8}))
 
 export const ImageSelectorSidebarBox = ({ images, onSelect }) => {
   return (
@@ -27,7 +26,7 @@ export const ImageSelectorSidebarBox = ({ images, onSelect }) => {
           <List>
             {images.map((img, i) => (
               <ListItem button onClick={() => onSelect(img)} dense key={i}>
-                <img sx={styles.img} src={img.src} />
+                <StyledImg src={img.src} />
                 <ListItemText
                   primary={img.name}
                   secondary={`${(img.regions || []).length} Labels`}

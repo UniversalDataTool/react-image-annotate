@@ -1,7 +1,7 @@
 // @flow
 
 import React, {memo} from "react"
-import {createTheme, ThemeProvider} from "@mui/material/styles"
+import {createTheme, styled, ThemeProvider} from "@mui/material/styles"
 import SidebarBoxContainer from "../SidebarBoxContainer"
 import HistoryIcon from "@mui/icons-material/History"
 import List from "@mui/material/List"
@@ -15,15 +15,13 @@ import {grey} from "@mui/material/colors"
 import isEqual from "lodash/isEqual"
 
 const theme = createTheme()
-const styles = {
-  emptyText: {
-    fontSize: 14,
-    fontWeight: "bold",
-    color: grey[500],
-    textAlign: "center",
-    padding: 20,
-  },
-}
+const EmptyTextDiv = styled('div')(() => ({
+  fontSize: 14,
+  fontWeight: "bold",
+  color: grey[500],
+  textAlign: "center",
+  padding: 20,
+}))
 
 const listItemTextStyle = {paddingLeft: 16}
 
@@ -40,7 +38,7 @@ export const HistorySidebarBox = ({
       >
         <List>
           {history.length === 0 && (
-            <div sx={styles.emptyText}>No History Yet</div>
+            <EmptyTextDiv>No History Yet</EmptyTextDiv>
           )}
           {history.map(({name, time}, i) => (
             <ListItem button dense key={i}>

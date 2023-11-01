@@ -19,6 +19,9 @@ import isEqual from "lodash/isEqual"
 
 const theme = createTheme()
 
+const ChipSpan = styled('span')(() => styles.chip)
+const RowDiv = styled('div')(() => styles.row)
+const ContainerDiv = styled('div')(() => styles.container)
 const HeaderSep = styled("div")(({theme}) => ({
   borderTop: `1px solid ${grey[200]}`,
   marginTop: 2,
@@ -27,10 +30,10 @@ const HeaderSep = styled("div")(({theme}) => ({
 
 const Chip = ({color, text}) => {
   return (
-    <span sx={styles.chip}>
+    <ChipSpan>
       <div className="color" style={{backgroundColor: color}} />
       <div className="text">{text}</div>
-    </span>
+    </ChipSpan>
   )
 }
 
@@ -47,10 +50,9 @@ const RowLayout = ({
   onClick,
 }) => {
   return (
-    <div
+    <RowDiv
       onClick={onClick}
       className={classnames({header, highlighted})}
-      sx={styles.row}
     >
       <Grid container alignItems="center">
         <Grid item xs={2}>
@@ -72,7 +74,7 @@ const RowLayout = ({
           {visible}
         </Grid>
       </Grid>
-    </div>
+    </RowDiv>
   )
 }
 
@@ -172,7 +174,7 @@ export const RegionSelectorSidebarBox = ({
         icon={<RegionIcon style={{color: grey[700]}} />}
         expandedByDefault
       >
-        <div sx={styled.container}>
+        <ContainerDiv>
           <MemoRowHeader />
           <HeaderSep />
           {regions.map((r, i) => (
@@ -186,7 +188,7 @@ export const RegionSelectorSidebarBox = ({
               onChangeRegion={onChangeRegion}
             />
           ))}
-        </div>
+        </ContainerDiv>
       </SidebarBoxContainer>
     </ThemeProvider>
   )

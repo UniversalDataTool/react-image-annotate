@@ -2,7 +2,7 @@
 
 import React, { useState, memo, useCallback } from "react"
 import Paper from "@mui/material/Paper"
-import { createTheme, ThemeProvider } from "@mui/material/styles"
+import { createTheme, styled, ThemeProvider } from "@mui/material/styles"
 import ExpandIcon from "@mui/icons-material/ExpandMore"
 import IconButton from "@mui/material/IconButton"
 import Collapse from "@mui/material/Collapse"
@@ -14,6 +14,9 @@ import ResizePanel from "../ResizePanel"
 import styles from "./styles.js"
 
 const theme = createTheme()
+const ContainerDiv = styled('div')(() => styles.container)
+const HeaderDiv = styled('div')(() => styles.header)
+const ContentDiv = styled('div')(() => styles.expandedContent)
 
 const getExpandedFromLocalStorage = (title) => {
   try {
@@ -38,12 +41,11 @@ export const SidebarBox = ({
   expandedByDefault,
 }) => {
   const content = (
-    <div
-      style={styles.expandedContent}
+    <ContentDiv
       className={classnames(noScroll && "noScroll")}
     >
       {children}
-    </div>
+    </ContentDiv>
   )
 
   const [expanded, changeExpandedState] = useState(
@@ -64,8 +66,8 @@ export const SidebarBox = ({
   const TitleIcon = customIconMapping[title.toLowerCase()]
   return (
     <ThemeProvider theme={theme}>
-      <div style={styles.container}>
-        <div style={styles.header}>
+      <ContainerDiv>
+        <HeaderDiv>
           <div className="iconContainer">
             {icon || <TitleIcon sx={styles.titleIcon} />}
           </div>
@@ -77,7 +79,7 @@ export const SidebarBox = ({
               className={classnames("icon", expanded && "expanded")}
             />
           </IconButton>
-        </div>
+        </HeaderDiv>
         {noScroll ? (
           expanded ? (
             content
@@ -94,7 +96,7 @@ export const SidebarBox = ({
             </ResizePanel>
           </Collapse>
         )}
-      </div>
+      </ContainerDiv>
     </ThemeProvider>
   )
 }

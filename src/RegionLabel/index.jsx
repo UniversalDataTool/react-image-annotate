@@ -2,7 +2,7 @@
 
 import React, {memo, useRef} from "react"
 import Paper from "@mui/material/Paper"
-import {createTheme, ThemeProvider} from "@mui/material/styles"
+import {createTheme, styled, ThemeProvider} from "@mui/material/styles"
 import styles from "./styles"
 import IconButton from "@mui/material/IconButton"
 import Button from "@mui/material/Button"
@@ -15,6 +15,7 @@ import CreatableSelect from "react-select/creatable"
 import {asMutable} from "seamless-immutable"
 
 const theme = createTheme()
+const StyledPaper = styled(Paper)(({ theme }) => styles.regionInfo)
 
 export const RegionLabel = ({
   region,
@@ -38,10 +39,9 @@ export const RegionLabel = ({
 
   return (
     <ThemeProvider theme={theme}>
-      <Paper
+      <StyledPaper
         onClick={() => (!editing ? onOpen(region) : null)}
         className={region.highlighted ? "highlighted" : ""}
-        sx={styles.regionInfo}
       >
         {!editing ? (
           <div>
@@ -167,7 +167,7 @@ export const RegionLabel = ({
             )}
           </div>
         )}
-      </Paper>
+      </StyledPaper>
     </ThemeProvider>
   )
 }
