@@ -17,6 +17,7 @@ const theme = createTheme()
 const ContainerDiv = styled('div')(() => styles.container)
 const HeaderDiv = styled('div')(() => styles.header)
 const ContentDiv = styled('div')(() => styles.expandedContent)
+const TitleTypography = styled(Typography)(() => styles.title)
 
 const getExpandedFromLocalStorage = (title) => {
   try {
@@ -69,11 +70,11 @@ export const SidebarBox = ({
       <ContainerDiv>
         <HeaderDiv>
           <div className="iconContainer">
-            {icon || <TitleIcon sx={styles.titleIcon} />}
+            {icon || <TitleIcon/>}
           </div>
-          <Typography sx={styles.title}>
+          <TitleTypography>
             {title} <span>{subTitle}</span>
-          </Typography>
+          </TitleTypography>
           <IconButton onClick={toggleExpanded} sx={styles.expandButton}>
             <ExpandIcon
               className={classnames("icon", expanded && "expanded")}
