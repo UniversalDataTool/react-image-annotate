@@ -19,8 +19,6 @@ const HeaderSep = styled("div")({
   marginBottom: 2,
 })
 
-const DEVICE_LIST = [...new Set(DeviceList.map((item) => item.category))]
-
 const Chip = ({ color, text }) => {
   const classes = useStyles()
   return (

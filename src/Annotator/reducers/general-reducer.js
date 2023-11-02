@@ -282,53 +282,35 @@ export default (state: MainLayoutState, action: Action) => {
     }
     case "TOGGLE_BREAKOUT_VISIBILITY":
       let newState = { ...state }
-      let counter = 0
       let newImage = getIn(newState, ["images", currentImageIndex])
       let newRegions = getIn(newState, ["images", currentImageIndex, "regions"])
       if (!newRegions) {
         return state
       }
       let newBreakouts = getIn(newState, ["breakouts"])
-      const isAlreadyBreakoutVisible = newBreakouts.some(
-        (breakout) =>
-          breakout.visible === true && breakout.id === action.breakoutId
-      )
-
       newBreakouts = newBreakouts.map((breakout) => {
-        if (isAlreadyBreakoutVisible) {
-          return {
-            ...breakout,
-            visible: false,
-          }
-        } else if (breakout.id === action.breakoutId) {
+        if (breakout.id === action.breakoutId) {
           return {
             ...breakout,
             visible: !breakout.visible,
           }
         } else {
-          return breakout
+          return {
+            ...breakout,
+            visible: false,
+          }
         }
       })
 
       newRegions = newRegions.map((region) => {
-        if (isAlreadyBreakoutVisible) {
-          return {
-            ...region,
-            visible: true,
-            breakout: region.breakout
-              ? { ...region.breakout, visible: false }
-              : undefined,
-          }
-        }
-
         if (region.breakout && region.breakout.id === action.breakoutId) {
           // Set region.visible to true if breakout.id and breakout.visible match the action's values
           const b = {
             ...region,
-            visible: true,
+            visible: !region.breakout.visible,
             breakout: {
               ...region.breakout,
-              visible: true,
+              visible: !region.breakout.visible,
             },
           }
 
