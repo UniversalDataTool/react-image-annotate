@@ -394,64 +394,51 @@ export default (state: MainLayoutState, action: Action) => {
       const breakoutExists = newBreakouts.some(
         (breakout) => breakout.name === action.category
       )
-      if (breakoutExists) {
-        // iteratre throguth all the regions
-        // if there is a region with the category being the same as the action.category then we check to see if there is a breakout with it, if there isnt a breakout we add it to the current breakout, otherwise we do nothing to that region
 
+      if (breakoutExists) {
+        // iteratre through all the regions
+        // if there is a region with the category being the same as the action.category then we check to see if there is a breakout with it,
+        // if there isnt a breakout we add it to the current breakout, otherwise we do nothing to that region
         newRegions = newRegions.map((region) => {
-          if (region.category === action.category) {
-            if (region.breakout) {
-              return region
-            } else {
-              return {
-                ...region,
-                breakout: {
-                  is_breakout: true,
-                  name: action.category,
-                  id: newBreakouts.find(
-                    (breakout) => breakout.name === action.category
-                  ).id,
-                  visible: false,
-                },
-              }
-            }
-          } else {
-            return region
-          }
-        })
-        newBreakouts = newBreakouts.map((breakout) => {
-          if (breakout.name === action.category) {
-            return {
-              ...breakout,
-              visible: false,
-            }
-          } else {
-            return breakout
-          }
-        })
-      } else {
-        const breakoutId = getRandomId()
-        newRegions = newRegions.map((region) => {
-          if (region.category === action.category) {
+          if (region.category === action.category && !region.breakout) {
+            const matchingBreakout = newBreakouts.find(
+              (breakout) => breakout.name === action.category
+            )
             return {
               ...region,
-              breakout: {
-                is_breakout: true,
-                name: action.category,
-                id: breakoutId,
-                visible: false,
-              },
+              breakout: matchingBreakout
+                ? { ...matchingBreakout }
+                : {
+                    is_breakout: true,
+                    name: action.category,
+                    id: matchingBreakout.id,
+                    visible: false,
+                  },
             }
-          } else {
-            return region
           }
+          return region
         })
-        newBreakouts = newBreakouts.concat({
+
+        newBreakouts = newBreakouts.map(
+          (breakout) => breakout.name === action.category && breakout
+        )
+        
+      } else {
+        const breakoutId = getRandomId()
+        const newBreakout = {
           name: action.category,
           is_breakout: true,
           visible: false,
           id: breakoutId,
-        })
+        }
+
+        newRegions = newRegions.map((region) =>
+          region.category === action.category
+            ? { ...region, breakout: newBreakout }
+            : region
+        )
+
+        newBreakouts = newBreakouts.concat(newBreakout)
       }
 
       newImage = setIn(newImage, ["regions"], newRegions)
