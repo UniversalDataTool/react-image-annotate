@@ -376,8 +376,6 @@ export default (state: MainLayoutState, action: Action) => {
       if (!newRegions) {
         return state
       }
-      console.log("action", action.category)
-
       // check if all regions with the same category already have a breakout
       const regionsWithCategory = newRegions.filter(
         (region) => region.category === action.category
@@ -388,13 +386,10 @@ export default (state: MainLayoutState, action: Action) => {
       if (regionsWithCategory.length === regionsWithBreakout.length) {
         return state
       }
-
       // first check to see if the breakout already exists. if it does exist then use the current breakout id, and add the breakout to the region
-
       const breakoutExists = newBreakouts.some(
         (breakout) => breakout.name === action.category
       )
-
       if (breakoutExists) {
         // iteratre through all the regions
         // if there is a region with the category being the same as the action.category then we check to see if there is a breakout with it,
@@ -422,7 +417,6 @@ export default (state: MainLayoutState, action: Action) => {
         newBreakouts = newBreakouts.map(
           (breakout) => breakout.name === action.category && breakout
         )
-        
       } else {
         const breakoutId = getRandomId()
         const newBreakout = {
