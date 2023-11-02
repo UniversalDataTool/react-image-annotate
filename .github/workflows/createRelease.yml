@@ -61,7 +61,7 @@ jobs:
           node-version: 18
       - name: npm install
         run: |
-          npm install --legacy-peer-deps
+          npm install
           npm run build
       - name: publish
         uses: JS-DevTools/npm-publish@v1
