@@ -1,9 +1,11 @@
 {
   "name": "@starwit/react-image-annotate",
-  "version": "4.0.1",
+  "version": "4.0.2-0",
   "private": false,
   "type": "module",
-  "files": ["dist"],
+  "files": [
+    "dist"
+  ],
   "main": "dist/react-image-annotate.js",
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^6.4.2",
