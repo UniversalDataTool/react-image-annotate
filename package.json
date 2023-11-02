@@ -2,7 +2,9 @@
   "name": "@starwit/react-image-annotate",
   "version": "4.0.0",
   "private": false,
-  "main": "src/lib.js",
+  "type": "module",
+  "files": ["dist"],
+  "main": "dist/react-image-annotate.js",
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^6.4.2",
     "@fortawesome/free-solid-svg-icons": "^6.4.2",
@@ -27,8 +29,7 @@
     "remark-gfm": "^4.0.0",
     "seamless-immutable": "^7.1.4",
     "transformation-matrix-js": "^2.7.6",
-    "use-event-callback": "^0.1.0",
-    "vite-raw-plugin": "^1.0.2"
+    "use-event-callback": "^0.1.0"
   },
   "repository": {
     "type": "git",
@@ -36,17 +37,17 @@
   },
   "peerDependencies": {
     "react": "^18.0.0",
-    "react-dom": "^18.0.0",
-    "styled-components": "^4.1.2"
+    "react-dom": "^18.0.0"
   },
   "scripts": {
     "start": "vite --force",
-    "build": "vite build && cp ./package.json ./dist/package.json && cp ./README.md ./dist/README.md"
+    "build": "vite build"
   },
   "eslintConfig": {
     "extends": "react-app"
   },
   "devDependencies": {
+    "vite-raw-plugin": "^1.0.2",
     "@semantic-release/git": "^9.0.0",
     "@storybook/react": "^7.5.2",
     "@vitejs/plugin-react": "^4.1.0",
