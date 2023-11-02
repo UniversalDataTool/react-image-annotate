@@ -7,7 +7,7 @@ import {saveToHistory} from "./history-handler.js"
 import colors from "../../colors"
 import fixTwisted from "./fix-twisted"
 import convertExpandingLineToPolygon from "./convert-expanding-line-to-polygon"
-import clamp from "clamp"
+import clamp from "../../utils/clamp.js"
 import getLandmarksWithTransform from "../../utils/get-landmarks-with-transform"
 import setInLocalStorage from "../../utils/set-in-local-storage"
 

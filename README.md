@@ -78,10 +78,10 @@ All of the following properties can be defined on the Annotator...
 
 To begin developing run the following commands in the cloned repo.
 
-1. `npm install --legacy-peer-deps`
+1. `npm install`
 2. `npm start`
 
-A browser tab will automatically open with the project components.
+Then navigate to http://localhost:5173/smartparkingconfig/ and start testing.
 
 See more details in the [contributing guidelines](https://github.com/waoai/react-image-annotate/wiki/Setup-for-Development).
 
@@ -94,10 +94,12 @@ Consult these icon repositories:
 
 ### Testdrive in project
 To test this package in your project follow this quickstart:
-1. Create a build from the package with `npm run build`
-2. Go into the dist folder `cd dist`
-3. Run `npm link`
-4. With the same Terminal window, go to your project folder where the `package.json` is located
-5. Run `npm link "@starwit/react-image-annotate"` to install the package. It might be necessary to remove a previously installed `@starwit/react-image-annotate` package. Please use the same node version when using npm link and executing the application. 
+1. Run `npm link` in the root directory of this project (where the `package.json` is located)
+2. With the same Terminal window, go to your target project folder where the `package.json` is located
+3. Run `npm link "@starwit/react-image-annotate"` to install the package. It might be necessary to remove a previously installed `@starwit/react-image-annotate` package. Please use the same node version when using npm link and executing the application. 
+4. Changes to this repository will apply live to the running dev session in your target project :)
 
-Warning: if you change something in the package you have to rerun `npm run build` so that the changes will apply.
+
+### Notes
+Currently, there is an issue with vite-plugin-node-polyfills (0.15.0 at the time of writing), 
+which shows many warnings while building (related to "use client"). That is expected and will probably be fixed in the future. See here: https://github.com/davidmyersdev/vite-plugin-node-polyfills/issues/49 
