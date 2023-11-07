@@ -11,9 +11,9 @@ export default {
       height: 16,
     },
     "& .icon2": {
-      opacity: 0.5,
-      width: 16,
-      height: 16,
+      // opacity: 0.5,
+      // width: 16,
+      // height: 16,
       transition: "200ms opacity",
       "&:hover": {
         cursor: "pointer",

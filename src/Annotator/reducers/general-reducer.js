@@ -280,6 +280,30 @@ export default (state: MainLayoutState, action: Action) => {
       // return newState
       return newState
     }
+    case "TOGGLE_BREAKOUT_AUTO_ADD": {
+      let newState = { ...state }
+      let newImage = getIn(newState, ["images", currentImageIndex])
+      let selectedBreakoutIdAutoAdd = getIn(newState, [
+        "selectedBreakoutIdAutoAdd",
+      ])
+      let newRegions = getIn(newState, ["images", currentImageIndex, "regions"])
+
+      if (!newRegions) {
+        return state
+      }
+
+      if (selectedBreakoutIdAutoAdd === action.breakoutId) {
+        selectedBreakoutIdAutoAdd = undefined
+      } else {
+        selectedBreakoutIdAutoAdd = action.breakoutId
+      }
+      newState = merge(newState, [
+        { selectedBreakoutIdAutoAdd: selectedBreakoutIdAutoAdd },
+      ])
+      newImage = setIn(newImage, ["regions"], newRegions)
+      newState = setIn(newState, ["images", currentImageIndex], newImage)
+      return newState
+    }
     case "TOGGLE_BREAKOUT_VISIBILITY":
       let newState = { ...state }
       let newImage = getIn(newState, ["images", currentImageIndex])

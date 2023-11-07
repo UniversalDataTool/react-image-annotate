@@ -147,6 +147,7 @@ export const MainLayout = ({
       regionClsList={state.regionClsList}
       regionTagList={state.regionTagList}
       breakouts={state.breakouts}
+      selectedBreakoutIdAutoAdd={state.selectedBreakoutIdAutoAdd}
       regions={
         state.annotationType === "image"
           ? activeImage.regions || []
@@ -246,7 +247,7 @@ export const MainLayout = ({
   const debugModeOn = Boolean(window.localStorage.$ANNOTATE_DEBUG_MODE && state)
   const nextImageHasRegions =
     !nextImage || (nextImage.regions && nextImage.regions.length > 0)
-
+    
   return (
     <FullScreenContainer>
       <FullScreen
@@ -446,8 +447,6 @@ export const MainLayout = ({
                   })
                 }}
                 onRegionBreakout={(regionCategory) => {
-                  // console.log(event.target.id)
-                  console.log(regionCategory)
                   dispatch({
                     type: "ADD_NEW_BREAKOUT_BY_CATEGORY",
                     category: regionCategory,
@@ -464,6 +463,12 @@ export const MainLayout = ({
                   "TOGGLE_BREAKOUT_VISIBILITY",
                   "breakoutId"
                 )}
+                onBreakoutAutoAdd={action(
+                  "TOGGLE_BREAKOUT_AUTO_ADD",
+                  "breakoutId"
+                )}
+                selectedBreakoutIdAutoAdd={state.selectedBreakoutIdAutoAdd}
+                // selectedBreakoutIdAutoAdd={selectedAutoAddId}
                 breakouts={state.breakouts}
               />,
 
