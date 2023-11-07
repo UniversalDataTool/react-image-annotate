@@ -47,6 +47,7 @@ export const examples = {
     // regionClsList: ["hotdog"],
     regionTagList: ["has-bun"],
     regionClsList: ["hotdog", "not-hotdog"],
+    preselectCls: "not-hotdog",
     enabledTools: ["select", "create-box"],
     // showTags: true,
     images: [
