@@ -1,8 +1,5 @@
 // @flow
-
-function clamp(num, min, max) {
-  return num <= min ? min : num >= max ? max : num
-}
+import clamp from "../../utils/clamp"
 
 export default (expandingLine) => {
   const expandingWidth = expandingLine.expandingWidth || 0.005

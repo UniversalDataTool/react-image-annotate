@@ -61,14 +61,14 @@ jobs:
           node-version: 18
       - name: npm install
         run: |
-          npm install --legacy-peer-deps
+          npm install
           npm run build
       - name: publish
         uses: JS-DevTools/npm-publish@v1
         with:
           token: ${{ secrets.NPM_TOKEN }}
           access: public
-          package: dist/package.json
+          package: package.json
       - if: steps.publish.outputs.type != 'none'
         run: |
           echo "Version changed: ${{ steps.publish.outputs.old-version }} => ${{ steps.publish.outputs.version }}"

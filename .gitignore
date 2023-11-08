@@ -28,4 +28,5 @@ dist
 secret.*
 secret.story.*
 *.secret.*
-package-lock.json
+
+*.tgz
