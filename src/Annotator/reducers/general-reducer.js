@@ -306,57 +306,52 @@ export default (state: MainLayoutState, action: Action) => {
       return newState
     }
     case "TOGGLE_BREAKOUT_VISIBILITY":
-      let newState = { ...state }
-      let newImage = getIn(newState, ["images", currentImageIndex])
-      let newRegions = getIn(newState, ["images", currentImageIndex, "regions"])
-      if (!newRegions) {
+      const { images, breakouts } = state
+      const currentImage = images[currentImageIndex]
+      if (!currentImage || !currentImage.regions) {
         return state
       }
-      let newBreakouts = getIn(newState, ["breakouts"])
-      newBreakouts = newBreakouts.map((breakout) => {
-        if (breakout.id === action.breakoutId) {
-          return {
-            ...breakout,
-            visible: !breakout.visible,
-          }
-        } else {
-          return {
-            ...breakout,
-            visible: false,
-          }
+
+      const updatedBreakouts = breakouts.map((breakout) => {
+        const isVisible =
+          breakout.id === action.breakoutId ? !breakout.visible : false
+        return { ...breakout, visible: isVisible }
+      })
+
+      let allBreakoutsInvisible = updatedBreakouts.every(
+        (breakout) => !breakout.visible
+      )
+      let updatedRegions = currentImage.regions.map((region) => {
+        const breakout = region.breakout
+        let breakoutVisible = false
+        if (breakout && breakout.id === action.breakoutId) {
+          breakoutVisible = !breakout.visible
+          allBreakoutsInvisible = allBreakoutsInvisible && !breakoutVisible
+        }
+        return {
+          ...region,
+          visible: breakoutVisible,
+          breakout: breakout
+            ? { ...breakout, visible: breakoutVisible }
+            : undefined,
         }
       })
 
-      newRegions = newRegions.map((region) => {
-        if (region.breakout && region.breakout.id === action.breakoutId) {
-          // Set region.visible to true if breakout.id and breakout.visible match the action's values
-          const b = {
-            ...region,
-            visible: !region.breakout.visible,
-            breakout: {
-              ...region.breakout,
-              visible: !region.breakout.visible,
-            },
-          }
+      if (allBreakoutsInvisible) {
+        updatedRegions = updatedRegions.map((region) => ({
+          ...region,
+          visible: true,
+          breakout: region.breakout
+            ? { ...region.breakout, visible: false }
+            : undefined,
+        }))
+      }
 
-          return b
-        } else {
-          // Set breakout.visible and region.visible to false otherwise
-          const b = {
-            ...region,
-            visible: false,
-            breakout: region.breakout
-              ? { ...region.breakout, visible: false }
-              : undefined,
-          }
-          return b
-        }
-      })
+      const updatedImage = { ...currentImage, regions: updatedRegions }
+      const updatedImages = [...images]
+      updatedImages[currentImageIndex] = updatedImage
 
-      newState = merge(newState, [{ breakouts: newBreakouts }])
-      newImage = setIn(newImage, ["regions"], newRegions)
-      newState = setIn(newState, ["images", currentImageIndex], newImage)
-      return newState
+      return { ...state, images: updatedImages, breakouts: updatedBreakouts }
     case "ADD_NEW_BREAKOUT": {
       let newState = { ...state }
       let newImage = getIn(newState, ["images", currentImageIndex])

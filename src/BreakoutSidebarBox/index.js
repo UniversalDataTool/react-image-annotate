@@ -237,21 +237,6 @@ export const BreakoutSidebarBox = ({
     return breakoutRegions
   }, [breakouts])
 
-  // generate 6 breakouts
-  // const breakoutList = useMemo(() => {
-  //   let list = []
-  //   for (let i = 0; i < 6; i++) {
-  //     list.push({
-  //       id: i,
-  //       name: `Breakout ${i + 1}`,
-  //       is_breakout: false,
-  //       visible: true,
-  //       isAutoAdd: false,
-  //     })
-  //   }
-  //   return list
-  // }, [])
-
   const classes = useStyles()
   return (
     <SidebarBoxContainer
@@ -259,12 +244,7 @@ export const BreakoutSidebarBox = ({
       icon={<DashboardIcon style={{ color: "white" }} />}
       expandedByDefault
     >
-      <div
-        className={classes.container}
-        style={{
-          overflowY: "scroll",
-        }}
-      >
+      <div className={classes.container}>
         <MemoRowHeader />
         <HeaderSep />
         {breakoutList &&
