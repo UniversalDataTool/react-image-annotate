@@ -1,9 +1,9 @@
 // @flow weak
 
-import React from "react"
 import Paper from "@material-ui/core/Paper"
-import DefaultRegionLabel from "../RegionLabel"
 import LockIcon from "@material-ui/icons/Lock"
+import React from "react"
+import DefaultRegionLabel from "../RegionLabel"
 
 const copyWithout = (obj, ...args) => {
   const newObj = { ...obj }
@@ -20,20 +20,25 @@ export const RegionTags = ({
   regionClsList,
   regionTagList,
   onBeginRegionEdit,
-  onChangeRegion,
   onCloseRegionEdit,
   onDeleteRegion,
   onMatchTemplate,
   finishMatchTemplate,
-  pageIndex,
-  regionTemplateMatchingDisabled,
   layoutParams,
   imageSrc,
+  pageIndex,
+  regionTemplateMatchingDisabled,
   RegionEditLabel,
   onRegionClassAdded,
   allowComments,
   dispatch,
   breakoutList,
+  disableClose,
+  allowedClasses,
+  allowedTags,
+  editing,
+  region,
+  selectedBreakoutIdAutoAdd,
 }) => {
   const RegionLabel =
     RegionEditLabel != null ? RegionEditLabel : DefaultRegionLabel

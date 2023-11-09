@@ -48,7 +48,6 @@ export const HistorySidebarBox = ({
     <SidebarBoxContainer
       title="Shortcuts"
       icon={<KeyboardIcon style={{ color: "white" }} />}
-      expandedByDefault
       noScroll
     >
       <TableContainer>

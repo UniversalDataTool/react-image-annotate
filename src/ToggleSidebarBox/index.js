@@ -150,7 +150,6 @@ const RowHeader = ({ onRegionToggle, regions, onRegionBreakout }) => {
   }
 
   const handleBreakout = (regionCategory) => {
-    console.log(regionCategory)
     onRegionBreakout(regionCategory)
   }
 

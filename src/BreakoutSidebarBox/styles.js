@@ -4,7 +4,8 @@ export default {
   container: {
     fontSize: 11,
     fontWeight: "bold",
-    color: 'white',
+    color: "white",
+    overflow: "auto",
     "& .icon": {
       marginTop: 4,
       width: 16,

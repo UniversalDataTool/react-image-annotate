@@ -247,7 +247,7 @@ export const MainLayout = ({
   const debugModeOn = Boolean(window.localStorage.$ANNOTATE_DEBUG_MODE && state)
   const nextImageHasRegions =
     !nextImage || (nextImage.regions && nextImage.regions.length > 0)
-    
+
   return (
     <FullScreenContainer>
       <FullScreen
@@ -468,10 +468,8 @@ export const MainLayout = ({
                   "breakoutId"
                 )}
                 selectedBreakoutIdAutoAdd={state.selectedBreakoutIdAutoAdd}
-                // selectedBreakoutIdAutoAdd={selectedAutoAddId}
                 breakouts={state.breakouts}
               />,
-
               <RegionSelector
                 regions={activeImage ? activeImage.regions : emptyArr}
                 onSelectRegion={action("SELECT_REGION", "region")}

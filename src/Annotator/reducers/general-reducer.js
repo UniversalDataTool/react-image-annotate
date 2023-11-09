@@ -275,9 +275,9 @@ export default (state: MainLayoutState, action: Action) => {
         }
       })
       newState = merge(newState, [{ breakouts: newBreakouts }])
+      newState = merge(newState, [{ selectedBreakoutIdAutoAdd: null }])
       newImage = setIn(newImage, ["regions"], newRegions)
       newState = setIn(newState, ["images", currentImageIndex], newImage)
-      // return newState
       return newState
     }
     case "TOGGLE_BREAKOUT_AUTO_ADD": {
@@ -293,7 +293,7 @@ export default (state: MainLayoutState, action: Action) => {
       }
 
       if (selectedBreakoutIdAutoAdd === action.breakoutId) {
-        selectedBreakoutIdAutoAdd = undefined
+        selectedBreakoutIdAutoAdd = null
       } else {
         selectedBreakoutIdAutoAdd = action.breakoutId
       }
@@ -302,6 +302,7 @@ export default (state: MainLayoutState, action: Action) => {
       ])
       newImage = setIn(newImage, ["regions"], newRegions)
       newState = setIn(newState, ["images", currentImageIndex], newImage)
+
       return newState
     }
     case "TOGGLE_BREAKOUT_VISIBILITY":
@@ -1087,6 +1088,14 @@ export default (state: MainLayoutState, action: Action) => {
       switch (state.selectedTool) {
         case "create-point": {
           state = saveToHistory(state, "Create Point")
+          let newRegionBreakout = undefined
+          const { selectedBreakoutIdAutoAdd } = state
+          if (selectedBreakoutIdAutoAdd !== null) {
+            // create a breakout object with id === selectedBreakoutIdAutoAdd
+            newRegionBreakout = state.breakouts.find(
+              (breakout) => breakout.id === selectedBreakoutIdAutoAdd
+            )
+          }
           newRegion = {
             type: "point",
             x,
@@ -1098,12 +1107,20 @@ export default (state: MainLayoutState, action: Action) => {
             cls: defaultRegionCls,
             category: getCategoryBySymbolName(defaultRegionCls),
             visible: true,
-            breakout: undefined,
+            breakout: newRegionBreakout,
           }
           break
         }
         case "create-box": {
           state = saveToHistory(state, "Create Box")
+          let newRegionBreakout = undefined
+          const { selectedBreakoutIdAutoAdd } = state
+          if (selectedBreakoutIdAutoAdd !== null) {
+            // create a breakout object with id === selectedBreakoutIdAutoAdd
+            newRegionBreakout = state.breakouts.find(
+              (breakout) => breakout.id === selectedBreakoutIdAutoAdd
+            )
+          }
           newRegion = {
             type: "box",
             x: x,
@@ -1117,7 +1134,7 @@ export default (state: MainLayoutState, action: Action) => {
             id: getRandomId(),
             category: getCategoryBySymbolName(defaultRegionCls),
             visible: true,
-            breakout: undefined,
+            breakout: newRegionBreakout,
           }
           state = setIn(state, ["mode"], {
             mode: "RESIZE_BOX",
@@ -1132,6 +1149,14 @@ export default (state: MainLayoutState, action: Action) => {
         case "create-polygon": {
           if (state.mode && state.mode.mode === "DRAW_POLYGON") break
           state = saveToHistory(state, "Create Polygon")
+          let newRegionBreakout = undefined
+          const { selectedBreakoutIdAutoAdd } = state
+          if (selectedBreakoutIdAutoAdd !== null) {
+            // create a breakout object with id === selectedBreakoutIdAutoAdd
+            newRegionBreakout = state.breakouts.find(
+              (breakout) => breakout.id === selectedBreakoutIdAutoAdd
+            )
+          }
           newRegion = {
             type: "polygon",
             points: [
@@ -1145,7 +1170,7 @@ export default (state: MainLayoutState, action: Action) => {
             id: getRandomId(),
             category: getCategoryBySymbolName(defaultRegionCls),
             visible: true,
-            breakout: undefined,
+            breakout: newRegionBreakout,
           }
           state = setIn(state, ["mode"], {
             mode: "DRAW_POLYGON",
@@ -1155,6 +1180,14 @@ export default (state: MainLayoutState, action: Action) => {
         }
         case "create-expanding-line": {
           state = saveToHistory(state, "Create Expanding Line")
+          let newRegionBreakout = undefined
+          const { selectedBreakoutIdAutoAdd } = state
+          if (selectedBreakoutIdAutoAdd !== null) {
+            // create a breakout object with id === selectedBreakoutIdAutoAdd
+            newRegionBreakout = state.breakouts.find(
+              (breakout) => breakout.id === selectedBreakoutIdAutoAdd
+            )
+          }
           newRegion = {
             type: "expanding-line",
             unfinished: true,
@@ -1166,7 +1199,7 @@ export default (state: MainLayoutState, action: Action) => {
             id: getRandomId(),
             category: getCategoryBySymbolName(defaultRegionCls),
             visible: true,
-            breakout: undefined,
+            breakout: newRegionBreakout,
           }
           state = setIn(state, ["mode"], {
             mode: "DRAW_EXPANDING_LINE",
@@ -1177,6 +1210,14 @@ export default (state: MainLayoutState, action: Action) => {
         case "create-line": {
           if (state.mode && state.mode.mode === "DRAW_LINE") break
           state = saveToHistory(state, "Create Line")
+          let newRegionBreakout = undefined
+          const { selectedBreakoutIdAutoAdd } = state
+          if (selectedBreakoutIdAutoAdd !== null) {
+            // create a breakout object with id === selectedBreakoutIdAutoAdd
+            newRegionBreakout = state.breakouts.find(
+              (breakout) => breakout.id === selectedBreakoutIdAutoAdd
+            )
+          }
           newRegion = {
             type: "line",
             x1: x,
@@ -1190,7 +1231,7 @@ export default (state: MainLayoutState, action: Action) => {
             id: getRandomId(),
             category: getCategoryBySymbolName(defaultRegionCls),
             visible: true,
-            breakout: undefined,
+            breakout: newRegionBreakout,
           }
           state = setIn(state, ["mode"], {
             mode: "DRAW_LINE",

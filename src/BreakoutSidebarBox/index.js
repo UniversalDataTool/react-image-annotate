@@ -11,12 +11,10 @@ import { green, grey } from "@material-ui/core/colors"
 import { makeStyles, styled } from "@material-ui/core/styles"
 import DashboardIcon from "@material-ui/icons/Dashboard"
 import TrashIcon from "@material-ui/icons/Delete"
-import VisibilityIcon from "@material-ui/icons/Visibility"
 import isEqual from "lodash/isEqual"
 import React, { memo, useMemo, useState } from "react"
 import SidebarBoxContainer from "../SidebarBoxContainer"
 import styles from "./styles"
-import { useEffect } from "react"
 const useStyles = makeStyles(styles)
 
 const HeaderSep = styled("div")({
@@ -160,7 +158,6 @@ const Row = ({
   return (
     <RowLayout
       header={false}
-      //   onClick={() => onSelectBreakout(r)}
       order={`#${index + 1}`}
       classification={name}
       area=""
@@ -181,11 +178,9 @@ const Row = ({
         </>
       }
       trash={
-        // <TrashIcon onClick={() => onBreakoutDelete(id)} className="icon2" />
         <IconButton
           aria-label="delete"
           size="small"
-          // className={classes.margin}
           className="icon2"
           onClick={() => onBreakoutDelete(id)}
         >
@@ -196,7 +191,7 @@ const Row = ({
         <div>
           <GreenRadio
             checked={isAutoAdd}
-            onChange={() => onBreakoutAutoAdd(id)}
+            onClick={() => onBreakoutAutoAdd(id)}
             value={id}
             name="radio-button-demo"
             size="small"
@@ -242,18 +237,36 @@ export const BreakoutSidebarBox = ({
     return breakoutRegions
   }, [breakouts])
 
+  // generate 6 breakouts
+  // const breakoutList = useMemo(() => {
+  //   let list = []
+  //   for (let i = 0; i < 6; i++) {
+  //     list.push({
+  //       id: i,
+  //       name: `Breakout ${i + 1}`,
+  //       is_breakout: false,
+  //       visible: true,
+  //       isAutoAdd: false,
+  //     })
+  //   }
+  //   return list
+  // }, [])
+
   const classes = useStyles()
   return (
     <SidebarBoxContainer
       title="Breakouts"
-      subTitle=""
       icon={<DashboardIcon style={{ color: "white" }} />}
       expandedByDefault
     >
-      <div className={classes.container}>
+      <div
+        className={classes.container}
+        style={{
+          overflowY: "scroll",
+        }}
+      >
         <MemoRowHeader />
         <HeaderSep />
-
         {breakoutList &&
           breakoutList.map((r, i) => (
             <>
@@ -295,6 +308,6 @@ export default memo(BreakoutSidebarBox, (prevProps, nextProps) => {
       (nextProps.regions || emptyArr).map(mapUsedRegionProperties)
     ) &&
     isEqual(prevProps.breakouts, nextProps.breakouts) &&
-    prevSelectedBreakoutIdAutoAdd === nextSelectedBreakoutIdAutoAdd
+    prevSelectedBreakoutIdAutoAdd == nextSelectedBreakoutIdAutoAdd
   )
 })

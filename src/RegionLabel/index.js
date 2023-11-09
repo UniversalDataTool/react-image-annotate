@@ -1,19 +1,6 @@
 // @flow
 
-import {
-  Box,
-  ButtonGroup,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogContentText,
-  DialogTitle,
-  Grid,
-  InputAdornment,
-  TextField,
-  Modal,
-  Typography,
-} from "@material-ui/core"
+import { Grid, InputAdornment, TextField, Typography } from "@material-ui/core"
 import Button from "@material-ui/core/Button"
 import IconButton from "@material-ui/core/IconButton"
 import Paper from "@material-ui/core/Paper"
@@ -25,14 +12,14 @@ import TrashIcon from "@material-ui/icons/Delete"
 import ImageSearchIcon from "@material-ui/icons/ImageSearch"
 import LinearScaleIcon from "@material-ui/icons/LinearScale"
 import classnames from "classnames"
-import React, { memo, useEffect, useMemo, useRef, useState } from "react"
+import React, { memo, useEffect, useRef, useState } from "react"
 import Select from "react-select"
 import CreatableSelect from "react-select/creatable"
 import { asMutable } from "seamless-immutable"
 import type { Region } from "../ImageCanvas/region-tools.js"
+import BreakoutSection from "./BreakoutSection.js"
 import DeviceList from "./DeviceList"
 import styles from "./styles"
-import BreakoutSection from "./BreakoutSection.js"
 
 const useStyles = makeStyles(styles)
 
@@ -101,6 +88,7 @@ export const RegionLabel = ({
   onRegionClassAdded,
   allowComments,
   breakoutList,
+  selectedBreakoutIdAutoAdd,
   dispatch,
 }: Props) => {
   const classes = useStyles()
@@ -456,6 +444,13 @@ export const RegionLabel = ({
                             new_region["type"] = "box"
                             new_region["color"] = region.color
                             new_region["visible"] = true
+                            new_region["breakout"] =
+                              selectedBreakoutIdAutoAdd !== null &&
+                              breakoutList.length > 0
+                                ? breakoutList.find(
+                                    (b) => b.id === selectedBreakoutIdAutoAdd
+                                  )
+                                : null
                             new_region["category"] =
                               region?.category ||
                               DeviceList.find(

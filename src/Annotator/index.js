@@ -162,7 +162,7 @@ export const Annotator = ({
       allowComments,
       loadingTemplateMatching: false,
       toggleList: [],
-      selectedBreakoutIdAutoAdd: undefined,
+      selectedBreakoutIdAutoAdd: null,
       breakouts: breakouts,
       ...(annotationType === "image"
         ? {
