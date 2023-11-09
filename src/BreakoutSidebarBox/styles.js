@@ -4,16 +4,17 @@ export default {
   container: {
     fontSize: 11,
     fontWeight: "bold",
-    color: 'white',
+    color: "white",
+    overflow: "auto",
     "& .icon": {
       marginTop: 4,
       width: 16,
       height: 16,
     },
     "& .icon2": {
-      opacity: 0.5,
-      width: 16,
-      height: 16,
+      // opacity: 0.5,
+      // width: 16,
+      // height: 16,
       transition: "200ms opacity",
       "&:hover": {
         cursor: "pointer",

@@ -153,6 +153,7 @@ export const ImageCanvas = ({
   allowComments,
   breakouts,
   dispatch,
+  selectedBreakoutIdAutoAdd,
 }: Props) => {
   const classes = useStyles()
 
@@ -400,7 +401,7 @@ export const ImageCanvas = ({
       )}
       {imageLoaded && showTags && !dragging && (
         <PreventScrollToParents key="regionTags">
-          <RegionTags
+          {/* <RegionTags
             regions={regions}
             projectRegionBox={projectRegionBox}
             mouseEvents={mouseEvents}
@@ -421,7 +422,37 @@ export const ImageCanvas = ({
             allowComments={allowComments}
             dispatch={dispatch}
             breakoutList={breakoutList}
-          />
+
+            
+          /> */}
+
+          {/* <RegionTags
+            regions={regions}
+            projectRegionBox={projectRegionBox}
+            mouseEvents={mouseEvents}
+            regionClsList={regionClsList}
+            regionTagList={regionTagList}
+            onBeginRegionEdit={onBeginRegionEdit}
+            onCloseRegionEdit={onCloseRegionEdit}
+            onDeleteRegion={onDeleteRegion}
+            onMatchTemplate={onMatchRegionTemplate}
+            finishMatchTemplate={finishMatchRegionTemplate}
+            layoutParams={layoutParams}
+            imageSrc={imageSrc}
+            pageIndex={pageIndex}
+            regionTemplateMatchingDisabled={regionTemplateMatchingDisabled}
+            RegionEditLabel={RegionEditLabel}
+            onRegionClassAdded={onRegionClassAdded}
+            allowComments={allowComments}
+            dispatch={dispatch}
+            breakoutList={breakoutList}
+            disableClose
+            allowedClasses={regionClsList}
+            allowedTags={regionTagList}
+            editing
+            region={highlightedRegion}
+            selectedBreakoutIdAutoAdd={selectedBreakoutIdAutoAdd}
+          /> */}
         </PreventScrollToParents>
       )}
       {!showTags && highlightedRegion && (
@@ -445,6 +476,7 @@ export const ImageCanvas = ({
             allowComments={allowComments}
             breakoutList={breakoutList}
             dispatch={dispatch}
+            selectedBreakoutIdAutoAdd={selectedBreakoutIdAutoAdd}
           />
         </div>
       )}

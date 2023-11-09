@@ -147,6 +147,7 @@ export const MainLayout = ({
       regionClsList={state.regionClsList}
       regionTagList={state.regionTagList}
       breakouts={state.breakouts}
+      selectedBreakoutIdAutoAdd={state.selectedBreakoutIdAutoAdd}
       regions={
         state.annotationType === "image"
           ? activeImage.regions || []
@@ -445,6 +446,12 @@ export const MainLayout = ({
                     isVisible: event.target.checked,
                   })
                 }}
+                onRegionBreakout={(regionCategory) => {
+                  dispatch({
+                    type: "ADD_NEW_BREAKOUT_BY_CATEGORY",
+                    category: regionCategory,
+                  })
+                }}
               />,
               <BreakoutSidebarBox
                 regions={activeImage ? activeImage.regions : emptyArr}
@@ -456,9 +463,13 @@ export const MainLayout = ({
                   "TOGGLE_BREAKOUT_VISIBILITY",
                   "breakoutId"
                 )}
+                onBreakoutAutoAdd={action(
+                  "TOGGLE_BREAKOUT_AUTO_ADD",
+                  "breakoutId"
+                )}
+                selectedBreakoutIdAutoAdd={state.selectedBreakoutIdAutoAdd}
                 breakouts={state.breakouts}
               />,
-
               <RegionSelector
                 regions={activeImage ? activeImage.regions : emptyArr}
                 onSelectRegion={action("SELECT_REGION", "region")}

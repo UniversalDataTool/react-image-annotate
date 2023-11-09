@@ -40,7 +40,6 @@ export const HistorySidebarBox = ({
     <SidebarBoxContainer
       title="History"
       icon={<HistoryIcon style={{ color: "white" }} />}
-      expandedByDefault
     >
       <List>
         {history.length === 0 && (

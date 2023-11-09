@@ -95,7 +95,7 @@ const RowLayout = ({ visible, onClick }) => {
   )
 }
 
-const RowHeader = ({ onRegionToggle, regions }) => {
+const RowHeader = ({ onRegionToggle, regions, onRegionBreakout }) => {
   const [checkedList, setCheckedList] = useState(
     DEVICE_LIST.map((item) => {
       if (regions !== undefined && regions.length > 0) {
@@ -147,6 +147,10 @@ const RowHeader = ({ onRegionToggle, regions }) => {
   const handleChange = (event) => {
     onRegionToggle(event)
     setCheckedItem(event.target.id, event.target.checked)
+  }
+
+  const handleBreakout = (regionCategory) => {
+    onRegionBreakout(regionCategory)
   }
 
   function rand() {
@@ -270,21 +274,28 @@ const RowHeader = ({ onRegionToggle, regions }) => {
                     style={{
                       color: "white",
                     }}
+                    disabled={
+                      regions.filter((region) => region.category === device)
+                        .length === 0
+                    }
+                    onClick={() => handleBreakout(device)}
                   >
                     <DashboardIcon
-                      style={{ color: "white", width: 20, height: 20 }}
-                      onClick={handleOpen}
+                      style={{
+                        color:
+                          regions.filter((region) => region.category === device)
+                            .length === 0
+                            ? "grey"
+                            : "white",
+                        width: 20,
+                        height: 20,
+                        ":hover": {
+                          // if not disabled add a shadow
+                          boxShadow: "0px 0px 10px 0px rgba(0,0,0,0.75)",
+                        },
+                      }}
                     />
                   </IconButton>
-                  <Modal
-                    open={open}
-                    onClose={handleClose}
-                    aria-labelledby="simple-modal-title"
-                    aria-describedby="simple-modal-description"
-                  >
-                    {body}
-                  </Modal>
-                  {/* </Tooltip> */}
                 </div>
               )
             })}
@@ -312,7 +323,11 @@ const emptyArr = []
 //     prevProps.region === nextProps.region
 // )
 
-export const ToggleSidebarBox = ({ regions, onRegionToggle }) => {
+export const ToggleSidebarBox = ({
+  regions,
+  onRegionToggle,
+  onRegionBreakout,
+}) => {
   const classes = useStyles()
   return (
     <SidebarBoxContainer
@@ -321,7 +336,11 @@ export const ToggleSidebarBox = ({ regions, onRegionToggle }) => {
       expandedByDefault
     >
       <div className={classes.container}>
-        <RowHeader onRegionToggle={onRegionToggle} regions={regions} />
+        <RowHeader
+          onRegionToggle={onRegionToggle}
+          regions={regions}
+          onRegionBreakout={onRegionBreakout}
+        />
       </div>
     </SidebarBoxContainer>
   )

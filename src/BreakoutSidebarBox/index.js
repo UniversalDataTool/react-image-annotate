@@ -1,16 +1,20 @@
 // @flow
+import {
+  FormControlLabel,
+  IconButton,
+  Radio,
+  Switch,
+  withStyles,
+} from "@material-ui/core"
 import Grid from "@material-ui/core/Grid"
-import { grey } from "@material-ui/core/colors"
+import { green, grey } from "@material-ui/core/colors"
 import { makeStyles, styled } from "@material-ui/core/styles"
 import DashboardIcon from "@material-ui/icons/Dashboard"
 import TrashIcon from "@material-ui/icons/Delete"
 import isEqual from "lodash/isEqual"
 import React, { memo, useMemo, useState } from "react"
-import DeviceList from "../RegionLabel/DeviceList"
 import SidebarBoxContainer from "../SidebarBoxContainer"
 import styles from "./styles"
-import VisibilityIcon from "@material-ui/icons/Visibility"
-import { FormControlLabel, Switch } from "@material-ui/core"
 const useStyles = makeStyles(styles)
 
 const HeaderSep = styled("div")({
@@ -19,19 +23,41 @@ const HeaderSep = styled("div")({
   marginBottom: 2,
 })
 
-const DEVICE_LIST = [...new Set(DeviceList.map((item) => item.category))]
+const GreenRadio = withStyles({
+  root: {
+    color: green[400],
+    "&$checked": {
+      color: green[600],
+    },
+  },
+  checked: {},
+})((props) => <Radio color="default" {...props} />)
 
-const Chip = ({ color, text }) => {
-  const classes = useStyles()
-  return (
-    <span className={classes.chip}>
-      <div className="color" style={{ backgroundColor: color }} />
-      <div className="text">{text}</div>
-    </span>
-  )
-}
+const RedSwitch = withStyles({
+  switchBase: {
+    color: "white",
 
-const RowLayout = ({ order, classification, trash, visible, onClick }) => {
+    "&$checked": {
+      color: "#F50057",
+    },
+    "&$checked + $track": {
+      backgroundColor: "#F50057",
+    },
+  },
+  checked: {},
+  track: {
+    backgroundColor: "white",
+  },
+})(Switch)
+
+const RowLayout = ({
+  order,
+  classification,
+  trash,
+  visible,
+  onClick,
+  defaultToggle,
+}) => {
   const classes = useStyles()
   const [mouseOver, changeMouseOver] = useState(false)
   return (
@@ -41,15 +67,26 @@ const RowLayout = ({ order, classification, trash, visible, onClick }) => {
       onMouseLeave={() => changeMouseOver(false)}
       // className={classnames(classes.row, { header, highlighted })}
     >
-      <Grid container>
-        <Grid item xs={2}>
+      <Grid
+        container
+        style={{
+          alignContent: "center",
+          alignItems: "center",
+          justifyContent: "center",
+        }}
+      >
+        {/* <Grid item xs={1}>
           <div style={{ textAlign: "right", paddingRight: 10 }}>{order}</div>
-        </Grid>
-        <Grid item xs={8}>
+        </Grid> */}
+        <Grid item xs={5}>
           {classification}
         </Grid>
-        <Grid item xs={1}>
+        <Grid item xs={2}>
           {visible}
+        </Grid>
+
+        <Grid item xs={2}>
+          {defaultToggle}
         </Grid>
         <Grid item xs={1}>
           {trash}
@@ -61,10 +98,17 @@ const RowLayout = ({ order, classification, trash, visible, onClick }) => {
 
 const RowHeader = ({}) => {
   return (
-    <Grid container>
+    <Grid
+      container
+      style={{
+        alignContent: "center",
+        alignItems: "center",
+        justifyContent: "center",
+      }}
+    >
       <Grid
         item
-        xs={10}
+        xs={4}
         style={{
           paddingLeft: 16,
         }}
@@ -72,9 +116,26 @@ const RowHeader = ({}) => {
         Breakout Name
       </Grid>
       <Grid item xs={1}>
-        <VisibilityIcon className="icon" />
+        {/* | */}
+      </Grid>
+      <Grid item xs={2}>
+        {/* <VisibilityIcon className="icon" /> */}
+        Visibility
       </Grid>
       <Grid item xs={1}>
+        {/* | */}
+      </Grid>
+      <Grid item xs={2}>
+        Auto-Add
+      </Grid>
+
+      <Grid
+        item
+        xs={2}
+        style={{
+          paddingLeft: 8,
+        }}
+      >
         <TrashIcon className="icon" />
       </Grid>
     </Grid>
@@ -89,13 +150,14 @@ const Row = ({
   is_breakout,
   visible,
   index,
+  isAutoAdd,
   onBreakoutDelete,
   onBreakoutVisible,
+  onBreakoutAutoAdd,
 }) => {
   return (
     <RowLayout
       header={false}
-      //   onClick={() => onSelectBreakout(r)}
       order={`#${index + 1}`}
       classification={name}
       area=""
@@ -103,10 +165,7 @@ const Row = ({
         <>
           <FormControlLabel
             control={
-              <Switch
-                style={{
-                  color: "white",
-                }}
+              <RedSwitch
                 size="small"
                 id={name}
                 checked={visible}
@@ -119,7 +178,25 @@ const Row = ({
         </>
       }
       trash={
-        <TrashIcon onClick={() => onBreakoutDelete(id)} className="icon2" />
+        <IconButton
+          aria-label="delete"
+          size="small"
+          className="icon2"
+          onClick={() => onBreakoutDelete(id)}
+        >
+          <TrashIcon style={{ color: "white" }} />
+        </IconButton>
+      }
+      defaultToggle={
+        <div>
+          <GreenRadio
+            checked={isAutoAdd}
+            onClick={() => onBreakoutAutoAdd(id)}
+            value={id}
+            name="radio-button-demo"
+            size="small"
+          />
+        </div>
       }
     />
   )
@@ -131,8 +208,11 @@ const MemoRow = memo(
     prevProps.visible === nextProps.visible &&
     prevProps.id === nextProps.id &&
     prevProps.name === nextProps.name &&
+    prevProps.isAutoAdd === nextProps.isAutoAdd &&
     prevProps.is_breakout === nextProps.is_breakout &&
-    prevProps.onBreakoutDelete === nextProps.onBreakoutDelete
+    prevProps.onBreakoutDelete === nextProps.onBreakoutDelete &&
+    prevProps.onBreakoutVisible === nextProps.onBreakoutVisible &&
+    prevProps.onBreakoutAutoAdd === nextProps.onBreakoutAutoAdd
 )
 
 const emptyArr = []
@@ -142,6 +222,8 @@ export const BreakoutSidebarBox = ({
   breakouts,
   onBreakoutDelete,
   onBreakoutVisible,
+  onBreakoutAutoAdd,
+  selectedBreakoutIdAutoAdd,
 }) => {
   const breakoutList = useMemo(() => {
     const breakoutRegions = [
@@ -159,14 +241,12 @@ export const BreakoutSidebarBox = ({
   return (
     <SidebarBoxContainer
       title="Breakouts"
-      subTitle=""
       icon={<DashboardIcon style={{ color: "white" }} />}
       expandedByDefault
     >
       <div className={classes.container}>
         <MemoRowHeader />
         <HeaderSep />
-
         {breakoutList &&
           breakoutList.map((r, i) => (
             <>
@@ -177,8 +257,10 @@ export const BreakoutSidebarBox = ({
                 name={r.name}
                 is_breakout={r.is_breakout}
                 visible={r.visible}
+                isAutoAdd={r.id === selectedBreakoutIdAutoAdd}
                 onBreakoutDelete={onBreakoutDelete}
                 onBreakoutVisible={onBreakoutVisible}
+                onBreakoutAutoAdd={onBreakoutAutoAdd}
               />
             </>
           ))}
@@ -196,9 +278,16 @@ const mapUsedRegionProperties = (r) => [
   r.breakout,
 ]
 
-export default memo(BreakoutSidebarBox, (prevProps, nextProps) =>
-  isEqual(
-    (prevProps.regions || emptyArr).map(mapUsedRegionProperties),
-    (nextProps.regions || emptyArr).map(mapUsedRegionProperties)
+export default memo(BreakoutSidebarBox, (prevProps, nextProps) => {
+  const prevSelectedBreakoutIdAutoAdd = prevProps.selectedBreakoutIdAutoAdd
+  const nextSelectedBreakoutIdAutoAdd = nextProps.selectedBreakoutIdAutoAdd
+
+  return (
+    isEqual(
+      (prevProps.regions || emptyArr).map(mapUsedRegionProperties),
+      (nextProps.regions || emptyArr).map(mapUsedRegionProperties)
+    ) &&
+    isEqual(prevProps.breakouts, nextProps.breakouts) &&
+    prevSelectedBreakoutIdAutoAdd == nextSelectedBreakoutIdAutoAdd
   )
-)
+})
