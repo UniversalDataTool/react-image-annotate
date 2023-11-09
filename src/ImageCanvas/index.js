@@ -1,42 +1,35 @@
 // @flow weak
 
-import React, {
-  useRef,
-  useState,
-  useLayoutEffect,
-  useEffect,
-  useMemo,
-  useCallback,
-} from "react"
-import type { Node } from "react"
-import { Matrix } from "transformation-matrix-js"
-import Crosshairs from "../Crosshairs"
-import type {
-  Region,
-  Point,
-  Polygon,
-  Box,
-  Keypoints,
-  KeypointsDefinition,
-} from "./region-tools.js"
 import { makeStyles } from "@material-ui/core/styles"
-import styles from "./styles"
+import type { Node } from "react"
+import React, {
+  useEffect,
+  useLayoutEffect,
+  useMemo,
+  useRef,
+  useState
+} from "react"
+import { useRafState } from "react-use"
+import { Matrix } from "transformation-matrix-js"
+import useEventCallback from "use-event-callback"
+import Crosshairs from "../Crosshairs"
+import ImageMask from "../ImageMask"
+import PointDistances from "../PointDistances"
 import PreventScrollToParents from "../PreventScrollToParents"
+import RegionLabel from "../RegionLabel"
+import RegionSelectAndTransformBoxes from "../RegionSelectAndTransformBoxes"
+import RegionShapes from "../RegionShapes"
+import RegionTags from "../RegionTags"
+import VideoOrImageCanvasBackground from "../VideoOrImageCanvasBackground"
+import useExcludePattern from "../hooks/use-exclude-pattern"
 import useWindowSize from "../hooks/use-window-size.js"
+import type {
+  Region
+} from "./region-tools.js"
+import styles from "./styles"
 import useMouse from "./use-mouse"
 import useProjectRegionBox from "./use-project-box"
-import useExcludePattern from "../hooks/use-exclude-pattern"
-import { useRafState } from "react-use"
-import PointDistances from "../PointDistances"
-import RegionTags from "../RegionTags"
-import RegionLabel from "../RegionLabel"
-import ImageMask from "../ImageMask"
-import RegionSelectAndTransformBoxes from "../RegionSelectAndTransformBoxes"
-import VideoOrImageCanvasBackground from "../VideoOrImageCanvasBackground"
-import useEventCallback from "use-event-callback"
-import RegionShapes from "../RegionShapes"
 import useWasdMode from "./use-wasd-mode"
-import { Button } from "@material-ui/core"
 
 const useStyles = makeStyles(styles)
 
@@ -557,7 +550,6 @@ export const ImageCanvas = ({
       <div
         className={classes.resetButton}
         onClick={() => {
-          console.log("click")
           resetMat()
         }}
       >
