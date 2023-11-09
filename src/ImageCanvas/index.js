@@ -6,6 +6,7 @@ import React, {
   useLayoutEffect,
   useEffect,
   useMemo,
+  useCallback,
 } from "react"
 import type { Node } from "react"
 import { Matrix } from "transformation-matrix-js"
@@ -35,6 +36,7 @@ import VideoOrImageCanvasBackground from "../VideoOrImageCanvasBackground"
 import useEventCallback from "use-event-callback"
 import RegionShapes from "../RegionShapes"
 import useWasdMode from "./use-wasd-mode"
+import { Button } from "@material-ui/core"
 
 const useStyles = makeStyles(styles)
 
@@ -338,6 +340,8 @@ export const ImageCanvas = ({
     return breakoutRegions
   }, [breakouts])
 
+  const resetMat = () => changeMat(getDefaultMat())
+
   return (
     <div
       style={{
@@ -426,7 +430,7 @@ export const ImageCanvas = ({
             
           /> */}
 
-          {/* <RegionTags
+          <RegionTags
             regions={regions}
             projectRegionBox={projectRegionBox}
             mouseEvents={mouseEvents}
@@ -435,6 +439,7 @@ export const ImageCanvas = ({
             onBeginRegionEdit={onBeginRegionEdit}
             onCloseRegionEdit={onCloseRegionEdit}
             onDeleteRegion={onDeleteRegion}
+            onChangeRegion={onChangeRegion}
             onMatchTemplate={onMatchRegionTemplate}
             finishMatchTemplate={finishMatchRegionTemplate}
             layoutParams={layoutParams}
@@ -452,7 +457,7 @@ export const ImageCanvas = ({
             editing
             region={highlightedRegion}
             selectedBreakoutIdAutoAdd={selectedBreakoutIdAutoAdd}
-          /> */}
+          />
         </PreventScrollToParents>
       )}
       {!showTags && highlightedRegion && (
@@ -548,6 +553,15 @@ export const ImageCanvas = ({
       </PreventScrollToParents>
       <div className={classes.zoomIndicator}>
         {((1 / mat.a) * 100).toFixed(0)}%
+      </div>
+      <div
+        className={classes.resetButton}
+        onClick={() => {
+          console.log("click")
+          resetMat()
+        }}
+      >
+        Reset Zoom
       </div>
     </div>
   )
