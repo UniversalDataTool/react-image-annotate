@@ -426,7 +426,7 @@ export const ImageCanvas = ({
             
           /> */}
 
-          <RegionTags
+          {/* <RegionTags
             regions={regions}
             projectRegionBox={projectRegionBox}
             mouseEvents={mouseEvents}
@@ -452,7 +452,7 @@ export const ImageCanvas = ({
             editing
             region={highlightedRegion}
             selectedBreakoutIdAutoAdd={selectedBreakoutIdAutoAdd}
-          />
+          /> */}
         </PreventScrollToParents>
       )}
       {!showTags && highlightedRegion && (
