@@ -33,6 +33,7 @@ export const RegionTags = ({
   allowComments,
   dispatch,
   breakoutList,
+  onChangeRegion,
   disableClose,
   allowedClasses,
   allowedTags,
