@@ -447,7 +447,7 @@ export default (state: MainLayoutState, action: Action) => {
         }
 
         newRegions = newRegions.map((region) =>
-          region.category === action.category
+          region.category === action.category && !region.breakout
             ? { ...region, breakout: newBreakout }
             : region
         )
