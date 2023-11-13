@@ -76,7 +76,7 @@ export const MainLayout = ({
           ({
             type,
             ...params.reduce(
-              (acc, p, i) => ((acc[p] = args[i]), acc), {})
+              (acc, p, i) => (((acc[p] = args[i]), acc)), {})
           })
         )
         : dispatch({type, ...args[0]})
@@ -335,6 +335,7 @@ export const MainLayout = ({
                   <ClassSelectionMenu
                     key="ClassSelectionMenu"
                     selectedCls={state.selectedCls}
+                    preselectCls={state.preselectCls}
                     regionClsList={state.regionClsList}
                     onSelectCls={action("SELECT_CLASSIFICATION", "cls")}
                   />

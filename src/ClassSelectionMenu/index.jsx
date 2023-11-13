@@ -54,10 +54,19 @@ const Number = styled("div")(({theme}) => ({
 
 export const ClassSelectionMenu = ({
   selectedCls,
+  preselectCls,
   regionClsList,
   onSelectCls,
 }) => {
 
+  if (selectedCls == null) {
+    if (preselectCls != null) {
+      onSelectCls(preselectCls);
+    } else {
+      onSelectCls(regionClsList[0]);
+    }
+  }
+  
   return (
     <ThemeProvider theme={theme}>
       <SidebarBoxContainer
