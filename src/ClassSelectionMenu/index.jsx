@@ -58,30 +58,15 @@ export const ClassSelectionMenu = ({
   regionClsList,
   onSelectCls,
 }) => {
-  useEffect(() => {
-    const keyMapping = {}
-    for (let i = 0; i < 9 && i < regionClsList.length; i++) {
-      keyMapping[i + 1] = () => onSelectCls(regionClsList[i])
-    }
-    const onKeyDown = (e) => {
-      if (keyMapping[e.key]) {
-        keyMapping[e.key]()
-        e.preventDefault()
-        e.stopPropagation()
-      }
-    }
-    window.addEventListener("keydown", onKeyDown)
-    if(selectedCls == null){
-      if (preselectCls != null ) {
-        onSelectCls(preselectCls);
-      }
-      else{
-        onSelectCls(regionClsList[0]);
-      }
-    }
-    return () => window.removeEventListener("keydown", onKeyDown)
-  }, [onSelectCls, regionClsList, selectedCls, preselectCls])
 
+  if (selectedCls == null) {
+    if (preselectCls != null) {
+      onSelectCls(preselectCls);
+    } else {
+      onSelectCls(regionClsList[0]);
+    }
+  }
+  
   return (
     <ThemeProvider theme={theme}>
       <SidebarBoxContainer
