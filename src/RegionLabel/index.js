@@ -123,7 +123,7 @@ export const RegionLabel = ({
     region.type === "scale" ? region.cls : "1"
   )
 
-  const min = 0.01
+  const min = 0.1
   const max = 999.99
 
   useEffect(() => {
