@@ -450,7 +450,7 @@ export const RegionLabel = ({
                                 ? breakoutList.find(
                                     (b) => b.id === selectedBreakoutIdAutoAdd
                                   )
-                                : null
+                                : undefined
                             new_region["category"] =
                               region?.category ||
                               DeviceList.find(
