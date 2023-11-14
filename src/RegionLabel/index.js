@@ -110,13 +110,20 @@ export const RegionLabel = ({
 
   const [averageTotalScale, setAverageTotalScale] = useState(0)
 
+  const initialRelativeLineLengthFt =
+    (region.type === "line" || region.type === "scale") && region.length_ft
+      ? region.length_ft
+      : 0
+
   const [relativeLineLengthFt, setRelativeLineLengthFt] = useState(
-    region.length_ft ? region.lenght_ft : 0
+    initialRelativeLineLengthFt
   )
+
   const [scaleInputVal, setScaleInputVal] = useState(
     region.type === "scale" ? region.cls : "1"
   )
-  const min = 0.01
+
+  const min = 0.1
   const max = 999.99
 
   useEffect(() => {
@@ -135,9 +142,13 @@ export const RegionLabel = ({
           )
         }
       })
-      setAverageTotalScale(
-        scaleValues.reduce((a, b) => a + b, 0) / scaleValues.length
-      )
+      if (scaleValues.length > 0) {
+        setAverageTotalScale(
+          scaleValues.reduce((a, b) => a + b, 0) / scaleValues.length
+        )
+      } else {
+        setAverageTotalScale(0)
+      }
     }
   }, [regions, region])
 
@@ -150,7 +161,11 @@ export const RegionLabel = ({
           const relativeLineLength = Math.sqrt(
             (region.x1 - region.x2) ** 2 + (region.y1 - region.y2) ** 2
           )
-          setRelativeLineLengthFt(relativeLineLength / averageTotalScale)
+          if (averageTotalScale !== 0) {
+            setRelativeLineLengthFt(relativeLineLength / averageTotalScale)
+          }
+        } else {
+          setRelativeLineLengthFt(0)
         }
       }
     }
