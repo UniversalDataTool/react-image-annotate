@@ -227,7 +227,7 @@ export const RegionLabel = ({
             }}
             size="small"
           >
-            Save Scale and Close
+            Save Scale
           </Button>
         </div>
       )
