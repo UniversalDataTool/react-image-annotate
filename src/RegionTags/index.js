@@ -41,8 +41,7 @@ export const RegionTags = ({
   region,
   selectedBreakoutIdAutoAdd,
 }) => {
-  const RegionLabel =
-    RegionEditLabel != null ? RegionEditLabel : DefaultRegionLabel
+  const RegionLabel = DefaultRegionLabel
   return regions
     .filter((r) => r.visible || r.visible === undefined)
     .map((region) => {
