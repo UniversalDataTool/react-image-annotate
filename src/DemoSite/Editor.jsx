@@ -2,7 +2,6 @@ import React, { useState } from "react"
 import Button from "@mui/material/Button"
 import { createTheme, ThemeProvider } from "@mui/material/styles"
 import Select from "react-select"
-import Code from "react-syntax-highlighter"
 import Dialog from "@mui/material/Dialog"
 import DialogTitle from "@mui/material/DialogTitle"
 import DialogContent from "@mui/material/DialogContent"
@@ -138,46 +137,6 @@ const Editor = ({ onOpenAnnotator, lastOutput }) => {
         </div>
         <div style={styles.specificationArea}>
           <h2>React Image Annotate Format</h2>
-          <Code language="javascript">{`
-{
-  taskDescription?: string, // markdown
-  regionTagList?: Array<string>,
-  regionClsList?: Array<string>,
-  imageTagList?: Array<string>,
-  imageClsList?: Array<string>,
-  // all tools are enabled by default
-  enabledTools?: Array< "select" | "create-point" | "create-box" | "create-polygon" | "create-line">,
-  selectedImage?: string, // initial selected image
-  images: Array<{
-    src: string,
-    thumbnailSrc?: string, // use this if you are using high-res images
-    name: string,
-    regions?: Array<{
-      id: string | number,
-      cls?: string,
-      color?: string,
-      tags?: Array<string>,
-
-      // Point
-      type: "point",
-      x: number, // [0-1] % of image width
-      y: number, // [0-1] % of image height
-
-      // Bounding Box
-      type: "box",
-      x: number, // [0-1] % of image width
-      y: number, // [0-1] % of image height
-      w: number, // [0-1] % of image width
-      h: number, // [0-1] % of image height
-
-      // Polygon
-      type: "polygon",
-      open?: boolean, // should last and first points be connected, default: true
-      points: Array<[number, number]> // [0-1] % of image width/height
-    }>
-  }>,
-}
-`}</Code>
         </div>
         <Dialog fullScreen open={outputDialogOpen}>
           <DialogTitle>React Image Annotate Output</DialogTitle>
