@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [4.1.1](https://github.com/starwit/react-image-annotate/compare/4.1.0...4.1.1) (2023-11-16)
+
+
+### Features
+
+* Remove react-syntax-highlighter (outdated and functionality not needed) ([f4e66b8](https://github.com/starwit/react-image-annotate/commit/f4e66b8ded0c60e82b5decaa9e4df9c87b4ef014))
+
 ## [4.1.0](https://github.com/starwit/react-image-annotate/compare/4.0.2-0...4.1.0) (2023-11-13)
 
 ### [4.0.1-0](https://github.com/starwit/react-image-annotate/compare/4.0.0...4.0.1-0) (2023-11-02)
