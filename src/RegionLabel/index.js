@@ -123,8 +123,8 @@ export const RegionLabel = ({
     region.type === "scale" ? region.cls : "1"
   )
 
-  const min = 0.1
-  const max = 999.99
+  const min = 1
+  const max = 1000
 
   useEffect(() => {
     if (region.type === "line") {
@@ -171,7 +171,8 @@ export const RegionLabel = ({
     }
   }, [scales, region])
 
-  const handler = (e) => {
+  const changeScaleHandler = (e) => {
+    e.preventDefault()
     if (Number(e.target.value) > max) {
       setScaleInputVal(max)
     } else if (Number(e.target.value) < min) {
@@ -206,9 +207,10 @@ export const RegionLabel = ({
               endAdornment: <InputAdornment position="end"> ft</InputAdornment>,
             }}
             variant="outlined"
-            onChange={handler}
+            onChange={changeScaleHandler}
             value={scaleInputVal}
           />
+
           <Button
             style={{
               marginTop: "10px",
@@ -219,10 +221,13 @@ export const RegionLabel = ({
             disabled={scaleInputVal < 0}
             onClick={() => {
               onChange({ ...region, cls: scaleInputVal.toString() })
+              if (onClose) {
+                onClose(region)
+              }
             }}
             size="small"
           >
-            Save Scale
+            Save Scale and Close
           </Button>
         </div>
       )
@@ -629,7 +634,7 @@ export const RegionLabel = ({
                   </Typography>
                 </div>
               )}
-            {onClose && (
+            {onClose && region.type !== "scale" && (
               <div style={{ marginTop: 4, display: "flex" }}>
                 <div style={{ flexGrow: 1 }} />
                 <Button

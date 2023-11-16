@@ -7,7 +7,7 @@ import React, {
   useLayoutEffect,
   useMemo,
   useRef,
-  useState
+  useState,
 } from "react"
 import { useRafState } from "react-use"
 import { Matrix } from "transformation-matrix-js"
@@ -23,9 +23,7 @@ import RegionTags from "../RegionTags"
 import VideoOrImageCanvasBackground from "../VideoOrImageCanvasBackground"
 import useExcludePattern from "../hooks/use-exclude-pattern"
 import useWindowSize from "../hooks/use-window-size.js"
-import type {
-  Region
-} from "./region-tools.js"
+import type { Region } from "./region-tools.js"
 import styles from "./styles"
 import useMouse from "./use-mouse"
 import useProjectRegionBox from "./use-project-box"
