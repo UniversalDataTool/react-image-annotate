@@ -137,6 +137,7 @@ export const RegionTags = ({
               allowComments={allowComments}
               dispatch={dispatch}
               breakoutList={breakoutList}
+              selectedBreakoutIdAutoAdd={selectedBreakoutIdAutoAdd}
             />
           </div>
         </div>

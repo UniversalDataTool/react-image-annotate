@@ -465,12 +465,13 @@ export const RegionLabel = ({
                             new_region["color"] = region.color
                             new_region["visible"] = true
                             new_region["breakout"] =
-                              selectedBreakoutIdAutoAdd !== null &&
-                              breakoutList.length > 0
-                                ? breakoutList.find(
-                                    (b) => b.id === selectedBreakoutIdAutoAdd
-                                  )
-                                : undefined
+                              (selectedBreakoutIdAutoAdd &&
+                                breakoutList &&
+                                breakoutList.length > 0 &&
+                                breakoutList.find(
+                                  (b) => b.id === selectedBreakoutIdAutoAdd
+                                )) ||
+                              (region && region.breakout)
                             new_region["category"] =
                               region?.category ||
                               DeviceList.find(
@@ -667,5 +668,6 @@ export default memo(
   RegionLabel,
   (prevProps, nextProps) =>
     prevProps.editing === nextProps.editing &&
-    prevProps.region === nextProps.region
+    prevProps.region === nextProps.region &&
+    prevProps.selectedBreakoutIdAutoAdd === nextProps.selectedBreakoutIdAutoAdd
 )

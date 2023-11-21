@@ -439,6 +439,7 @@ export const MainLayout = ({
               // ),
               <ToggleSidebarBox
                 regions={activeImage ? activeImage.regions : emptyArr}
+                categoryFilters={state.filters.categories}
                 onRegionToggle={(event) => {
                   dispatch({
                     type: "TOGGLE_VISIBILITY",
@@ -475,7 +476,7 @@ export const MainLayout = ({
                 onSelectRegion={action("SELECT_REGION", "region")}
                 onDeleteRegion={action("DELETE_REGION", "region")}
                 onChangeRegion={action("CHANGE_REGION", "region")}
-                onMatchRegionTemplate={action("MATCH_REGION", "region")}
+                onMatchRegionTemplate={action("MATCH_REGION_LOADING", "region")}
               />,
               state.keyframes && (
                 <KeyframesSelector

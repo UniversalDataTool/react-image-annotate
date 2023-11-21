@@ -17,25 +17,25 @@ export const defaultHotkeys = [
   //   description: "Create a point",
   //   binding: "p",
   // },
-  // {
-  //   id: "create_bounding_box",
-  //   description: "Create a bounding box",
-  //   binding: "b",
-  // },
-  // {
-  //   id: "create_line",
-  //   description: "Create a line",
-  //   binding: "l",
-  // }, {
-  //   id: "create_scale",
-  //   description: "Create a scale",
-  //   binding: "s",
-  // },
-  // {
-  //   id: "delete_region",
-  //   description: "Delete selected region",
-  //   binding: "d",
-  // },
+  {
+    id: "create_bounding_box",
+    description: "Create a bounding box",
+    binding: "b",
+  },
+  {
+    id: "create_line",
+    description: "Create a line",
+    binding: "l",
+  }, {
+    id: "create_scale",
+    description: "Create a scale",
+    binding: "s",
+  },
+  {
+    id: "delete_region",
+    description: "Delete selected region",
+    binding: "d",
+  },
   {
     id: "pan_tool",
     description: "Select the Pan Tool",

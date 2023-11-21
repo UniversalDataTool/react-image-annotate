@@ -1,18 +1,16 @@
 // @flow
-import type { MainLayoutState, Action } from "../../MainLayout/types"
-import { moveRegion } from "../../ImageCanvas/region-tools.js"
-import { getIn, setIn, updateIn, set, merge } from "seamless-immutable"
-import moment from "moment"
-import isEqual from "lodash/isEqual"
-import getActiveImage from "./get-active-image"
-import { saveToHistory } from "./history-handler.js"
-import colors from "../../colors"
-import fixTwisted from "./fix-twisted"
-import convertExpandingLineToPolygon from "./convert-expanding-line-to-polygon"
 import clamp from "clamp"
+import isEqual from "lodash/isEqual"
+import { getIn, merge, setIn } from "seamless-immutable"
+import { moveRegion } from "../../ImageCanvas/region-tools.js"
+import type { Action, MainLayoutState } from "../../MainLayout/types"
+import DeviceList from "../../RegionLabel/DeviceList"
 import getLandmarksWithTransform from "../../utils/get-landmarks-with-transform"
 import setInLocalStorage from "../../utils/set-in-local-storage"
-import DeviceList from "../../RegionLabel/DeviceList"
+import convertExpandingLineToPolygon from "./convert-expanding-line-to-polygon"
+import fixTwisted from "./fix-twisted"
+import getActiveImage from "./get-active-image"
+import { saveToHistory } from "./history-handler.js"
 
 const getRandomId = () => {
   var S4 = function () {
@@ -281,28 +279,28 @@ export default (state: MainLayoutState, action: Action) => {
       return newState
     }
     case "TOGGLE_BREAKOUT_AUTO_ADD": {
+      console.log("TOGGLE_BREAKOUT_AUTO_ADD")
       let newState = { ...state }
+      console.log("TOGGLE_BREAKOUT_AUTO_ADD")
       let newImage = getIn(newState, ["images", currentImageIndex])
       let selectedBreakoutIdAutoAdd = getIn(newState, [
         "selectedBreakoutIdAutoAdd",
       ])
-      let newRegions = getIn(newState, ["images", currentImageIndex, "regions"])
 
-      if (!newRegions) {
-        return state
-      }
-
+      console.log("selectedBreakoutIdAutoAdd BEFORE", selectedBreakoutIdAutoAdd)
       if (selectedBreakoutIdAutoAdd === action.breakoutId) {
         selectedBreakoutIdAutoAdd = null
       } else {
         selectedBreakoutIdAutoAdd = action.breakoutId
       }
+      console.log("selectedBreakoutIdAutoAdd AFTER ", selectedBreakoutIdAutoAdd)
+
       newState = merge(newState, [
         { selectedBreakoutIdAutoAdd: selectedBreakoutIdAutoAdd },
       ])
-      newImage = setIn(newImage, ["regions"], newRegions)
+      console.log("newState after merge", newState)
       newState = setIn(newState, ["images", currentImageIndex], newImage)
-
+      console.log("newState after setIn", newState)
       return newState
     }
     case "TOGGLE_BREAKOUT_VISIBILITY":
@@ -390,75 +388,53 @@ export default (state: MainLayoutState, action: Action) => {
     }
     case "ADD_NEW_BREAKOUT_BY_CATEGORY": {
       let newState = { ...state }
-      let newImage = getIn(newState, ["images", currentImageIndex])
-      let newRegions = getIn(newState, ["images", currentImageIndex, "regions"])
+      let images = getIn(newState, ["images"])
       let newBreakouts = getIn(newState, ["breakouts"])
-      if (!newRegions) {
-        return state
+
+      let categoryBreakout = {
+        name: action.category,
+        is_breakout: true,
+        visible: false,
+        id: getRandomId(),
       }
-      // check if all regions with the same category already have a breakout
-      const regionsWithCategory = newRegions.filter(
-        (region) => region.category === action.category
-      )
-      const regionsWithBreakout = regionsWithCategory.filter(
-        (region) => region.breakout
-      )
-      if (regionsWithCategory.length === regionsWithBreakout.length) {
-        return state
-      }
-      // first check to see if the breakout already exists. if it does exist then use the current breakout id, and add the breakout to the region
-      const breakoutExists = newBreakouts.some(
+      const existingBreakout = newBreakouts.some(
         (breakout) => breakout.name === action.category
       )
-      if (breakoutExists) {
-        // iteratre through all the regions
-        // if there is a region with the category being the same as the action.category then we check to see if there is a breakout with it,
-        // if there isnt a breakout we add it to the current breakout, otherwise we do nothing to that region
-        newRegions = newRegions.map((region) => {
-          if (region.category === action.category && !region.breakout) {
-            const matchingBreakout = newBreakouts.find(
-              (breakout) => breakout.name === action.category
-            )
-            return {
-              ...region,
-              breakout: matchingBreakout
-                ? { ...matchingBreakout }
-                : {
-                    is_breakout: true,
-                    name: action.category,
-                    id: matchingBreakout.id,
-                    visible: false,
-                  },
-            }
-          }
-          return region
-        })
 
-        newBreakouts = newBreakouts.map(
-          (breakout) => breakout.name === action.category && breakout
-        )
+      if (!existingBreakout) {
+        // Create a new breakout and append it to newBreakouts
+        newBreakouts = newBreakouts.concat(categoryBreakout)
       } else {
-        const breakoutId = getRandomId()
-        const newBreakout = {
-          name: action.category,
-          is_breakout: true,
-          visible: false,
-          id: breakoutId,
-        }
-
-        newRegions = newRegions.map((region) =>
-          region.category === action.category && !region.breakout
-            ? { ...region, breakout: newBreakout }
-            : region
+        // Use the existing breakout with the matching category
+        categoryBreakout = newBreakouts.find(
+          (breakout) => breakout.name === action.category
         )
-
-        newBreakouts = newBreakouts.concat(newBreakout)
       }
 
-      newImage = setIn(newImage, ["regions"], newRegions)
-      newState = merge(newState, [{ breakouts: newBreakouts }])
-      newState = setIn(newState, ["images", currentImageIndex], newImage)
+      images = images.map((image, imgIDX) => {
+        let regions = image.regions
+        if (!regions) {
+          return image
+        }
 
+        regions = regions.map((region) => {
+          if (region.category === action.category) {
+            if (region.breakout === undefined) {
+              return {
+                ...region,
+                breakout: categoryBreakout,
+              }
+            } else {
+              return region
+            }
+          } else {
+            return region
+          }
+        })
+        let newImage = setIn(image, ["regions"], regions)
+        newState = setIn(newState, ["images", imgIDX], newImage)
+      })
+      newState = merge(newState, [{ breakouts: newBreakouts }])
       return newState
     }
     case "ADD_NEW_BREAKOUT_BY_REGION_ID": {
@@ -1443,7 +1419,6 @@ export default (state: MainLayoutState, action: Action) => {
       let page_properties = action.page_properties
       let old_regions = [...(getIn(state, _pathToActiveImage).regions || [])]
       let new_regions = action.region
-
       // remove the new regions that have IoU > 0.5 with the old regions to prevent duplicate regions
       for (let i = 0; i < old_regions.length; i++) {
         for (let j = 0; j < new_regions.length; j++) {

@@ -24,6 +24,7 @@ import videoReducer from "./reducers/video-reducer.js"
 import { HotKeys } from "react-hotkeys"
 import { defaultKeyMap } from "../ShortcutsManager"
 import getActiveImage from "../Annotator/reducers/get-active-image"
+import DeviceList from "../RegionLabel/DeviceList.js"
 
 const getRandomId = () => Math.random().toString().split(".")[1]
 
@@ -130,6 +131,13 @@ export const Annotator = ({
   // Converting Set back to an array before returning
   const breakouts = Array.from(uniqueBreakouts)
 
+
+
+  const filters = {
+    categories: [...new Set(DeviceList.map((item) => item.category))],
+    breakoutNames: new Set(),
+  }
+
   const [state, dispatchToReducer] = useReducer(
     historyHandler(
       combineReducers(
@@ -164,6 +172,7 @@ export const Annotator = ({
       toggleList: [],
       selectedBreakoutIdAutoAdd: null,
       breakouts: breakouts,
+      filters : filters,
       ...(annotationType === "image"
         ? {
             selectedImage,

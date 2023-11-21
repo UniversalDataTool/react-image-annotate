@@ -33,35 +33,33 @@ storiesOf("Annotator", module)
             id: "box1",
             type: "box",
             x: 0.6492276531819365,
-            y: 0.6189871322167486, 
+            y: 0.6189871322167486,
             w: 0.01047985281460484,
             h: 0.009113300492610832,
             highlighted: true,
             cls: "Delta",
           },
-        ]
+        ],
       },
-    ]);
-
+    ])
 
     return (
       <HotKeys keyMap={defaultKeyMap}>
-      <Annotator
-        onExit={actionAddon("onExit")}
-        onSave={(output) => {
-          console.log("DBG: XKEY save region");
-          console.log(output);
-        }
-        }
-        labelImages
-        showTags={false}
-        regionClsList={["Alpha", "Beta", "Charlie", "Delta"]}
-        imageClsList={["Alpha", "Beta", "Charlie", "Delta"]}
-        images={images}
-        key={images}
-      />
-    </HotKeys>
-    );
+        <Annotator
+          onExit={actionAddon("onExit")}
+          onSave={(output) => {
+            console.log("DBG: XKEY save region")
+            console.log(output)
+          }}
+          labelImages
+          showTags={false}
+          regionClsList={["Alpha", "Beta", "Charlie", "Delta"]}
+          imageClsList={["Alpha", "Beta", "Charlie", "Delta"]}
+          images={images}
+          key={images}
+        />
+      </HotKeys>
+    )
   })
   .add("Basic", () => (
     <Annotator
@@ -404,7 +402,6 @@ storiesOf("Annotator", module)
       ]}
       onExit={(out) => {
         window.lastOutput = out
-        console.log(JSON.stringify(out.images))
       }}
     />
   ))
@@ -500,7 +497,6 @@ storiesOf("Annotator", module)
     >
       <Annotator
         onExit={(...args) => {
-          console.log(...args)
           actionAddon("onExit")(...args)
         }}
         showTags
@@ -634,7 +630,9 @@ storiesOf("Annotator", module)
     return (
       <Annotator
         onExit={actionAddon("onExit")}
-        onSave={()=> {console.log("storybook DBG: onSave clicked")}}
+        onSave={() => {
+          console.log("storybook DBG: onSave clicked")
+        }}
         labelImages
         selectedImage={images[0]}
         RegionEditLabel={NewRegionEditLabel}
