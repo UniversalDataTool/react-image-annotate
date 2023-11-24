@@ -99,7 +99,7 @@ const RowHeader = ({
   onRegionToggle,
   regions,
   onRegionBreakout,
-  categoryFilters,
+  excludedCategories,
 }) => {
   const [checkedList, setCheckedList] = useState(
     DEVICE_LIST.map((item) => {
@@ -329,7 +329,7 @@ const emptyArr = []
 // )
 
 export const ToggleSidebarBox = ({
-  categoryFilters,
+  excludedCategories,
   regions,
   onRegionToggle,
   onRegionBreakout,
@@ -346,7 +346,7 @@ export const ToggleSidebarBox = ({
           onRegionToggle={onRegionToggle}
           regions={regions}
           onRegionBreakout={onRegionBreakout}
-          categoryFilters={categoryFilters}
+          excludedCategories={excludedCategories}
         />
       </div>
     </SidebarBoxContainer>

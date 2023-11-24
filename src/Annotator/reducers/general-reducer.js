@@ -223,21 +223,40 @@ export default (state: MainLayoutState, action: Action) => {
       let newState = { ...state }
       let newImage = getIn(newState, ["images", currentImageIndex])
       let newRegions = getIn(newState, ["images", currentImageIndex, "regions"])
+      let excludedCategories = getIn(newState, ["excludedCategories"]) || []
+      let selectedBreakoutToggle = getIn(newState, ["selectedBreakoutToggle"])
+      console.log(action.isVisible)
+      let newExcludedCategories = excludedCategories.includes(action.category)
+        ? excludedCategories.filter((category) => category !== action.category)
+        : [...excludedCategories, action.category]
       if (!newRegions) {
         return state
       }
-
       newRegions = newRegions.map((region) => {
-        if (region.category === action.category) {
-          // Toggle visibility if the region's category matches the action's category
-          return {
-            ...region,
-            visible: action.isVisible,
-          }
-        } else {
-          return region
-        }
+        const isCategoryMatch = region.category === action.category
+        const isBreakoutMatch =
+          !selectedBreakoutToggle ||
+          region.breakout.id === selectedBreakoutToggle
+        const isVisible =
+          isCategoryMatch && isBreakoutMatch
+            ? !newExcludedCategories.includes(action.category)
+            : region.visible
+
+        return { ...region, visible: isVisible }
       })
+
+      // newRegions = newRegions.map((region) => {
+      //   if (region.category === action.category) {
+      //     // Toggle visibility if the region's category matches the action's category
+      //     return {
+      //       ...region,
+      //       visible: visibility,
+      //     }
+      //   } else {
+      //     return region
+      //   }
+      // })
+      newState = setIn(newState, ["excludedCategories"], newExcludedCategories)
       newImage = setIn(newImage, ["regions"], newRegions)
       newState = setIn(newState, ["images", currentImageIndex], newImage)
       return newState
@@ -279,9 +298,7 @@ export default (state: MainLayoutState, action: Action) => {
       return newState
     }
     case "TOGGLE_BREAKOUT_AUTO_ADD": {
-      console.log("TOGGLE_BREAKOUT_AUTO_ADD")
       let newState = { ...state }
-      console.log("TOGGLE_BREAKOUT_AUTO_ADD")
       let newImage = getIn(newState, ["images", currentImageIndex])
       let selectedBreakoutIdAutoAdd = getIn(newState, [
         "selectedBreakoutIdAutoAdd",
@@ -309,6 +326,17 @@ export default (state: MainLayoutState, action: Action) => {
       if (!currentImage || !currentImage.regions) {
         return state
       }
+      console.log("TOGGLE_BREAKOUT_VISIBILITY")
+      // get the eccluded categories
+      let excludedCategories = getIn(state, ["excludedCategories"]) || []
+      let selectedBreakoutToggle = getIn(state, ["selectedBreakoutToggle"])
+      console.log("selectedBreakoutToggle", selectedBreakoutToggle)
+
+      if (selectedBreakoutToggle === action.breakoutId) {
+        selectedBreakoutToggle = null
+      } else {
+        selectedBreakoutToggle = action.breakoutId
+      }
 
       const updatedBreakouts = breakouts.map((breakout) => {
         const isVisible =
@@ -322,7 +350,10 @@ export default (state: MainLayoutState, action: Action) => {
       let updatedRegions = currentImage.regions.map((region) => {
         const breakout = region.breakout
         let breakoutVisible = false
-        if (breakout && breakout.id === action.breakoutId) {
+        // check if the regions category is included in the excluded categories list if it is then set the visibility to false
+        if (excludedCategories.includes(region.category)) {
+          breakoutVisible = false
+        } else if (breakout && breakout.id === action.breakoutId) {
           breakoutVisible = !breakout.visible
           allBreakoutsInvisible = allBreakoutsInvisible && !breakoutVisible
         }
@@ -348,8 +379,15 @@ export default (state: MainLayoutState, action: Action) => {
       const updatedImage = { ...currentImage, regions: updatedRegions }
       const updatedImages = [...images]
       updatedImages[currentImageIndex] = updatedImage
-
-      return { ...state, images: updatedImages, breakouts: updatedBreakouts }
+      // newState = merge(newState, [
+      //   { selectedBreakoutToggle: selectedBreakoutToggle },
+      // ])
+      return {
+        ...state,
+        images: updatedImages,
+        breakouts: updatedBreakouts,
+        selectedBreakoutToggle: selectedBreakoutToggle,
+      }
     case "ADD_NEW_BREAKOUT": {
       let newState = { ...state }
       let newImage = getIn(newState, ["images", currentImageIndex])

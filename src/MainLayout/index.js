@@ -439,7 +439,7 @@ export const MainLayout = ({
               // ),
               <ToggleSidebarBox
                 regions={activeImage ? activeImage.regions : emptyArr}
-                categoryFilters={state.filters.categories}
+                excludedCategories={state.excludedCategories}
                 onRegionToggle={(event) => {
                   dispatch({
                     type: "TOGGLE_VISIBILITY",
@@ -468,6 +468,7 @@ export const MainLayout = ({
                   "TOGGLE_BREAKOUT_AUTO_ADD",
                   "breakoutId"
                 )}
+                selectedBreakoutToggle={state.selectedBreakoutToggle}
                 selectedBreakoutIdAutoAdd={state.selectedBreakoutIdAutoAdd}
                 breakouts={state.breakouts}
               />,

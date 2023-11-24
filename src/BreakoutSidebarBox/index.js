@@ -224,6 +224,7 @@ export const BreakoutSidebarBox = ({
   onBreakoutVisible,
   onBreakoutAutoAdd,
   selectedBreakoutIdAutoAdd,
+  selectedBreakoutToggle,
 }) => {
   const breakoutList = useMemo(() => {
     const breakoutRegions = [

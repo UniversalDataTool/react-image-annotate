@@ -1,6 +1,12 @@
 // @flow
 
-import { Grid, InputAdornment, TextField, Typography } from "@material-ui/core"
+import {
+  Grid,
+  Input,
+  InputAdornment,
+  TextField,
+  Typography,
+} from "@material-ui/core"
 import Button from "@material-ui/core/Button"
 import IconButton from "@material-ui/core/IconButton"
 import Paper from "@material-ui/core/Paper"
@@ -170,20 +176,53 @@ export const RegionLabel = ({
       }
     }
   }, [scales, region])
-
+  const isNumeric = (str) => {
+    return !isNaN(str) && str.trim() !== "" && str !== null
+  }
   const changeScaleHandler = (e) => {
-    e.preventDefault()
-    if (Number(e.target.value) > max) {
+    // check if e.value is a number and if it is  >0
+    if (isNaN(e.value) || Number(e.value) < 0) {
+      setScaleInputVal(1)
+      return
+    }
+
+    if (Number(e.value) > max) {
       setScaleInputVal(max)
-    } else if (Number(e.target.value) < min) {
+    } else if (Number(e.value) < min) {
       setScaleInputVal(min)
     } else {
-      setScaleInputVal(Number(e.target.value))
+      setScaleInputVal(Number(e.value))
     }
   }
 
   const conditionalRegionTextField = (region, regionType) => {
     if (regionType === "scale") {
+      const values = [
+        {
+          value: 10,
+          label: 10,
+        },
+        {
+          value: 20,
+          label: 20,
+        },
+        {
+          value: 30,
+          label: 30,
+        },
+        {
+          value: 40,
+          label: 40,
+        },
+        {
+          value: 50,
+          label: 50,
+        },
+        {
+          value: 100,
+          label: 100,
+        },
+      ]
       // do scale
       return (
         <div
@@ -192,7 +231,33 @@ export const RegionLabel = ({
             flexDirection: "column",
           }}
         >
-          <TextField
+          <div>
+            min = {min} ft, max = {max} ft
+          </div>
+          <CreatableSelect
+            placeholder="Length"
+            onChange={(o, actionMeta) => {
+              changeScaleHandler(o)
+            }}
+            components={{
+              DropdownIndicator: (props) => (
+                <div
+                  style={{
+                    marginRight: "8px",
+                  }}
+                  {...props}
+                >
+                  ft
+                </div>
+              ),
+              IndicatorSeparator: () => null,
+            }}
+            value={
+              scaleInputVal ? { label: scaleInputVal, value: region.id } : null
+            }
+            options={values}
+          />
+          {/* <TextField
             id="outlined-number"
             type="number"
             fullWidth
@@ -209,8 +274,7 @@ export const RegionLabel = ({
             variant="outlined"
             onChange={changeScaleHandler}
             value={scaleInputVal}
-          />
-
+          /> */}
           <Button
             style={{
               marginTop: "10px",
@@ -220,6 +284,7 @@ export const RegionLabel = ({
             }}
             disabled={scaleInputVal < 0}
             onClick={() => {
+              console.log("save scale")
               onChange({ ...region, cls: scaleInputVal.toString() })
               if (onClose) {
                 onClose(region)

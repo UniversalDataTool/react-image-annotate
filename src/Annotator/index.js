@@ -131,8 +131,6 @@ export const Annotator = ({
   // Converting Set back to an array before returning
   const breakouts = Array.from(uniqueBreakouts)
 
-
-
   const filters = {
     categories: [...new Set(DeviceList.map((item) => item.category))],
     breakoutNames: new Set(),
@@ -172,7 +170,9 @@ export const Annotator = ({
       toggleList: [],
       selectedBreakoutIdAutoAdd: null,
       breakouts: breakouts,
-      filters : filters,
+      filters: filters,
+      excludedCategories: [],
+      selectedBreakoutToggle: null,
       ...(annotationType === "image"
         ? {
             selectedImage,
