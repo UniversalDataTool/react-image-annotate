@@ -58,6 +58,7 @@ export const ImageCanvas = ({
   onBeginRegionEdit,
   onCloseRegionEdit,
   onBeginBoxTransform,
+  onBeginMoveLinePoint,
   onBeginMovePolygonPoint,
   onAddPolygonPoint,
   onBeginMoveKeypoint,
@@ -291,6 +292,7 @@ export const ImageCanvas = ({
             layoutParams={layoutParams}
             mat={mat}
             onBeginBoxTransform={onBeginBoxTransform}
+            onBeginMoveLinePoint={onBeginMoveLinePoint}
             onBeginMovePolygonPoint={onBeginMovePolygonPoint}
             onBeginMoveKeypoint={onBeginMoveKeypoint}
             onAddPolygonPoint={onAddPolygonPoint}

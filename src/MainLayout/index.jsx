@@ -149,6 +149,11 @@ export const MainLayout = ({
       onCloseRegionEdit={action("CLOSE_REGION_EDITOR", "region")}
       onDeleteRegion={action("DELETE_REGION", "region")}
       onBeginBoxTransform={action("BEGIN_BOX_TRANSFORM", "box", "directions")}
+      onBeginMoveLinePoint={action(
+        "BEGIN_MOVE_LINE_POINT",
+        "line",
+        "pointIdx"
+      )}
       onBeginMovePolygonPoint={action(
         "BEGIN_MOVE_POLYGON_POINT",
         "polygon",

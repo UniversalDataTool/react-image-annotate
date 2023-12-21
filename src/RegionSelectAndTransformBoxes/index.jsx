@@ -43,6 +43,7 @@ export const RegionSelectAndTransformBox = memo(
     fullImageSegmentationMode = false,
     mat,
     onBeginBoxTransform,
+    onBeginMoveLinePoint,
     onBeginMovePolygonPoint,
     onBeginMoveKeypoint,
     onAddPolygonPoint,
@@ -54,7 +55,7 @@ export const RegionSelectAndTransformBox = memo(
       <ThemeProvider theme={theme}>
         <Fragment>
           <PreventScrollToParents>
-            {showHighlightBox && r.type !== "polygon" && (
+            {showHighlightBox && !["polygon", "line"].includes(r.type) && (
               <HighlightBox
                 region={r}
                 mouseEvents={mouseEvents}
@@ -99,6 +100,38 @@ export const RegionSelectAndTransformBox = memo(
                   }}
                 />
               ))}
+            {r.type === "line" &&
+              !dragWithPrimary &&
+              !zoomWithPrimary &&
+              !r.locked &&
+              r.highlighted &&
+              [[r.x1, r.y1], [r.x2, r.y2]].map(([px, py], i) => {
+                const proj = mat
+                  .clone()
+                  .inverse()
+                  .applyToPoint(px * iw, py * ih)
+                return (
+                  <TransformGrabber
+                    key={i}
+                    {...mouseEvents}
+                    onMouseDown={(e) => {
+                      if (e.button === 0)
+                        return onBeginMoveLinePoint(r, i)
+                      mouseEvents.onMouseDown(e)
+                    }}
+                    style={{
+                      cursor: "move",
+                      zIndex: 10,
+                      pointerEvents:
+                        r.open && i === r.points.length - 1
+                          ? "none"
+                          : undefined,
+                      left: proj.x - 6,
+                      top: proj.y - 6,
+                    }}
+                  />
+                )
+              })}
             {r.type === "polygon" &&
               !dragWithPrimary &&
               !zoomWithPrimary &&
