@@ -27,7 +27,7 @@ export const RegionLabel = ({
   onClose,
   onOpen,
   onRegionClassAdded,
-  allowComments,
+  enabledProperties
 }) => {
   const commentInputRef = useRef(null)
   const onCommentInputClick = (_) => {
@@ -35,6 +35,13 @@ export const RegionLabel = ({
     const commentInput = commentInputRef.current.children[0].children[0]
 
     if (commentInput) return commentInput.focus()
+  }
+  // I have no idea why the click is not working, so I copied the solution from above...
+  const nameInputRef = useRef(null)
+  const onNameInputClick = (_) => {
+    const nameInput = nameInputRef.current.children[1].children[0]
+
+    if (nameInput) return nameInput.focus()
   }
 
   return (
@@ -93,7 +100,7 @@ export const RegionLabel = ({
                 <TrashIcon style={{marginTop: -8, width: 16, height: 16}} />
               </IconButton>
             </div>
-            {(allowedClasses || []).length > 0 && (
+            {enabledProperties.includes("class") && (allowedClasses || []).length > 0 && (
               <div style={{marginTop: 6}}>
                 <CreatableSelect
                   placeholder="Classification"
@@ -115,7 +122,7 @@ export const RegionLabel = ({
                 />
               </div>
             )}
-            {(allowedTags || []).length > 0 && (
+            {enabledProperties.includes("tags") && (allowedTags || []).length > 0 && (
               <div style={{marginTop: 4}}>
                 <Select
                   onChange={(newTags) =>
@@ -136,7 +143,7 @@ export const RegionLabel = ({
                 />
               </div>
             )}
-            {allowComments && (
+            {enabledProperties.includes("comment") && (
               <TextField
                 InputProps={{
                   sx: styles.commentBox,
@@ -149,6 +156,18 @@ export const RegionLabel = ({
                 value={region.comment || ""}
                 onChange={(event) =>
                   onChange({...(region), comment: event.target.value})
+                }
+              />
+            )}
+            {enabledProperties.includes("name") && (
+              <TextField
+                id="nameField"
+                label="name"
+                ref={nameInputRef}
+                onClick={onNameInputClick}
+                value={region.name || ""}
+                onChange={(event) =>
+                  onChange({...(region), name: event.target.value})
                 }
               />
             )}

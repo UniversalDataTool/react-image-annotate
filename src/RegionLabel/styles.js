@@ -48,4 +48,8 @@ export default {
     fontWeight: 400,
     fontSize: 13,
   },
+  nameField: {
+    fontWeight: 400,
+    fontSize: 13,
+  }
 }

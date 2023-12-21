@@ -48,7 +48,7 @@ export const Annotator = ({
   hideSettings,
   hideFullScreen,
   hideSave,
-  allowComments,
+  enabledRegionProps = ["class", "name"],
   userReducer
 }) => {
   if (typeof selectedImage === "string") {
@@ -85,7 +85,7 @@ export const Annotator = ({
       history: [],
       videoName,
       keypointDefinitions,
-      allowComments,
+      enabledRegionProps,
       ...(annotationType === "image"
         ? {
           selectedImage,
@@ -149,6 +149,7 @@ export const Annotator = ({
         hideSettings={hideSettings}
         hideFullScreen={hideFullScreen}
         hideSave={hideSave}
+        enabledRegionProps={enabledRegionProps}
       />
     </SettingsProvider>
   )
@@ -191,7 +192,7 @@ Annotator.propTypes = {
   hideSettings: PropTypes.bool,
   hideFullScreen: PropTypes.bool,
   hideSave: PropTypes.bool,
-  allowComments: PropTypes.bool,
+  enabledRegionProps: PropTypes.arrayOf(PropTypes.string),
   userReducer: PropTypes.func
 }
 

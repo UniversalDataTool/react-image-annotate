@@ -60,6 +60,7 @@ export const MainLayout = ({
   hideSettings = false,
   hideFullScreen = false,
   hideSave = false,
+  enabledRegionProps,
 }) => {
   const settings = useSettings()
   const fullScreenHandle = useFullScreenHandle()
@@ -178,7 +179,7 @@ export const MainLayout = ({
       onChangeVideoTime={action("CHANGE_VIDEO_TIME", "newTime")}
       onChangeVideoPlaying={action("CHANGE_VIDEO_PLAYING", "isPlaying")}
       onRegionClassAdded={onRegionClassAdded}
-      allowComments={state.allowComments}
+      enabledRegionProps={enabledRegionProps}
     />
   )
 

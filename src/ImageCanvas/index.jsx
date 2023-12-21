@@ -71,9 +71,8 @@ export const ImageCanvas = ({
   zoomOnAllowedArea = true,
   modifyingAllowedArea = false,
   keypointDefinitions,
-  allowComments
+  enabledRegionProps
 }) => {
-
   const canvasEl = useRef(null)
   const layoutParams = useRef({})
   const [dragging, changeDragging] = useRafState(false)
@@ -315,7 +314,7 @@ export const ImageCanvas = ({
               imageSrc={imageSrc}
               RegionEditLabel={RegionEditLabel}
               onRegionClassAdded={onRegionClassAdded}
-              allowComments={allowComments}
+              enabledRegionProps={enabledRegionProps}
             />
           </PreventScrollToParents>
         )}
@@ -330,7 +329,7 @@ export const ImageCanvas = ({
               editing
               region={highlightedRegion}
               imageSrc={imageSrc}
-              allowComments={allowComments}
+              enabledProperties={enabledRegionProps}
             />
           </div>
         )}
@@ -423,7 +422,7 @@ ImageCanvas.propTypes = {
   videoPlaying: PropTypes.bool,
   zoomOnAllowedArea: PropTypes.bool,
   modifyingAllowedArea: PropTypes.bool,
-  allowComments: PropTypes.bool,
+  enabledRegionProps: PropTypes.arrayOf(PropTypes.string),
   onChangeRegion: PropTypes.func.isRequired,
   onBeginRegionEdit: PropTypes.func.isRequired,
   onCloseRegionEdit: PropTypes.func.isRequired,

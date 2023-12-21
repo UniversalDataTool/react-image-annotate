@@ -58,7 +58,6 @@ export const examples = {
         name: "bianchi-oltre-xr4",
       },
     ],
-    allowComments: true,
   }),
   "Constrained Tools": () => ({
     taskDescription:
@@ -75,7 +74,6 @@ export const examples = {
         name: "intersection",
       }
     ],
-    allowComments: true,
     userReducer: userReducer
   }),
   "Simple Segmentation": () => ({
