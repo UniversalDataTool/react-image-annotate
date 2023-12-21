@@ -281,7 +281,6 @@ export const MainLayout = ({
                 {
                   name: "show-tags",
                   helperText: "Show / Hide Tags",
-                  alwaysShowing: true,
                 },
                 {
                   name: "create-point",

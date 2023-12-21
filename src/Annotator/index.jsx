@@ -13,6 +13,7 @@ import imageReducer from "./reducers/image-reducer.js"
 import useEventCallback from "use-event-callback"
 import videoReducer from "./reducers/video-reducer.js"
 import PropTypes from "prop-types"
+import noopReducer from "./reducers/noop-reducer.js"
 
 
 export const Annotator = ({
@@ -22,15 +23,7 @@ export const Annotator = ({
   showPointDistances,
   pointDistancePrecision,
   showTags = getFromLocalStorage("showTags", true),
-  enabledTools = [
-    "select",
-    "create-point",
-    "create-box",
-    "create-polygon",
-    "create-line",
-    "create-expanding-line",
-    "show-mask"
-  ],
+  enabledTools = [],
   selectedTool = "select",
   regionTagList = [],
   regionClsList = [],
@@ -55,7 +48,8 @@ export const Annotator = ({
   hideSettings,
   hideFullScreen,
   hideSave,
-  allowComments
+  allowComments,
+  userReducer
 }) => {
   if (typeof selectedImage === "string") {
     selectedImage = (images || []).findIndex((img) => img.src === selectedImage)
@@ -66,7 +60,8 @@ export const Annotator = ({
     historyHandler(
       combineReducers(
         annotationType === "image" ? imageReducer : videoReducer,
-        generalReducer
+        generalReducer,
+        userReducer === undefined ? noopReducer : userReducer
       )
     ),
     makeImmutable({
@@ -196,7 +191,8 @@ Annotator.propTypes = {
   hideSettings: PropTypes.bool,
   hideFullScreen: PropTypes.bool,
   hideSave: PropTypes.bool,
-  allowComments: PropTypes.bool
+  allowComments: PropTypes.bool,
+  userReducer: PropTypes.func
 }
 
 export default Annotator

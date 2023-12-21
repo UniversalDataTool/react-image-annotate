@@ -8,6 +8,25 @@ import DialogContent from "@mui/material/DialogContent"
 import DialogActions from "@mui/material/DialogActions"
 import styles from "./styles"
 
+import {setIn} from 'seamless-immutable';
+
+const userReducer = (state, action) => {
+    switch (action.type) {
+        case "SELECT_CLASSIFICATION": {
+            switch (action.cls) {
+                case "hotdog": {
+                    return setIn(state, ["selectedTool"], "create-line");
+                }
+                case "not-hotdog": {
+                    return setIn(state, ["selectedTool"], "create-polygon");
+                }
+            }
+        }   
+    }
+    
+    return state;
+};
+
 const theme = createTheme()
 
 const loadSavedInput = () => {
@@ -19,7 +38,7 @@ const loadSavedInput = () => {
 }
 
 export const examples = {
-  "Simple Bounding Box": () => ({
+  "Demo (All Tools)": () => ({
     taskDescription:
       "Annotate each image according to this _markdown_ specification.",
     // regionTagList: [],
@@ -27,7 +46,6 @@ export const examples = {
     regionTagList: ["has-bun"],
     regionClsList: ["hotdog", "not-hotdog"],
     preselectCls: "not-hotdog",
-    enabledTools: ["select", "create-box"],
     // showTags: true,
     images: [
       {
@@ -40,6 +58,7 @@ export const examples = {
       },
     ],
     allowComments: true,
+    userReducer: userReducer
   }),
   "Simple Segmentation": () => ({
     taskDescription:
@@ -61,7 +80,7 @@ const Editor = ({ onOpenAnnotator, lastOutput }) => {
   const [selectedExample, changeSelectedExample] = useState(
     window.localStorage.getItem("customInput")
       ? "Custom"
-      : "Simple Bounding Box"
+      : "Demo (All Tools)"
   )
   const [outputDialogOpen, changeOutputOpen] = useState(false)
   const [currentJSONValue, changeCurrentJSONValue] = useState(
