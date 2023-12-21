@@ -14,10 +14,10 @@ const userReducer = (state, action) => {
     switch (action.type) {
         case "SELECT_CLASSIFICATION": {
             switch (action.cls) {
-                case "hotdog": {
+                case "Line-Crossing": {
                     return setIn(state, ["selectedTool"], "create-line");
                 }
-                case "not-hotdog": {
+                case "Area-Occupancy": {
                     return setIn(state, ["selectedTool"], "create-polygon");
                 }
             }
@@ -66,7 +66,7 @@ export const examples = {
     // regionTagList: [],
     // regionClsList: ["hotdog"],
     regionTagList: ["has-bun"],
-    regionClsList: ["hotdog", "not-hotdog"],
+    regionClsList: ["Line-Crossing", "Area-Occupancy"],
     preselectCls: "not-hotdog",
     // showTags: true,
     images: [
