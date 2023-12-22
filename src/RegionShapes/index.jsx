@@ -15,19 +15,24 @@ const RegionComponents = {
       />
     </g>
   )),
-  line: memo(({region, iw, ih}) => (
-    <g transform={`translate(${region.x1 * iw} ${region.y1 * ih})`}>
-      <line
-        strokeWidth={3}
-        x1={0}
-        y1={0}
-        x2={(region.x2 - region.x1) * iw}
-        y2={(region.y2 - region.y1) * ih}
-        stroke={colorAlpha(region.color, 0.9)}
-        fill={colorAlpha(region.color, 0.25)}
-      />
-    </g>
-  )),
+  line: memo(({region, iw, ih}) => {
+    return (
+      <g transform={`translate(${region.x1 * iw} ${region.y1 * ih})`}>
+        <path
+          id={region.id}
+          strokeWidth={3}
+          d={`M0,0 L${(region.x2 - region.x1) * iw},${(region.y2 - region.y1) * ih}`}
+          stroke={colorAlpha(region.color, 0.9)}
+          fill={colorAlpha(region.color, 0.25)}
+        />
+        <text stroke={region.color} fill={region.color}>
+          <textPath href={`#${region.id}`} startOffset="50%" textAnchor="middle">
+            <tspan x="0" dy="-0.4em">IN</tspan>
+            <tspan x="0" dy="1.5em">OUT</tspan>
+          </textPath>
+        </text>
+      </g>
+  )}),
   box: memo(({region, iw, ih}) => (
     <g transform={`translate(${region.x * iw} ${region.y * ih})`}>
       <rect
