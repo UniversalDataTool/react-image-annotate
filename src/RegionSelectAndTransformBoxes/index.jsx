@@ -6,8 +6,8 @@ import Tooltip from "@mui/material/Tooltip"
 
 const theme = createTheme()
 const TransformGrabber = styled("div")(({ theme }) => ({
-  width: 8,
-  height: 8,
+  width: 10,
+  height: 10,
   zIndex: 2,
   border: "2px solid #FFF",
   position: "absolute",
@@ -93,8 +93,8 @@ export const RegionSelectAndTransformBox = memo(
                     mouseEvents.onMouseDown(e)
                   }}
                   style={{
-                    left: pbox.x - 4 - 2 + pbox.w * px,
-                    top: pbox.y - 4 - 2 + pbox.h * py,
+                    left: pbox.x - 5 - 2 + pbox.w * px,
+                    top: pbox.y - 5 - 2 + pbox.h * py,
                     cursor: boxCursorMap[py * 2][px * 2],
                     borderRadius: px === 0.5 && py === 0.5 ? 4 : undefined,
                   }}
@@ -162,8 +162,8 @@ export const RegionSelectAndTransformBox = memo(
                         r.open && i === r.points.length - 1
                           ? "none"
                           : undefined,
-                      left: proj.x - 4,
-                      top: proj.y - 4,
+                      left: proj.x - 7,
+                      top: proj.y - 7,
                     }}
                   />
                 )
@@ -195,8 +195,8 @@ export const RegionSelectAndTransformBox = memo(
                       style={{
                         cursor: "copy",
                         zIndex: 10,
-                        left: proj.x - 4,
-                        top: proj.y - 4,
+                        left: proj.x - 7,
+                        top: proj.y - 7,
                         border: "2px dotted #fff",
                         opacity: 0.5,
                       }}
@@ -235,8 +235,8 @@ export const RegionSelectAndTransformBox = memo(
                             r.open && i === r.points.length - 1
                               ? "none"
                               : undefined,
-                          left: proj.x - 4,
-                          top: proj.y - 4,
+                          left: proj.x - 7,
+                          top: proj.y - 7,
                         }}
                       />
                     </Tooltip>
