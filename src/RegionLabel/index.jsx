@@ -70,6 +70,13 @@ export const RegionLabel = ({
                 ))}
               </div>
             )}
+            {region.name && (
+              <div className="tags">
+                <div key="name" className="tag">
+                  {region.name}
+                </div>
+              </div>
+            )}
           </div>
         ) : (
           <div style={{width: 200}}>

@@ -58,6 +58,7 @@ export const examples = {
         name: "bianchi-oltre-xr4",
       },
     ],
+    enabledRegionProps: ["class", "tags", "comment"]
   }),
   "Constrained Tools": () => ({
     taskDescription:
@@ -74,7 +75,8 @@ export const examples = {
         name: "intersection",
       }
     ],
-    userReducer: userReducer
+    userReducer: userReducer,
+    enabledRegionProps: ["name"]
   }),
   "Simple Segmentation": () => ({
     taskDescription:
