@@ -18,12 +18,12 @@ const RegionComponents = {
   line: memo(({region, iw, ih}) => (
     <g transform={`translate(${region.x1 * iw} ${region.y1 * ih})`}>
       <line
-        strokeWidth={2}
+        strokeWidth={3}
         x1={0}
         y1={0}
         x2={(region.x2 - region.x1) * iw}
         y2={(region.y2 - region.y1) * ih}
-        stroke={colorAlpha(region.color, 0.75)}
+        stroke={colorAlpha(region.color, 0.9)}
         fill={colorAlpha(region.color, 0.25)}
       />
     </g>
