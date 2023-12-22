@@ -102,7 +102,7 @@ export const ImageCanvas = ({
     onMouseUp
   })
 
-  useLayoutEffect(() => changeMat(mat.clone()), [changeMat, mat, windowSize])
+  useLayoutEffect(() => changeMat(mat.clone()), [windowSize])
 
   const projectRegionBox = useProjectRegionBox({layoutParams, mat})
 
