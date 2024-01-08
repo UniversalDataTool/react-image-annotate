@@ -72,6 +72,7 @@ All of the following properties can be defined on the Annotator...
 | `hideSettings`           | `boolean`                                        | Hide `Settings` button from the header bar.                                             | `false`       |
 | `hideFullScreen`         | `boolean`                                        | Hide `FullScreen/Window` button from the header bar.                                    | `false`       |
 | `hideSave`               | `boolean`                                        | Hide `Save` button from the header bar.                                                 | `false`       |
+| `userReducer`            | `(state, action) => state`                       | User defined reducer that receives every event triggered within the annotator. See demo site for example. | |
 
 ## Developers
 
