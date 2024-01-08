@@ -179,6 +179,11 @@ export default (state, action) => {
         })
       }
     }
+    case "BEGIN_MOVE_LINE_POINT": {
+      const {line, pointIdx} = action
+      state = closeEditors(state)
+      return setIn(state, ["mode"], {mode: "MOVE_LINE_POINT", regionId: line.id, pointIdx})
+    }
     case "BEGIN_MOVE_POLYGON_POINT": {
       const {polygon, pointIndex} = action
       state = closeEditors(state)
@@ -370,6 +375,21 @@ export default (state, action) => {
           const [region, regionIndex] = getRegion(regionId)
           if (!region) return setIn(state, ["mode"], null)
           return setIn(state, [...pathToActiveImage, "regions", regionIndex], {
+            ...region,
+            x2: x,
+            y2: y,
+          })
+        }
+        case "MOVE_LINE_POINT": {
+          const {regionId, pointIdx} = state.mode
+          const [region, regionIndex] = getRegion(regionId)
+          if (!region) return setIn(state, ["mode"], null)
+          if (pointIdx === 0) return setIn(state, [...pathToActiveImage, "regions", regionIndex], {
+            ...region,
+            x1: x,
+            y1: y,
+          })
+          if (pointIdx === 1) return setIn(state, [...pathToActiveImage, "regions", regionIndex], {
             ...region,
             x2: x,
             y2: y,
@@ -698,6 +718,9 @@ export default (state, action) => {
         }
         case "CREATE_POINT_LINE": {
           return state
+        }
+        case "MOVE_LINE_POINT": {
+          return {...state, mode: null}
         }
         case "DRAW_EXPANDING_LINE": {
           const [expandingLine, regionIndex] = getRegion(state.mode.regionId)

@@ -6,8 +6,8 @@ import Tooltip from "@mui/material/Tooltip"
 
 const theme = createTheme()
 const TransformGrabber = styled("div")(({ theme }) => ({
-  width: 8,
-  height: 8,
+  width: 10,
+  height: 10,
   zIndex: 2,
   border: "2px solid #FFF",
   position: "absolute",
@@ -43,6 +43,7 @@ export const RegionSelectAndTransformBox = memo(
     fullImageSegmentationMode = false,
     mat,
     onBeginBoxTransform,
+    onBeginMoveLinePoint,
     onBeginMovePolygonPoint,
     onBeginMoveKeypoint,
     onAddPolygonPoint,
@@ -54,7 +55,7 @@ export const RegionSelectAndTransformBox = memo(
       <ThemeProvider theme={theme}>
         <Fragment>
           <PreventScrollToParents>
-            {showHighlightBox && r.type !== "polygon" && (
+            {showHighlightBox && !["polygon", "line"].includes(r.type) && (
               <HighlightBox
                 region={r}
                 mouseEvents={mouseEvents}
@@ -92,13 +93,45 @@ export const RegionSelectAndTransformBox = memo(
                     mouseEvents.onMouseDown(e)
                   }}
                   style={{
-                    left: pbox.x - 4 - 2 + pbox.w * px,
-                    top: pbox.y - 4 - 2 + pbox.h * py,
+                    left: pbox.x - 5 - 2 + pbox.w * px,
+                    top: pbox.y - 5 - 2 + pbox.h * py,
                     cursor: boxCursorMap[py * 2][px * 2],
                     borderRadius: px === 0.5 && py === 0.5 ? 4 : undefined,
                   }}
                 />
               ))}
+            {r.type === "line" &&
+              !dragWithPrimary &&
+              !zoomWithPrimary &&
+              !r.locked &&
+              r.highlighted &&
+              [[r.x1, r.y1], [r.x2, r.y2]].map(([px, py], i) => {
+                const proj = mat
+                  .clone()
+                  .inverse()
+                  .applyToPoint(px * iw, py * ih)
+                return (
+                  <TransformGrabber
+                    key={i}
+                    {...mouseEvents}
+                    onMouseDown={(e) => {
+                      if (e.button === 0)
+                        return onBeginMoveLinePoint(r, i)
+                      mouseEvents.onMouseDown(e)
+                    }}
+                    style={{
+                      cursor: "move",
+                      zIndex: 10,
+                      pointerEvents:
+                        r.open && i === r.points.length - 1
+                          ? "none"
+                          : undefined,
+                      left: proj.x - 6,
+                      top: proj.y - 6,
+                    }}
+                  />
+                )
+              })}
             {r.type === "polygon" &&
               !dragWithPrimary &&
               !zoomWithPrimary &&
@@ -129,8 +162,8 @@ export const RegionSelectAndTransformBox = memo(
                         r.open && i === r.points.length - 1
                           ? "none"
                           : undefined,
-                      left: proj.x - 4,
-                      top: proj.y - 4,
+                      left: proj.x - 7,
+                      top: proj.y - 7,
                     }}
                   />
                 )
@@ -162,8 +195,8 @@ export const RegionSelectAndTransformBox = memo(
                       style={{
                         cursor: "copy",
                         zIndex: 10,
-                        left: proj.x - 4,
-                        top: proj.y - 4,
+                        left: proj.x - 7,
+                        top: proj.y - 7,
                         border: "2px dotted #fff",
                         opacity: 0.5,
                       }}
@@ -202,8 +235,8 @@ export const RegionSelectAndTransformBox = memo(
                             r.open && i === r.points.length - 1
                               ? "none"
                               : undefined,
-                          left: proj.x - 4,
-                          top: proj.y - 4,
+                          left: proj.x - 7,
+                          top: proj.y - 7,
                         }}
                       />
                     </Tooltip>

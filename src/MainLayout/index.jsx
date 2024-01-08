@@ -60,6 +60,7 @@ export const MainLayout = ({
   hideSettings = false,
   hideFullScreen = false,
   hideSave = false,
+  enabledRegionProps,
 }) => {
   const settings = useSettings()
   const fullScreenHandle = useFullScreenHandle()
@@ -149,6 +150,11 @@ export const MainLayout = ({
       onCloseRegionEdit={action("CLOSE_REGION_EDITOR", "region")}
       onDeleteRegion={action("DELETE_REGION", "region")}
       onBeginBoxTransform={action("BEGIN_BOX_TRANSFORM", "box", "directions")}
+      onBeginMoveLinePoint={action(
+        "BEGIN_MOVE_LINE_POINT",
+        "line",
+        "pointIdx"
+      )}
       onBeginMovePolygonPoint={action(
         "BEGIN_MOVE_POLYGON_POINT",
         "polygon",
@@ -173,7 +179,7 @@ export const MainLayout = ({
       onChangeVideoTime={action("CHANGE_VIDEO_TIME", "newTime")}
       onChangeVideoPlaying={action("CHANGE_VIDEO_PLAYING", "isPlaying")}
       onRegionClassAdded={onRegionClassAdded}
-      allowComments={state.allowComments}
+      enabledRegionProps={enabledRegionProps}
     />
   )
 
@@ -281,7 +287,6 @@ export const MainLayout = ({
                 {
                   name: "show-tags",
                   helperText: "Show / Hide Tags",
-                  alwaysShowing: true,
                 },
                 {
                   name: "create-point",

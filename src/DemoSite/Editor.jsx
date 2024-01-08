@@ -8,6 +8,25 @@ import DialogContent from "@mui/material/DialogContent"
 import DialogActions from "@mui/material/DialogActions"
 import styles from "./styles"
 
+import {setIn} from 'seamless-immutable';
+
+const userReducer = (state, action) => {
+    switch (action.type) {
+        case "SELECT_CLASSIFICATION": {
+            switch (action.cls) {
+                case "Line-Crossing": {
+                    return setIn(state, ["selectedTool"], "create-line");
+                }
+                case "Area-Occupancy": {
+                    return setIn(state, ["selectedTool"], "create-polygon");
+                }
+            }
+        }   
+    }
+    
+    return state;
+};
+
 const theme = createTheme()
 
 const loadSavedInput = () => {
@@ -19,7 +38,7 @@ const loadSavedInput = () => {
 }
 
 export const examples = {
-  "Simple Bounding Box": () => ({
+  "All Tools": () => ({
     taskDescription:
       "Annotate each image according to this _markdown_ specification.",
     // regionTagList: [],
@@ -27,7 +46,7 @@ export const examples = {
     regionTagList: ["has-bun"],
     regionClsList: ["hotdog", "not-hotdog"],
     preselectCls: "not-hotdog",
-    enabledTools: ["select", "create-box"],
+    enabledTools: ["create-point", "create-box", "create-polygon", "create-line", "create-expanding-line"],
     // showTags: true,
     images: [
       {
@@ -39,7 +58,25 @@ export const examples = {
         name: "bianchi-oltre-xr4",
       },
     ],
-    allowComments: true,
+    enabledRegionProps: ["class", "tags", "comment"]
+  }),
+  "Constrained Tools": () => ({
+    taskDescription:
+      "Annotate each image according to this _markdown_ specification.",
+    // regionTagList: [],
+    // regionClsList: ["hotdog"],
+    regionTagList: ["has-bun"],
+    regionClsList: ["Line-Crossing", "Area-Occupancy"],
+    preselectCls: "not-hotdog",
+    // showTags: true,
+    images: [
+      {
+        src: "https://images.unsplash.com/photo-1567563549378-81212b9631e4?q=80&w=1548&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+        name: "intersection",
+      }
+    ],
+    userReducer: userReducer,
+    enabledRegionProps: ["name"]
   }),
   "Simple Segmentation": () => ({
     taskDescription:
@@ -61,7 +98,7 @@ const Editor = ({ onOpenAnnotator, lastOutput }) => {
   const [selectedExample, changeSelectedExample] = useState(
     window.localStorage.getItem("customInput")
       ? "Custom"
-      : "Simple Bounding Box"
+      : Object.keys(examples)[0]
   )
   const [outputDialogOpen, changeOutputOpen] = useState(false)
   const [currentJSONValue, changeCurrentJSONValue] = useState(
