@@ -122,10 +122,6 @@ export const RegionSelectAndTransformBox = memo(
                     style={{
                       cursor: "move",
                       zIndex: 10,
-                      pointerEvents:
-                        r.open && i === r.points.length - 1
-                          ? "none"
-                          : undefined,
                       left: proj.x - 6,
                       top: proj.y - 6,
                     }}
