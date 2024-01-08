@@ -82,7 +82,7 @@ To begin developing run the following commands in the cloned repo.
 1. `npm install`
 2. `npm start`
 
-Then navigate to http://localhost:5173/smartparkingconfig/ and start testing.
+Then navigate to http://localhost:5173/ and start testing.
 
 See more details in the [contributing guidelines](https://github.com/waoai/react-image-annotate/wiki/Setup-for-Development).
 
