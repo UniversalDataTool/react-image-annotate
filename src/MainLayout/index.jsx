@@ -342,6 +342,7 @@ export const MainLayout = ({
                     selectedCls={state.selectedCls}
                     preselectCls={state.preselectCls}
                     regionClsList={state.regionClsList}
+                    regionColorList={state.regionColorList}
                     onSelectCls={action("SELECT_CLASSIFICATION", "cls")}
                   />
                 ),

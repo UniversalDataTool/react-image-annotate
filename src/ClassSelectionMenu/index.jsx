@@ -56,6 +56,7 @@ export const ClassSelectionMenu = ({
   selectedCls,
   preselectCls,
   regionClsList,
+  regionColorList,
   onSelectCls,
 }) => {
 
@@ -82,7 +83,7 @@ export const ClassSelectionMenu = ({
             onClick={() => onSelectCls(label)}
           >
             <Circle
-              style={{backgroundColor: colors[index % colors.length]}}
+              style={{backgroundColor: index < regionColorList.length ? regionColorList[index] : colors[index % colors.length]}}
             />
             <Label className={classnames({selected: label === selectedCls})}>
               {capitalize(label)}

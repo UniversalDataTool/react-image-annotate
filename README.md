@@ -54,6 +54,7 @@ All of the following properties can be defined on the Annotator...
 | `allowedArea`            | `{ x: number, y: number, w: number, h: number }` | Area that is available for annotation.                                                  | Entire image. |
 | `regionTagList`          | `Array<string>`                                  | Allowed "tags" (mutually inclusive classifications) for regions.                        |               |
 | `regionClsList`          | `Array<string>`                                  | Allowed "classes" (mutually exclusive classifications) for regions.           
+| `regionColorList`        | `Array<string>`                                  | Custom color list for regions. Default colors are used if not specified.
 | `preselectCls`          | `string`                                          |  Put in the class that should be preselected when creating a new Box/Polygon etc.           |               |
 | `imageTagList`           | `Array<string>`                                  | Allowed tags for entire image.                                                          |               |
 | `imageClsList`           | `Array<string>`                                  | Allowed classes for entire image.                                                       |               |

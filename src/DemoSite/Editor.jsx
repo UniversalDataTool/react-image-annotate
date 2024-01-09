@@ -45,6 +45,7 @@ export const examples = {
     // regionClsList: ["hotdog"],
     regionTagList: ["has-bun"],
     regionClsList: ["hotdog", "not-hotdog"],
+    regionColorList: ["#4d0c89", "#55d68d"],
     preselectCls: "not-hotdog",
     enabledTools: ["create-point", "create-box", "create-polygon", "create-line", "create-expanding-line"],
     // showTags: true,
