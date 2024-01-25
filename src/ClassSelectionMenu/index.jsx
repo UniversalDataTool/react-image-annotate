@@ -1,4 +1,4 @@
-import React from "react"
+import React, { useEffect } from "react"
 import {createTheme, styled, ThemeProvider} from "@mui/material/styles"
 import Box from "@mui/material/Box"
 import * as muiColors from "@mui/material/colors"
@@ -60,13 +60,15 @@ export const ClassSelectionMenu = ({
   onSelectCls,
 }) => {
 
-  if (selectedCls == null) {
-    if (preselectCls != null) {
-      onSelectCls(preselectCls);
-    } else {
-      onSelectCls(regionClsList[0]);
+  useEffect(() => {
+    if (selectedCls == null) {
+      if (preselectCls != null) {
+        onSelectCls(preselectCls);
+      } else {
+        onSelectCls(regionClsList[0]);
+      }
     }
-  }
+  }, [])
   
   return (
     <ThemeProvider theme={theme}>

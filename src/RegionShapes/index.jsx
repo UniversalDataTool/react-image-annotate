@@ -180,11 +180,11 @@ export const WrappedRegionList = memo(
   ({regions, keypointDefinitions, iw, ih, fullSegmentationMode}) => {
     return regions
       .filter((r) => r.visible !== false)
-      .map((r) => {
+      .map((r, i) => {
         const Component = RegionComponents[r.type]
         return (
           <Component
-            key={r.regionId}
+            key={i}
             region={r}
             iw={iw}
             ih={ih}
