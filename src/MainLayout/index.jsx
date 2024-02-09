@@ -16,7 +16,6 @@ import TagsSidebarBox from "../TagsSidebarBox"
 import TaskDescription from "../TaskDescriptionSidebarBox"
 import Workspace from "../workspace/Workspace"
 import getActiveImage from "../Annotator/reducers/get-active-image"
-import getHotkeyHelpText from "../utils/get-hotkey-help-text"
 import iconDictionary from "./icon-dictionary"
 import styles from "./styles"
 import {useDispatchHotkeyHandlers} from "../ShortcutsManager"
@@ -183,10 +182,6 @@ export const MainLayout = ({
     />
   )
 
-  const onClickIconSidebarItem = useEventCallback((item) => {
-    dispatch({type: "SELECT_TOOL", selectedTool: item.name})
-  })
-
   const onClickHeaderItem = useEventCallback((item) => {
     if (item.name === "Fullscreen") {
       fullScreenHandle.enter()
@@ -259,76 +254,6 @@ export const MainLayout = ({
                 !hideSave && {name: "Save", icon: <Save />},
               ].filter(Boolean)}
               onClickHeaderItem={onClickHeaderItem}
-              onClickIconSidebarItem={onClickIconSidebarItem}
-              selectedTools={[
-                state.selectedTool,
-                state.showTags && "show-tags",
-                state.showMask && "show-mask",
-              ].filter(Boolean)}
-              iconSidebarItems={[
-                {
-                  name: "select",
-                  helperText: "Select" + getHotkeyHelpText("select_tool"),
-                  alwaysShowing: true,
-                },
-                {
-                  name: "pan",
-                  helperText:
-                    "Drag/Pan (right or middle click)" +
-                    getHotkeyHelpText("pan_tool"),
-                  alwaysShowing: true,
-                },
-                {
-                  name: "zoom",
-                  helperText:
-                    "Zoom In/Out (scroll)" + getHotkeyHelpText("zoom_tool"),
-                  alwaysShowing: true,
-                },
-                {
-                  name: "show-tags",
-                  helperText: "Show / Hide Tags",
-                },
-                {
-                  name: "create-point",
-                  helperText: "Add Point" + getHotkeyHelpText("create_point"),
-                },
-                {
-                  name: "create-box",
-                  helperText:
-                    "Add Bounding Box" +
-                    getHotkeyHelpText("create_bounding_box"),
-                },
-                {
-                  name: "create-polygon",
-                  helperText:
-                    "Add Polygon" + getHotkeyHelpText("create_polygon"),
-                },
-                {
-                  name: "create-line",
-                  helperText: "Add Line",
-                },
-                {
-                  name: "create-expanding-line",
-                  helperText: "Add Expanding Line",
-                },
-                {
-                  name: "create-keypoints",
-                  helperText: "Add Keypoints (Pose)",
-                },
-                state.fullImageSegmentationMode && {
-                  name: "show-mask",
-                  alwaysShowing: true,
-                  helperText: "Show / Hide Mask",
-                },
-                {
-                  name: "modify-allowed-area",
-                  helperText: "Modify Allowed Area",
-                },
-              ]
-                .filter(Boolean)
-                .filter(
-                  (a) => a.alwaysShowing || state.enabledTools.includes(a.name)
-                )}
               rightSidebarItems={[
                 debugModeOn && (
                   <DebugBox state={debugModeOn} lastAction={state.lastAction} key="DebugBox" />

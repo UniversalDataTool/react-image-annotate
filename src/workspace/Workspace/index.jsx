@@ -1,17 +1,16 @@
 import React from "react"
-import { createTheme, styled, ThemeProvider } from "@mui/material/styles"
+import {createTheme, styled, ThemeProvider} from "@mui/material/styles"
 import Header from "../Header"
-import IconSidebar from "../IconSidebar"
 import RightSidebar from "../RightSidebar"
 import WorkContainer from "../WorkContainer"
-import { IconDictionaryContext } from "../icon-dictionary.js"
-import { useMeasure } from "react-use"
+import {IconDictionaryContext} from "../icon-dictionary.js"
+import {useMeasure} from "react-use"
 
 const emptyAr = []
 const emptyObj = {}
 const theme = createTheme()
 
-const Container = styled("div")(({ theme }) => ({
+const Container = styled("div")(({theme}) => ({
   display: "flex",
   width: "100%",
   flexDirection: "column",
@@ -19,7 +18,7 @@ const Container = styled("div")(({ theme }) => ({
   overflow: "hidden",
   maxWidth: "100vw",
 }))
-const SidebarsAndContent = styled("div")(({ theme }) => ({
+const SidebarsAndContent = styled("div")(({theme}) => ({
   display: "flex",
   flexGrow: 1,
   width: "100%",
@@ -30,12 +29,9 @@ const SidebarsAndContent = styled("div")(({ theme }) => ({
 
 export default ({
   style = emptyObj,
-  iconSidebarItems = emptyAr,
-  selectedTools = ["select"],
   headerItems = emptyAr,
   rightSidebarItems = emptyAr,
   onClickHeaderItem,
-  onClickIconSidebarItem,
   headerLeftSide = null,
   iconDictionary = emptyObj,
   rightSidebarExpanded,
@@ -57,13 +53,6 @@ export default ({
             />
           )}
           <SidebarsAndContent ref={sidebarAndContentRef}>
-            {iconSidebarItems.length === 0 ? null : (
-              <IconSidebar
-                onClickItem={onClickIconSidebarItem}
-                selectedTools={selectedTools}
-                items={iconSidebarItems}
-              />
-            )}
             <WorkContainer>{children}</WorkContainer>
             {rightSidebarItems.length === 0 ? null : (
               <RightSidebar
