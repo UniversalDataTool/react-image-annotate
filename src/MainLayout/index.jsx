@@ -11,7 +11,6 @@ import ImageCanvas from "../ImageCanvas"
 import KeyframeTimeline from "../KeyframeTimeline"
 import KeyframesSelector from "../KeyframesSelectorSidebarBox"
 import RegionSelector from "../RegionSelectorSidebarBox"
-import SettingsDialog from "../SettingsDialog"
 import TagsSidebarBox from "../TagsSidebarBox"
 import Workspace from "../workspace/Workspace"
 import getActiveImage from "../Annotator/reducers/get-active-image"
@@ -310,15 +309,6 @@ export const MainLayout = ({
             >
               {canvas}
             </Workspace>
-            <SettingsDialog
-              open={state.settingsOpen}
-              onClose={() =>
-                dispatch({
-                  type: "HEADER_BUTTON_CLICKED",
-                  buttonName: "Settings",
-                })
-              }
-            />
           </HotkeyDiv>
         </FullScreen>
       </FullScreenContainer>
