@@ -16,6 +16,8 @@
     "cash-dom": "^8.1.5",
     "classnames": "^2.3.2",
     "color-alpha": "^1.0.4",
+    "i18next": "^23.8.2",
+    "i18next-browser-languagedetector": "^7.2.0",
     "lodash.debounce": "^4.0.8",
     "material-survey": "^2.1.0",
     "moment": "^2.29.4",
@@ -23,6 +25,7 @@
     "react-draggable": "^4.4.6",
     "react-full-screen": "^1.1.1",
     "react-hotkeys": "^2.0.0",
+    "react-i18next": "^14.0.5",
     "react-markdown": "^9.0.0",
     "react-remove-scroll": "^2.5.7",
     "react-select": "^5.7.7",
@@ -48,7 +51,6 @@
     "extends": "react-app"
   },
   "devDependencies": {
-    "vite-raw-plugin": "^1.0.2",
     "@semantic-release/git": "^9.0.0",
     "@storybook/react": "^7.5.2",
     "@vitejs/plugin-react": "^4.1.0",
@@ -56,7 +58,8 @@
     "prettier": "^2.5.1",
     "react-github-btn": "^1.1.1",
     "vite": "^4.5.0",
-    "vite-plugin-node-polyfills": "^0.15.0"
+    "vite-plugin-node-polyfills": "^0.15.0",
+    "vite-raw-plugin": "^1.0.2"
   },
   "prettier": {
     "semi": false

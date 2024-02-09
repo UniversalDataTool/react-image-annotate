@@ -16,6 +16,7 @@ import VisibleOffIcon from "@mui/icons-material/VisibilityOff"
 import styles from "./styles"
 import classnames from "classnames"
 import isEqual from "lodash/isEqual"
+import {useTranslation} from "react-i18next";
 
 const theme = createTheme()
 
@@ -166,10 +167,13 @@ export const RegionSelectorSidebarBox = ({
   onChangeRegion,
   onSelectRegion,
 }) => {
+
+  const {t} = useTranslation();
+
   return (
     <ThemeProvider theme={theme}>
       <SidebarBoxContainer
-        title="Regions"
+        title={t("menu.regions")}
         subTitle=""
         icon={<RegionIcon style={{color: grey[700]}} />}
         expandedByDefault

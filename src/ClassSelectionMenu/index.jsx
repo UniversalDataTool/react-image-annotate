@@ -7,6 +7,7 @@ import colors from "../colors"
 import BallotIcon from "@mui/icons-material/Ballot"
 import capitalize from "lodash/capitalize"
 import classnames from "classnames"
+import { useTranslation } from "react-i18next"
 
 const theme = createTheme()
 const LabelContainer = styled("div")(({theme}) => ({
@@ -69,11 +70,14 @@ export const ClassSelectionMenu = ({
       }
     }
   }, [])
+
+  const {t} = useTranslation();
   
   return (
     <ThemeProvider theme={theme}>
       <SidebarBoxContainer
-        title="Classifications"
+        // title="Classifications"
+        title={t("menu.classifications")}
         subTitle=""
         icon={<BallotIcon style={{color: muiColors.grey[700]}} />}
         expandedByDefault

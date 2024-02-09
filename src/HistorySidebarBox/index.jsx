@@ -13,6 +13,7 @@ import UndoIcon from "@mui/icons-material/Undo"
 import moment from "moment"
 import {grey} from "@mui/material/colors"
 import isEqual from "lodash/isEqual"
+import {useTranslation} from "react-i18next"
 
 const theme = createTheme()
 const EmptyTextDiv = styled('div')(() => ({
@@ -29,10 +30,13 @@ export const HistorySidebarBox = ({
   history,
   onRestoreHistory,
 }) => {
+
+  const {t} = useTranslation();
+
   return (
     <ThemeProvider theme={theme}>
       <SidebarBoxContainer
-        title="History"
+        title={t("menu.history")}
         icon={<HistoryIcon style={{color: grey[700]}} />}
         expandedByDefault
       >
