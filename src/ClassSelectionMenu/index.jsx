@@ -1,4 +1,4 @@
-import React, { useEffect } from "react"
+import React, {useEffect} from "react"
 import {createTheme, styled, ThemeProvider} from "@mui/material/styles"
 import Box from "@mui/material/Box"
 import * as muiColors from "@mui/material/colors"
@@ -7,7 +7,7 @@ import colors from "../colors"
 import BallotIcon from "@mui/icons-material/Ballot"
 import capitalize from "lodash/capitalize"
 import classnames from "classnames"
-import { useTranslation } from "react-i18next"
+import {useTranslation} from "react-i18next"
 
 const theme = createTheme()
 const LabelContainer = styled("div")(({theme}) => ({
@@ -72,11 +72,10 @@ export const ClassSelectionMenu = ({
   }, [])
 
   const {t} = useTranslation();
-  
+
   return (
     <ThemeProvider theme={theme}>
       <SidebarBoxContainer
-        // title="Classifications"
         title={t("menu.classifications")}
         subTitle=""
         icon={<BallotIcon style={{color: muiColors.grey[700]}} />}
