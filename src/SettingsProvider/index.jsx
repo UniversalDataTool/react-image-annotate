@@ -1,6 +1,7 @@
 // @flow
 
-import React, { createContext, useContext, useState } from "react"
+import React, {createContext, useContext, useState} from "react"
+import "../Localization/i18n.js"
 
 const defaultSettings = {
   showCrosshairs: false,
@@ -20,7 +21,7 @@ const pullSettingsFromLocalStorage = () => {
         settings[key.replace("settings_", "")] = JSON.parse(
           window.localStorage.getItem(key)
         )
-      } catch (e) {}
+      } catch (e) { }
     }
   }
   return settings
@@ -28,14 +29,14 @@ const pullSettingsFromLocalStorage = () => {
 
 export const useSettings = () => useContext(SettingsContext)
 
-export const SettingsProvider = ({ children }) => {
+export const SettingsProvider = ({children}) => {
   const [state, changeState] = useState(() => pullSettingsFromLocalStorage())
   const changeSetting = (setting, value) => {
-    changeState({ ...state, [setting]: value })
+    changeState({...state, [setting]: value})
     window.localStorage.setItem(`settings_${setting}`, JSON.stringify(value))
   }
   return (
-    <SettingsContext.Provider value={{ ...state, changeSetting }}>
+    <SettingsContext.Provider value={{...state, changeSetting}}>
       {children}
     </SettingsContext.Provider>
   )
