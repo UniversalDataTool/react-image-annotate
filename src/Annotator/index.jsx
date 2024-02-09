@@ -14,6 +14,7 @@ import useEventCallback from "use-event-callback"
 import videoReducer from "./reducers/video-reducer.js"
 import PropTypes from "prop-types"
 import noopReducer from "./reducers/noop-reducer.js"
+import "../Localization/i18n"
 
 
 export const Annotator = ({
