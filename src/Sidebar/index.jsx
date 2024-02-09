@@ -2,7 +2,6 @@
 
 import React from "react"
 import {createTheme, styled, ThemeProvider} from "@mui/material/styles"
-import TaskDescription from "../TaskDescriptionSidebarBox"
 import RegionSelector from "../RegionSelectorSidebarBox"
 import History from "../HistorySidebarBox"
 import DebugBox from "../DebugSidebarBox"
@@ -16,7 +15,6 @@ const emptyArr = []
 
 export const Sidebar = ({
   debug,
-  taskDescription,
   keyframes,
   images,
   regions,
@@ -42,9 +40,6 @@ export const Sidebar = ({
     <ThemeProvider theme={theme}>
       <Container>
         {debug && <DebugBox state={debug} lastAction={debug.lastAction} />}
-        {taskDescription && (taskDescription || "").length > 1 && (
-          <TaskDescription description={taskDescription} />
-        )}
         {labelImages && (
           <TagsSidebarBox
             currentImage={currentImage}

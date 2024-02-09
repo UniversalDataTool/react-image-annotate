@@ -13,7 +13,6 @@ import KeyframesSelector from "../KeyframesSelectorSidebarBox"
 import RegionSelector from "../RegionSelectorSidebarBox"
 import SettingsDialog from "../SettingsDialog"
 import TagsSidebarBox from "../TagsSidebarBox"
-import TaskDescription from "../TaskDescriptionSidebarBox"
 import Workspace from "../workspace/Workspace"
 import getActiveImage from "../Annotator/reducers/get-active-image"
 import iconDictionary from "./icon-dictionary"
@@ -257,9 +256,6 @@ export const MainLayout = ({
               rightSidebarItems={[
                 debugModeOn && (
                   <DebugBox state={debugModeOn} lastAction={state.lastAction} key="DebugBox" />
-                ),
-                state.taskDescription && (
-                  <TaskDescription description={state.taskDescription} key="TaskDescription" />
                 ),
                 state.regionClsList && (
                   <ClassSelectionMenu
