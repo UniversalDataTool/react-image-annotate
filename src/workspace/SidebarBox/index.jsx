@@ -1,15 +1,15 @@
 // @flow
 
-import React, { useState, memo, useCallback } from "react"
+import React, {useState, memo, useCallback} from "react"
 import Paper from "@mui/material/Paper"
-import { createTheme, styled, ThemeProvider } from "@mui/material/styles"
+import {createTheme, styled, ThemeProvider} from "@mui/material/styles"
 import ExpandIcon from "@mui/icons-material/ExpandMore"
 import IconButton from "@mui/material/IconButton"
 import Collapse from "@mui/material/Collapse"
 import classnames from "classnames"
 import useEventCallback from "use-event-callback"
 import Typography from "@mui/material/Typography"
-import { useIconDictionary } from "../icon-dictionary.js"
+import {useIconDictionary} from "../icon-dictionary.js"
 import ResizePanel from "../ResizePanel"
 import styles from "./styles.js"
 
@@ -70,7 +70,7 @@ export const SidebarBox = ({
       <ContainerDiv>
         <HeaderDiv>
           <div className="iconContainer">
-            {icon || <TitleIcon/>}
+            {icon || <TitleIcon />}
           </div>
           <TitleTypography>
             {title} <span>{subTitle}</span>
@@ -87,10 +87,10 @@ export const SidebarBox = ({
           ) : null
         ) : (
           <Collapse in={expanded}>
-            <ResizePanel direction="s" style={{ height: 200 }}>
+            <ResizePanel direction="s" style={{height: 100}}>
               <div
                 className="panel"
-                style={{ display: "block", overflow: "hidden", height: 500 }}
+                style={{display: "block", overflow: "hidden", height: 500}}
               >
                 {content}
               </div>
