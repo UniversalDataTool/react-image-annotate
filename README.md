@@ -2,6 +2,7 @@
 
 ## Features
 
+- [API Documentation](docs/content.md)
 - Simple input/output format
 - Bounding Box, Point and Polygon Annotation
 - Zooming, Scaling, Panning
