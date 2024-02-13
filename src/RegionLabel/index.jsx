@@ -169,7 +169,7 @@ export const RegionLabel = ({
             {enabledProperties.includes("name") && (
               <TextField
                 id="nameField"
-                label="name"
+                label="Please specify a unique designation"
                 ref={nameInputRef}
                 onClick={onNameInputClick}
                 value={region.name || ""}

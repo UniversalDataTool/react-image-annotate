@@ -80,12 +80,13 @@ const RowLayout = ({
 }
 
 const RowHeader = () => {
+  const {t} = useTranslation();
   return (
     <RowLayout
       header
       highlighted={false}
       order={<ReorderIcon className="icon" />}
-      classification={<div style={{paddingLeft: 10}}>Class</div>}
+      classification={<div style={{paddingLeft: 10}}>{t("desc.class")}</div>}
       area={<PieChartIcon className="icon" />}
       trash={<TrashIcon className="icon" />}
       lock={<LockIcon className="icon" />}
