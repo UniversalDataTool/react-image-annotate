@@ -11,6 +11,7 @@ import CheckIcon from "@mui/icons-material/Check"
 import TextField from "@mui/material/TextField"
 import Select from "react-select"
 import CreatableSelect from "react-select/creatable"
+import {useTranslation} from "react-i18next"
 
 import {asMutable} from "seamless-immutable"
 
@@ -30,6 +31,7 @@ export const RegionLabel = ({
   enabledProperties
 }) => {
   const commentInputRef = useRef(null)
+  const {t} = useTranslation();
   const onCommentInputClick = (_) => {
     // The TextField wraps the <input> tag with two divs
     const commentInput = commentInputRef.current.children[0].children[0]
@@ -169,7 +171,7 @@ export const RegionLabel = ({
             {enabledProperties.includes("name") && (
               <TextField
                 id="nameField"
-                label="Please specify a unique designation"
+                label={t("txtfld.label")}
                 ref={nameInputRef}
                 onClick={onNameInputClick}
                 value={region.name || ""}

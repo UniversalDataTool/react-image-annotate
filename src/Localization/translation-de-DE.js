@@ -8,7 +8,8 @@ const translationDeDE = {
   "desc.class": "Klassen",
   "move.polypoint": "Polygon Punkt verschoben",
   "create.polygon": "Polygon erstellen",
-  "create.line": "Lichtschranke erstellen"
+  "create.line": "Lichtschranke erstellen",
+  "txtfld.label": "Bezeichnung"
 };
 
 export default translationDeDE;

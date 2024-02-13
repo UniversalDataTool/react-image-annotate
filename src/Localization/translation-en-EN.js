@@ -8,7 +8,8 @@ const translationEnEN = {
   "desc.class": "Class",
   "move.polypoint": "Move Polygon Point",
   "create.polygon": "Create Polygon",
-  "create.line": "Create Line"
+  "create.line": "Create Line",
+  "txtfld.label": "Designation"
 };
 
 export default translationEnEN;
