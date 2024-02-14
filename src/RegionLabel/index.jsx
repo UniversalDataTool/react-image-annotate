@@ -179,7 +179,8 @@ export const RegionLabel = ({
                   onChange({...(region), name: event.target.value})
                 }
               />
-            )}
+            )
+            }
             {onClose && (
               <div style={{marginTop: 4, display: "flex"}}>
                 <div style={{flexGrow: 1}} />
