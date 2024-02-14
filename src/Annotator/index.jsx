@@ -14,6 +14,7 @@ import useEventCallback from "use-event-callback"
 import videoReducer from "./reducers/video-reducer.js"
 import PropTypes from "prop-types"
 import noopReducer from "./reducers/noop-reducer.js"
+import {useTranslation} from "react-i18next"
 
 
 export const Annotator = ({
@@ -56,6 +57,7 @@ export const Annotator = ({
     selectedImage = (images || []).findIndex((img) => img.src === selectedImage)
     if (selectedImage === -1) selectedImage = undefined
   }
+  const {t} = useTranslation();
   const annotationType = images ? "image" : "video"
   const [state, dispatchToReducer] = useReducer(
     historyHandler(
@@ -130,9 +132,9 @@ export const Annotator = ({
       image: state.images[selectedImage]
     })
   }, [selectedImage, state.images])
-
+ 
   if (!images && !videoSrc)
-    return "Missing required prop \"images\" or \"videoSrc\""
+    return t("error.imagevideo")
 
   return (
     <SettingsProvider>
