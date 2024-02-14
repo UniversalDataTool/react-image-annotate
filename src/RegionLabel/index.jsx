@@ -171,7 +171,7 @@ export const RegionLabel = ({
             {enabledProperties.includes("name") && (
               <TextField
                 id="nameField"
-                label={t("txtfld.label")}
+                label={t("region.label")}
                 ref={nameInputRef}
                 onClick={onNameInputClick}
                 value={region.name || ""}
