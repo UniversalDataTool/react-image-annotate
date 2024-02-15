@@ -195,11 +195,12 @@ export default (state, action) => {
         return setIn(
           modifyRegion(polygon, {
             points: polygon.points.slice(0, -1),
+            editingLabels: true,
             open: false,
           }),
           ["mode"],
           null
-        )
+          )
       } else {
         state = saveToHistory(state, "Move Polygon Point")
       }
@@ -720,7 +721,11 @@ export default (state, action) => {
           return state
         }
         case "MOVE_LINE_POINT": {
-          return {...state, mode: null}
+          return setIn(
+            modifyRegion(state.mode.regionId, { editingLabels: true }),
+            ["mode"],
+            null
+            )
         }
         case "DRAW_EXPANDING_LINE": {
           const [expandingLine, regionIndex] = getRegion(state.mode.regionId)
@@ -896,8 +901,10 @@ export default (state, action) => {
         return setIn(
           state,
           [...pathToActiveImage, "regions"],
-          regions.map((r) => ({
+          regions.map((r) => (
+            {
             ...r,
+            name: r.name || r.id,
             editingLabels: false,
           }))
         )
