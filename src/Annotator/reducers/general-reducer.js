@@ -10,6 +10,7 @@ import convertExpandingLineToPolygon from "./convert-expanding-line-to-polygon"
 import clamp from "../../utils/clamp.js"
 import getLandmarksWithTransform from "../../utils/get-landmarks-with-transform"
 import setInLocalStorage from "../../utils/set-in-local-storage"
+import i18next from "i18next"
 
 const getRandomId = () => Math.random().toString().split(".")[1]
 
@@ -202,7 +203,7 @@ export default (state, action) => {
           null
           )
       } else {
-        state = saveToHistory(state, "Move Polygon Point")
+        state = saveToHistory(state, i18next.t("move.polypoint"))
       }
       return setIn(state, ["mode"], {
         mode: "MOVE_POLYGON_POINT",
@@ -580,7 +581,7 @@ export default (state, action) => {
         }
         case "create-polygon": {
           if (state.mode && state.mode.mode === "DRAW_POLYGON") break
-          state = saveToHistory(state, "Create Polygon")
+          state = saveToHistory(state, i18next.t("create.polygon"))
           newRegion = {
             type: "polygon",
             points: [
@@ -619,7 +620,7 @@ export default (state, action) => {
         }
         case "create-line": {
           if (state.mode && state.mode.mode === "DRAW_LINE") break
-          state = saveToHistory(state, "Create Line")
+          state = saveToHistory(state, i18next.t("create.line"))
           newRegion = {
             type: "line",
             x1: x,

@@ -42,7 +42,7 @@ const RowLayout = ({
   header,
   highlighted,
   order,
-  classification,
+  name,
   area,
   tags,
   trash,
@@ -60,7 +60,7 @@ const RowLayout = ({
           <div style={{textAlign: "right", paddingRight: 10}}>{order}</div>
         </Grid>
         <Grid item xs={5}>
-          {classification}
+          {name}
         </Grid>
         <Grid item xs={2}>
           <div style={{textAlign: "right", paddingRight: 6}}>{area}</div>
@@ -80,12 +80,13 @@ const RowLayout = ({
 }
 
 const RowHeader = () => {
+  const {t} = useTranslation();
   return (
     <RowLayout
       header
       highlighted={false}
       order={<ReorderIcon className="icon" />}
-      classification={<div style={{paddingLeft: 10}}>Class</div>}
+      name={<div style={{paddingLeft: 10}}>{t("desc.class")}</div>}
       area={<PieChartIcon className="icon" />}
       trash={<TrashIcon className="icon" />}
       lock={<LockIcon className="icon" />}
@@ -106,6 +107,7 @@ const Row = ({
   locked,
   color,
   cls,
+  name,
   index,
 }) => {
   return (
@@ -114,7 +116,7 @@ const Row = ({
       highlighted={highlighted}
       onClick={() => onSelectRegion(r)}
       order={`#${index + 1}`}
-      classification={<Chip text={cls || ""} color={color || "#ddd"} />}
+      name={<Chip text={name || cls || ""} color={color || "#ddd"} />}
       area=""
       trash={<TrashIcon onClick={() => onDeleteRegion(r)} className="icon2" />}
       lock={
@@ -156,6 +158,7 @@ const MemoRow = memo(
     prevProps.id === nextProps.id &&
     prevProps.index === nextProps.index &&
     prevProps.cls === nextProps.cls &&
+    prevProps.name === nextProps.name &&
     prevProps.color === nextProps.color
 )
 
@@ -203,6 +206,7 @@ const mapUsedRegionProperties = (r) => [
   r.color,
   r.locked,
   r.visible,
+  r.name,
   r.highlighted,
 ]
 
