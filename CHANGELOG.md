@@ -2,6 +2,8 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [4.3.5](https://github.com/starwit/react-image-annotate/compare/4.3.4...4.3.5) (2024-02-29)
+
 ### [4.3.4](https://github.com/starwit/react-image-annotate/compare/4.3.4-1...4.3.4) (2024-02-12)
 
 ### [4.3.4-1](https://github.com/starwit/react-image-annotate/compare/4.3.4-0...4.3.4-1) (2024-02-10)
