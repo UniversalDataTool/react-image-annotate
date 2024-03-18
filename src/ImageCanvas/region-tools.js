@@ -3,13 +3,11 @@ export const getEnclosingBox = (region) => {
   switch (region.type) {
     case "polygon": {
       const box = {
-        x: Math.min(...region.points.map(([x, y]) => x)),
-        y: Math.min(...region.points.map(([x, y]) => y)),
+        x: region.points[0][0],
+        y: region.points[0][1],
         w: 0,
         h: 0,
       }
-      box.w = Math.max(...region.points.map(([x, y]) => x)) - box.x
-      box.h = Math.max(...region.points.map(([x, y]) => y)) - box.y
       return box
     }
     case "keypoints": {
