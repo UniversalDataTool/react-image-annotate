@@ -6,11 +6,12 @@ import Tooltip from "@mui/material/Tooltip"
 
 const theme = createTheme()
 const TransformGrabber = styled("div")(({ theme }) => ({
-  width: 10,
-  height: 10,
+  width: 14,
+  height: 14,
   zIndex: 2,
   border: "2px solid #FFF",
   position: "absolute",
+  boxSizing: "border-box"
 }))
 
 const boxCursorMap = [
