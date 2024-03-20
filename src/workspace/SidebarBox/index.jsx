@@ -91,6 +91,7 @@ export const SidebarBox = ({
                 className="panel"
                 style={{ display: "block", overflow: "hidden", height: 150 }}
               >
+                {"passt"}
                 {content}
               </div>
           </Collapse>
