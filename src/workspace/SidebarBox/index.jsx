@@ -10,7 +10,6 @@ import classnames from "classnames"
 import useEventCallback from "use-event-callback"
 import Typography from "@mui/material/Typography"
 import { useIconDictionary } from "../icon-dictionary.js"
-import ResizePanel from "../ResizePanel"
 import styles from "./styles.js"
 
 const theme = createTheme()
@@ -89,9 +88,8 @@ export const SidebarBox = ({
           <Collapse in={expanded} >
               <div
                 className="panel"
-                style={{ display: "block", overflow: "hidden", height: 150 }}
+                style={{ display: "block", overflow: "hidden", height: 200 }}
               >
-                {"passt"}
                 {content}
               </div>
           </Collapse>
