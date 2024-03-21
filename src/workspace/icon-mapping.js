@@ -4,7 +4,6 @@ import PlayIcon from "@mui/icons-material/PlayArrow"
 import PauseIcon from "@mui/icons-material/Pause"
 import SettingsIcon from "@mui/icons-material/Settings"
 import HelpIcon from "@mui/icons-material/Help"
-import FullscreenIcon from "@mui/icons-material/Fullscreen"
 import ExitIcon from "@mui/icons-material/ExitToApp"
 import QueuePlayNextIcon from "@mui/icons-material/QueuePlayNext"
 import HotkeysIcon from "@mui/icons-material/Keyboard"
@@ -20,7 +19,6 @@ export const iconMapping = {
   settings: SettingsIcon,
   options: SettingsIcon,
   help: HelpIcon,
-  fullscreen: FullscreenIcon,
   exit: ExitIcon,
   quit: ExitIcon,
   save: ExitIcon,
