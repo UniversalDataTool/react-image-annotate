@@ -166,7 +166,9 @@ export const MainLayout = ({
       enabledRegionProps={enabledRegionProps}
     />
   )
-
+  const onClickHeaderItem = useEventCallback((item) => {
+    dispatch({type: "HEADER_BUTTON_CLICKED", buttonName: item.name})
+  })
   const debugModeOn = Boolean(window.localStorage.$ANNOTATE_DEBUG_MODE && state)
   const nextImageHasRegions =
     !nextImage || (nextImage.regions && nextImage.regions.length > 0)
