@@ -48,7 +48,6 @@ export const Annotator = ({
   hidePrev,
   hideClone,
   hideSettings,
-  hideFullScreen,
   hideSave,
   enabledRegionProps = ["class", "name"],
   userReducer
@@ -151,7 +150,6 @@ export const Annotator = ({
         hidePrev={hidePrev}
         hideClone={hideClone}
         hideSettings={hideSettings}
-        hideFullScreen={hideFullScreen}
         hideSave={hideSave}
         enabledRegionProps={enabledRegionProps}
       />
@@ -195,7 +193,6 @@ Annotator.propTypes = {
   hidePrev: PropTypes.bool,
   hideClone: PropTypes.bool,
   hideSettings: PropTypes.bool,
-  hideFullScreen: PropTypes.bool,
   hideSave: PropTypes.bool,
   enabledRegionProps: PropTypes.arrayOf(PropTypes.string),
   userReducer: PropTypes.func

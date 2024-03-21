@@ -1,6 +1,5 @@
 // @flow
 
-import {FullScreen, useFullScreenHandle} from "react-full-screen"
 import React, {useCallback, useRef} from "react"
 import {createTheme, styled, ThemeProvider} from "@mui/material/styles"
 
@@ -24,7 +23,6 @@ import {useSettings} from "../SettingsProvider"
 import {withHotKeys} from "react-hotkeys"
 import {Save} from "@mui/icons-material"
 
-// import Fullscreen from "../Fullscreen"
 
 const emptyArr = []
 const theme = createTheme()
@@ -34,15 +32,6 @@ const HotkeyDiv = withHotKeys(({hotKeys, children, divRef, ...props}) => (
     {children}
   </div>
 ))
-
-const FullScreenContainer = styled("div")(({theme}) => ({
-  width: "100%",
-  height: "100%",
-  "& .fullscreen": {
-    width: "100%",
-    height: "100%",
-  },
-}))
 
 export const MainLayout = ({
   state,
@@ -55,12 +44,10 @@ export const MainLayout = ({
   hidePrev = false,
   hideClone = false,
   hideSettings = false,
-  hideFullScreen = false,
   hideSave = false,
   enabledRegionProps,
 }) => {
   const settings = useSettings()
-  const fullScreenHandle = useFullScreenHandle()
 
   const memoizedActionFns = useRef({})
   const action = (type, ...params) => {
@@ -179,32 +166,15 @@ export const MainLayout = ({
       enabledRegionProps={enabledRegionProps}
     />
   )
-
   const onClickHeaderItem = useEventCallback((item) => {
-    if (item.name === "Fullscreen") {
-      fullScreenHandle.enter()
-    } else if (item.name === "Window") {
-      fullScreenHandle.exit()
-    }
     dispatch({type: "HEADER_BUTTON_CLICKED", buttonName: item.name})
   })
-
   const debugModeOn = Boolean(window.localStorage.$ANNOTATE_DEBUG_MODE && state)
   const nextImageHasRegions =
     !nextImage || (nextImage.regions && nextImage.regions.length > 0)
 
   return (
     <ThemeProvider theme={theme}>
-      <FullScreenContainer>
-        <FullScreen
-          handle={fullScreenHandle}
-          onChange={(open) => {
-            if (!open) {
-              fullScreenHandle.exit()
-              action("HEADER_BUTTON_CLICKED", "buttonName")("Window")
-            }
-          }}
-        >
           <HotkeyDiv
             tabIndex={-1}
             divRef={innerContainerRef}
@@ -212,11 +182,9 @@ export const MainLayout = ({
             onMouseOver={refocusOnMouseEvent}
             allowChanges
             handlers={hotkeyHandlers}
-            className={state.fullScreen ? "Fullscreen" : ""}
             style={styles.container}
           >
             <Workspace
-              allowFullscreen
               iconDictionary={iconDictionary}
               hideHeader={hideHeader}
               hideHeaderText={hideHeaderText}
@@ -245,10 +213,6 @@ export const MainLayout = ({
                 !nextImageHasRegions &&
                 activeImage.regions && {name: "Clone"},
                 !hideSettings && {name: "Settings"},
-                !hideFullScreen &&
-                (state.fullScreen
-                  ? {name: "Window"}
-                  : {name: "Fullscreen"}),
                 !hideSave && {name: "Save", icon: <Save />},
               ].filter(Boolean)}
               onClickHeaderItem={onClickHeaderItem}
@@ -310,8 +274,6 @@ export const MainLayout = ({
               {canvas}
             </Workspace>
           </HotkeyDiv>
-        </FullScreen>
-      </FullScreenContainer>
     </ThemeProvider>
   )
 }

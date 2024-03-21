@@ -846,13 +846,6 @@ export default (state, action) => {
         case "help": {
           return state
         }
-        case "fullscreen": {
-          return setIn(state, ["fullScreen"], true)
-        }
-        case "exit fullscreen":
-        case "window": {
-          return setIn(state, ["fullScreen"], false)
-        }
         case "hotkeys": {
           return state
         }
