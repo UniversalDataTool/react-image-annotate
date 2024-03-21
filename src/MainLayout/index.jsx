@@ -215,7 +215,7 @@ export const MainLayout = ({
                 !hideSettings && {name: "Settings"},
                 !hideSave && {name: "Save", icon: <Save />},
               ].filter(Boolean)}
-              // onClickHeaderItem={onClickHeaderItem}
+              onClickHeaderItem={onClickHeaderItem}
               rightSidebarItems={[
                 debugModeOn && (
                   <DebugBox state={debugModeOn} lastAction={state.lastAction} key="DebugBox" />
