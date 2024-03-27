@@ -1,7 +1,6 @@
 // @flow
 
 import React, { useState, memo, useCallback } from "react"
-import Paper from "@mui/material/Paper"
 import { createTheme, styled, ThemeProvider } from "@mui/material/styles"
 import ExpandIcon from "@mui/icons-material/ExpandMore"
 import IconButton from "@mui/material/IconButton"
@@ -37,7 +36,7 @@ export const SidebarBox = ({
   title,
   subTitle,
   children,
-  noScroll = false,
+  noScroll,
   expandedByDefault,
 }) => {
   const content = (
@@ -88,7 +87,7 @@ export const SidebarBox = ({
           <Collapse in={expanded} >
               <div
                 className="panel"
-                style={{ display: "block", overflow: "hidden", height: 200 }}
+                style={{ display: "block", overflow: "hidden", height: 300 }}
               >
                 {content}
               </div>

@@ -1,7 +1,7 @@
 // @flow
 
-import React, {memo} from "react"
-import {createTheme, styled, ThemeProvider} from "@mui/material/styles"
+import React, { memo } from "react"
+import { createTheme, styled, ThemeProvider } from "@mui/material/styles"
 import SidebarBoxContainer from "../SidebarBoxContainer"
 import HistoryIcon from "@mui/icons-material/History"
 import List from "@mui/material/List"
@@ -11,9 +11,9 @@ import IconButton from "@mui/material/IconButton"
 import ListItemSecondaryAction from "@mui/material/ListItemSecondaryAction"
 import UndoIcon from "@mui/icons-material/Undo"
 import moment from "moment"
-import {grey} from "@mui/material/colors"
+import { grey } from "@mui/material/colors"
 import isEqual from "lodash/isEqual"
-import {useTranslation} from "react-i18next"
+import { useTranslation } from "react-i18next"
 
 const theme = createTheme()
 const EmptyTextDiv = styled('div')(() => ({
@@ -24,28 +24,29 @@ const EmptyTextDiv = styled('div')(() => ({
   padding: 20,
 }))
 
-const listItemTextStyle = {paddingLeft: 16}
+const listItemTextStyle = { paddingLeft: 16 }
 
 export const HistorySidebarBox = ({
   history,
   onRestoreHistory,
 }) => {
 
-  const {t} = useTranslation();
+  const { t } = useTranslation();
 
   return (
     <ThemeProvider theme={theme}>
       <SidebarBoxContainer
         title={t("menu.history")}
-        icon={<HistoryIcon style={{color: grey[700]}} />}
+        icon={<HistoryIcon style={{ color: grey[700] }} />}
         expandedByDefault
+        noScroll={true}
       >
         <List>
           {history.length === 0 && (
             <EmptyTextDiv>{t("no.history")}</EmptyTextDiv>
           )}
-          {history.map(({name, time}, i) => (
-            <ListItem button dense key={i}>
+          {history.map(({ name, time }, i) => (
+            <ListItem button dense key={i} >
               <ListItemText
                 style={listItemTextStyle}
                 primary={name}

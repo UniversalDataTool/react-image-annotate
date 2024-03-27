@@ -180,6 +180,7 @@ export const RegionSelectorSidebarBox = ({
         subTitle=""
         icon={<RegionIcon style={{color: grey[700]}} />}
         expandedByDefault
+        noScroll={true}
       >
         <ContainerDiv>
           <MemoRowHeader />

@@ -80,6 +80,7 @@ export const ClassSelectionMenu = ({
         subTitle=""
         icon={<BallotIcon style={{color: muiColors.grey[700]}} />}
         expandedByDefault
+        noScroll={true}
       >
         {regionClsList.map((label, index) => (
           <LabelContainer
