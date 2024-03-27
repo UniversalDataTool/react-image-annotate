@@ -50,9 +50,5 @@ export default {
   expandedContent: {
     maxHeight: 300,
     overflowY: "auto",
-    "&.noScroll": {
-      overflowY: "visible",
-      overflow: "visible",
-    },
   },
 }
