@@ -1,15 +1,8 @@
 # React Image Annotate
 
-[![npm version](https://badge.fury.io/js/react-image-annotate.svg)](https://badge.fury.io/js/react-image-annotate)
-
-The best image/video annotation tool ever. [Check out the demo here](https://universaldatatool.github.io/react-image-annotate/). Or the [code sandbox here](https://codesandbox.io/s/react-image-annotate-example-38tsc?file=/src/App.js:0-403).
-
-## Sponsors
-
-[![wao.ai sponsorship image](https://s3.amazonaws.com/asset.workaround.online/sponsorship-banner-1.png)](https://wao.ai)
-
 ## Features
 
+- [API Documentation](docs/content.md)
 - Simple input/output format
 - Bounding Box, Point and Polygon Annotation
 - Zooming, Scaling, Panning
@@ -61,7 +54,9 @@ All of the following properties can be defined on the Annotator...
 | `taskDescription`        | \*`string`                                       | Markdown description for what to do in the image.                                       |               |
 | `allowedArea`            | `{ x: number, y: number, w: number, h: number }` | Area that is available for annotation.                                                  | Entire image. |
 | `regionTagList`          | `Array<string>`                                  | Allowed "tags" (mutually inclusive classifications) for regions.                        |               |
-| `regionClsList`          | `Array<string>`                                  | Allowed "classes" (mutually exclusive classifications) for regions.                     |               |
+| `regionClsList`          | `Array<string>`                                  | Allowed "classes" (mutually exclusive classifications) for regions.           
+| `regionColorList`        | `Array<string>`                                  | Custom color list for regions. Default colors are used if not specified.
+| `preselectCls`          | `string`                                          |  Put in the class that should be preselected when creating a new Box/Polygon etc.           |               |
 | `imageTagList`           | `Array<string>`                                  | Allowed tags for entire image.                                                          |               |
 | `imageClsList`           | `Array<string>`                                  | Allowed classes for entire image.                                                       |               |
 | `enabledTools`           | `Array<string>`                                  | Tools allowed to be used. e.g. "select", "create-point", "create-box", "create-polygon" | Everything.   |
@@ -72,24 +67,25 @@ All of the following properties can be defined on the Annotator...
 | `pointDistancePrecision` | `number`                                         | Precision on displayed points (e.g. 3 => 0.123)                                         |               |
 | `onExit`                 | `MainLayoutState => any`                         | Called when "Save" is called.                                                           |               |
 | `RegionEditLabel`        | `Node`                                           | React Node overriding the form to update the region (see [`RegionLabel`](https://github.com/waoai/react-image-annotate/blob/master/src/RegionLabel/index.js))                                                          |               |
-| `allowComments`          | `boolean`                                        | Show a textarea to add comments on each annotation.                                     | `false`       |
+| `enabledRegionProps`     | `boolean`                                        | Which properties to show in region edit popup ("class", "tags", "name", "comment")      | [`class`, `name`] |
 | `hidePrev`               | `boolean`                                        | Hide `Previous Image` button from the header bar.                                       | `false`       |
 | `hideNext`               | `boolean`                                        | Hide `Next Image` button from the header bar.                                           | `false`       |
 | `hideClone`              | `boolean`                                        | Hide `Clone` button from the header bar.                                                | `false`       |
 | `hideSettings`           | `boolean`                                        | Hide `Settings` button from the header bar.                                             | `false`       |
 | `hideFullScreen`         | `boolean`                                        | Hide `FullScreen/Window` button from the header bar.                                    | `false`       |
 | `hideSave`               | `boolean`                                        | Hide `Save` button from the header bar.                                                 | `false`       |
+| `userReducer`            | `(state, action) => state`                       | User defined reducer that receives every event triggered within the annotator. See demo site for example. | |
 
 ## Developers
 
 ### Development
 
-This project uses [react-storybook](https://storybook.js.org/). To begin developing run the following commands in the cloned repo.
+To begin developing run the following commands in the cloned repo.
 
-1. `yarn install`
-2. `yarn storybook`
+1. `npm install`
+2. `npm start`
 
-A browser tab will automatically open with the project components.
+Then navigate to http://localhost:5173/ and start testing.
 
 See more details in the [contributing guidelines](https://github.com/waoai/react-image-annotate/wiki/Setup-for-Development).
 
@@ -99,3 +95,15 @@ Consult these icon repositories:
 
 - [Material Icons](https://material.io/tools/icons/)
 - [Font Awesome Icons](https://fontawesome.com/icons?d=gallery&m=free)
+
+### Testdrive in project
+To test this package in your project follow this quickstart:
+1. Run `npm link` in the root directory of this project (where the `package.json` is located)
+2. With the same Terminal window, go to your target project folder where the `package.json` is located
+3. Run `npm link "@starwit/react-image-annotate"` to install the package. It might be necessary to remove a previously installed `@starwit/react-image-annotate` package. Please use the same node version when using npm link and executing the application. 
+4. Changes to this repository will apply live to the running dev session in your target project :)
+
+
+### Notes
+Currently, there is an issue with vite-plugin-node-polyfills (0.15.0 at the time of writing), 
+which shows many warnings while building (related to "use client"). That is expected and will probably be fixed in the future. See here: https://github.com/davidmyersdev/vite-plugin-node-polyfills/issues/49 

@@ -28,3 +28,5 @@ dist
 secret.*
 secret.story.*
 *.secret.*
+
+*.tgz

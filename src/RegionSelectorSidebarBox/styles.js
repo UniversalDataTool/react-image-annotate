@@ -1,4 +1,4 @@
-import { grey, blue, orange, purple } from "@mui/material/colors"
+import { blue, grey } from "@mui/material/colors"
 
 export default {
   container: {

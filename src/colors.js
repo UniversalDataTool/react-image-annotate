@@ -1,5 +1,3 @@
-// @flow
-
 import * as muiColors from "@mui/material/colors"
 
 export const colors = [
@@ -25,7 +23,7 @@ function reverseParseColor(rrggbb) {
   return parseInt(bbggrr, 16)
 }
 
-export const colorInts: Array<number> = colors.map(
+export const colorInts = colors.map(
   (c) => (reverseParseColor(c) | transparency) >>> 0
 )
 

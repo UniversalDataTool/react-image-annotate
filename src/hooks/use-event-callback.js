@@ -1,6 +1,6 @@
 // @flow
 
-import { useRef, useCallback, useLayoutEffect, useEffect } from "react"
+import { useCallback, useLayoutEffect, useRef } from "react"
 
 export default (fn) => {
   let ref = useRef()
