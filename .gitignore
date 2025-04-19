@@ -28,3 +28,4 @@ dist
 secret.*
 secret.story.*
 *.secret.*
+.idea

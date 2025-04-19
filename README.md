@@ -1,12 +1,16 @@
 # React Image Annotate
 
-[![npm version](https://badge.fury.io/js/react-image-annotate.svg)](https://badge.fury.io/js/react-image-annotate)
+[![npm version](https://img.shields.io/npm/v/@asi/react-image-annotate.svg)](https://www.npmjs.com/package/@amnstak/react-image-annotate)
 
-The best image/video annotation tool ever. [Check out the demo here](https://universaldatatool.github.io/react-image-annotate/). Or the [code sandbox here](https://codesandbox.io/s/react-image-annotate-example-38tsc?file=/src/App.js:0-403).
+<!-- Fork of react-image-annotate - The best image/video annotation tool
+ever. [Check out the demo here](https://codesandbox.io/s/react-image-annotate-example-38tsc?file=/src/App.js:0-403). -->
 
-## Sponsors
+Implemented features in fork:
 
-[![wao.ai sponsorship image](https://s3.amazonaws.com/asset.workaround.online/sponsorship-banner-1.png)](https://wao.ai)
+- added typescript
+- changed seamless immutability to immer
+- updated npm and dependencies used by project
+- updated react to v.19
 
 ## Features
 
@@ -20,29 +24,36 @@ The best image/video annotation tool ever. [Check out the demo here](https://uni
 
 ## Usage
 
-`npm install react-image-annotate`
+`npm i @amnstak/react-image-annotate`
 
 ```javascript
 import React from "react";
-import ReactImageAnnotate from "react-image-annotate";
+import Annotator from "@amnstak/react-image-annotate";
 
 const App = () => (
-  <ReactImageAnnotate
-    labelImages
-    regionClsList={["Alpha", "Beta", "Charlie", "Delta"]}
-    regionTagList={["tag1", "tag2", "tag3"]}
+  <Annotator
+    regionClsList={["car", "truck"]}
+    enabledTools={["select", "create-polygon"]}
+    selectedTool="select"
     images={[
       {
-        src: "https://placekitten.com/408/287",
-        name: "Image 1",
-        regions: []
-      }
+          src: "https://images.unsplash.com/photo-1561518776-e76a5e48f731?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=750&q=80",
+          name: "car-image-1",
+        },
     ]}
+    onPrevImages={(state) => {
+      console.log(state);
+    }}
+    onNextImages={(state) => {
+      console.log(state);
+    }}
+    onExit={(output) => {
+      console.log({output});
+    }}
   />
 );
 
 export default App;
-
 ```
 
 To get the proper fonts, make sure to import the Inter UI or Roboto font, the
@@ -56,46 +67,8 @@ following line added to a css file should suffice.
 
 All of the following properties can be defined on the Annotator...
 
-| Prop                     | Type (\* = required)                             | Description                                                                             | Default       |
-| ------------------------ | ------------------------------------------------ | --------------------------------------------------------------------------------------- | ------------- |
-| `taskDescription`        | \*`string`                                       | Markdown description for what to do in the image.                                       |               |
-| `allowedArea`            | `{ x: number, y: number, w: number, h: number }` | Area that is available for annotation.                                                  | Entire image. |
-| `regionTagList`          | `Array<string>`                                  | Allowed "tags" (mutually inclusive classifications) for regions.                        |               |
-| `regionClsList`          | `Array<string>`                                  | Allowed "classes" (mutually exclusive classifications) for regions.                     |               |
-| `imageTagList`           | `Array<string>`                                  | Allowed tags for entire image.                                                          |               |
-| `imageClsList`           | `Array<string>`                                  | Allowed classes for entire image.                                                       |               |
-| `enabledTools`           | `Array<string>`                                  | Tools allowed to be used. e.g. "select", "create-point", "create-box", "create-polygon" | Everything.   |
-| `showTags`               | `boolean`                                        | Show tags and allow tags on regions.                                                    | `true`        |
-| `selectedImage`          | `string`                                         | URL of initially selected image.                                                        |               |
-| `images`                 | `Array<Image>`                                   | Array of images to load into annotator                                                  |               |
-| `showPointDistances`     | `boolean`                                        | Show distances between points.                                                          | `false`       |
-| `pointDistancePrecision` | `number`                                         | Precision on displayed points (e.g. 3 => 0.123)                                         |               |
-| `onExit`                 | `MainLayoutState => any`                         | Called when "Save" is called.                                                           |               |
-| `RegionEditLabel`        | `Node`                                           | React Node overriding the form to update the region (see [`RegionLabel`](https://github.com/waoai/react-image-annotate/blob/master/src/RegionLabel/index.js))                                                          |               |
-| `allowComments`          | `boolean`                                        | Show a textarea to add comments on each annotation.                                     | `false`       |
-| `hidePrev`               | `boolean`                                        | Hide `Previous Image` button from the header bar.                                       | `false`       |
-| `hideNext`               | `boolean`                                        | Hide `Next Image` button from the header bar.                                           | `false`       |
-| `hideClone`              | `boolean`                                        | Hide `Clone` button from the header bar.                                                | `false`       |
-| `hideSettings`           | `boolean`                                        | Hide `Settings` button from the header bar.                                             | `false`       |
-| `hideFullScreen`         | `boolean`                                        | Hide `FullScreen/Window` button from the header bar.                                    | `false`       |
-| `hideSave`               | `boolean`                                        | Hide `Save` button from the header bar.                                                 | `false`       |
+Refer `AnnotatorProps`
 
-## Developers
+`import { AnnotatorProps } from "@amnstak/react-image-annotate";`
 
-### Development
-
-This project uses [react-storybook](https://storybook.js.org/). To begin developing run the following commands in the cloned repo.
-
-1. `yarn install`
-2. `yarn storybook`
-
-A browser tab will automatically open with the project components.
-
-See more details in the [contributing guidelines](https://github.com/waoai/react-image-annotate/wiki/Setup-for-Development).
-
-### Icons
-
-Consult these icon repositories:
-
-- [Material Icons](https://material.io/tools/icons/)
-- [Font Awesome Icons](https://fontawesome.com/icons?d=gallery&m=free)
+It has a complete details of the accepted props
