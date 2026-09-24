@@ -6,6 +6,30 @@ import DescriptionIcon from "@mui/icons-material/Description"
 import { styled } from "@mui/material/styles"
 import { createTheme, ThemeProvider } from "@mui/material/styles"
 import { grey } from "@mui/material/colors"
+import Autocomplete from "@mui/material/Autocomplete"
+import Popper from "@mui/material/Popper"
+
+const getOptionValue = opt => (opt && typeof opt === "object" ? `${opt.value ?? ""}` : `${opt ?? ""}`)
+const getOptionText = opt => (opt && typeof opt === "object" && opt.label ? opt.label : getOptionValue(opt))
+
+// Show the whole list when the field is empty or already holds one of the options,
+// so users can pick another value without clearing the current one first.
+const filterOptions = (options, { inputValue }) => {
+  const query = (inputValue || "").trim().toLowerCase()
+  if (!query || options.some(opt => getOptionValue(opt).toLowerCase() === query)) return options
+  return options.filter(opt =>
+    getOptionValue(opt).toLowerCase().includes(query) ||
+    getOptionText(opt).toLowerCase().includes(query)
+  )
+}
+
+const AutoWidthPopper = ({ style, ...props }) => (
+  <Popper
+    {...props}
+    placement="bottom-start"
+    style={{ ...style, width: "auto", minWidth: style?.width, maxWidth: "90vw" }}
+  />
+)
 
 type MetadataItemProps = {
   name: string,
@@ -57,20 +81,38 @@ const MetadataItem = ({ name, value, metadataId, imageIndex, groupId, onChange, 
         width: "50%",
       }}>
         {
-          metadataConfig?.selectable !== true && (
-            <>
-              <input type="text" value={normalizedValue} name={name} onChange={handleChange} id={name} list={`${name}-list`} style={{ width: "100%" }} />
-              <datalist id={`${name}-list`}>
-                {
-                  metadataConfig?.options?.map(opt => {
-                    if (opt.value && opt.label) {
-                      return <option key={opt.value} value={opt.value}>{opt.label}</option>
-                    }
-                    return <option key={opt} value={opt}></option>
-                  })
-                }
-              </datalist>
-            </>
+          metadataConfig?.selectable !== true && !(metadataConfig?.options?.length > 0) && (
+            <input type="text" value={normalizedValue} name={name} onChange={handleChange} id={name} style={{ width: "100%" }} />
+          )
+        }
+        {
+          metadataConfig?.selectable !== true && metadataConfig?.options?.length > 0 && (
+            <Autocomplete
+              freeSolo
+              openOnFocus
+              disableClearable
+              id={name}
+              options={metadataConfig.options}
+              value={normalizedValue}
+              inputValue={normalizedValue}
+              onInputChange={(e, newValue) => {
+                if (newValue === normalizedValue) return
+                onChange({ name, value: newValue, imageIndex, groupId, metadataId })
+              }}
+              getOptionLabel={getOptionValue}
+              isOptionEqualToValue={(opt, val) => getOptionValue(opt) === getOptionValue(val)}
+              filterOptions={filterOptions}
+              renderOption={(props, opt) => (
+                <li {...props} key={getOptionValue(opt)}>{getOptionText(opt)}</li>
+              )}
+              PopperComponent={AutoWidthPopper}
+              ListboxProps={{ style: { maxHeight: "70vh", fontSize: 13 } }}
+              renderInput={(params) => (
+                <div ref={params.InputProps.ref}>
+                  <input type="text" name={name} {...params.inputProps} style={{ width: "100%" }} />
+                </div>
+              )}
+            />
           )
         }
         {
