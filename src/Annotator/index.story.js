@@ -55,7 +55,19 @@ storiesOf("Annotator", module)
       ]}
     />
   ))
-  .add("Basic with onImagesChange", () => (
+  .add("Basic with onImagesChange", () => {
+    const [humanProcessorConfirmation, setHumanProcessorConfirmation] = useState(null)
+    const handleHumanProcessorConfirmationChange = (confirmed) => {
+      console.log("[onHumanProcessorConfirmationChange] triggered:", confirmed)
+      return new Promise((resolve) => setTimeout(resolve, 800)).then(() =>
+        setHumanProcessorConfirmation(
+          confirmed
+            ? { confirmedAt: new Date().toISOString(), confirmedBy: "story.user@example.com" }
+            : null
+        )
+      )
+    }
+    return (
     <HotKeys keyMap={defaultKeyMap}>
       <div>
         <div >
@@ -219,11 +231,15 @@ storiesOf("Annotator", module)
                 }, 5000)
               })
             }}
+            updatedBy="AGGREGATOR"
+            humanProcessorConfirmation={humanProcessorConfirmation}
+            onHumanProcessorConfirmationChange={handleHumanProcessorConfirmationChange}
           />
         </div>
       </div>
     </HotKeys >
-  ))
+    )
+  })
   .add("Basic - Allow Comments", () => (
     <Annotator
       onExit={actionAddon("onExit")}

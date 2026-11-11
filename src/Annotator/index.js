@@ -76,6 +76,8 @@ hideHeader ?: boolean,
     fetchImage : (any) => any,
   updatedBy ?: ?string,
   mediaPresenterLeaseUntil ?: ?string,
+  humanProcessorConfirmation ?: ?{ confirmedAt?: string, confirmedBy?: string },
+  onHumanProcessorConfirmationChange ?: (boolean) => any,
 }
 
 export const Annotator = ({
@@ -137,6 +139,8 @@ export const Annotator = ({
   fetchImage = () => { },
   updatedBy,
   mediaPresenterLeaseUntil,
+  humanProcessorConfirmation,
+  onHumanProcessorConfirmationChange,
 }: Props) => {
   if (typeof selectedImage === "string") {
     selectedImage = (images || []).findIndex((img) => img.src === selectedImage)
@@ -412,6 +416,8 @@ export const Annotator = ({
         onRecalcClick={handleRecalcClicked}
         updatedBy={updatedBy}
         mediaPresenterLeaseUntil={mediaPresenterLeaseUntil}
+        humanProcessorConfirmation={humanProcessorConfirmation}
+        onHumanProcessorConfirmationChange={onHumanProcessorConfirmationChange}
       />
     </SettingsProvider>
   )

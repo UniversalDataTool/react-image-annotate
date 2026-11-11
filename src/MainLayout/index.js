@@ -113,6 +113,8 @@ type Props = {
   onRecalcClick: (any) => any,
   updatedBy?: ?string,
   mediaPresenterLeaseUntil?: ?string,
+  humanProcessorConfirmation?: ?{ confirmedAt?: string, confirmedBy?: string },
+  onHumanProcessorConfirmationChange?: (boolean) => any,
 }
 
 export const MainLayout = ({
@@ -143,6 +145,8 @@ export const MainLayout = ({
   onRecalcClick,
   updatedBy,
   mediaPresenterLeaseUntil,
+  humanProcessorConfirmation,
+  onHumanProcessorConfirmationChange,
 }: Props) => {
   const classes = useStyles()
   const settings = useSettings()
@@ -391,6 +395,8 @@ return (
                   onRecalcClick={onRecalcClick}
                   updatedBy={updatedBy}
                   mediaPresenterLeaseUntil={mediaPresenterLeaseUntil}
+                  humanProcessorConfirmation={humanProcessorConfirmation}
+                  onHumanProcessorConfirmationChange={onHumanProcessorConfirmationChange}
                 />
               )
             }

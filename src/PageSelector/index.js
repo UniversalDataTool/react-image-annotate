@@ -5,6 +5,7 @@ import './page-selector.css';
 import Locker from '../Locker';
 import Errorer from '../Errorer';
 import UpdatedBySemaphore, { normalizeMediaPresenterLeaseUntil } from './UpdatedBySemaphore';
+import HumanReviewCheckbox from './HumanReviewCheckbox';
 
 function PageThumbnail({ src, isActive, onClick, metadata, showMetadata, imageIndex, imageId, onMetadataChange, metadataConfigs = [], isLocked, error, onRecalcClick, isRecalcReady = false }) {
   const handleChange = e => {
@@ -106,6 +107,8 @@ function PageSelector({
   onRecalcClick,
   updatedBy,
   mediaPresenterLeaseUntil,
+  humanProcessorConfirmation,
+  onHumanProcessorConfirmationChange,
 }) {
   const [showMetadata, setShowMetadata] = useState(false);
   const activePage = pages.find(p => p.isActive);
@@ -132,6 +135,14 @@ function PageSelector({
                 selectionKey={selectionKey}
               />
             </div>
+          )}
+          {onHumanProcessorConfirmationChange && (
+            <HumanReviewCheckbox
+              updatedBy={updatedBy}
+              mediaPresenterLeaseUntil={mediaPresenterLeaseUntil}
+              humanProcessorConfirmation={humanProcessorConfirmation}
+              onChange={onHumanProcessorConfirmationChange}
+            />
           )}
         </div>
       </div>
@@ -176,6 +187,11 @@ PageSelector.propTypes = {
   onMetadataChange: PropTypes.func.isRequired,
   updatedBy: PropTypes.string,
   mediaPresenterLeaseUntil: PropTypes.string,
+  humanProcessorConfirmation: PropTypes.shape({
+    confirmedAt: PropTypes.string,
+    confirmedBy: PropTypes.string,
+  }),
+  onHumanProcessorConfirmationChange: PropTypes.func,
   metadataConfigs: PropTypes.arrayOf(PropTypes.shape({
     key: PropTypes.string.isRequired,
     level: PropTypes.string.isRequired,
