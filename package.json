@@ -1,6 +1,6 @@
 {
   "name": "@searpent/react-image-annotate",
-  "version": "2.3.16",
+  "version": "2.3.17",
   "dependencies": {
     "@editorjs/editorjs": "^2.25.0",
     "@editorjs/paragraph": "^2.8.0",
